@@ -1,6 +1,9 @@
 package de.hdm.softwareProjekt.kinoPlaner.client;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.FieldVerifier;
+
+import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
+import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,7 +34,7 @@ public class IT_Projekt implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private final KinoplanerAsync greetingService = GWT.create(Kinoplaner.class);
 
 	/**
 	 * This is the entry point method.
