@@ -84,27 +84,27 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	}
 	
 	@Override
-	public void erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException {
+	public Anwender erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException {
 		Anwender a = new Anwender();
 		a.setId(id);
 		a.setName(name);
 		a.setGmail(gmail);
 		
-		this.anwenderMapper.insert(a);
+		return this.anwenderMapper.insert(a);
 	}
 	
 	@Override
-	public void erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException {
+	public Gruppe erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException {
 		Gruppe g = new Gruppe();
 		g.setId(id);
 		g.setName(name);
 		g.setBesitzerId(id);
 		
-		this.gruppeMapper.insert(g);
+		return this.gruppeMapper.insert(g);
 	}
 	
 	@Override
-	public void erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer, int kinokettenId) throws IllegalArgumentException {
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer, int kinokettenId) throws IllegalArgumentException {
 		Kino k = new Kino();
 		k.setId(id);
 		k.setName(name);
@@ -115,10 +115,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setHausnummer(hausnummer);
 		k.setKinokettenId(kinokettenId);
 		
-		this.kinoMapper.insert(k);
+		return this.kinoMapper.insert(k);
 	}
 	
-	public void erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer) throws IllegalArgumentException {
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer) throws IllegalArgumentException {
 		Kino k = new Kino();
 		k.setId(id);
 		k.setName(name);
@@ -128,11 +128,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setStrassse(strassse);
 		k.setHausnummer(hausnummer);
 		
-		this.kinoMapper.insert(k);
+		return this.kinoMapper.insert(k);
 	}
 	
 	@Override
-	public void erstellenKinokette(int id, String name, int besitzerId,  String sitz, String website) throws IllegalArgumentException {
+	public Kinokette erstellenKinokette(int id, String name, int besitzerId,  String sitz, String website) throws IllegalArgumentException {
 		Kinokette k = new Kinokette();
 		k.setId(id);
 		k.setName(name);
@@ -140,22 +140,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setSitz(sitz);
 		k.setWebsite(website);
 		
-		this.kinoketteMapper.insert(k);		
+		return this.kinoketteMapper.insert(k);		
 	}
 	
 	@Override
-	public void erstellenSpielplan(int id, String name, int besitzerId,  int kinoId) throws IllegalArgumentException {
+	public Spielplan erstellenSpielplan(int id, String name, int besitzerId,  int kinoId) throws IllegalArgumentException {
 		Spielplan s = new Spielplan();
 		s.setId(id);
 		s.setName(name);
 		s.setBesitzerId(id);
 		s.setKinoId(kinoId);
 		
-		this.spielplanMapper.insert(s);
+		return this.spielplanMapper.insert(s);
 	}
 	
 	@Override
-	public void erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId) throws IllegalArgumentException {
+	public Vorstellung erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId) throws IllegalArgumentException {
 		Vorstellung v = new Vorstellung();
 		v.setId(id);
 		v.setName(name);
@@ -163,33 +163,33 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		v.setSpielzeitId(spielzeitId);
 		v.setFilmId(filmId);
 		
-		this.vorstellungMapper.insert(v);
+		return this.vorstellungMapper.insert(v);
 	}
 	
 	@Override
-	public void erstellenUmfrage(int id, String name, int besitzerId, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenUmfrage(int id, String name, int besitzerId, int gruppenId) throws IllegalArgumentException {
 		Umfrage u = new Umfrage();
 		u.setId(id);
 		u.setName(name);
 		u.setBesitzerId(id);
 		u.setGruppenId(gruppenId);
 		
-		this.umfrageMapper.insert(u);
+		return this.umfrageMapper.insert(u);
 	}
 	
 	@Override
-	public void erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId) throws IllegalArgumentException {
+	public Umfrageoption erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId) throws IllegalArgumentException {
 		Umfrageoption u = new Umfrageoption();
 		u.setId(id);
 		u.setName(name);
 		u.setUmfrageId(umfrageId);
 		u.setVorstellungId(vorstellungId);
 		
-		this.umfrageoptionMapper.insert(u);		
+		return this.umfrageoptionMapper.insert(u);		
 	}
 	
 	@Override
-	public void erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung) throws IllegalArgumentException {
+	public Film erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung) throws IllegalArgumentException {
 		Film f = new Film();
 		f.setId(id);
 		f.setName(name);
@@ -197,22 +197,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		f.setBeschreibung(beschreibung);
 		f.setBewertung(bewertung);
 		
-		this.filmMapper.insert(f);
+		return this.filmMapper.insert(f);
 	}
 	
 	@Override
-	public void erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit) throws IllegalArgumentException {
+	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit) throws IllegalArgumentException {
 		Spielzeit s = new Spielzeit();
 		s.setId(id);
 		s.setName(name);
 		s.setBesitzerId(id);
 		s.setZeit(zeit);
 		
-		this.spielzeitMapper.insert(s);
+		return this.spielzeitMapper.insert(s);
 	}
 	
 	@Override
-	public void erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId) throws IllegalArgumentException {
+	public Auswahl erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId) throws IllegalArgumentException {
 		Auswahl a = new Auswahl();
 		a.setId(id);
 		a.setName(name);
@@ -220,7 +220,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		a.setVoting(voting);
 		a.setUmfrageoptionId(umfrageoptionId);
 		
-		this.umfrageoptionMapper.insert(a);
+		this.isVoted(a);
+		return this.umfrageoptionMapper.insert(a);
+		
+
+	}
+	
+	public void isVoted(Auswahl auswahl) throws IllegalArgumentException {
+		Umfrage u = this.umfrageMapper.findById(this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId());
+		if (u.isVoted() == false) {
+			u.setVoted(true);
+		}
 	}
 	
 	@Override
@@ -490,11 +500,19 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Anwender getAnwenderById(int anwenderId) throws IllegalArgumentException {
 		return this.anwenderMapper.findById(anwenderId);
 	}
+	
+	public Spielplan getSpielplanById(int spielplanId) throws IllegalArgumentException{
+		return this.spielplanMapper.findById(spielplanId);
+	}
+	
+	public Kino getKinoById(int kinoId) throws IllegalArgumentException{
+		return this.kinoMapper.findById(kinoId);
+	}
 
 
 	@Override
 	public ArrayList<Gruppe> getGruppenByAnwender(Anwender anwender) throws IllegalArgumentException {
-		return this.gruppeMapper.findAllByGruppenmitglied(anwender);
+		return this.gruppeMapper.findAllByAnwender(anwender);
 	}
 
 
@@ -506,235 +524,353 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	@Override
 	public ArrayList<Umfrage> getUmfragenByAnwender(Anwender anwender) throws IllegalArgumentException {
-		return this.umfrageMapper.finAllByA
+		return this.umfrageMapper.findAllByAnwender(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Umfrage> getUmfragenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.umfrageMapper.findAllByAnwenderOwner(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Umfrage> getClosedUmfragenByAnwender(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.umfrageMapper.findAllClosedByAnwender(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Kinokette> getKinokettenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.kinoketteMapper.findAllByAnwenderOwner(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Kino> getKinosByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.kinoMapper.findAllByAnwenderOwner(anwender);
 	}
 	
 	@Override
-	public ArrayList<Kino> getKinosByKinokette(Kinokette kinokette) throws IllegalArgumentException{
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Kino> getKinosByKinoketteId(Kinokette kinokette) throws IllegalArgumentException{
+		return this.getKinosByKinoketteId(kinokette.getId());
 	}
 	
-
+	@Override
+	public ArrayList<Kino> getKinosByKinoketteId(int kinoketteId) throws IllegalArgumentException{
+		return this.kinoMapper.findAllByKinokette(kinoketteId);
+	}
+	
 
 	@Override
 	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.spielplanMapper.findAllByAnwenderOwner(anwender);
 	}
 	
 	@Override
 	public ArrayList<Spielplan> getSpielplaeneByKino(Kino kino) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.spielplanMapper.findAllByKino(kino);
 	}
 
 
 	@Override
 	public ArrayList<Film> getFilmeByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.filmMapper.findAllByAnwenderOwner(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Spielzeit> getSpielzeitenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.spielzeitMapper.findAllByAnwenderOwner(anwender);
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> getVorstellungenBySpielplan(Spielplan spielplan) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.vorstellungMapper.findAllBySpielplan(spielplan);
 	}
 
 
 	@Override
 	public Anwender getAnwenderByName(String name) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.anwenderMapper.findByName(name);
 	}
 
 
 	@Override
 	public ArrayList<Umfrageoption> getUmfrageoptionenByUmfrage(Umfrage umfrage) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.umfrageoptionMapper.findAllByUmfrage(umfrage);
 	}
 	
 	@Override
 	public ArrayList<Umfrageoption> getUmfrageoptionenByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.umfrageoptionMapper.findAllByVorstellung(vorstellung);
 	}
 
 
 	@Override
 	public ArrayList<Anwender> getGruppenmitgliederByGruppe(Gruppe gruppe) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.anwenderMapper.findAllByGruppe(gruppe);
 	}
 
 
 	@Override
 	public ArrayList<Umfrage> getUmfragenByGruppe(Gruppe gruppe) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.umfrageMapper.findAllByGruppe(gruppe);
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> getAllVorstellungen() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.vorstellungMapper.findAll();
 	}
 
 
 	@Override
 	public ArrayList<Kinokette> getAllKinoketten() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.kinoketteMapper.findAll();
 	}
 
 
 	@Override
 	public ArrayList<Kino> getAllKinos() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.kinoMapper.findAll();
 	}
 
 
 	@Override
 	public ArrayList<Film> getAllFilme() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.filmMapper.findAll();
 	}
 
 
 	@Override
 	public ArrayList<Spielzeiten> getAllSpielzeiten() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.spielzeitMapper.findAll();
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
 			Kino kino) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>;
+	
+		if (resultSet != null) {
+			for (Vorstellung v : resultSet) {
+				if (kino.getId() == this.getSpielplanById(v.getSpielplanId()).getKinoId()) {
+					newResultSet.add(v);
+				}
+			}
+			return newResultSet;
+		}else {
+			return resultSet;
+		}
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
-			Kinokette kino) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+			Kinokette kinokette) throws IllegalArgumentException {
+		
+		ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>;
+		
+		if (resultSet != null) {
+			for (Vorstellung v : resultSet) {
+				if (kinokette.getId() == this.getKinoById(this.getSpielplanById(v.getSpielplanId()).getKinoId()).getKinokettenId()) {
+					newResultSet.add(v);
+				}
+			}
+			return newResultSet;
+		}else {
+			return resultSet;
+		}
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByFilm(ArrayList<Vorstellung> resultSet, Film film)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>;
+		
+		if (resultSet != null) {
+			for (Vorstellung v : resultSet) {
+				if (film.getId() == v.getFilmId()) {
+					newResultSet.add(v);
+				}
+			}
+			return newResultSet;
+		}else {
+			return resultSet;
+		}
 	}
 
 
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenBySpielzeit(ArrayList<Vorstellung> resultSet,
 			Spielzeit spielzeit) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>;
+		
+		if (resultSet != null) {
+			for (Vorstellung v : resultSet) {
+				if (spielzeit.getId() == v.getSpielzeitId()) {
+					newResultSet.add(v);
+				}
+			}
+			return newResultSet;
+		}else {
+			return resultSet;
+		}
 	}
 
 
 	@Override
 	public void setSpielplanForKinosByKinokette(Spielplan spielplan, Kino kino) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		
+		ArrayList<Kino> resultSet = this.getKinosByKinoketteId(kino.getKinokettenId());
+		
+		if(resultSet != null) {
+			for (Kino k : resultSet) {
+				this.kinoMapper.addKinokette(this.kinoketteMapper.findById(kino.getKinokettenId()));
+			}
+		}
 		
 	}
 
 
 	@Override
 	public ArrayList<Auswahl> getAuswahlenByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.auswahlMapper.findAllByUmfrageoption(umfrageoption);
 	}
 
 
 	@Override
 	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.auswahlMapper.findByAnwenderAndUmfrageoption(anwender,umfrageoption);
 	}
 	
 
 	@Override
 	public int berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public Umfrage stichwahlStarten(Umfrage umfrage) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean ergebnisOderStichwahl(Umfrage umfrage) {
-		// TODO Auto-generated method stub
-		return false;
+		ArrayList<Kino> resultSet = this.getAuswahlenByUmfrageoption(umfrageoption));
+		
+		if(resultSet != null) {
+			int result = 0;
+			for (Auswahl a : resultSet) {
+				result += a.getVote();
+			}
+			return result;
+		}else {
+			return 0;
+		}
+		
 	}
 	
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	 */
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	@Override
+	public boolean ergebnisGefunden(Umfrage umfrage) {
+		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage)
+		if(resultSet != null) {
+			for (Umfrageoption u : resultSet) {
+				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
+			}	
+			
+			Umfrageoption max = null;
+			
+			for (Umfrageoption u : resultSet) {
+				if (max == null) {
+					max = u;
+				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
+					max = u;
+				}
+			}
+			
+			for (Umfrageoption u : resultSet) {
+				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
+					return false;
+				} 
+			}
+			return true;
+		
 	}
+	
+	public Umfrageoption umfrageGewinnerErmitteln(Umfrage umfrage) {
+		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage)
+		if(resultSet != null) {
+			for (Umfrageoption u : resultSet) {
+				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
+			}	
+			
+			Umfrageoption max = null;
+			
+			for (Umfrageoption u : resultSet) {
+				if (max == null) {
+					max = u;
+				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
+					max = u;
+				}
+			}
+			
+			return max;				
+			
+		}
+		
+	}
+		
+	
+	public ArrayList<Umfrageoption> stichwahlUmfrageoptionenErmitteln(Umfrage umfrage) {
+		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage)
+		if(resultSet != null) {
+			for (Umfrageoption u : resultSet) {
+				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
+			}	
+					
+			Umfrageoption max = null;
+					
+			for (Umfrageoption u : resultSet) {
+				if (max == null) {
+					max = u;
+				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
+					max = u;
+				}
+			}
+					
+			ArrayList<Umfrageoption> stichwahlResultSet = null;
+					
+			for (Umfrageoption u : resultSet) {
+				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
+					stichwahlResultSet.add(u);
+				} 
+			}
+		
+		return stichwahlResultSet;
+		
+		}
+	}
+
+	@Override
+	public Umfrage stichwahlStarten(Umfrage umfrage, ArrayList<Umfrageoption> umfrageoptionen) {
+		
+		String name = "Stichwahl " + umfrage.getName();
+		
+		Umfrage u = this.erstellenUmfrage(1, name, umfrage.getBesitzerId(), umfrage.getGruppenId());
+		
+		if(umfrageoptionen != null) {
+			for (Umfrageoption u : umfrageoptionen) {
+				String nameUmfrageoption = "Stichwahl " + u.getName();
+				this.erstellenUmfrageoption(1, nameUmfrageoption, u.getUmfrageId(), u.getVorstellungId());
+			}	
+		}
+		
+		return u;
+	}
+	
+
+
+
+
 
 
 }

@@ -7,15 +7,17 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.softwareProjekt.kinoPlaner.server.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.server.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.server.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.server.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.server.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.server.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.server.Vorstellung;
 
 /**
  * The client-side stub for the RPC service.
  */
-@RemoteServiceRelativePath("PathEinfügen")
+@RemoteServiceRelativePath("administration")
 public interface Kinoplaner extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
@@ -24,29 +26,31 @@ public interface Kinoplaner extends RemoteService {
 	
 	public void setAnwender(Anwender anwender)  throws IllegalArgumentException;
 	
-	public void erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException;
+	public Anwender erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException;
 	
-	public void erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException;
+	public Gruppe erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException;
 	
-	public void erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer, int kinokettenId) throws IllegalArgumentException;
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer, int kinokettenId) throws IllegalArgumentException;
 	
-	public void erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer) throws IllegalArgumentException;
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer) throws IllegalArgumentException;
 	
-	public void erstellenKinokette(int id, String name, int besitzerId,  String sitz, String website) throws IllegalArgumentException;
+	public Kinokette erstellenKinokette(int id, String name, int besitzerId,  String sitz, String website) throws IllegalArgumentException;
 	
-	public void erstellenSpielplan(int id, String name, int besitzerId,  int kinoId) throws IllegalArgumentException;
+	public Spielplan erstellenSpielplan(int id, String name, int besitzerId,  int kinoId) throws IllegalArgumentException;
 	
-	public void erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId) throws IllegalArgumentException;
+	public Vorstellung erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId) throws IllegalArgumentException;
 	
-	public void erstellenUmfrage(int id, String name, int besitzerId, int gruppenId) throws IllegalArgumentException;
+	public Umfrage erstellenUmfrage(int id, String name, int besitzerId, int gruppenId) throws IllegalArgumentException;
 	
-	public void erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId) throws IllegalArgumentException;
+	public Umfrageoption erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId) throws IllegalArgumentException;
 	
-	public void erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung) throws IllegalArgumentException;
+	public Film erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung) throws IllegalArgumentException;
 	
-	public void erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit) throws IllegalArgumentException;
+	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit) throws IllegalArgumentException;
 	
-	public void erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId) throws IllegalArgumentException;
+	public Auswahl erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId) throws IllegalArgumentException;
+	
+	public void isVoted(Auswahl auswahl) throws IllegalArgumentException;
 	
 	public void speichern(Anwender anwender) throws IllegalArgumentException;
 	
@@ -94,6 +98,10 @@ public interface Kinoplaner extends RemoteService {
 	
 	public Anwender getAnwenderById(int anwenderId) throws IllegalArgumentException;
 	
+	public Spielplan getSpielplanById(int spielplanId) throws IllegalArgumentException;
+	
+	public Kino getKinoById(int kinoId) throws IllegalArgumentException;
+	
 	public ArrayList<Gruppe> getGruppenByAnwender(Anwender anwender) throws IllegalArgumentException;
 	
 	public ArrayList<Gruppe> getGruppenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException;
@@ -108,7 +116,9 @@ public interface Kinoplaner extends RemoteService {
 	
 	public ArrayList<Kino> getKinosByAnwenderOwner(Anwender anwender) throws IllegalArgumentException;
 	
-	public ArrayList<Kino> getKinosByKinokette(Kinokette kinokette) throws IllegalArgumentException;
+	public ArrayList<Kino> getKinosByKinoketteId(Kinokette kinokette) throws IllegalArgumentException;
+	
+	public ArrayList<Kino> getKinosByKinoketteId(int kinoketteId) throws IllegalArgumentException;
 	
 	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner(Anwender anwender) throws IllegalArgumentException;
 	
@@ -158,9 +168,13 @@ public interface Kinoplaner extends RemoteService {
 	
 	public int berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption);
 	
-	public Umfrage stichwahlStarten(Umfrage umfrage);
+	public Umfrage stichwahlStarten(Umfrage umfrage,ArrayList<Umfrageoption> umfrageoptionen);
 	
-	public boolean ergebnisOderStichwahl(Umfrage umfrage);
+	public boolean ergebnisGefunden(Umfrage umfrage);
+	
+	public Umfrageoption umfrageGewinnerErmitteln(Umfrage umfrage);
+	
+	public ArrayList<Umfrageoption> stichwahlUmfrageoptionenErmitteln(Umfrage umfrage);
 	
 	
 }
