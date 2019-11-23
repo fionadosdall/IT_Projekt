@@ -1,7 +1,13 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import de.hdm.softwareProjekt.kinoPlaner.shared.Auswahl;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Film;
 
 //Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB abbildet. 
 
@@ -22,11 +28,27 @@ public class FilmMapper {
 Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 */
 
-	public Film insert (Film film) {
-		
+	public void insert (Film film) {
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			//Jetzt wird geschaut, welches die höchste Id der schon bestehenden Filme ist.
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM film"); 
+			if (resultset.next()) {
+				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
+				film.setId(resultset.getInt("maxId")+1);
+				stmt = con.createStatement();
+				
+				//Jetzt wird die Id tatsächlich eingefügt: 
+				stmt.executeUpdate("INSERT INTO film (id, name)" +
+						"VALUES(" + film.getId() + "','" + film.getName() + ")"); 
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
-	public Film update (Film film) {
+	public void update (Film film) {
 		
 	}
 	
@@ -35,7 +57,22 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	}
 	
 	public Film findById (int id) {
-		
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name FROM film" + 
+					"WHERE id=" + id + " ORDER BY name"); 
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			if (resultset.next()) {
+				Film f = new Film ();  
+				f.setId(resultset.getInt("id")); 
+				f.setName(resultset.getString("name")); 
+				return f; 	
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null; 
 	}
 	
 	public ArrayList <Film> findAll() {

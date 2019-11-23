@@ -1,7 +1,14 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import de.hdm.softwareProjekt.kinoPlaner.shared.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Spielplan;
 
 //Das hier ist eine Mapper-Klasse, die Spielplan-Objekte auf eine relationale DB abbildet.
 
@@ -22,11 +29,27 @@ public class SpielplanMapper {
 // Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
-	public Spielplan insert (Spielplan spielplan) {
-		
+	public void insert (Spielplan spielplan) {
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			//Jetzt wird geschaut, welches die höchste Id der schon bestehenden Spielplaene ist.
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM spielplan"); 
+			if (resultset.next()) {
+				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
+				spielplan.setId(resultset.getInt("maxId")+1);
+				stmt = con.createStatement();
+				
+				//Jetzt wird die Id tatsächlich eingefügt: 
+				stmt.executeUpdate("INSERT INTO spielplan (id, kinoId)" +
+						"VALUES(" + spielplan.getId() + "','" + spielplan.getKinoId() + ")"); 
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
-	public Spielplan update (Spielplan spielplan) {
+	public void update (Spielplan spielplan) {
 		
 	}
 	
@@ -35,7 +58,22 @@ public class SpielplanMapper {
 	}
 	
 	public Spielplan findById (int id) {
-		
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, kinoId FROM spielplan" + 
+					"WHERE id=" + id + " ORDER BY kinoId"); 
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			if (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setKinoId(resultset.getInt("kinoId")); 
+				return sp; 	
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 	
 	public ArrayList <Spielplan> findAllByAnwenderOwner (Anwender anwenderOwner) {

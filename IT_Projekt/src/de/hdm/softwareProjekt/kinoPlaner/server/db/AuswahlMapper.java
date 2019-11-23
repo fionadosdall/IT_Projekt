@@ -1,7 +1,13 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import de.hdm.softwareProjekt.kinoPlaner.shared.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Auswahl;
 
 //Das hier ist eine Mapper-Klasse, die Auswahl-Objekte auf eine relationale DB abbildet. 
 
@@ -23,11 +29,27 @@ public class AuswahlMapper {
 Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 */
 	
-	public Auswahl insert (Auswahl auswahl) {
-		
+	public void insert (Auswahl auswahl) {
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			//Jetzt wird geschaut, welches die höchste Id der schon bestehenden Auswahlen ist.
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM auswahl"); 
+			if (resultset.next()) {
+				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
+				auswahl.setId(resultset.getInt("maxId")+1);
+				stmt = con.createStatement();
+				
+				//Jetzt wird die Id tatsächlich eingefügt: 
+				stmt.executeUpdate("INSERT INTO auswahl (id, besitzerId, umfrageoptionId, voting)" +
+						"VALUES(" + auswahl.getId() + "','" + auswahl.getBesitzerId() + "','" + auswahl.getUmfrageoptionId() + auswahl.getVoting() + ")"); 
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
-	public Auswahl update (Auswahl auswahl) {
+	public void update (Auswahl auswahl) {
 		
 	}
 	
@@ -36,6 +58,24 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	}
 	
 	public Auswahl findById (int id) {
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, besitzerId, umfrageoptionId, voting FROM auswahl" + 
+					"WHERE id=" + id + " ORDER BY umfrageoptionId"); 
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			if (resultset.next()) {
+				Auswahl a = new Auswahl(); 
+				a.setId(resultset.getInt("id")); 
+				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
+				a.setVoting(resultset.getInt("voting")); 
+				return a; 	
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null; 
 		
 	}
 	
