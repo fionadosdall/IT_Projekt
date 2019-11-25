@@ -10,6 +10,10 @@ public class Film extends BesitzerBusinessObjekt{
 	private String beschreibung;
 	private int bewertung;
 	
+	public Film() {
+		super();
+	}
+	
 	
 	public Time getFilmlaenge() {
 		return Filmlaenge;

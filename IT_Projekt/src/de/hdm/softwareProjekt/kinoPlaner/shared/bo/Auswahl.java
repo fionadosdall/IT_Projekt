@@ -7,6 +7,10 @@ public class Auswahl extends BesitzerBusinessObjekt{
 	private int voting;
 	private int umfrageoptionId;
 	
+	public Auswahl () {
+		super();
+	}
+	
 	
 	public int getVoting() {
 		return voting;

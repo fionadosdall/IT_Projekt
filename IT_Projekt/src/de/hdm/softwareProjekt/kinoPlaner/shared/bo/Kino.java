@@ -10,6 +10,10 @@ public class Kino extends BesitzerBusinessObjekt{
 	private String hausnummer;
 	private int kinokettenId;
 	
+	public Kino() {
+		super();
+	}
+	
 	
 	public int getPlz() {
 		return plz;

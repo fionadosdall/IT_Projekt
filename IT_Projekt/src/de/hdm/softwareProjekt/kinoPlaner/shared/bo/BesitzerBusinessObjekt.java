@@ -1,11 +1,21 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
+/**
+ * 
+ * @author fiona
+ *
+ */
+
 public class BesitzerBusinessObjekt extends BusinessObjekt{
 	
 	
 	private static final long serialVersionUID= 1L;
 	
 	private int besitzerId;
+	
+	public BesitzerBusinessObjekt() {
+		super();
+	}
 
 	public int getBesitzerId() {
 		return besitzerId;

@@ -8,7 +8,9 @@ public class Umfrageoption extends BusinessObjekt {
 	private int vorstellungsId;
 	private int voteErgebnis;
 	
-	
+	public Umfrageoption() {
+		super();
+	}
 
 	public int getVoteErgebnis() {
 		return voteErgebnis;

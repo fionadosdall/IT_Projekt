@@ -7,6 +7,10 @@ public class Kinokette extends BesitzerBusinessObjekt {
 	private String sitz;
 	private String website;
 	
+	public Kinokette() {
+		super();
+	}
+	
 	
 	public String getSitz() {
 		return sitz;

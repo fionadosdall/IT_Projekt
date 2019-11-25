@@ -3,10 +3,14 @@ package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 public class Umfrage extends BesitzerBusinessObjekt {
 	private static final long serialVersionUID= 1L;
 	
+	
 	private int gruppenId;
 	private boolean isOpen;
 	private boolean isVoted;
 	
+	public Umfrage() {
+		super();
+	}
 	
 	public int getGruppenId() {
 		return gruppenId;

@@ -1,14 +1,19 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
+import java.sql.Date;
 import java.util.Calendar;
 
 public class Spielzeit extends BesitzerBusinessObjekt{
 	
 	private static final long serialVersionUID= 1L;
 	
-	private Calendar zeit;
+	public Spielzeit() {
+		super();
+	}
+	
+	private Date zeit;
 
-	public Calendar getZeit() {
+	public Date getZeit() {
 		return zeit;
 	}
 

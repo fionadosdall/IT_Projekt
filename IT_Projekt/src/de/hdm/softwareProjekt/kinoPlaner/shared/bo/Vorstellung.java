@@ -8,6 +8,10 @@ public class Vorstellung extends BusinessObjekt{
 	private int spielzeitId;
 	private int spielplanId;
 	
+	public Vorstellung () {
+		super();
+	}
+	
 	public int getFilmId() {
 		return filmId;
 	}

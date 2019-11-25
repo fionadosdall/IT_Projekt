@@ -6,6 +6,10 @@ public class Spielplan extends BesitzerBusinessObjekt {
 	
 	private int KinoId;
 	
+	public Spielplan() {
+		super();
+	}
+	
 
 	public int getKinoId() {
 		return KinoId;
