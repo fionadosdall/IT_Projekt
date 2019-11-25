@@ -1,4 +1,4 @@
-package de.hdm.softwareProjekt.kinoPlaner.shared;
+package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 public class Kinokette extends BesitzerBusinessObjekt {
 	

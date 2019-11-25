@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Umfrage;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Umfrageoption;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
 // Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine relationale DB abbildet. 
 

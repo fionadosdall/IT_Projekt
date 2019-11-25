@@ -1,4 +1,4 @@
-package de.hdm.softwareProjekt.kinoPlaner.shared;
+package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

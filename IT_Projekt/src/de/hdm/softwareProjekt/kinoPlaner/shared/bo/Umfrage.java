@@ -1,5 +1,4 @@
-package de.hdm.softwareProjekt.kinoPlaner.shared;
-
+package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 public class Umfrage extends BesitzerBusinessObjekt {
 	private static final long serialVersionUID= 1L;
