@@ -5,14 +5,26 @@ import java.util.Calendar;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.softwareProjekt.kinoPlaner.server.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.server.Spielplan;
-import de.hdm.softwareProjekt.kinoPlaner.server.Umfrage;
-import de.hdm.softwareProjekt.kinoPlaner.server.Umfrageoption;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
+
+
 
 /**
- * The async counterpart of <code>GreetingService</code>.
+ * <p>
+ * Das Interface <code>KinplanerAsync</code> ist das asynchrone Gegenstück zum Interface {@link Kinoplaner}
+ * und wird semiautomatisch durch das GooglePlugin erstellt und gepflegt. 
  */
+
 public interface KinoplanerAsync {
 	
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
@@ -45,7 +57,7 @@ public interface KinoplanerAsync {
 	
 	public void erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId, AsyncCallback<Auswahl> callback) throws IllegalArgumentException;
 	
-	public void isVoted(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void isVoted(Auswahl auswahl, AsyncCallback<Void> callback);
 	
 	public void speichern(Anwender anwender, AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
@@ -95,7 +107,7 @@ public interface KinoplanerAsync {
 	
 	public void getSpielplanById(int spielplanId, AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
 	
-	public void getKinoById(int kinoId, AsyncCallback<ArrayList<Kino>> callback) throws IllegalArgumentException;
+	public void getKinoById(int kinoId, AsyncCallback<Kino> callback) throws IllegalArgumentException;
 	
 	public void getGruppenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Gruppe>> callback) throws IllegalArgumentException;
 	
@@ -145,7 +157,7 @@ public interface KinoplanerAsync {
 	
 	public void getAllFilme(AsyncCallback<ArrayList<Film>> callback) throws IllegalArgumentException;
 	
-	public void getAllSpielzeiten(AsyncCallback<ArrayList<Spielzeiten>> callback) throws IllegalArgumentException;
+	public void getAllSpielzeiten(AsyncCallback<ArrayList<Spielzeit>> callback) throws IllegalArgumentException;
 	
 	public void filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet, Kino kino, AsyncCallback<ArrayList<Vorstellung>> callback) throws IllegalArgumentException;
 	
@@ -161,13 +173,17 @@ public interface KinoplanerAsync {
 	
 	public void getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption, AsyncCallback<Auswahl> callback) throws IllegalArgumentException;
 	
-	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<Int> callback);
+	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<Void> callback)throws IllegalArgumentException;
 	
-	public void stichwahlStarten(Umfrage umfrage,ArrayList<Umfrageoption> umfrageoptionen, AsyncCallback<Umfrage> callback);
+	public void stichwahlStarten(Umfrage umfrage,AsyncCallback<Umfrage> callback)throws IllegalArgumentException;
 	
-	public void ergebnisGefunden(Umfrage umfrage, AsyncCallback<Boolean> callback);
+	public void ergebnisGefunden(Umfrage umfrage, AsyncCallback<Boolean> callback)throws IllegalArgumentException;
 	
-	public void umfrageGewinnerErmitteln(Umfrage umfrage, AsyncCallback<Umfrageoption> callback);
+	public void umfrageGewinnerErmitteln(Umfrage umfrage, AsyncCallback<Umfrageoption> callback)throws IllegalArgumentException;
 	
 	public void stichwahlUmfrageoptionenErmitteln(Umfrage umfrage, AsyncCallback<ArrayList<Umfrageoption>> callback);
+	
+	public void isClosedSetzen(Auswahl auswahl, AsyncCallback<Void> callback);
+	
+	public void isClosedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback);
 }
