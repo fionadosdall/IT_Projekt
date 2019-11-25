@@ -44,6 +44,13 @@ public class Anwender extends BusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "Anwender [gmail=" + gmail + ", istEingeloggt=" + istEingeloggt + ", loginUrl=" + loginUrl
+				+ ", logoutUrl=" + logoutUrl + "]";
+	}
+	
 	
 	
 

@@ -2,7 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 import java.sql.Time;
 
-public class Film extends BusinessObjekt{
+public class Film extends BesitzerBusinessObjekt{
 	
 	private static final long serialVersionUID= 1L;
 	
@@ -32,5 +32,11 @@ public class Film extends BusinessObjekt{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return super.toString() + "Film [Filmlaenge=" + Filmlaenge + ", beschreibung=" + beschreibung + ", bewertung=" + bewertung + "]";
+	}
+	
+	
 
 }

@@ -29,5 +29,11 @@ public class Vorstellung extends BusinessObjekt{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return super.toString() + "Vorstellung [filmId=" + filmId + ", spielzeitId=" + spielzeitId + ", spielplanId=" + spielplanId + "]";
+	}
+	
+	
 
 }

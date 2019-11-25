@@ -18,6 +18,12 @@ public class Spielplan extends BesitzerBusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "Spielplan [KinoId=" + KinoId + "]";
+	}
+	
 	
 	
 

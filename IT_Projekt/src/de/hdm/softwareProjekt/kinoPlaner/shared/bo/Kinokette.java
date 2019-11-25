@@ -23,6 +23,11 @@ public class Kinokette extends BesitzerBusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return super.toString() + "Kinokette [sitz=" + sitz + ", website=" + website + "]";
+	}
+	
 	
 	
 

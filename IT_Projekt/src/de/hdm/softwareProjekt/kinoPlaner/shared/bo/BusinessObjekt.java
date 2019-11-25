@@ -44,8 +44,10 @@ public abstract class BusinessObjekt implements Serializable {
 		return serialVersionUID;
 	}
 
-	
+	@Override
 	public String toString() {
-		return this.getClass().getName()+"#" + this.getId();
+		return "BusinessObjekt [id=" + id + ", erstellDatum=" + erstellDatum + ", name=" + name + "]";
 	}
+	
+	
 }

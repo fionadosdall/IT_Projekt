@@ -6,6 +6,9 @@ public class Kino extends BesitzerBusinessObjekt{
 	
 	private int plz;
 	private String stadt;
+	private String strasse;
+	private String hausnummer;
+	private int kinokettenId;
 	
 	
 	public int getPlz() {
@@ -29,7 +32,7 @@ public class Kino extends BesitzerBusinessObjekt{
 	public int getHausnummer() {
 		return hausnummer;
 	}
-	public void setHausnummer(int hausnummer) {
+	public void setHausnummer(String hausnummer) {
 		this.hausnummer = hausnummer;
 	}
 	public int getKinokettenId() {
@@ -41,9 +44,13 @@ public class Kino extends BesitzerBusinessObjekt{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	private String strasse;
-	private int hausnummer;
-	private int kinokettenId;
+	@Override
+	public String toString() {
+		return super.toString() +"Kino [plz=" + plz + ", stadt=" + stadt + ", strasse=" + strasse + ", hausnummer=" + hausnummer
+				+ ", kinokettenId=" + kinokettenId + "]";
+	}
+	
+	
 	
 
 }

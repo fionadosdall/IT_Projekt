@@ -6,7 +6,16 @@ public class Umfrageoption extends BusinessObjekt {
 	
 	private int umfrageId;
 	private int vorstellungsId;
+	private int voteErgebnis;
 	
+	
+
+	public int getVoteErgebnis() {
+		return voteErgebnis;
+	}
+	public void setVoteErgebnis(int voteErgebnis) {
+		this.voteErgebnis = voteErgebnis;
+	}
 	public int getUmfrageId() {
 		return umfrageId;
 	}
@@ -22,6 +31,13 @@ public class Umfrageoption extends BusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return super.toString() +"Umfrageoption [umfrageId=" + umfrageId + ", vorstellungsId=" + vorstellungsId + ", voteErgebnis="
+				+ voteErgebnis + "]";
+	}
+	
+	
 	
 
 }

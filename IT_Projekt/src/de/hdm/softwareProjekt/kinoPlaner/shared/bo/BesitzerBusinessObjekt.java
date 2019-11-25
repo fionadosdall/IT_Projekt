@@ -18,6 +18,13 @@ public class BesitzerBusinessObjekt extends BusinessObjekt{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "BesitzerBusinessObjekt [besitzerId=" + besitzerId + "]";
+	}
+	
+	
 	
 
 }

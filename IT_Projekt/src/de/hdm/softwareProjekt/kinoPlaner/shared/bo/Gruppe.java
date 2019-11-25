@@ -8,5 +8,6 @@ public class Gruppe extends BesitzerBusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 
 }

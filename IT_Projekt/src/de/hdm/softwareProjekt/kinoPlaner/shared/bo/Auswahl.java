@@ -24,5 +24,11 @@ public class Auswahl extends BesitzerBusinessObjekt{
 		return serialVersionUID;
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString() + "Auswahl [voting=" + voting + ", umfrageoptionId=" + umfrageoptionId + "]";
+	}
+	
+	
 
 }

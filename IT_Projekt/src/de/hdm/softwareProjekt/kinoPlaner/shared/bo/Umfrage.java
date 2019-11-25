@@ -29,5 +29,11 @@ public class Umfrage extends BesitzerBusinessObjekt {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public String toString() {
+		return super.toString() + "Umfrage [gruppenId=" + gruppenId + ", isOpen=" + isOpen + ", isVoted=" + isVoted + "]";
+	}
+	
+	
 
 }
