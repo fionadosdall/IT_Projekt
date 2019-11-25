@@ -55,8 +55,10 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO auswahl (id, besitzerId, umfrageoptionId, voting)" +
-						"VALUES(" + auswahl.getId() + "','" + auswahl.getBesitzerId() + "','" + auswahl.getUmfrageoptionId() + auswahl.getVoting() + ")"); 
+				stmt.executeUpdate("INSERT INTO auswahl (id, name, besitzerId, umfrageoptionId, voting, erstellDatum)" +
+						"VALUES(" + auswahl.getId() + "','" + auswahl.getName() + "','" + auswahl.getBesitzerId() + "','" 
+						+ auswahl.getUmfrageoptionId() + "','" + auswahl.getVoting() + "','" + auswahl.getErstellDatum() 
+						+ ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -66,6 +68,21 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	public Auswahl update (Auswahl auswahl) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
+				+ auswahl.getBesitzerId() + "\", " + "umfrageoptionId=\""
+				+ auswahl.getUmfrageoptionId() + "\", " + "voting=\"" 
+				+ auswahl.getVoting()+ "\", " + "name=\"" 
+				+ auswahl.getName()+ "\", " + "erstellDatum=\"" 
+				+ auswahl.getErstellDatum()+ "\" " + "WHERE id=" + auswahl.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return auswahl; 
 	}
 	
@@ -93,15 +110,17 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, besitzerId, umfrageoptionId, voting FROM auswahl" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" + 
 					"WHERE id=" + id + " ORDER BY umfrageoptionId"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Auswahl a = new Auswahl(); 
 				a.setId(resultset.getInt("id")); 
+				a.setName(resultset.getString("name"));
 				a.setBesitzerId(resultset.getInt("besitzerId")); 
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
 				a.setVoting(resultset.getInt("voting")); 
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a; 	
 			}
 		} catch (SQLException e1) {
@@ -122,14 +141,16 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, besitzerId, umfrageoptionId, voting FROM auswahl" +
-					"WHERE umfrageoptionId=" + umfrageoption + "ORDER BY besitzerId"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" +
+					"WHERE umfrageoptionId=" + umfrageoption.getId() + "ORDER BY besitzerId"); 
 			while (resultset.next()) { 
 				Auswahl a = new Auswahl(); 
-				a.setId(resultset.getInt("id"));
-				a.setBesitzerId(resultset.getInt("besitzerId"));
+				a.setId(resultset.getInt("id")); 
+				a.setName(resultset.getString("name"));
+				a.setBesitzerId(resultset.getInt("besitzerId")); 
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
-				a.setVoting(resultset.getInt("voting"));
+				a.setVoting(resultset.getInt("voting")); 
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				resultarray.add(a);
 			}
@@ -143,6 +164,17 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	public void addEigentumsstruktur (Anwender anwender, Auswahl auswahl) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
+				+ anwender.getId() + "\" " + "WHERE id=" + auswahl.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		
 	}
 	
@@ -150,14 +182,70 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	
-	public void deleteEigentumsstruktur (Anwender anwender, Auswahl auswahl) {
+	public void deleteEigentumsstruktur ( Auswahl auswahl) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
+				+ "" + "\" " + "WHERE id=" + auswahl.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+	}
+	
+	public Auswahl findByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption) {
+		Connection con = DBConnection.connection(); 
+		try {
+			Statement stmt = con.createStatement(); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" + 
+					"WHERE besitzerId=" + anwender.getId() + "AND umfrageoptionId=" +umfrageoption.getId()); 
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			if (resultset.next()) {
+				Auswahl a = new Auswahl(); 
+				a.setId(resultset.getInt("id")); 
+				a.setName(resultset.getString("name"));
+				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
+				a.setVoting(resultset.getInt("voting")); 
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return a; 	
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null; 
 		
 	}
 	
-	
-	
-	//FindByAnwenderandUmfrageoption MEthode fehlt noch 
-	//FindALLBYAnwenderOwner Methode fehlt 
+	public ArrayList<Auswahl> findAllByAnwenderOwner(Anwender anwender) {
+		Connection con = DBConnection.connection(); 
+		
+		ArrayList <Auswahl> resultarray = new ArrayList <Auswahl> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" +
+					"WHERE besitzerId=" + anwender.getId() + "ORDER BY id"); 
+			while (resultset.next()) { 
+				Auswahl a = new Auswahl(); 
+				a.setId(resultset.getInt("id")); 
+				a.setName(resultset.getString("name"));
+				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
+				a.setVoting(resultset.getInt("voting")); 
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				
+				resultarray.add(a);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return resultarray; 
+	}
 	
 
 }

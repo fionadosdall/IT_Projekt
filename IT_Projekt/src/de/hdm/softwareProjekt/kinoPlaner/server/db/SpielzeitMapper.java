@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
@@ -55,8 +56,9 @@ public class SpielzeitMapper {
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO spielzeit (id, zeit)" +
-						"VALUES(" + spielzeit.getId() + "','" + spielzeit.getZeit() + ")"); 
+				stmt.executeUpdate("INSERT INTO spielzeit (id, name, besitzerId, zeit, erstellDatum)" +
+						"VALUES(" + spielzeit.getId() + "','" + spielzeit.getName() + "','" + spielzeit.getBesitzerId() 
+						+ "','" + spielzeit.getZeit() + "','" + spielzeit.getErstellDatum() + ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -67,6 +69,20 @@ public class SpielzeitMapper {
 	
 	
 	public Spielzeit update (Spielzeit spielzeit) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE spielzeit SET " + "name=\""
+				+ spielzeit.getName() + "\", " + "erstellDatum=\""
+				+ spielzeit.getErstellDatum() + "\", " + "besitzerId=\""
+				+ spielzeit.getBesitzerId() + "\", " + "zeit=\""
+				+ spielzeit.getZeit() +  "\" " + "WHERE id=" + spielzeit.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return spielzeit;
 	}
 	
@@ -100,12 +116,41 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, zeit FROM spielzeit" + "ORDER BY zeit"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit" + "ORDER BY zeit"); 
 			
 			while (resultset.next()) {
 				Spielzeit sz = new Spielzeit(); 
 				sz.setId(resultset.getInt("id"));
+				sz.setName(resultset.getString("name"));
+				sz.setBesitzerId(resultset.getInt("besitzerId"));
 				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(sz); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray; 
+	}
+	
+	public ArrayList<Spielzeit> findAllByAnwenderOwner(Anwender anwender) {
+Connection con = DBConnection.connection(); 
+		
+		ArrayList <Spielzeit> resultarray = new ArrayList <Spielzeit> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit" 
+			+"WHERE besitzerId=" + anwender.getId() + "ORDER BY zeit"); 
+			
+			while (resultset.next()) {
+				Spielzeit sz = new Spielzeit(); 
+				sz.setId(resultset.getInt("id"));
+				sz.setName(resultset.getString("name"));
+				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(sz); 
 			} 
@@ -117,18 +162,20 @@ public class SpielzeitMapper {
 	
 	
 	
-	
 	public Spielzeit findById (int id) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, zeit FROM spielzeit" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit" + 
 					"WHERE id=" + id + " ORDER BY zeit"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
 				sz.setId(resultset.getInt("id"));
+				sz.setName(resultset.getString("name"));
+				sz.setBesitzerId(resultset.getInt("besitzerId"));
 				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return sz; 	
 			}
 		} catch (SQLException e1) {
@@ -137,8 +184,7 @@ public class SpielzeitMapper {
 		return null;
 	}
 	
-	
-	//FindAllByAnwenderOwner
+
 	
 
 }

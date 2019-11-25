@@ -58,9 +58,9 @@ public class UmfrageMapper {
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO umfrage (id, name, gruppenId, besitzerId)" +
-						"VALUES(" + umfrage.getId() + "','" + umfrage.getName() + "','" + 
-							umfrage.getGruppenId() + "','" + umfrage.getBesitzerId() + ")"); 
+				stmt.executeUpdate("INSERT INTO umfrage (id, name, besitzerId, gruppenId, erstellDatum)" +
+						"VALUES(" + umfrage.getId() + "','" + umfrage.getName() + "','" + umfrage.getBesitzerId() + "','" 
+						+ umfrage.getGruppenId() + "','" + umfrage.getErstellDatum() + ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -71,6 +71,20 @@ public class UmfrageMapper {
 	
 	
 	public Umfrage update (Umfrage umfrage) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE umfrage SET " + "besitzerId=\""
+				+ umfrage.getBesitzerId() + "\", " + "name=\""
+				+ umfrage.getName() + "\", " + "erstellDatum=\""
+				+ umfrage.getErstellDatum() + "\", " + "gruppenId=\""
+				+ umfrage.getGruppenId() +  "\" " + "WHERE id=" + umfrage.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return umfrage;
 	}
 	
@@ -98,7 +112,7 @@ public class UmfrageMapper {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, gruppenId, besitzerId FROM umfrage" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage" + 
 					"WHERE id=" + id + " ORDER BY gruppenId"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
@@ -107,6 +121,7 @@ public class UmfrageMapper {
 				u.setName(resultset.getString("name"));
 				u.setGruppenId(resultset.getInt("gruppenId"));
 				u.setBesitzerId(resultset.getInt("besitzerId")); 
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return u; 	
 			}
 		} catch (SQLException e1) {
@@ -127,8 +142,8 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, gruppenId, anwenderId FROM umfrage" + 
-					"WHERE anwenderId = " + anwender + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage" + 
+					"WHERE anwenderId = " + anwender.getId() + "ORDER BY name"); 
 		
 			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
 			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
@@ -136,10 +151,12 @@ public class UmfrageMapper {
 			
 			while (resultset.next()) {
 		        Umfrage u = new Umfrage();
-		        u.setId(resultset.getInt("id"));
-		        u.setName(resultset.getString("name"));
-		        u.setGruppenId(resultset.getInt("gruppenId"));
-
+				u.setId(resultset.getInt("id"));
+				u.setName(resultset.getString("name"));
+				u.setGruppenId(resultset.getInt("gruppenId"));
+				u.setBesitzerId(resultset.getInt("besitzerId")); 
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				
 		        // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(u); 
 		      }
@@ -162,15 +179,16 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM umfrage" +
-					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage" +
+					"WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Umfrage u = new Umfrage (); 
 				u.setId(resultset.getInt("id"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
 				u.setName(resultset.getString("name"));
-				
+				u.setGruppenId(resultset.getInt("gruppenId"));
+				u.setBesitzerId(resultset.getInt("besitzerId")); 
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(u); 
 			} 
@@ -191,14 +209,16 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, isOpen FROM umfrage" +
-					"WHERE isOpen = false, besitzerId = " + anwender + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage" +
+					"WHERE isOpen = false, besitzerId = " + anwender.getId() + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Umfrage u = new Umfrage (); 
 				u.setId(resultset.getInt("id"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
 				u.setName(resultset.getString("name"));
+				u.setGruppenId(resultset.getInt("gruppenId"));
+				u.setBesitzerId(resultset.getInt("besitzerId")); 
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(u); 
@@ -220,14 +240,16 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, gruppenId FROM umfrage" +
-					"WHERE gruppeId = " + gruppe + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage" +
+					"WHERE gruppeId = " + gruppe.getId() + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Umfrage u = new Umfrage (); 
 				u.setId(resultset.getInt("id"));
 				u.setName(resultset.getString("name"));
 				u.setGruppenId(resultset.getInt("gruppenId"));
+				u.setBesitzerId(resultset.getInt("besitzerId")); 
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(u); 
@@ -242,7 +264,17 @@ public class UmfrageMapper {
 	
 	
 	public void addEigentumsstruktur (Anwender anwender, Umfrage umfrage) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE umfrage SET " + "besitzerId=\""
+				+ anwender.getId() + "\" " + "WHERE id=" + umfrage.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	
@@ -250,8 +282,18 @@ public class UmfrageMapper {
 	
 	
 	
-	public void deleteEigentumsstruktur (Anwender anwender, Umfrage umfrage) {
+	public void deleteEigentumsstruktur ( Umfrage umfrage) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE umfrage SET " + "besitzerId=\""
+				+ "" + "\" " + "WHERE id=" + umfrage.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	

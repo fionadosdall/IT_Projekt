@@ -65,8 +65,9 @@ public class AnwenderMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO anweder (id, gmail, name)" + "VALUES(" + anwender.getId() + "','"
-						+ anwender.getGmail() + "','" + anwender.getName() + ")");
+				stmt.executeUpdate("INSERT INTO anweder (id, gmail, name, erstellDatum)" + "VALUES(" 
+						+ anwender.getId() + "','" + anwender.getGmail() + "','" + anwender.getName()
+						+ "','" + anwender.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -83,6 +84,19 @@ public class AnwenderMapper {
 	 * @return Das Objekt, welches im Paramter übergeben wurde.
 	 */
 	public Anwender update(Anwender anwender) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE anwender SET " + "name=\""
+				+ anwender.getName() + "\", " + "gmail=\""
+				+ anwender.getGmail() + "\", " + "erstellDatum=\""
+				+ anwender.getErstellDatum() + "\" " + "WHERE id=" + anwender.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return anwender;
 	}
 
@@ -118,7 +132,8 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, gmail, name FROM anwender" + "WHERE id = " + anwender + "ORDER BY id");
+					.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE id = " 
+					+ anwender + "ORDER BY id");
 
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -130,6 +145,7 @@ public class AnwenderMapper {
 				a.setId(resultset.getInt("id"));
 				a.setGmail(resultset.getString("gmail"));
 				a.setName(resultset.getString("name"));
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(a);
@@ -153,13 +169,15 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, gmail, name FROM anwender" + "WHERE id=" + id + " ORDER BY name");
+					.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE id=" 
+					+ id + " ORDER BY name");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("id"));
 				a.setGmail(resultset.getString("gmail"));
 				a.setName(resultset.getString("name"));
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;
 			}
 		} catch (SQLException e1) {
@@ -180,12 +198,13 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, gmail, name FROM anwender" + "WHERE name=" + name + "ORDER BY name");
+					.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE name=" + name + "ORDER BY name");
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("id"));
 				a.setGmail(resultset.getString("gmail"));
 				a.setName(resultset.getString("name"));
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;
 			}
 
@@ -211,7 +230,10 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT id, gmail, name, gruppeId FROM anwender" + "WHERE gruppeId = " + gruppe + "ORDER BY id");
+					"SELECT gruppenmitglieder.gruppenId, gruppenmitglieder.anwenderId, anwender.gmail, anwender.name, "
+					+ "anwender.erstellDatum FROM gruppenmitglieder " + "INNER JOIN anwender "
+					+ "ON gruppenmitglieder.anwenderId = anwender.id " + "WHERE gruppenId = " + gruppe.getId() 
+					+ "ORDER BY anwenderId");
 
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -220,9 +242,10 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
+				a.setId(resultset.getInt("anwenderId"));
 				a.setGmail(resultset.getString("gmail"));
 				a.setName(resultset.getString("name"));
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(a);

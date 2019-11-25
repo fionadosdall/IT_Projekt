@@ -54,9 +54,9 @@ public class UmfrageoptionMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO umfrageoption (id, umfrageId, vorstellungsId)" + "VALUES("
-						+ umfrageoption.getId() + "','" + umfrageoption.getUmfrageId() + "','"
-						+ umfrageoption.getVorstellungsId() + ")");
+				stmt.executeUpdate("INSERT INTO umfrageoption (id, name, umfrageId, vorstellungsId, erstellDatum)" + "VALUES("
+						+ umfrageoption.getId() + "','" + umfrageoption.getName() + "','" + umfrageoption.getUmfrageId() 
+						+ "','"	+ umfrageoption.getVorstellungsId() + "','" + umfrageoption.getErstellDatum() +  ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -67,6 +67,21 @@ public class UmfrageoptionMapper {
 	
 	
 	public Umfrageoption update(Umfrageoption umfrageoption) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE umfrageoption SET " + "name=\""
+				+ umfrageoption.getName() + "\", " + "erstellDatum=\""
+				+ umfrageoption.getErstellDatum() + "\", " + "umfrageId=\""
+				+ umfrageoption.getUmfrageId() + "\", " + "vorstellungsId=\""
+				+ umfrageoption.getVorstellungsId() +  "\" " + "WHERE id=" + umfrageoption.getId());
+	
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return umfrageoption;
 	}
 
@@ -98,14 +113,16 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, umfrageId, vorstellungsId FROM umfrageoption" + 
-					"ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption" + 
+					"WHERE umfrageId=" + umfrage.getId() + "ORDER BY name");
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
 				uo.setId(resultset.getInt("id"));
+				uo.setName(resultset.getString("name"));
 				uo.setUmfrageId(resultset.getInt("umfrageId"));
 				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(uo);
@@ -124,14 +141,16 @@ public class UmfrageoptionMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT id, umfrageId, vorstellungsId FROM umfrageoption"
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
 					+ "WHERE id=" + id + " ORDER BY vorstellungsId");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Umfrageoption uopt = new Umfrageoption();
 				uopt.setId(resultset.getInt("id"));
+				uopt.setName(resultset.getString("name"));
 				uopt.setUmfrageId(resultset.getInt("umfrageId"));
 				uopt.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uopt.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return uopt;
 			}
 		} catch (SQLException e1) {
@@ -141,6 +160,30 @@ public class UmfrageoptionMapper {
 	}
 
 	public ArrayList <Umfrageoption> findAllByVorstellung (Vorstellung vorstellung) {
-		return; 
+		Connection con = DBConnection.connection();
+
+		ArrayList<Umfrageoption> resultarray = new ArrayList<Umfrageoption>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption" + 
+					"WHERE vorstellungsId=" + vorstellung.getId() +"ORDER BY name");
+
+			while (resultset.next()) {
+				Umfrageoption uo = new Umfrageoption();
+				uo.setId(resultset.getInt("id"));
+				uo.setName(resultset.getString("name"));
+				uo.setUmfrageId(resultset.getInt("umfrageId"));
+				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(uo);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return resultarray;
 	}
 }

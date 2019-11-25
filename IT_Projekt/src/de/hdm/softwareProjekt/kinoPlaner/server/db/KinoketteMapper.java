@@ -69,6 +69,21 @@ public class KinoketteMapper {
 	
 	
 	public Kinokette update (Kinokette kinokette) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE kinokette SET " + "besitzerId=\""
+				+ kinokette.getBesitzerId() + "\", " + "name=\""
+				+ kinokette.getName() + "\", " + "erstellDatum=\""
+				+ kinokette.getErstellDatum() + "\", " + "sitz=\""
+				+ kinokette.getSitz() + "\", " + "website=\""
+				+ kinokette.getWebsite() +   "\" " + "WHERE id=" + kinokette.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return kinokette; 
 	}
 	
@@ -101,13 +116,16 @@ public class KinoketteMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kinokette" + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, sitz, website, erstellDatum FROM kinokette" + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Kinokette kk = new Kinokette(); 
 				kk.setId(resultset.getInt("id"));
 				kk.setBesitzerId(resultset.getInt("besitzerId"));
 				kk.setName(resultset.getString("name"));
+				kk.setSitz(resultset.getString("sitz"));
+				kk.setWebsite(resultset.getString("website"));
+				kk.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(kk); 
@@ -126,14 +144,17 @@ public class KinoketteMapper {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kinokette" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, sitz, website, erstellDatum FROM kinokette" + 
 					"WHERE id=" + id + " ORDER BY name"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Kinokette kk = new Kinokette(); 
 				kk.setId(resultset.getInt("id"));
+				kk.setBesitzerId(resultset.getInt("besitzerId"));
 				kk.setName(resultset.getString("name"));
-				kk.setBesitzerId(resultset.getInt("besitzerId")); 
+				kk.setSitz(resultset.getString("sitz"));
+				kk.setWebsite(resultset.getString("website"));
+				kk.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return kk; 	
 			}
 		} catch (SQLException e1) {
@@ -153,14 +174,17 @@ public class KinoketteMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kinokette" +
-					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, sitz, website, erstellDatum FROM kinokette" +
+					"WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Kinokette kk = new Kinokette(); 
 				kk.setId(resultset.getInt("id"));
 				kk.setBesitzerId(resultset.getInt("besitzerId"));
 				kk.setName(resultset.getString("name"));
+				kk.setSitz(resultset.getString("sitz"));
+				kk.setWebsite(resultset.getString("website"));
+				kk.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(kk); 
@@ -175,15 +199,32 @@ public class KinoketteMapper {
 	
 	
 	public void addEigentumsstruktur (Anwender anwender, Kinokette kinokette) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE kinokette SET " + "besitzerId=\""
+				+ anwender.getId() + "\" " + "WHERE id=" + kinokette.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
-	
-	
-	
-	
-	
-	public void deleteEigentumsstruktur (Anwender anwender, Kinokette kinokette) {
 		
+	
+	public void deleteEigentumsstruktur ( Kinokette kinokette) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE kinokette SET " + "besitzerId=\""
+				+ "" + "\" " + "WHERE id=" + kinokette.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	

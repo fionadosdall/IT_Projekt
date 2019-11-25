@@ -52,9 +52,10 @@ public class VorstellungMapper {
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO vorstellung (id, name, filmId, spielzeitId)" +
+				stmt.executeUpdate("INSERT INTO vorstellung (id, name, filmId, spielzeitId, spielplanId, erstellDatum)" +
 						"VALUES(" + vorstellung.getId() + "','" + vorstellung.getName() + "','" + 
-							vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + ")"); 
+						vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + "','" 
+						+ vorstellung.getSpielplanId() + "','" + vorstellung.getErstellDatum() + ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -64,6 +65,21 @@ public class VorstellungMapper {
 	
 	
 	public Vorstellung update (Vorstellung vorstellung) {
+Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE vorstellung SET " + "name=\""
+				+ vorstellung.getName() + "\", " + "erstellDatum=\""
+				+ vorstellung.getErstellDatum() + "\", " + "spielplanId=\""
+				+ vorstellung.getSpielzeitId() + "\", " + "spielzeitId=\""
+				+ vorstellung.getSpielzeitId() + "\", " + "filmId=\""
+				+ vorstellung.getFilmId() +  "\" " + "WHERE id=" + vorstellung.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return vorstellung;
 	}
 	
@@ -93,7 +109,7 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId FROM vorstellung" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
 					"ORDER BY name");
 
 			while (resultset.next()) {
@@ -102,6 +118,8 @@ public class VorstellungMapper {
 				v.setName(resultset.getString("name"));
 				v.setFilmId(resultset.getInt("filmId"));
 				v.setSpielzeitId(resultset.getInt("spielzeitId"));
+				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(v);
@@ -123,8 +141,8 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielplanId FROM vorstellung" + 
-					"WHERE spielplanId = " + spielplan + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
+					"WHERE spielplanId = " + spielplan.getId() + "ORDER BY name"); 
 		
 			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
 			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
@@ -132,10 +150,12 @@ public class VorstellungMapper {
 			
 			while (resultset.next()) {
 		        Vorstellung v = new Vorstellung();
-		        v.setId(resultset.getInt("id"));
+				v.setId(resultset.getInt("id"));
 				v.setName(resultset.getString("name"));
 				v.setFilmId(resultset.getInt("filmId"));
+				v.setSpielzeitId(resultset.getInt("spielzeitId"));
 				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 		        // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(v); 
@@ -154,7 +174,7 @@ public class VorstellungMapper {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId FROM vorstellung" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
 					"WHERE id=" + id + " ORDER BY name"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
@@ -163,6 +183,8 @@ public class VorstellungMapper {
 				v.setName(resultset.getString("name"));
 				v.setFilmId(resultset.getInt("filmId"));
 				v.setSpielzeitId(resultset.getInt("spielzeitId"));
+				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return v; 	
 			}
 		} catch (SQLException e1) {

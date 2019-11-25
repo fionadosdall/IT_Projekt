@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.sun.crypto.provider.RSACipher;
+
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
 //Das hier ist eine Mapper-Klasse, die Spielplan-Objekte auf eine relationale DB abbildet.
@@ -54,8 +57,9 @@ public class SpielplanMapper {
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO spielplan (id, kinoId)" +
-						"VALUES(" + spielplan.getId() + "','" + spielplan.getKinoId() + ")"); 
+				stmt.executeUpdate("INSERT INTO spielplan (id, name, besitzerId, kinoId, erstellDatum)" +
+						"VALUES(" + spielplan.getId() + "','" + spielplan.getName() + "','" + spielplan.getBesitzerId() 
+						+ "','" + spielplan.getKinoId() + "','" + spielplan.getErstellDatum() + ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -66,6 +70,20 @@ public class SpielplanMapper {
 	
 	
 	public Spielplan update (Spielplan spielplan) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE spielplan SET " + "name=\""
+				+ spielplan.getName() + "\", " + "besitzerId=\""
+				+ spielplan.getBesitzerId() + "\", " + "kinoId=\""
+				+ spielplan.getKinoId() + "\", " + "erstellDatum=\""
+				+ spielplan.getErstellDatum() +  "\" " + "WHERE id=" + spielplan.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return spielplan;
 	}
 	
@@ -94,13 +112,17 @@ public class SpielplanMapper {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, kinoId FROM spielplan" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum FROM spielplan" + 
 					"WHERE id=" + id + " ORDER BY kinoId"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Spielplan sp = new Spielplan();
 				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
 				sp.setKinoId(resultset.getInt("kinoId")); 
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				
 				return sp; 	
 			}
 		} catch (SQLException e1) {
@@ -121,14 +143,43 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, besitzerId, kinoId FROM spielplan" +
-					"WHERE besitzerId = " + anwenderOwner + "ORDER BY kinoId"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum FROM spielplan" +
+					"WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY kinoId"); 
 			
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();
 				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
 				sp.setBesitzerId(resultset.getInt("besitzerId"));
-				sp.setKinoId(resultset.getInt("kinoId"));
+				sp.setKinoId(resultset.getInt("kinoId")); 
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(sp); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
+	}
+	
+	public ArrayList<Spielplan> findAllByKino(Kino kino) {
+		Connection con = DBConnection.connection(); 
+		
+		ArrayList <Spielplan> resultarray = new ArrayList <Spielplan> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum FROM spielplan" +
+					"WHERE kinoId = " + kino.getId() + "ORDER BY kinoId"); 
+			
+			while (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
+				sp.setKinoId(resultset.getInt("kinoId")); 
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(sp); 
@@ -140,16 +191,32 @@ public class SpielplanMapper {
 	
 	
 	
-	
-	
 	public void addEigentumsstruktur (Anwender anwender, Spielplan spielplan) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE spielplan SET " + "besitzerId=\""
+				+ anwender.getId() + "\" " + "WHERE id=" + spielplan.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	public void deleteEigentumsstruktur (Anwender anwender, Spielplan spielplan) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE spielplan SET " + "besitzerId=\""
+				+ "" + "\" " + "WHERE id=" + spielplan.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
-	
-	//FindALlByKino Methode fehlt 
 
 }

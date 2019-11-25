@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 
 //Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB abbildet. 
@@ -53,8 +56,10 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO film (id, name)" +
-						"VALUES(" + film.getId() + "','" + film.getName() + ")"); 
+				stmt.executeUpdate("INSERT INTO film (id, name, besitzerId, erstellDatum, beschreibung, bewertung)" +
+						"VALUES(" + film.getId() + "','" + film.getName() + "','" + film.getBesitzerId()
+						+ "','" + film.getErstellDatum() + "','" + film.getBeschreibung()+ "','" + 
+						film.getBewertung()+ ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -65,6 +70,21 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	public Film update (Film film) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE film SET " + "besitzerId=\""
+				+ film.getBesitzerId() + "\", " + "name=\""
+				+ film.getName() + "\", " + "beschreibung=\"" 
+				+ film.getBeschreibung()+ "\", " + "bewertung=\"" 
+				+ film.getBewertung() + "\", " + "erstellDatum=\"" 
+				+ film.getErstellDatum()+ "\" " + "WHERE id=" + film.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return film;
 	}
 	
@@ -92,13 +112,17 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name FROM film" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film" + 
 					"WHERE id=" + id + " ORDER BY name"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Film f = new Film ();  
 				f.setId(resultset.getInt("id")); 
 				f.setName(resultset.getString("name")); 
+				f.setBesitzerId(resultset.getInt("besitzerId"));
+				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setBewertung(resultset.getInt("bewertung"));
+				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return f; 	
 			}
 		} catch (SQLException e1) {
@@ -119,12 +143,16 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		try {
 			Statement stmt = con.createStatement();
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name FROM film" + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film" + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Film f = new Film(); 
-				f.setId(resultset.getInt("id"));
-				f.setName(resultset.getString("name"));
+				f.setId(resultset.getInt("id")); 
+				f.setName(resultset.getString("name")); 
+				f.setBesitzerId(resultset.getInt("besitzerId"));
+				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setBewertung(resultset.getInt("bewertung"));
+				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				resultarray.add(f); 
 			}
@@ -133,7 +161,34 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		}return null; 
 	}
 	
-	//FindAllByAnwenderOwner
+	public ArrayList<Film> findAllByAnwenderOwner(Anwender anwender) {
+		Connection con = DBConnection.connection(); 
+		
+		ArrayList <Film> resultarray = new ArrayList <Film> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film" +
+					"WHERE besitzerId=" + anwender.getId() + "ORDER BY id"); 
+			while (resultset.next()) { 
+				Film f = new Film(); 
+				f.setId(resultset.getInt("id")); 
+				f.setName(resultset.getString("name")); 
+				f.setBesitzerId(resultset.getInt("besitzerId"));
+				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setBewertung(resultset.getInt("bewertung"));
+				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				
+				resultarray.add(f); 
+
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return resultarray; 
+	}
+	
 	
 }
 

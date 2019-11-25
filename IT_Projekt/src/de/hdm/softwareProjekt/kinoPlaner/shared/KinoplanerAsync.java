@@ -1,7 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.sql.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -53,7 +53,7 @@ public interface KinoplanerAsync {
 	
 	public void erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung, AsyncCallback<Film> callback) throws IllegalArgumentException;
 	
-	public void erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
+	public void erstellenSpielzeit(int id, String name, int besitzerId, Date zeit, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
 	
 	public void erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId, AsyncCallback<Auswahl> callback) throws IllegalArgumentException;
 	
@@ -117,7 +117,7 @@ public interface KinoplanerAsync {
 	
 	public void getUmfragenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback) throws IllegalArgumentException;
 	
-	public void getClosedUmfragenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback) throws IllegalArgumentException;
+	public void getClosedUmfragenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback);
 	
 	public void getKinokettenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Kinokette>> callback) throws IllegalArgumentException;
 	
@@ -173,7 +173,7 @@ public interface KinoplanerAsync {
 	
 	public void getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption, AsyncCallback<Auswahl> callback) throws IllegalArgumentException;
 	
-	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<Void> callback)throws IllegalArgumentException;
+	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<Integer> callback)throws IllegalArgumentException;
 	
 	public void stichwahlStarten(Umfrage umfrage,AsyncCallback<Umfrage> callback)throws IllegalArgumentException;
 	
@@ -186,4 +186,6 @@ public interface KinoplanerAsync {
 	public void isClosedSetzen(Auswahl auswahl, AsyncCallback<Void> callback);
 	
 	public void isClosedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback);
+	
+	public void anzeigenVonClosedUmfragen(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback) throws IllegalArgumentException;
 }

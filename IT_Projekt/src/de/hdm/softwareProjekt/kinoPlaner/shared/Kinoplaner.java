@@ -1,7 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.sql.Date;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -214,7 +214,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielzeit Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Calendar zeit) throws IllegalArgumentException;
+	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Date zeit) throws IllegalArgumentException;
 	
 	/**
 	 * <p>
@@ -514,7 +514,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefundenen Umfragen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Umfrage> getClosedUmfragenByAnwender(Anwender anwender) throws IllegalArgumentException;
+	public ArrayList<Umfrage> getClosedUmfragenByAnwender(Anwender anwender);
 	
 	/**
 	 * <p>
@@ -793,7 +793,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @param umfrageoption Umfrageoptionobjekt
 	 * @throws IllegalArgumentException
 	 */
-	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption)throws IllegalArgumentException;
+	public int berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption)throws IllegalArgumentException;
 	
 	/**
 	 * <p>
@@ -852,6 +852,16 @@ public interface Kinoplaner extends RemoteService {
 	 * @param auswahl Auswahlobjekt
 	 */
 	public void isClosedEntfernen(Auswahl auswahl);
+
+	/**
+	 * <p>
+	 * Rückgabe aller geschlosssenen Umfragen, die zeitlich noch gültig sind.
+	 * </p>
+	 * @param anwender Anwenderobjekt
+	 * @return ArrayList der zeitlich noch gültigen Umfragen
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Umfrage> anzeigenVonClosedUmfragen(Anwender anwender) throws IllegalArgumentException;
 	
 	
 	

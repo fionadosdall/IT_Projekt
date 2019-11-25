@@ -54,8 +54,9 @@ public class GruppeMapper {
 				stmt = con.createStatement();
 				
 				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO gruppen (id, name, besitzerId)" +
-						"VALUES(" + gruppe.getId() + "','" + gruppe.getName() + "','" + gruppe.getBesitzerId() + ")"); 
+				stmt.executeUpdate("INSERT INTO gruppen (id, name, besitzerId, erstellDatum)" +
+						"VALUES(" + gruppe.getId() + "','" + gruppe.getName() + "','" + gruppe.getBesitzerId() 
+						+ "','" + gruppe.getErstellDatum()+ ")"); 
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -66,6 +67,19 @@ public class GruppeMapper {
 	
 	
 	public Gruppe update (Gruppe gruppe) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE gruppe SET " + "besitzerId=\""
+				+ gruppe.getBesitzerId() + "\", " + "name=\""
+				+ gruppe.getName() + "\", " + "erstellDatum=\""
+				+ gruppe.getErstellDatum() + "\" " + "WHERE id=" + gruppe.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		return gruppe;
 	}
 	
@@ -98,13 +112,14 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM gruppe" + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, erstellDatum FROM gruppe" + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Gruppe g = new Gruppe(); 
 				g.setId(resultset.getInt("id"));
 				g.setBesitzerId(resultset.getInt("besitzerId"));
 				g.setName(resultset.getString("name"));
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(g); 
@@ -122,14 +137,15 @@ public class GruppeMapper {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM gruppe" + 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, erstellDatum FROM gruppe" + 
 					"WHERE id=" + id + " ORDER BY besitzerId"); 
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
 			if (resultset.next()) {
 				Gruppe g = new Gruppe();
 				g.setId(resultset.getInt("id"));
+				g.setBesitzerId(resultset.getInt("besitzerId"));
 				g.setName(resultset.getString("name"));
-				g.setBesitzerId(resultset.getInt("besitzerId")); 
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return g; 	
 			}
 		} catch (SQLException e1) {
@@ -141,6 +157,17 @@ public class GruppeMapper {
 	
 	
 	public void addGruppenmitgliedschaft (Anwender anwender, Gruppe gruppe) {
+		Connection con = DBConnection.connection();
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppenId, anwenderId)" +
+			"VALUES(" + gruppe.getId() + "','" + anwender.getId() + ")"); 
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		
 	}
 	
@@ -148,39 +175,57 @@ public class GruppeMapper {
 	
 	
 	public void deleteGruppenmitgliedschaft (Anwender anwender, Gruppe gruppe) {
-		
-	}
-	
-	
-	
-	
-	public ArrayList <Gruppe> findAllByAnwender (Anwender anwender) {
-		Connection con = DBConnection.connection(); 
-		
-		ArrayList <Gruppe> resultarray = new ArrayList <Gruppe> (); 
+		Connection con = DBConnection.connection();
 		
 		try {
-			Statement stmt = con.createStatement(); 
+			Statement stmt = con.createStatement();
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, anwenderId FROM gruppe" + 
-					"WHERE anwenderId = " + anwender + "ORDER BY name"); 
-			
+			stmt.executeUpdate("DELETE FROM gruppe " + "WHERE gruppenId=" + gruppe.getId() 
+			+ "AND anwenderId=" + anwender.getId()); 
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+	}
+
+	
+	public ArrayList <Gruppe> findAllByAnwender (Anwender anwender) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Gruppe> resultarray = new ArrayList<Gruppe>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT gruppenmitglieder.gruppenId, gruppenmitglieder.anwenderId, gruppe.besitzerId, gruppe.name, "
+					+ "gruppe.erstellDatum FROM gruppenmitglieder " + "INNER JOIN gruppe "
+					+ "ON gruppenmitglieder.gruppeId = gruppe.id " + "WHERE anwenderId = " + anwender.getId() 
+					+ "ORDER BY gruppenId");
+
+			/**
+			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
 			while (resultset.next()) {
 				Gruppe g = new Gruppe(); 
 				g.setId(resultset.getInt("id"));
 				g.setBesitzerId(resultset.getInt("besitzerId"));
 				g.setName(resultset.getString("name"));
-				
-				 // Hinzufügen des neuen Objekts zur ArrayList
-		        resultarray.add(g); 
-			} 
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		} return resultarray; 
-	}
-	
-	
-	
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(g);
+			}
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+
+		}
+		return resultarray;
+	}	
+		
+		
 	
 	
 	public ArrayList <Gruppe> findAllByAnwenderOwner (Anwender anwenderOwner) {
@@ -191,14 +236,15 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement(); 
 			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM gruppe" +
-					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, erstellDatum FROM gruppe" +
+					"WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY name"); 
 			
 			while (resultset.next()) {
 				Gruppe g = new Gruppe(); 
 				g.setId(resultset.getInt("id"));
 				g.setBesitzerId(resultset.getInt("besitzerId"));
 				g.setName(resultset.getString("name"));
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				
 				 // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(g); 
@@ -211,16 +257,36 @@ public class GruppeMapper {
 	
 	
 	
-	public void addEigentumsstruktur (Anwender anwender) {
+	public void addEigentumsstruktur (Anwender anwender, Gruppe gruppe) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE gruppe SET " + "besitzerId=\""
+				+ anwender.getId() + "\" " + "WHERE id=" + gruppe.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	
 	
 	
 	
-	public void deleteEigentumsstruktur (Anwender anwender) {
+	public void deleteEigentumsstruktur ( Gruppe gruppe) {
+		Connection con = DBConnection.connection();
 		
+		try {
+			Statement stmt = con.createStatement();
+			
+			stmt.executeUpdate("UPDATE gruppe SET " + "besitzerId=\""
+				+ "" + "\" " + "WHERE id=" + gruppe.getId());
+		}
+		catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 	
 	
