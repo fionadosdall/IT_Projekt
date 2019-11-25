@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+
 
 //Das hier ist eine Mapper-Klasse, die Anwender-Objekte auf eine relationale DB abbildet. 
 
@@ -21,14 +23,26 @@ public class AnwenderMapper {
 // Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
 // einem Mapper nur 1x eine Instanz erzeugt
 	protected AnwenderMapper () {
-		
 	}
 	
-/*Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. 
-Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+ * sondern die folgende Methode. 
+ * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+ * @param anwender
  */
 	
-	public void insert (Anwender anwender) {
+	public static AnwenderMapper anwendermapperInstanziieren () {
+		if (anwenderMapper == null) {
+			anwenderMapper = new AnwenderMapper();
+		}
+		return anwenderMapper; 
+	}
+	
+/*	Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. 
+*	Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+*/
+	
+	public Anwender insert (Anwender anwender) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -46,19 +60,58 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		return anwender; 
 	}
 	
-	public void update (Anwender anwender) {
-		
+	
+	
+	
+	public Anwender update (Anwender anwender) {
+		return anwender; 
 	}
+	
+	
+	
 	
 	public void delete (Anwender anwender) {
 		
 	}
 	
+	
+	
+	
 	public ArrayList <Anwender> findAllByAnwender (Anwender anwender) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Anwender> resultarray = new ArrayList <Anwender>(); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name FROM anwender" + 
+					"WHERE anwenderId = " + anwender + "ORDER BY id"); 
+		
+			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+			
+			while (resultset.next()) {
+		        Anwender a = new Anwender();
+		        a.setId(resultset.getInt("id"));
+		        a.setGmail(resultset.getString("gmail"));
+		        a.setName(resultset.getString("name"));
+
+		        // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(a); 
+		      }
+		    } catch (SQLException e1) {
+		      e1.printStackTrace();
+			
+		}
+		return resultarray;
 	}
+	
+	
 	
 	
 	public Anwender findById (int id) {
@@ -77,16 +130,67 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		return null; //Warum? 
+	}
+	
+	
+	
+	
+	public Anwender findByName (String name) {
+		Connection con = DBConnection.connection(); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name FROM anwender" + 
+					"WHERE name=" + name + "ORDER BY name");
+			if (resultset.next()) {
+				Anwender a = new Anwender(); 
+				a.setId(resultset.getInt("id"));
+				a.setGmail(resultset.getString("gmail"));
+				a.setName(resultset.getString("name"));
+				return a;
+			}
+						
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		return null; 
 	}
 	
 	
-	public Anwender findByName (String name) {
-		
-	}
+	
 	
 	public ArrayList <Anwender> findAllByGruppe (Gruppe gruppe){
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Anwender> resultarray = new ArrayList <Anwender>(); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name, gruppeId FROM anwender" + 
+					"WHERE gruppeId = " + gruppe + "ORDER BY id"); 
+		
+			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+			
+			while (resultset.next()) {
+		        Anwender a = new Anwender();
+		        a.setId(resultset.getInt("id"));
+		        a.setGmail(resultset.getString("gmail"));
+		        a.setName(resultset.getString("name"));
+		        a.setGruppe(resultset.getInt("gruppeId"));
+
+		        // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(a); 
+		      }
+		    }
+		    catch (SQLException e2) {
+		      e2.printStackTrace();
+			
+		}
+		return resultarray;
 	}
 	
 	
