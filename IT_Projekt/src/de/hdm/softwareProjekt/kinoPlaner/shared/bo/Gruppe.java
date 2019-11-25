@@ -10,6 +10,11 @@ public class Gruppe extends BesitzerBusinessObjekt {
 		super();
 	}
 
+/**
+ * Auslesen der Serialversionuid
+ * @return
+ */
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

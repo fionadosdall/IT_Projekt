@@ -14,28 +14,62 @@ public class Film extends BesitzerBusinessObjekt{
 		super();
 	}
 	
-	
+/**
+ * Auslesen der Filmlaenge
+ */
 	public Time getFilmlaenge() {
 		return Filmlaenge;
 	}
+	
+/**
+ * Setzen der filmlaenge
+ */
 	public void setFilmlaenge(Time filmlaenge) {
 		Filmlaenge = filmlaenge;
 	}
+
+/**
+ * Auslesen der Beschreibung
+ 
+ */
 	public String getBeschreibung() {
 		return beschreibung;
 	}
+
+/**
+ * Setzen der Beschreibung des Films
+ * @param beschreibung
+ */
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
 	}
+	
+/**
+ * Auslesen der Bewertung
+ */
 	public int getBewertung() {
 		return bewertung;
 	}
+
+/**
+ * Setzen der Bewertung
+ * @param bewertung
+ */
 	public void setBewertung(int bewertung) {
 		this.bewertung = bewertung;
 	}
+	
+/**
+ * Auslesen der Serialversionuid
+ */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+/** 
+ * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
+ * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ */
 	@Override
 	public String toString() {
 		return super.toString() + "Film [Filmlaenge=" + Filmlaenge + ", beschreibung=" + beschreibung + ", bewertung=" + bewertung + "]";

@@ -1,7 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 import java.sql.Date;
-import java.util.Calendar;
+
 
 public class Spielzeit extends BesitzerBusinessObjekt{
 	
@@ -13,17 +13,34 @@ public class Spielzeit extends BesitzerBusinessObjekt{
 	
 	private Date zeit;
 
+/**
+ * Auslesen der Zeit
+ * @return
+ */
 	public Date getZeit() {
 		return zeit;
 	}
 
-	public void setZeit(Calendar zeit) {
+/**
+ * Setzen der Zeit
+ */
+
+	public void setZeit(Date zeit) {
 		this.zeit = zeit;
 	}
 
+/**
+ * Auslesen der Serialversionuid
+ * @return
+ */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+/**
+ * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
+ * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ */
 
 	@Override
 	public String toString() {

@@ -87,7 +87,11 @@ public abstract class BusinessObjekt implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+/**
+ * Auslesen der Serialversionuid
+ * @return
+ */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
