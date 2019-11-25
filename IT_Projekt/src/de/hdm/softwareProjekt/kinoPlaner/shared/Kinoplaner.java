@@ -1,4 +1,4 @@
-package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
+package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,6 +13,10 @@ import de.hdm.softwareProjekt.kinoPlaner.server.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.server.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.server.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.server.Vorstellung;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
 /**
  * The client-side stub for the RPC service.
