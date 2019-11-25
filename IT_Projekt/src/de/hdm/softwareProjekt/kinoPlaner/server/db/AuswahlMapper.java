@@ -33,7 +33,7 @@ public class AuswahlMapper {
 	 * @param anwender
 	 */
 		
-		public static AuswahlMapper auswahlmapperInstanziieren () {
+		public static AuswahlMapper auswahlMapper() {
 			if (votingMapper == null) {
 				votingMapper = new AuswahlMapper();
 			}
@@ -43,7 +43,7 @@ public class AuswahlMapper {
 Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 */
 	
-	public void insert (Auswahl auswahl) {
+	public Auswahl insert (Auswahl auswahl) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -60,13 +60,13 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return auswahl;
 	}
 	
 	
 	
-	public void update (Auswahl auswahl) {
-		
+	public Auswahl update (Auswahl auswahl) {
+		return auswahl; 
 	}
 	
 	
@@ -126,7 +126,7 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return null; 
+		return resultarray; 
 	}
 	
 	

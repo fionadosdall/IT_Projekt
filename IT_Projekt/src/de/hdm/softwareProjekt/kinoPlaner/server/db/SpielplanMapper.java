@@ -1,14 +1,14 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Anwender;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
 //Das hier ist eine Mapper-Klasse, die Spielplan-Objekte auf eine relationale DB abbildet.
 
@@ -23,13 +23,26 @@ public class SpielplanMapper {
 // einem Mapper nur 1x eine Instanz erzeugt
 	
 	protected SpielplanMapper () {
-		
 	}
+	
+	
+	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+	 * sondern die folgende Methode. 
+	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+	 * @param anwender
+	 */
+		
+		public static SpielplanMapper spielplanMapper () {
+			if (spielplanMapper == null) {
+				spielplanMapper = new SpielplanMapper();
+			}
+			return spielplanMapper; 
+		}
 	
 // Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
-	public void insert (Spielplan spielplan) {
+	public Spielplan insert (Spielplan spielplan) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -46,16 +59,26 @@ public class SpielplanMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return spielplan;
 	}
 	
-	public void update (Spielplan spielplan) {
-		
+	
+	
+	
+	public Spielplan update (Spielplan spielplan) {
+		return spielplan;
 	}
+	
+	
+	
 	
 	public void delete (Spielplan spielplan) {
 		
 	}
+	
+	
+	
+	
 	
 	public Spielplan findById (int id) {
 		Connection con = DBConnection.connection(); 
@@ -76,9 +99,38 @@ public class SpielplanMapper {
 		return null;
 	}
 	
+	
+	
+	
+	
 	public ArrayList <Spielplan> findAllByAnwenderOwner (Anwender anwenderOwner) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Spielplan> resultarray = new ArrayList <Spielplan> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, besitzerId, kinoId FROM spielplan" +
+					"WHERE besitzerId = " + anwenderOwner + "ORDER BY kinoId"); 
+			
+			while (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
+				sp.setKinoId(resultset.getInt("kinoId"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(sp); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
 	}
+	
+	
+	
+	
 	
 	public void addEigentumsstruktur (Anwender anwender, Spielplan spielplan) {
 		

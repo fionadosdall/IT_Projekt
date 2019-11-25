@@ -1,13 +1,12 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import de.hdm.softwareProjekt.kinoPlaner.shared.Auswahl;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Film;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 
 //Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB abbildet. 
 
@@ -20,15 +19,29 @@ public class FilmMapper {
 	
 // Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
 // einem Mapper nur 1x eine Instanz erzeugt
-	protected FilmMapper () {
-		
+	protected FilmMapper () {	
 	}
-	
+
+	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+	 * sondern die folgende Methode. 
+	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+	 * @param anwender
+	 */
+		
+		public static FilmMapper filmMapper() {
+			if (filmMapper == null) {
+				filmMapper = new FilmMapper();
+			}
+			return filmMapper; 
+		}
+		
+		
+		
 /*Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. 
 Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 */
 
-	public void insert (Film film) {
+	public Film insert (Film film) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -45,16 +58,25 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return film;
 	}
 	
-	public void update (Film film) {
-		
+	
+	
+	
+	public Film update (Film film) {
+		return film;
 	}
+	
+	
+	
 	
 	public void delete (Film film) {
 		
 	}
+	
+	
+	
 	
 	public Film findById (int id) {
 		Connection con = DBConnection.connection(); 
@@ -75,8 +97,30 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		return null; 
 	}
 	
+	
+	
+	
+	
 	public ArrayList <Film> findAll() {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Film> resultarray = new ArrayList <Film> (); 
+		
+		try {
+			Statement stmt = con.createStatement();
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name FROM film" + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Film f = new Film(); 
+				f.setId(resultset.getInt("id"));
+				f.setName(resultset.getString("name"));
+				
+				resultarray.add(f); 
+			}
+		}catch (SQLException e1) {
+			e1.printStackTrace();
+		}return null; 
 	}
 	
 		

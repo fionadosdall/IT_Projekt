@@ -1,13 +1,16 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
 //Das hier ist eine Mapper-Klasse, die Kino-Objekte auf eine relationale DB abbildet.
 
@@ -20,14 +23,32 @@ public class KinoMapper {
 	
 // Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
 // einem Mapper nur 1x eine Instanz erzeugt
-	protected KinoMapper() {
-			
+	protected KinoMapper() {		
 	}
 	
+	
+	
+	
+	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+	 * sondern die folgende Methode. 
+	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+	 * @param anwender
+	 */
+		
+		public static KinoMapper kinoMapper () {
+			if (kinoMapper == null) {
+				kinoMapper = new KinoMapper();
+			}
+			return kinoMapper; 
+		}
+	
+		
+		
+		
 // Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 
-	public void insert (Kino kino) {
+	public Kino insert (Kino kino) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -44,20 +65,52 @@ public class KinoMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return kino;
 	}
 	
-	public void update (Kino kino) {
-		
+	
+	
+	
+	public Kino update (Kino kino) {
+		return kino;
 	}
+	
+	
+	
 	
 	public void delete (Kino kino) {
 		
 	}
 	
+	
+	
+	
 	public ArrayList <Kino> findAllKinos () {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Kino> resultarray = new ArrayList <Kino> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kino" + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Kino k = new Kino(); 
+				k.setId(resultset.getInt("id"));
+				k.setBesitzerId(resultset.getInt("besitzerId"));
+				k.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(k); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray; 
 	}
+	
+	
+	
 	
 	public Kino findById (int id) {
 		Connection con = DBConnection.connection(); 
@@ -79,29 +132,74 @@ public class KinoMapper {
 		return null; 
 	}
 	
+	
+	
+	
 	public ArrayList <Kino> findAllByAnwenderOwner (Anwender anwenderOwner) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Kino> resultarray = new ArrayList <Kino> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kino" +
+					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Kino k = new Kino(); 
+				k.setId(resultset.getInt("id"));
+				k.setBesitzerId(resultset.getInt("besitzerId"));
+				k.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(k); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
 	}
+	
+	
+	
 	
 	public void addSpielplan (Spielplan spielplan, Kino kino) {
 		
 	}
 	
+	
+	
+	
+	
 	public void deleteSpielplan (Spielplan spielplan, Kino kino) {
 		
 	}
+	
+	
+	
 	
 	public void addKinokette (Kinokette kinokette, Kino kino) {
 		
 	}
 	
+	
+	
+	
 	public void deleteKinokette (Kinokette kinokette, Kino kino) {
 		
 	}
 	
+	
+	
+	
+	
 	public void addEigentumsstruktur (Anwender anwender, Kino kino) {
 		
 	}
+	
+	
+	
+	
 	
 	public void deleteEigentumsstruktur (Anwender anwender, Kino kino) {
 		

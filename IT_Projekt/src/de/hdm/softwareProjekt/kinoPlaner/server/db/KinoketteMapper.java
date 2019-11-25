@@ -1,13 +1,14 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Gruppe;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 //Das hier ist eine Mapper-Klasse, die Kinoketten-Objekte auf eine relationale DB abbildet.
 
@@ -22,12 +23,29 @@ public class KinoketteMapper {
 // Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
 // einem Mapper nur 1x eine Instanz erzeugt
 	protected KinoketteMapper() {
-		
 	}
+	
+	
+	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+	 * sondern die folgende Methode. 
+	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+	 * @param anwender
+	 */
+		
+		public static KinoketteMapper kinoketteMapper () {
+			if (kinoketteMapper == null) {
+				kinoketteMapper = new KinoketteMapper();
+			}
+			return kinoketteMapper; 
+		}
+		
+		
+		
+		
 	
 // Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
-	public void insert (Kinokette kinokette) {
+	public Kinokette insert (Kinokette kinokette) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -44,20 +62,55 @@ public class KinoketteMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return kinokette;
 	}
 	
-	public void update (Kinokette kinokette) {
-		
+	
+	
+	
+	public Kinokette update (Kinokette kinokette) {
+		return kinokette; 
 	}
+	
+	
+	
 	
 	public void delete (Kinokette kinokette) {
 		
 	}
 	
+	
+	
+	
+	
 	public ArrayList <Kinokette> findAllKinoketten () {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Kinokette> resultarray = new ArrayList <Kinokette> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kinokette" + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Kinokette kk = new Kinokette(); 
+				kk.setId(resultset.getInt("id"));
+				kk.setBesitzerId(resultset.getInt("besitzerId"));
+				kk.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(kk); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray; 
 	}
+	
+	
+	
+	
+	
 	
 	public Kinokette findById (int id) {
 		Connection con = DBConnection.connection(); 
@@ -79,13 +132,45 @@ public class KinoketteMapper {
 		return null; 
 	}
 	
+	
+	
+	
 	public ArrayList <Kinokette> findAllByAnwenderOwner (Anwender anwenderOwner) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Kinokette> resultarray = new ArrayList <Kinokette> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM kinokette" +
+					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Kinokette kk = new Kinokette(); 
+				kk.setId(resultset.getInt("id"));
+				kk.setBesitzerId(resultset.getInt("besitzerId"));
+				kk.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(kk); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray; 
 	}
+	
+	
+	
+	
 	
 	public void addEigentumsstruktur (Anwender anwender, Kinokette kinokette) {
 		
 	}
+	
+	
+	
+	
 	
 	public void deleteEigentumsstruktur (Anwender anwender, Kinokette kinokette) {
 		

@@ -31,7 +31,7 @@ public class AnwenderMapper {
  * @param anwender
  */
 	
-	public static AnwenderMapper anwendermapperInstanziieren () {
+	public static AnwenderMapper anwenderMapper() {
 		if (anwenderMapper == null) {
 			anwenderMapper = new AnwenderMapper();
 		}
@@ -89,7 +89,7 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement(); 
 			
 			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name FROM anwender" + 
-					"WHERE anwenderId = " + anwender + "ORDER BY id"); 
+					"WHERE id = " + anwender + "ORDER BY id"); 
 		
 			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
 			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
@@ -130,7 +130,7 @@ public class AnwenderMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return null; //Warum? 
+		return null; 
 	}
 	
 	
@@ -180,7 +180,7 @@ public class AnwenderMapper {
 		        a.setId(resultset.getInt("id"));
 		        a.setGmail(resultset.getString("gmail"));
 		        a.setName(resultset.getString("name"));
-		        a.setGruppe(resultset.getInt("gruppeId"));
+		        
 
 		        // Hinzufügen des neuen Objekts zur ArrayList
 		        resultarray.add(a); 

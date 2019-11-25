@@ -1,13 +1,15 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 //Das hier ist eine Mapper-Klasse, die Umfragen-Objekte auf eine relationale DB abbildet.
 
@@ -23,12 +25,28 @@ public class UmfrageMapper {
 // einem Mapper nur 1x eine Instanz erzeugt
 	
 	protected UmfrageMapper () {
-		
 	}
+	
+	
+	
+	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
+	 * sondern die folgende Methode. 
+	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+	 * @param anwender
+	 */
+		
+		public static UmfrageMapper umfrageMapper () {
+			if (umfrageMapper == null) {
+				umfrageMapper = new UmfrageMapper();
+			}
+			return umfrageMapper; 
+		}
+	
+		
 	
 // Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 
-	public void insert (Umfrage umfrage) {
+	public Umfrage insert (Umfrage umfrage) {
 		Connection con = DBConnection.connection(); 
 		try {
 			Statement stmt = con.createStatement(); 
@@ -46,16 +64,25 @@ public class UmfrageMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}
+		} return umfrage;
 	}
 	
-	public void update (Umfrage umfrage) {
-		
+	
+	
+	
+	public Umfrage update (Umfrage umfrage) {
+		return umfrage;
 	}
+	
+	
+	
 	
 	public void delete (Umfrage umfrage) {
 		
 	}
+	
+	
+	
 	
 	public Umfrage findById (int id) {
 		Connection con = DBConnection.connection(); 
@@ -78,25 +105,140 @@ public class UmfrageMapper {
 		return null;
 	}
 	
+	
+	
+	
+	
 	public ArrayList <Umfrage> findAllByAnwender (Anwender anwender) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Umfrage> resultarray = new ArrayList <Umfrage>(); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, gruppenId, anwenderId FROM umfrage" + 
+					"WHERE anwenderId = " + anwender + "ORDER BY name"); 
+		
+			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+			
+			while (resultset.next()) {
+		        Umfrage u = new Umfrage();
+		        u.setId(resultset.getInt("id"));
+		        u.setName(resultset.getString("name"));
+		        u.setGruppenId(resultset.getInt("gruppenId"));
+
+		        // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(u); 
+		      }
+		    } catch (SQLException e1) {
+		      e1.printStackTrace();
+			
+		}
+		return resultarray;
 	}
+	
+	
+	
+	
 	
 	public ArrayList <Umfrage> findAllByAnwenderOwner (Anwender anwenderOwner) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Umfrage> resultarray = new ArrayList <Umfrage> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId FROM umfrage" +
+					"WHERE besitzerId = " + anwenderOwner + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Umfrage u = new Umfrage (); 
+				u.setId(resultset.getInt("id"));
+				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(u); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
 	}
+	
+	
+	
+	
 	
 	public ArrayList <Umfrage> findAllClosedByAnwender (Anwender anwender) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Umfrage> resultarray = new ArrayList <Umfrage> (); 
+	// Wie kann ich den Boolean isOpen testen?
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, isOpen FROM umfrage" +
+					"WHERE isOpen = false, besitzerId = " + anwender + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Umfrage u = new Umfrage (); 
+				u.setId(resultset.getInt("id"));
+				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setName(resultset.getString("name"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(u); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
 	}
 	
+	
+	
+	
+	
 	public ArrayList <Umfrage> findAllByGruppe (Gruppe gruppe) {
+		Connection con = DBConnection.connection(); 
 		
+		ArrayList <Umfrage> resultarray = new ArrayList <Umfrage> (); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, gruppenId FROM umfrage" +
+					"WHERE gruppeId = " + gruppe + "ORDER BY name"); 
+			
+			while (resultset.next()) {
+				Umfrage u = new Umfrage (); 
+				u.setId(resultset.getInt("id"));
+				u.setName(resultset.getString("name"));
+				u.setGruppenId(resultset.getInt("gruppenId"));
+				
+				 // Hinzufügen des neuen Objekts zur ArrayList
+		        resultarray.add(u); 
+			} 
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return resultarray;
 	}
+	
+	
+	
+	
 	
 	public void addEigentumsstruktur (Anwender anwender, Umfrage umfrage) {
 		
 	}
+	
+	
+	
+	
+	
 	
 	public void deleteEigentumsstruktur (Anwender anwender, Umfrage umfrage) {
 		
