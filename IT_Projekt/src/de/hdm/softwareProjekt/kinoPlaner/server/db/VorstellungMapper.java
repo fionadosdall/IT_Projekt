@@ -2,14 +2,13 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 // Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine relationale DB abbildet.
@@ -71,7 +70,17 @@ public class VorstellungMapper {
 	
 	
 	public void delete (Vorstellung vorstellung) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM vorstellung " + "WHERE id=" + vorstellung.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	

@@ -78,7 +78,17 @@ public class UmfrageMapper {
 	
 	
 	public void delete (Umfrage umfrage) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM umfrage " + "WHERE id=" + umfrage.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	

@@ -79,7 +79,17 @@ public class KinoMapper {
 	
 	
 	public void delete (Kino kino) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM kino " + "WHERE id=" + kino.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	
@@ -206,6 +216,6 @@ public class KinoMapper {
 	}
 	
 		
-	
+	// FindAllByKInokette fehlt noch als Methode
 	
 }

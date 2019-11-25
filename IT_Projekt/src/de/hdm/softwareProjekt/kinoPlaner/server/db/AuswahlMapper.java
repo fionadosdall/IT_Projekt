@@ -73,7 +73,17 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	public void delete (Auswahl auswahl) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM auswahl " + "WHERE id=" + auswahl.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	
@@ -104,7 +114,7 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	
-	public ArrayList <Auswahl> findByUmfrageoption (Umfrageoption umfrageoption) {
+	public ArrayList <Auswahl> findAllByUmfrageoption (Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection(); 
 		
 		ArrayList <Auswahl> resultarray = new ArrayList <Auswahl> (); 
@@ -146,7 +156,8 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	
-	
+	//FindByAnwenderandUmfrageoption MEthode fehlt noch 
+	//FindALLBYAnwenderOwner Methode fehlt 
 	
 
 }

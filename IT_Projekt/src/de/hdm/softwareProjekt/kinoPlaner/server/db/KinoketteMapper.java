@@ -76,7 +76,17 @@ public class KinoketteMapper {
 	
 	
 	public void delete (Kinokette kinokette) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM kinokette " + "WHERE id=" + kinokette.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	

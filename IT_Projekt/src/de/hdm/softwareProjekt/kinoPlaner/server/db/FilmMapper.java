@@ -72,7 +72,17 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	
 	
 	public void delete (Film film) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM film " + "WHERE id=" + film.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	
@@ -123,7 +133,7 @@ Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 		}return null; 
 	}
 	
-		
+	//FindAllByAnwenderOwner
 	
 }
 

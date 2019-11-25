@@ -73,7 +73,17 @@ public class GruppeMapper {
 	
 	
 	public void delete (Gruppe gruppe) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM gruppe " + "WHERE id=" + gruppe.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	

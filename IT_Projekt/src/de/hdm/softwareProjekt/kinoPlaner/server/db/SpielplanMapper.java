@@ -73,7 +73,17 @@ public class SpielplanMapper {
 	
 	
 	public void delete (Spielplan spielplan) {
-		
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM spielplan " + "WHERE id=" + spielplan.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 	
 	
@@ -140,5 +150,6 @@ public class SpielplanMapper {
 		
 	}
 	
+	//FindALlByKino Methode fehlt 
 
 }

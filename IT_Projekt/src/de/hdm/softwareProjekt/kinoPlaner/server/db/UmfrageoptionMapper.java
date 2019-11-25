@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 // Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine relationale DB abbildet. 
 
@@ -73,13 +74,23 @@ public class UmfrageoptionMapper {
 	
 	
 	public void delete(Umfrageoption umfrageoption) {
+		Connection con = DBConnection.connection();
 
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("DELETE FROM umfrageoption " + "WHERE id=" + umfrageoption.getId());
+
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
 	}
 
 	
 	
 	
-	public ArrayList<Umfrageoption> findAllUmfragen(Umfrage umfrage) {
+	public ArrayList<Umfrageoption> findAllByUmfrage(Umfrage umfrage) {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Umfrageoption> resultarray = new ArrayList<Umfrageoption>();
@@ -129,4 +140,7 @@ public class UmfrageoptionMapper {
 		return null;
 	}
 
+	public ArrayList <Umfrageoption> findAllByVorstellung (Vorstellung vorstellung) {
+		return; 
+	}
 }
