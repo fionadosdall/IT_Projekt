@@ -31,8 +31,8 @@ public class AnwenderMapper {
 	 * Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
-	 * 
-	 * @param anwender
+	 * Außerdem wird zuerst überprüft, ob bereits ein anwenderMapper existiert, falls nein, wird ein neuer
+	 * instanziiert. Existiert bereits ein anwenderMapper, wird dieser zurück gegeben. 
 	 */
 	public static AnwenderMapper anwenderMapper() {
 		if (anwenderMapper == null) {
@@ -48,7 +48,7 @@ public class AnwenderMapper {
 
 	/**
 	 * Die insert-Methode fügt ein neues Anwender-Objekt zur Datenbank hinzu.
-	 * @param anwender, das zu speichernde Objekt
+	 * @param anwender bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Anwender insert(Anwender anwender) {
@@ -80,7 +80,7 @@ public class AnwenderMapper {
 
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
-	 * @param anwender, Objekt das verändert werden soll.
+	 * @param anwender bzw. Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Paramter übergeben wurde.
 	 */
 	public Anwender update(Anwender anwender) {
@@ -88,7 +88,9 @@ public class AnwenderMapper {
 		
 		try {
 			Statement stmt = con.createStatement();
-			
+			/**
+			 * Update wird in die Datenbank eingetragen.
+			 */
 			stmt.executeUpdate("UPDATE anwender SET " + "name=\""
 				+ anwender.getName() + "\", " + "gmail=\""
 				+ anwender.getGmail() + "\", " + "erstellDatum=\""
@@ -97,12 +99,15 @@ public class AnwenderMapper {
 		catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+		/**
+		 * Rückgabe des neuen, veränderten Anwender-Objektes
+		 */
 		return anwender;
 	}
 
 	/**
 	 * Mit dieser Methode kann ein Anwender-Objekt aus der Datenbank gelöscht werden.
-	 * @param anwender, Objekt das gelöscht werden soll.
+	 * @param anwender Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Anwender anwender) {
 		Connection con = DBConnection.connection();
@@ -118,7 +123,7 @@ public class AnwenderMapper {
 	}
 
 	/**
-	 * KOMISCH. KÖNNEN WIR DIE LÖSCHEN? 
+	 * KOMISCH. KÖNNEN WIR DIE LÖSCHEN? ODER BESSER: FINDALLANWENDER()
 	 * @param anwender
 	 * @return Eine ArrayList, die alle gefundenen Anwendern enthält. Falls eine Exception geworfen wird, 
 	 * kann es passieren, dass die ArrayList leer oder nur teilweise befüllt zurück gegeben wird. 
@@ -161,8 +166,8 @@ public class AnwenderMapper {
 	 * Suche nach einem Anwender mit vorgegebener Anwender-Id
 	 * @param id zugehörig zu einem Anwender, nach welchem gesucht werden soll, also der Primärschlüssel 
 	 * in der Datenbank.
-	 * @return Das Anwender-Objekt, das der übergebenen Id entspricht. Falls kein Anwender zur übergebenen
-	 * Id gefunden wurde, wird null zurückgegeben. 
+	 * @return Das Anwender-Objekt, das mit seiner Anwender-id der übergebenen Id entspricht. 
+	 * Falls kein Anwender zur übergebenen Id gefunden wurde, wird null zurückgegeben. 
 	 */
 	public Anwender findById(int id) {
 		Connection con = DBConnection.connection();
@@ -236,8 +241,8 @@ public class AnwenderMapper {
 					+ "ORDER BY anwenderId");
 
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und damit wird 
+			 * die ArrayListe Durchlauf für Durchlauf der Schleife aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
