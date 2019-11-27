@@ -3,13 +3,17 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-//Hier wird die Verbindung zu unserer Datenbank verwaltet. 
+/**
+ * Hier wird die Verbindung zu unserer Datenbank verwaltet. 
+ * @author annaf
+ *
+ */
 
 public class DBConnection {
 
 	/**
 	 *  Diese Klasse wird nur einmal instanziiert. 
-	 *  Die Klassenvariable con ist static, damit sie NUR EINMAL für sämtliche Instanzen der DB Connection-Klasse vorkommt. 
+	 *  Die Klassenvariable con ist static, damit sie NUR EINMAL fï¿½r sï¿½mtliche Instanzen der DB Connection-Klasse vorkommt. 
 	 *  
 	 */
 	

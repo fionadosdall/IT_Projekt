@@ -2,7 +2,6 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,91 +16,113 @@ public class VorstellungMapper {
 
 //	Hier folgt die Klassenvariable. 
 //  Diese Variable ist wegen "static" nur einmal vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
-	private static VorstellungMapper vorstellungMapper; 
-	
-// Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
+	private static VorstellungMapper vorstellungMapper;
+
+// Geschï¿½tzter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
 // einem Mapper nur 1x eine Instanz erzeugt
 	protected VorstellungMapper() {
 	}
-	
-	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
-	 * sondern die folgende Methode. 
-	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.	
+
+	/**
+	 * Um eine Instanz dieses Mappers erstellen zu kï¿½nnen, nutzt man NICHT den
+	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
+	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
+	 * 
 	 * @param anwender
 	 */
-		
-		public static VorstellungMapper vorstellungMapper () {
-			if (vorstellungMapper == null) {
-				vorstellungMapper = new VorstellungMapper();
-			}
-			return vorstellungMapper; 
+
+	public static VorstellungMapper vorstellungMapper() {
+		if (vorstellungMapper == null) {
+			vorstellungMapper = new VorstellungMapper();
 		}
-	
-	
-// Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
-	
-	public Vorstellung insert (Vorstellung vorstellung) {
-		Connection con = DBConnection.connection(); 
+		return vorstellungMapper;
+	}
+
+// Es folgt eine Reihe Methoden, die wir im StarUML aufgefï¿½hrt haben. Sie ermï¿½glichen, dass man Objekte z.B. suchen, lï¿½schen und updaten kann.
+
+	/**
+	 * Bei der Erstellung eines neuen Objektes soll zunÃ¤chst geprÃ¼ft werden, ob der
+	 * gewÃ¼nschte Name fÃ¼r das Objekt nicht bereits in der entsprechenden Tabelle
+	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
+	 * Objekte den selben Namen tragen.
+	 * 
+	 * @param name den das zu erstellende Objekt tragen soll
+	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
+	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
+	 *         nicht vergeben ist.
+	 */
+	public boolean nameVerfÃ¼gbar(String name) {
+		Connection con = DBConnection.connection();
+
 		try {
-			Statement stmt = con.createStatement(); 
-			//Jetzt wird geschaut, welches die höchste Id der schon bestehenden Vorstellungen ist.
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM vorstellung"); 
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM vorstellung" + "WHERE name =" + name);
+
 			if (resultset.next()) {
-				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
-				vorstellung.setId(resultset.getInt("maxId")+1);
+				return false;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return true;
+	}
+
+	public Vorstellung insert(Vorstellung vorstellung) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			// Jetzt wird geschaut, welches die hï¿½chste Id der schon bestehenden
+			// Vorstellungen ist.
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM vorstellung");
+			if (resultset.next()) {
+				// Wenn die hï¿½chste Id gefunden wurde, wird eine neue Id mit +1 hï¿½her erstellt
+				vorstellung.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
-				
-				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO vorstellung (id, name, filmId, spielzeitId, spielplanId, erstellDatum)" +
-						"VALUES(" + vorstellung.getId() + "','" + vorstellung.getName() + "','" + 
-						vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + "','" 
-						+ vorstellung.getSpielplanId() + "','" + vorstellung.getErstellDatum() + ")"); 
+
+				// Jetzt wird die Id tatsï¿½chlich eingefï¿½gt:
+				stmt.executeUpdate("INSERT INTO vorstellung (id, name, filmId, spielzeitId, spielplanId, erstellDatum)"
+						+ "VALUES(" + vorstellung.getId() + "','" + vorstellung.getName() + "','"
+						+ vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + "','"
+						+ vorstellung.getSpielplanId() + "','" + vorstellung.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		}return vorstellung; 
+		}
+		return vorstellung;
 	}
-	
-	
-	
-	public Vorstellung update (Vorstellung vorstellung) {
-Connection con = DBConnection.connection();
-		
+
+	public Vorstellung update(Vorstellung vorstellung) {
+		Connection con = DBConnection.connection();
+
 		try {
 			Statement stmt = con.createStatement();
-			
-			stmt.executeUpdate("UPDATE vorstellung SET " + "name=\""
-				+ vorstellung.getName() + "\", " + "erstellDatum=\""
-				+ vorstellung.getErstellDatum() + "\", " + "spielplanId=\""
-				+ vorstellung.getSpielzeitId() + "\", " + "spielzeitId=\""
-				+ vorstellung.getSpielzeitId() + "\", " + "filmId=\""
-				+ vorstellung.getFilmId() +  "\" " + "WHERE id=" + vorstellung.getId());
-		}
-		catch (SQLException e2) {
+
+			stmt.executeUpdate("UPDATE vorstellung SET " + "name=\"" + vorstellung.getName() + "\", "
+					+ "erstellDatum=\"" + vorstellung.getErstellDatum() + "\", " + "spielplanId=\""
+					+ vorstellung.getSpielzeitId() + "\", " + "spielzeitId=\"" + vorstellung.getSpielzeitId() + "\", "
+					+ "filmId=\"" + vorstellung.getFilmId() + "\" " + "WHERE id=" + vorstellung.getId());
+		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 		return vorstellung;
 	}
-	
-	
-	
-	public void delete (Vorstellung vorstellung) {
+
+	public void delete(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
 
-	    try {
-	      Statement stmt = con.createStatement();
+		try {
+			Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM vorstellung " + "WHERE id=" + vorstellung.getId());
+			stmt.executeUpdate("DELETE FROM vorstellung " + "WHERE id=" + vorstellung.getId());
 
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
-	
-	
-	
-	public ArrayList <Vorstellung> findAllVorstellungen () {
+
+	public ArrayList<Vorstellung> findAllVorstellungen() {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Vorstellung> resultarray = new ArrayList<Vorstellung>();
@@ -109,8 +130,9 @@ Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
-					"ORDER BY name");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
+							+ "ORDER BY name");
 
 			while (resultset.next()) {
 				Vorstellung v = new Vorstellung();
@@ -121,7 +143,7 @@ Connection con = DBConnection.connection();
 				v.setSpielplanId(resultset.getInt("spielplanId"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzufügen des neuen Objekts zur ArrayList
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(v);
 			}
 		} catch (SQLException e1) {
@@ -129,27 +151,26 @@ Connection con = DBConnection.connection();
 		}
 		return resultarray;
 	}
-	
-	
-	
-	
-	public ArrayList <Vorstellung> findAllBySpielplan (Spielplan spielplan) {
-		Connection con = DBConnection.connection(); 
-		
-		ArrayList <Vorstellung> resultarray = new ArrayList <Vorstellung>(); 
-		
+
+	public ArrayList<Vorstellung> findAllBySpielplan(Spielplan spielplan) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Vorstellung> resultarray = new ArrayList<Vorstellung>();
+
 		try {
-			Statement stmt = con.createStatement(); 
-			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
-					"WHERE spielplanId = " + spielplan.getId() + "ORDER BY name"); 
-		
-			/**FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und die 
-			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
+							+ "WHERE spielplanId = " + spielplan.getId() + "ORDER BY name");
+
+			/**
+			 * Fï¿½r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
+			 * die ArrayListe Stï¿½ck fï¿½r Stï¿½ck aufgebaut/gefuellt.
 			 */
-			
+
 			while (resultset.next()) {
-		        Vorstellung v = new Vorstellung();
+				Vorstellung v = new Vorstellung();
 				v.setId(resultset.getInt("id"));
 				v.setName(resultset.getString("name"));
 				v.setFilmId(resultset.getInt("filmId"));
@@ -157,26 +178,24 @@ Connection con = DBConnection.connection();
 				v.setSpielplanId(resultset.getInt("spielplanId"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-		        // Hinzufügen des neuen Objekts zur ArrayList
-		        resultarray.add(v); 
-		      }
-		    } catch (SQLException e1) {
-		      e1.printStackTrace();
-			
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
+				resultarray.add(v);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+
 		}
 		return resultarray;
 	}
-	
-	
-	
-	
-	public Vorstellung findById (int id) {
-		Connection con = DBConnection.connection(); 
+
+	public Vorstellung findById(int id) {
+		Connection con = DBConnection.connection();
 		try {
-			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung" + 
-					"WHERE id=" + id + " ORDER BY name"); 
-			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
+							+ "WHERE id=" + id + " ORDER BY name");
+			// Prï¿½fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Vorstellung v = new Vorstellung();
 				v.setId(resultset.getInt("id"));
@@ -185,12 +204,12 @@ Connection con = DBConnection.connection();
 				v.setSpielzeitId(resultset.getInt("spielzeitId"));
 				v.setSpielplanId(resultset.getInt("spielplanId"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
-				return v; 	
+				return v;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		return null;
 	}
-	
+
 }

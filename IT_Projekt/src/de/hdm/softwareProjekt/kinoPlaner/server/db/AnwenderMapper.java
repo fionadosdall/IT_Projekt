@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-//Das hier ist eine Mapper-Klasse, die Anwender-Objekte auf eine relationale DB abbildet. 
+/**
+ * Das hier ist eine Mapper-Klasse, die Anwender-Objekte auf eine relationale DB abbildet. 
+ * @author annaf
+ *
+ */
 
 public class AnwenderMapper {
 
@@ -21,18 +25,18 @@ public class AnwenderMapper {
 	private static AnwenderMapper anwenderMapper;
 
 	/**
-	 * Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
+	 * Geschï¿½tzter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
 	 * Denn von diesem Mapper wird nur 1x eine Instanz erzeugt
 	 */
 	protected AnwenderMapper() {
 	}
 
 	/**
-	 * Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den
+	 * Um eine Instanz dieses Mappers erstellen zu kï¿½nnen, nutzt man NICHT den
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
-	 * Außerdem wird zuerst überprüft, ob bereits ein anwenderMapper existiert, falls nein, wird ein neuer
-	 * instanziiert. Existiert bereits ein anwenderMapper, wird dieser zurück gegeben. 
+	 * Auï¿½erdem wird zuerst ï¿½berprï¿½ft, ob bereits ein anwenderMapper existiert, falls nein, wird ein neuer
+	 * instanziiert. Existiert bereits ein anwenderMapper, wird dieser zurï¿½ck gegeben. 
 	 */
 	public static AnwenderMapper anwenderMapper() {
 		if (anwenderMapper == null) {
@@ -42,29 +46,55 @@ public class AnwenderMapper {
 	}
 
 	/**
-	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. Sie
-	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgefï¿½hrt haben. Sie
+	 * ermï¿½glichen, dass man Objekte z.B. suchen, lï¿½schen und updaten kann.
 	 */
 
 	/**
-	 * Die insert-Methode fügt ein neues Anwender-Objekt zur Datenbank hinzu.
+	 * Bei der Erstellung eines neuen Objektes soll zunÃ¤chst geprÃ¼ft werden, ob der gewÃ¼nschte Name fÃ¼r 
+	 * das Objekt nicht bereits in der entsprechenden Tabelle der Datenbank vorhanden ist. 
+	 * Damit soll verhindert werden, dass mehrere Objekte den selben Namen tragen.
+	 * @param name den das zu erstellende Objekt tragen soll
+	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt zugeordnet ist. 
+	 * True, wenn der Name in der Datenbanktabelle noch nicht vergeben ist. 
+	 */
+	public boolean nameVerfÃ¼gbar (String name) {
+		Connection con = DBConnection.connection(); 
+		
+		try {
+			Statement stmt = con.createStatement(); 
+			
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM anwender" + 
+			"WHERE name =" + name);
+			
+			if(resultset.next()) {
+				return false;
+			}
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} return true;
+	}
+	
+	/**
+	 * Die insert-Methode fï¿½gt ein neues Anwender-Objekt zur Datenbank hinzu.
 	 * @param anwender bzw. das zu speichernde Objekt
-	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
+	 * @return Das bereits ï¿½bergeben Objekt, ggf. mit abgeï¿½nderter Id
 	 */
 	public Anwender insert(Anwender anwender) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 			/**
-			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden Anwender ist.
+			 * Im Folgenden: ï¿½berprï¿½fung, welches die hï¿½chste Id der schon bestehenden Anwender ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM anwender");
 			if (resultset.next()) {
-				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
+				// Wenn die hï¿½chste Id gefunden wurde, wird eine neue Id mit +1 hï¿½her erstellt
 				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
-				// Jetzt wird die Id tatsächlich eingefügt:
+				// Jetzt wird die Id tatsï¿½chlich eingefï¿½gt:
 				stmt.executeUpdate("INSERT INTO anweder (id, gmail, name, erstellDatum)" + "VALUES(" 
 						+ anwender.getId() + "','" + anwender.getGmail() + "','" + anwender.getName()
 						+ "','" + anwender.getErstellDatum() + ")");
@@ -73,15 +103,15 @@ public class AnwenderMapper {
 			e1.printStackTrace();
 		}
 		/** 
-		 * Rückgabe des Anwenders. Durch die Methode wurde das Objekt ggf. angepasst (z.B. angepasste Id)
+		 * Rï¿½ckgabe des Anwenders. Durch die Methode wurde das Objekt ggf. angepasst (z.B. angepasste Id)
 		 */
 		return anwender;
 	}
 
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
-	 * @param anwender bzw. Objekt, welches verändert werden soll.
-	 * @return Das Objekt, welches im Paramter übergeben wurde.
+	 * @param anwender bzw. Objekt, welches verï¿½ndert werden soll.
+	 * @return Das Objekt, welches im Paramter ï¿½bergeben wurde.
 	 */
 	public Anwender update(Anwender anwender) {
 		Connection con = DBConnection.connection();
@@ -100,14 +130,14 @@ public class AnwenderMapper {
 			e2.printStackTrace();
 		}
 		/**
-		 * Rückgabe des neuen, veränderten Anwender-Objektes
+		 * Rï¿½ckgabe des neuen, verï¿½nderten Anwender-Objektes
 		 */
 		return anwender;
 	}
 
 	/**
-	 * Mit dieser Methode kann ein Anwender-Objekt aus der Datenbank gelöscht werden.
-	 * @param anwender Objekt, welches gelöscht werden soll.
+	 * Mit dieser Methode kann ein Anwender-Objekt aus der Datenbank gelï¿½scht werden.
+	 * @param anwender Objekt, welches gelï¿½scht werden soll.
 	 */
 	public void delete(Anwender anwender) {
 		Connection con = DBConnection.connection();
@@ -123,10 +153,10 @@ public class AnwenderMapper {
 	}
 
 	/**
-	 * KOMISCH. KÖNNEN WIR DIE LÖSCHEN? ODER BESSER: FINDALLANWENDER()
+	 * KOMISCH. Kï¿½NNEN WIR DIE Lï¿½SCHEN? ODER BESSER: FINDALLANWENDER()
 	 * @param anwender
-	 * @return Eine ArrayList, die alle gefundenen Anwendern enthält. Falls eine Exception geworfen wird, 
-	 * kann es passieren, dass die ArrayList leer oder nur teilweise befüllt zurück gegeben wird. 
+	 * @return Eine ArrayList, die alle gefundenen Anwendern enthï¿½lt. Falls eine Exception geworfen wird, 
+	 * kann es passieren, dass die ArrayList leer oder nur teilweise befï¿½llt zurï¿½ck gegeben wird. 
 	 */
 	public ArrayList<Anwender> findAllByAnwender(Anwender anwender) {
 		Connection con = DBConnection.connection();
@@ -141,8 +171,8 @@ public class AnwenderMapper {
 					+ anwender + "ORDER BY id");
 
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * Fï¿½r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
+			 * die ArrayListe Stï¿½ck fï¿½r Stï¿½ck aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
@@ -152,7 +182,7 @@ public class AnwenderMapper {
 				a.setName(resultset.getString("name"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzufügen des neuen Objekts zur ArrayList
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(a);
 			}
 		} catch (SQLException e1) {
@@ -164,10 +194,10 @@ public class AnwenderMapper {
 
 	/**
 	 * Suche nach einem Anwender mit vorgegebener Anwender-Id
-	 * @param id zugehörig zu einem Anwender, nach welchem gesucht werden soll, also der Primärschlüssel 
+	 * @param id zugehï¿½rig zu einem Anwender, nach welchem gesucht werden soll, also der Primï¿½rschlï¿½ssel 
 	 * in der Datenbank.
-	 * @return Das Anwender-Objekt, das mit seiner Anwender-id der übergebenen Id entspricht. 
-	 * Falls kein Anwender zur übergebenen Id gefunden wurde, wird null zurückgegeben. 
+	 * @return Das Anwender-Objekt, das mit seiner Anwender-id der ï¿½bergebenen Id entspricht. 
+	 * Falls kein Anwender zur ï¿½bergebenen Id gefunden wurde, wird null zurï¿½ckgegeben. 
 	 */
 	public Anwender findById(int id) {
 		Connection con = DBConnection.connection();
@@ -176,7 +206,7 @@ public class AnwenderMapper {
 			ResultSet resultset = stmt
 					.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE id=" 
 					+ id + " ORDER BY name");
-			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			// Prï¿½fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("id"));
@@ -193,9 +223,9 @@ public class AnwenderMapper {
 
 	/**
 	 * Suche nach einem Anwender mit vorgegebenem Namen.
-	 * @param name zu dem der dazugehörige Anwender gesucht werden soll.
-	 * @return Das ANwender-Objekt, das dem übergebenen Namen entspricht. Falls kein Anwender zum übergebenen
-	 * Namen gefunden wurde, wird null zurückgegeben. 
+	 * @param name zu dem der dazugehï¿½rige Anwender gesucht werden soll.
+	 * @return Das ANwender-Objekt, das dem ï¿½bergebenen Namen entspricht. Falls kein Anwender zum ï¿½bergebenen
+	 * Namen gefunden wurde, wird null zurï¿½ckgegeben. 
 	 */
 	public Anwender findByName(String name) {
 		Connection con = DBConnection.connection();
@@ -220,11 +250,11 @@ public class AnwenderMapper {
 	}
 
 	/**
-	 * Suche nach allen Anwendern, die zu einer vorgegebenen Gruppe gehören. Man kann sich dadurch also die 
+	 * Suche nach allen Anwendern, die zu einer vorgegebenen Gruppe gehï¿½ren. Man kann sich dadurch also die 
 	 * Gruppenmitglieder einer bestimmten Gruppe ausgeben lassen.
-	 * @param gruppe zu welcher man alle dazugehörigen Anwender ausgegeben haben möchte. 
-	 * @return Eine ArrayList, die alle gefundenen Anwender der Gruppe enthält. Falls eine Exception geworfen
-	 * wird, kann es passieren, dass die ArrayList leer oder nur teilweise befüllt zurück gegeben wird.
+	 * @param gruppe zu welcher man alle dazugehï¿½rigen Anwender ausgegeben haben mï¿½chte. 
+	 * @return Eine ArrayList, die alle gefundenen Anwender der Gruppe enthï¿½lt. Falls eine Exception geworfen
+	 * wird, kann es passieren, dass die ArrayList leer oder nur teilweise befï¿½llt zurï¿½ck gegeben wird.
 	 */
 	public ArrayList<Anwender> findAllByGruppe(Gruppe gruppe) {
 		Connection con = DBConnection.connection();
@@ -241,8 +271,8 @@ public class AnwenderMapper {
 					+ "ORDER BY anwenderId");
 
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und damit wird 
-			 * die ArrayListe Durchlauf für Durchlauf der Schleife aufgebaut/gefuellt.
+			 * Fï¿½r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und damit wird 
+			 * die ArrayListe Durchlauf fï¿½r Durchlauf der Schleife aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
@@ -252,7 +282,7 @@ public class AnwenderMapper {
 				a.setName(resultset.getString("name"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzufügen des neuen Objekts zur ArrayList
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(a);
 			}
 		} catch (SQLException e2) {

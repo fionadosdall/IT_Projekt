@@ -11,25 +11,36 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-// Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine relationale DB abbildet. 
+/**
+ * Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine
+ * relationale DB abbildet.
+ * 
+ * @author annaf
+ *
+ */
 
 public class UmfrageoptionMapper {
 
-//	Hier folgt die Klassenvariable. 
-//  Diese Variable ist wegen "static" nur einmal vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
+	/**
+	 * Hier folgt die Klassenvariable. Diese Variable ist wegen "static" nur einmal
+	 * vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
+	 */
 	private static UmfrageoptionMapper umfrageoptionMapper;
 
-// Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
-// einem Mapper nur 1x eine Instanz erzeugt
+	/**
+	 * GeschÃ¼tzter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
+	 * Denn von diesem Mapper wird nur 1x eine Instanz erzeugt
+	 */
 	protected UmfrageoptionMapper() {
 	}
 
 	/**
-	 * Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den
+	 * Um eine Instanz dieses Mappers erstellen zu kÃ¶nnen, nutzt man NICHT den
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
-	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
-	 * 
-	 * @param anwender
+	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. AuÃŸerdem
+	 * wird zuerst Ã¼berprÃ¼ft, ob bereis ein umfrageoptionMapper existiert, falls nein, wird
+	 * ein neuer instanziiert. Existiert bereits ein umfrageMapper, wird dieser
+	 * zurÃ¼ckgegeben.
 	 */
 
 	public static UmfrageoptionMapper umfrageoptionMapper() {
@@ -39,24 +50,54 @@ public class UmfrageoptionMapper {
 		return umfrageoptionMapper;
 	}
 
-// Es folgt eine Reihe Methoden, die wir im StarUML aufgeführt haben. Sie ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+// Es folgt eine Reihe Methoden, die wir im StarUML aufgefï¿½hrt haben. Sie ermï¿½glichen, dass man Objekte z.B. suchen, lï¿½schen und updaten kann.
+
+	/**
+	 * Bei der Erstellung eines neuen Objektes soll zunÃ¤chst geprÃ¼ft werden, ob der
+	 * gewÃ¼nschte Name fÃ¼r das Objekt nicht bereits in der entsprechenden Tabelle
+	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
+	 * Objekte den selben Namen tragen.
+	 * 
+	 * @param name den das zu erstellende Objekt tragen soll
+	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
+	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
+	 *         nicht vergeben ist.
+	 */
+	public boolean nameVerfÃ¼gbar(String name) {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM umfrageoption" + "WHERE name =" + name);
+
+			if (resultset.next()) {
+				return false;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return true;
+	}
 
 	public Umfrageoption insert(Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			// Jetzt wird geschaut, welches die höchste Id der schon bestehenden
+			// Jetzt wird geschaut, welches die hï¿½chste Id der schon bestehenden
 			// Umfrageoptionen ist.
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM umfrageoption");
 			if (resultset.next()) {
-				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
+				// Wenn die hï¿½chste Id gefunden wurde, wird eine neue Id mit +1 hï¿½her erstellt
 				umfrageoption.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
-				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO umfrageoption (id, name, umfrageId, vorstellungsId, erstellDatum)" + "VALUES("
-						+ umfrageoption.getId() + "','" + umfrageoption.getName() + "','" + umfrageoption.getUmfrageId() 
-						+ "','"	+ umfrageoption.getVorstellungsId() + "','" + umfrageoption.getErstellDatum() +  ")");
+				// Jetzt wird die Id tatsï¿½chlich eingefï¿½gt:
+				stmt.executeUpdate("INSERT INTO umfrageoption (id, name, umfrageId, vorstellungsId, erstellDatum)"
+						+ "VALUES(" + umfrageoption.getId() + "','" + umfrageoption.getName() + "','"
+						+ umfrageoption.getUmfrageId() + "','" + umfrageoption.getVorstellungsId() + "','"
+						+ umfrageoption.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -64,47 +105,36 @@ public class UmfrageoptionMapper {
 		return umfrageoption;
 	}
 
-	
-	
 	public Umfrageoption update(Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-			
-			stmt.executeUpdate("UPDATE umfrageoption SET " + "name=\""
-				+ umfrageoption.getName() + "\", " + "erstellDatum=\""
-				+ umfrageoption.getErstellDatum() + "\", " + "umfrageId=\""
-				+ umfrageoption.getUmfrageId() + "\", " + "vorstellungsId=\""
-				+ umfrageoption.getVorstellungsId() +  "\" " + "WHERE id=" + umfrageoption.getId());
-	
-		}
-		catch (SQLException e2) {
+
+			stmt.executeUpdate("UPDATE umfrageoption SET " + "name=\"" + umfrageoption.getName() + "\", "
+					+ "erstellDatum=\"" + umfrageoption.getErstellDatum() + "\", " + "umfrageId=\""
+					+ umfrageoption.getUmfrageId() + "\", " + "vorstellungsId=\"" + umfrageoption.getVorstellungsId()
+					+ "\" " + "WHERE id=" + umfrageoption.getId());
+
+		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 		return umfrageoption;
 	}
 
-	
-	
-	
 	public void delete(Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection();
 
-	    try {
-	      Statement stmt = con.createStatement();
+		try {
+			Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM umfrageoption " + "WHERE id=" + umfrageoption.getId());
+			stmt.executeUpdate("DELETE FROM umfrageoption " + "WHERE id=" + umfrageoption.getId());
 
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
 
-	
-	
-	
 	public ArrayList<Umfrageoption> findAllByUmfrage(Umfrage umfrage) {
 		Connection con = DBConnection.connection();
 
@@ -113,8 +143,9 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption" + 
-					"WHERE umfrageId=" + umfrage.getId() + "ORDER BY name");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
+							+ "WHERE umfrageId=" + umfrage.getId() + "ORDER BY name");
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
@@ -124,7 +155,7 @@ public class UmfrageoptionMapper {
 				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
 				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzufügen des neuen Objekts zur ArrayList
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(uo);
 			}
 		} catch (SQLException e1) {
@@ -133,17 +164,14 @@ public class UmfrageoptionMapper {
 		return resultarray;
 	}
 
-	
-	
-	
-	
 	public Umfrageoption findById(int id) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
-					+ "WHERE id=" + id + " ORDER BY vorstellungsId");
-			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
+							+ "WHERE id=" + id + " ORDER BY vorstellungsId");
+			// Prï¿½fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Umfrageoption uopt = new Umfrageoption();
 				uopt.setId(resultset.getInt("id"));
@@ -159,7 +187,7 @@ public class UmfrageoptionMapper {
 		return null;
 	}
 
-	public ArrayList <Umfrageoption> findAllByVorstellung (Vorstellung vorstellung) {
+	public ArrayList<Umfrageoption> findAllByVorstellung(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Umfrageoption> resultarray = new ArrayList<Umfrageoption>();
@@ -167,8 +195,9 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption" + 
-					"WHERE vorstellungsId=" + vorstellung.getId() +"ORDER BY name");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
+							+ "WHERE vorstellungsId=" + vorstellung.getId() + "ORDER BY name");
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
@@ -178,7 +207,7 @@ public class UmfrageoptionMapper {
 				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
 				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzufügen des neuen Objekts zur ArrayList
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(uo);
 			}
 		} catch (SQLException e1) {

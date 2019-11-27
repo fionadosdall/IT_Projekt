@@ -11,315 +11,359 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
-//Das hier ist eine Mapper-Klasse, die Auswahl-Objekte auf eine relationale DB abbildet. 
-
+/**
+ * Das hier ist eine Mapper-Klasse, die Auswahl-Objekte auf eine relationale DB
+ * abbildet.
+ * 
+ * @author annaf
+ *
+ */
 
 public class AuswahlMapper {
-	
+
 	/**
 	 * Hier folgt die Klassenvariable. Diese Variable ist wegen "static" nur einmal
 	 * vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
 	 */
-	private static AuswahlMapper votingMapper; 
-	
-	
+	private static AuswahlMapper votingMapper;
+
 	/**
-	 * Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
+	 * GeschÃ¼tzter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
 	 * Denn von diesem Mapper wird nur 1x eine Instanz erzeugt
 	 */
-	protected AuswahlMapper () {
+	protected AuswahlMapper() {
 	}
-	
-	
-	/** Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den KONSTRUKTOR, 
-	 * sondern die folgende Methode. 
-	 * Sie ist statisch, dadurch stellt sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
-	 * Außerdem wird zuerst überprüft, ob bereits ein votingMapper existiert, falls nein, wird ein neuer
-	 * instanziiert. Existiert bereits ein votingMapper, wird dieser zurück gegeben.	
+
+	/**
+	 * Um eine Instanz dieses Mappers erstellen zu kÃ¶nnen, nutzt man NICHT den
+	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
+	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. AuÃŸerdem
+	 * wird zuerst Ã¼berprÃ¼ft, ob bereits ein votingMapper existiert, falls nein,
+	 * wird ein neuer instanziiert. Existiert bereits ein votingMapper, wird dieser
+	 * zurÃ¼ck gegeben.
 	 */
-		
-		public static AuswahlMapper auswahlMapper() {
-			if (votingMapper == null) {
-				votingMapper = new AuswahlMapper();
-			}
-			return votingMapper; 
+
+	public static AuswahlMapper auswahlMapper() {
+		if (votingMapper == null) {
+			votingMapper = new AuswahlMapper();
 		}
+		return votingMapper;
+	}
 
 	/**
-	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. Sie
-	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgefÃ¼hrt haben. Sie
+	 * ermÃ¶glichen, dass man Objekte z.B. suchen, lÃ¶schen und updaten kann.
 	 */
 
 	/**
-	 * Die insert-Methode fügt ein neues Anwender-Objekt zur Datenbank hinzu.
-	 * @param auswahl bzw. das zu speichernde Objekt
-	 * @return Das übergeben Objekt, ggf. mit abgeänderter Id
+	 * Bei der Erstellung eines neuen Objektes soll zunÃ¤chst geprÃ¼ft werden, ob der
+	 * gewÃ¼nschte Name fÃ¼r das Objekt nicht bereits in der entsprechenden Tabelle
+	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
+	 * Objekte den selben Namen tragen.
+	 * 
+	 * @param name den das zu erstellende Objekt tragen soll
+	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
+	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
+	 *         nicht vergeben ist.
 	 */
-	public Auswahl insert (Auswahl auswahl) {
-		Connection con = DBConnection.connection(); 
+	public boolean nameVerfÃ¼gbar(String name) {
+		Connection con = DBConnection.connection();
+
 		try {
-			Statement stmt = con.createStatement(); 
-			/**
-			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden Anwender ist.
-			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM auswahl"); 
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM auswahl" + "WHERE name =" + name);
+
 			if (resultset.next()) {
-				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
-				auswahl.setId(resultset.getInt("maxId")+1);
+				return false;
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return true;
+	}
+
+	/**
+	 * Die insert-Methode fÃ¼gt ein neues Anwender-Objekt zur Datenbank hinzu.
+	 * 
+	 * @param auswahl bzw. das zu speichernde Objekt
+	 * @return Das Ã¼bergeben Objekt, ggf. mit abgeÃ¤nderter Id
+	 */
+	public Auswahl insert(Auswahl auswahl) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			/**
+			 * Im Folgenden: ÃœberprÃ¼fung, welches die hÃ¶chste Id der schon bestehenden
+			 * Anwender ist.
+			 */
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM auswahl");
+			if (resultset.next()) {
+				// Wenn die hÃ¶chste Id gefunden wurde, wird eine neue Id mit +1 hÃ¶her erstellt
+				auswahl.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
-				
-				//Jetzt wird die Id tatsächlich eingefügt: 
-				stmt.executeUpdate("INSERT INTO auswahl (id, name, besitzerId, umfrageoptionId, voting, erstellDatum)" +
-						"VALUES(" + auswahl.getId() + "','" + auswahl.getName() + "','" + auswahl.getBesitzerId() + "','" 
-						+ auswahl.getUmfrageoptionId() + "','" + auswahl.getVoting() + "','" + auswahl.getErstellDatum() 
-						+ ")"); 
+
+				// Jetzt wird die Id tatsÃ¤chlich eingefÃ¼gt:
+				stmt.executeUpdate("INSERT INTO auswahl (id, name, besitzerId, umfrageoptionId, voting, erstellDatum)"
+						+ "VALUES(" + auswahl.getId() + "','" + auswahl.getName() + "','" + auswahl.getBesitzerId()
+						+ "','" + auswahl.getUmfrageoptionId() + "','" + auswahl.getVoting() + "','"
+						+ auswahl.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-		} 
+		}
 		/**
-		 * Rückgabe der Auswahl. Durch die Methode wurde das Objekt ggf. angepasst (z.B. angepasste Id)
+		 * RÃ¼ckgabe der Auswahl. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
+		 * angepasste Id)
 		 */
 		return auswahl;
 	}
-	
-	
+
 	/**
-	 * Das Objekt wieder wiederholt, in upgedateter Form in die Datenbank eingetragen.
-	 * @param auswahl bzw. das Objekt das verändert werden soll.
-	 * @return Das Objekt, welches im Parameter übergeben wurde.
+	 * Das Objekt wieder wiederholt, in upgedateter Form in die Datenbank
+	 * eingetragen.
+	 * 
+	 * @param auswahl bzw. das Objekt das verÃ¤ndert werden soll.
+	 * @return Das Objekt, welches im Parameter Ã¼bergeben wurde.
 	 */
-	public Auswahl update (Auswahl auswahl) {
+	public Auswahl update(Auswahl auswahl) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
 			/**
 			 * Update wird in die Datenbank eingetragen
 			 */
-			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
-				+ auswahl.getBesitzerId() + "\", " + "umfrageoptionId=\""
-				+ auswahl.getUmfrageoptionId() + "\", " + "voting=\"" 
-				+ auswahl.getVoting()+ "\", " + "name=\"" 
-				+ auswahl.getName()+ "\", " + "erstellDatum=\"" 
-				+ auswahl.getErstellDatum()+ "\" " + "WHERE id=" + auswahl.getId());
-		}
-		catch (SQLException e2) {
+			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\"" + auswahl.getBesitzerId() + "\", "
+					+ "umfrageoptionId=\"" + auswahl.getUmfrageoptionId() + "\", " + "voting=\"" + auswahl.getVoting()
+					+ "\", " + "name=\"" + auswahl.getName() + "\", " + "erstellDatum=\"" + auswahl.getErstellDatum()
+					+ "\" " + "WHERE id=" + auswahl.getId());
+		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 		/**
-		 * Rückgabe des neuen, veränderten Auswahl-Objektes
+		 * RÃ¼ckgabe des neuen, verÃ¤nderten Auswahl-Objektes
 		 */
-		return auswahl; 
+		return auswahl;
 	}
-	
-	
-	
+
 	/**
-	 * Mit dieser Methode kann ein Auswahl-Objekt aus der Datenbank gelöscht werden.
-	 * @param auswahl Objekt, welches gelöscht werden soll
+	 * Mit dieser Methode kann ein Auswahl-Objekt aus der Datenbank gelÃ¶scht werden.
+	 * 
+	 * @param auswahl Objekt, welches gelÃ¶scht werden soll
 	 */
-	public void delete (Auswahl auswahl) {
+	public void delete(Auswahl auswahl) {
 		Connection con = DBConnection.connection();
 
-	    try {
-	      Statement stmt = con.createStatement();
+		try {
+			Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM auswahl " + "WHERE id=" + auswahl.getId());
+			stmt.executeUpdate("DELETE FROM auswahl " + "WHERE id=" + auswahl.getId());
 
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 	}
-	
-	
-	
+
 	/**
 	 * Suche nach einer bestimmten Auswahl mithilfe einer vorgegebenen Auswahl-Id
+	 * 
 	 * @param id der Auswahl, nach welcher gesucht werden soll
-	 * @return Das Auswahl-Objekt, das mit seiner Auswahl-Id der übergebenen Id entspricht.
-	 * Falls kein Auswahl-Objekt zur übergebenen Id gefunden wird, wird null zurückgegeben. 
+	 * @return Das Auswahl-Objekt, das mit seiner Auswahl-Id der ï¿½bergebenen Id
+	 *         entspricht. Falls kein Auswahl-Objekt zur ï¿½bergebenen Id gefunden
+	 *         wird, wird null zurï¿½ckgegeben.
 	 */
-	public Auswahl findById (int id) {
-		Connection con = DBConnection.connection(); 
+	public Auswahl findById(int id) {
+		Connection con = DBConnection.connection();
 		try {
-			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" + 
-					"WHERE id=" + id + " ORDER BY umfrageoptionId"); 
-			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl"
+							+ "WHERE id=" + id + " ORDER BY umfrageoptionId");
+			// Prï¿½fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
-				Auswahl a = new Auswahl(); 
-				a.setId(resultset.getInt("id")); 
+				Auswahl a = new Auswahl();
+				a.setId(resultset.getInt("id"));
 				a.setName(resultset.getString("name"));
-				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setBesitzerId(resultset.getInt("besitzerId"));
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
-				a.setVoting(resultset.getInt("voting")); 
+				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
-				return a; 	
+				return a;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return null; 
-		
+		return null;
+
 	}
-	
-	
-	
-	/** 
-	 * Suche nach allen getroffenen Auswahlen, die zu einer bestimmten, im Parameter vorgegebenen
-	 * Umfrageoption gehören. 
-	 * @param umfrageoption zu welcher man alle getroffenen Auswahlen ausgegebenen haben möchte.
-	 * @return Eine ArrayList, die alle gefundenen Auswahlen enthält. Falls eine Exception geworfen wird, 
-	 * kann es passieren, dass die ArrayList leer oder nur teilweise befüllt zurückgegeben wird.
+
+	/**
+	 * Suche nach allen getroffenen Auswahlen, die zu einer bestimmten, im Parameter
+	 * vorgegebenen Umfrageoption gehï¿½ren.
+	 * 
+	 * @param umfrageoption zu welcher man alle getroffenen Auswahlen ausgegebenen
+	 *                      haben mï¿½chte.
+	 * @return Eine ArrayList, die alle gefundenen Auswahlen enthï¿½lt. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befï¿½llt zurï¿½ckgegeben wird.
 	 */
-	public ArrayList <Auswahl> findAllByUmfrageoption (Umfrageoption umfrageoption) {
-		Connection con = DBConnection.connection(); 
-		
-		ArrayList <Auswahl> resultarray = new ArrayList <Auswahl> (); 
-		
+	public ArrayList<Auswahl> findAllByUmfrageoption(Umfrageoption umfrageoption) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Auswahl> resultarray = new ArrayList<Auswahl>();
+
 		try {
-			Statement stmt = con.createStatement(); 
-			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" +
-					"WHERE umfrageoptionId=" + umfrageoption.getId() + "ORDER BY besitzerId"); 
-			
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl"
+							+ "WHERE umfrageoptionId=" + umfrageoption.getId() + "ORDER BY besitzerId");
+
 			/**
-			 * Für jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit wird die 
-			 * ArrayListe nun Durchlauf für Durchlauf der Schleife aufgebaut/befüllt.
+			 * Fï¿½r jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit
+			 * wird die ArrayListe nun Durchlauf fï¿½r Durchlauf der Schleife
+			 * aufgebaut/befï¿½llt.
 			 */
-			while (resultset.next()) { 
-				Auswahl a = new Auswahl(); 
-				a.setId(resultset.getInt("id")); 
+			while (resultset.next()) {
+				Auswahl a = new Auswahl();
+				a.setId(resultset.getInt("id"));
 				a.setName(resultset.getString("name"));
-				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setBesitzerId(resultset.getInt("besitzerId"));
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
-				a.setVoting(resultset.getInt("voting")); 
+				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
-				
-				// Hinzufügen des neuen Objektes zur ArrayList
+
+				// Hinzufï¿½gen des neuen Objektes zur ArrayList
 				resultarray.add(a);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return resultarray; 
+		return resultarray;
 	}
-	
-	
-	
+
 	/**
-	 * Eine Auswahl erhält eine BesitzerId. Diese BesitzerId wird einem bestimmten Anwender zugewiesen. 
-	 * Dadurch lässt sich eine Eigentumsbeziehung zwischen den beiden Objekten herstellen. 
-	 * Wenn ein Anwender Besitzer eines (hier: Auswahl-)Objektes ist, fallen ihm besondere Rechte zu. Er kann
-	 * z.B. als einziger Veränderungen vornehmen. 
-	 * @param anwender welcher als Besitzer der Auswahl in der Datenbank eingetragen werden soll.
-	 * @param auswahl Objekt, welches einem Anwender zugeordnet werden soll.
+	 * Eine Auswahl erhï¿½lt eine BesitzerId. Diese BesitzerId wird einem bestimmten
+	 * Anwender zugewiesen. Dadurch lï¿½sst sich eine Eigentumsbeziehung zwischen den
+	 * beiden Objekten herstellen. Wenn ein Anwender Besitzer eines (hier:
+	 * Auswahl-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
+	 * einziger Verï¿½nderungen vornehmen.
+	 * 
+	 * @param anwender welcher als Besitzer der Auswahl in der Datenbank eingetragen
+	 *                 werden soll.
+	 * @param auswahl  Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
-	public void addEigentumsstruktur (Anwender anwender, Auswahl auswahl) {
+	public void addEigentumsstruktur(Anwender anwender, Auswahl auswahl) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-			
-			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
-				+ anwender.getId() + "\" " + "WHERE id=" + auswahl.getId());
-		}
-		catch (SQLException e2) {
+
+			stmt.executeUpdate(
+					"UPDATE auswahl SET " + "besitzerId=\"" + anwender.getId() + "\" " + "WHERE id=" + auswahl.getId());
+		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	
+
 	/**
-	 * Eine Auswahl hat eine BesitzerId, diese wurde einem bestimmten Anwender zugewiesen und soll nun
-	 * gelöscht werden. Die Eigentumsbeziehung wird demnach aufgehoben und in der DB gelöscht. 
-	 * @param auswahl Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt werden soll.
+	 * Eine Auswahl hat eine BesitzerId, diese wurde einem bestimmten Anwender
+	 * zugewiesen und soll nun gelï¿½scht werden. Die Eigentumsbeziehung wird demnach
+	 * aufgehoben und in der DB gelï¿½scht.
+	 * 
+	 * @param auswahl Objekt bei welchem die BesitzerId in der Datenbank
+	 *                zurï¿½ckgesetzt werden soll.
 	 */
-	public void deleteEigentumsstruktur ( Auswahl auswahl) {
+	public void deleteEigentumsstruktur(Auswahl auswahl) {
 		Connection con = DBConnection.connection();
-		
+
 		try {
 			Statement stmt = con.createStatement();
-			
-			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\""
-				+ "" + "\" " + "WHERE id=" + auswahl.getId());
-		}
-		catch (SQLException e2) {
+
+			stmt.executeUpdate("UPDATE auswahl SET " + "besitzerId=\"" + "" + "\" " + "WHERE id=" + auswahl.getId());
+		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
-	 * Ein Auswahl-Objekt wird mithilfe einer vorgegebenen Umfrageoption, zu welcher die Auswahl 
-	 * gehört gesucht. Außerdem wird der Anwender angegeben, welcher die Umfrageoption entsprechend der
-	 * Auswahl beantwortet hat. 
-	 * @param anwender Objekt nach welchem die Suche nach der Auswahl gefiltert wird.
-	 * @param umfrageoption zu der das gesuchte Auswahl-Objekt gehört.
-	 * @return Das gesuchte Auswahl-Objekt. Befindet sich kein Auswahl-Objekt in der Datenbank, welches
-	 * sowohl zum Anwender, als auch zur Umfrageoption zugehörig ist, wird null zurückgegeben.
+	 * Ein Auswahl-Objekt wird mithilfe einer vorgegebenen Umfrageoption, zu welcher
+	 * die Auswahl gehÃ¶rt gesucht. AuÃŸerdem wird der Anwender angegeben, welcher die
+	 * Umfrageoption entsprechend der Auswahl beantwortet hat.
+	 * 
+	 * @param anwender      Objekt nach welchem die Suche nach der Auswahl gefiltert
+	 *                      wird.
+	 * @param umfrageoption zu der das gesuchte Auswahl-Objekt gehÃ¶rt.
+	 * @return Das gesuchte Auswahl-Objekt. Befindet sich kein Auswahl-Objekt in der
+	 *         Datenbank, welches sowohl zum Anwender, als auch zur Umfrageoption
+	 *         zugehÃ¶rig ist, wird null zurÃ¼ckgegeben.
 	 */
 	public Auswahl findByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption) {
-		Connection con = DBConnection.connection(); 
+		Connection con = DBConnection.connection();
 		try {
-			Statement stmt = con.createStatement(); 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" + 
-					"WHERE besitzerId=" + anwender.getId() + "AND umfrageoptionId=" +umfrageoption.getId()); 
-			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist: 
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl"
+							+ "WHERE besitzerId=" + anwender.getId() + "AND umfrageoptionId=" + umfrageoption.getId());
+			// PrÃ¼fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
-				Auswahl a = new Auswahl(); 
-				a.setId(resultset.getInt("id")); 
+				Auswahl a = new Auswahl();
+				a.setId(resultset.getInt("id"));
 				a.setName(resultset.getString("name"));
-				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setBesitzerId(resultset.getInt("besitzerId"));
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
-				a.setVoting(resultset.getInt("voting")); 
+				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
-				return a; 	
+				return a;
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return null; 
-		
+		return null;
+
 	}
-	
+
 	/**
-	 * Suche nach allen Auswahl-Objekten, die eine Eigentumsbeziehung mit einem vorgegebenen Anwender haben. 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten Auswahl-Objekte übereinstimmen soll
-	 * @return Alle Auswahl-Objekte, die die Id des vorgegebenen Anwenders als BesitzerId in der DB 
-	 * eingetragen haben.
+	 * Suche nach allen Auswahl-Objekten, die eine Eigentumsbeziehung mit einem
+	 * vorgegebenen Anwender haben. Daraus wird ersichtlich, welcher Anwender
+	 * besondere Rechte in Bezug auf welche Auswahlen hat. Besondere Rechte kÃ¶nnen
+	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verÃ¤ndern darf.
+	 * 
+	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
+	 *                 Auswahl-Objekte Ã¼bereinstimmen soll
+	 * @return Alle Auswahl-Objekte, die die Id des vorgegebenen Anwenders als
+	 *         BesitzerId in der DB eingetragen haben.
 	 */
 	public ArrayList<Auswahl> findAllByAnwenderOwner(Anwender anwender) {
-		Connection con = DBConnection.connection(); 
-		
-		ArrayList <Auswahl> resultarray = new ArrayList <Auswahl> (); 
-		
+		Connection con = DBConnection.connection();
+
+		ArrayList<Auswahl> resultarray = new ArrayList<Auswahl>();
+
 		try {
-			Statement stmt = con.createStatement(); 
-			
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl" +
-					"WHERE besitzerId=" + anwender.getId() + "ORDER BY id"); 
-			while (resultset.next()) { 
-				Auswahl a = new Auswahl(); 
-				a.setId(resultset.getInt("id")); 
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum FROM auswahl"
+							+ "WHERE besitzerId=" + anwender.getId() + "ORDER BY id");
+			while (resultset.next()) {
+				Auswahl a = new Auswahl();
+				a.setId(resultset.getInt("id"));
 				a.setName(resultset.getString("name"));
-				a.setBesitzerId(resultset.getInt("besitzerId")); 
+				a.setBesitzerId(resultset.getInt("besitzerId"));
 				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
-				a.setVoting(resultset.getInt("voting")); 
+				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
-				
-				// Hinzufügen des neuen Objekts zur ArrayList
+
+				// Hinzufï¿½gen des neuen Objekts zur ArrayList
 				resultarray.add(a);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return resultarray; 
+		return resultarray;
 	}
-	
 
 }
