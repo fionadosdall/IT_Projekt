@@ -96,6 +96,23 @@ public abstract class BusinessObjekt implements Serializable {
 		return serialVersionUID;
 	}
 
+	public boolean equals (Object obj) {
+		if (obj != null && obj instanceof BusinessObjekt) {
+			BusinessObjekt bo = (BusinessObjekt) obj;
+			
+			try {
+				if (bo.getId() == this.id) {
+					return true;
+					
+				}
+			} catch (IllegalArgumentException e) {
+				
+				return false;
+			}
+		}
+		
+		return false;
+	}
 /**
  * Erzeugen einer texutellen Darstellung der jeweiligen Instanz
  * Kann in Subklassen überschrieben werden
