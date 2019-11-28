@@ -1,42 +1,97 @@
 /** Add css rules here for your application. */
-
-
 /** Example rules used by the template application (remove for your app) */
-
-
-
 #container {
-  display: grid;
-  grid-template-rows: auto 1fr 30px;
-  grid-template-columns: 25% 25% 25% 25%;
-  grid-auto-flow: column;
+	display: grid;
+	grid-template-rows: auto 1fr 30px;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-auto-flow: column;
 }
 
 #header {
-  grid-column-start: 1;
-  grid-column-end: 5;
-  grid-row-start: 1;
-  grid-row-end: 2;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 1;
+	grid-row-end: 2;
 }
 
 #navigator {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 3;
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 2;
+	grid-row-end: 3;
 }
 
 #details {
-  grid-column-start: 2;
-  grid-column-end: 5;
-  grid-row-start: 2;
-  grid-row-end: 3;
+	grid-column-start: 2;
+	grid-column-end: 5;
+	grid-row-start: 2;
+	grid-row-end: 3;
 }
 
 #footer {
-  grid-column-start: 1;
-  grid-column-end: 5;
-  grid-row-start: 3;
-  grid-row-end: 4;
-  background: black;
+	grid-column-start: 1;
+	grid-column-end: 5;
+	grid-row-start: 3;
+	grid-row-end: 4;
+	background: black;
+}
+/** Styling des Heders*/
+.headerGesamt {
+	background-color: #363636;
+	color: #F5F5D8;
+	min-height: 3.25rem;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
+	box-sizing: inherit;
+}
+
+.headerLinks {
+	justify-content: flex-start;
+	margin-right: auto;
+	align-items: stretch;
+	display: flex;
+	box-sizing: inherit;
+}
+
+.headerLogo {
+	align-items: stretch;
+	display: flex;
+	flex-shrink: 0;
+	min-height: 3.25rem;
+	box-sizing: inherit;
+}
+
+.headerLogoInput {
+	display: flex;
+	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	text-decoration: none;
+}
+
+.headerRechts {
+	justify-content: flex-end;
+	margin-left: auto;
+	align-items: stretch;
+	display: flex;
+	box-sizing: inherit;
+}
+
+.headerRechtsElement {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
 }
