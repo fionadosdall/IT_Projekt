@@ -56,6 +56,51 @@ public class AuswahlMapper {
 	 */
 
 	/**
+	 * Suche nach allen Auswahl-Objekten über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Auswahl-Objekte tragen
+	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Auswahl> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Auswahl> resultarray = new ArrayList<Auswahl>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, umfrageoptionId, voting, erstellDatum " 
+					+ "FROM auswahl" + "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Auswahl-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Auswahl a = new Auswahl();
+				a.setId(resultset.getInt("id"));
+				a.setName(resultset.getString("name"));
+				a.setBesitzerId(resultset.getInt("besitzerId"));
+				a.setUmfrageoptionId(resultset.getInt("umfrageoptionId"));
+				a.setVoting(resultset.getInt("voting"));
+				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzuf�gen des neuen Objektes zur ArrayList
+				resultarray.add(a);
+
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Ergebnis zurückgeben in Form der ArrayList
+		return resultarray;
+	}
+
+	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
@@ -85,7 +130,7 @@ public class AuswahlMapper {
 	}
 
 	/**
-	 * Die insert-Methode fügt ein neues Anwender-Objekt zur Datenbank hinzu.
+	 * Die insert-Methode fügt ein neues Auswahl-Objekt zur Datenbank hinzu.
 	 * 
 	 * @param auswahl bzw. das zu speichernde Objekt
 	 * @return Das übergeben Objekt, ggf. mit abgeänderter Id
@@ -96,7 +141,7 @@ public class AuswahlMapper {
 			Statement stmt = con.createStatement();
 			/**
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Anwender ist.
+			 * Auswahl-Objekte ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM auswahl");
 			if (resultset.next()) {
@@ -205,7 +250,7 @@ public class AuswahlMapper {
 	 * 
 	 * @param umfrageoption zu welcher man alle getroffenen Auswahlen ausgegebenen
 	 *                      haben m�chte.
-	 * @return Eine ArrayList, die alle gefundenen Auswahlen enth�lt. Falls eine
+	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enth�lt. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise bef�llt zur�ckgegeben wird.
 	 */
@@ -223,8 +268,8 @@ public class AuswahlMapper {
 
 			/**
 			 * F�r jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit
-			 * wird die ArrayListe nun Durchlauf f�r Durchlauf der Schleife
-			 * aufgebaut/bef�llt.
+			 * wird die ArrayListe nun Durchlauf für Durchlauf der Schleife
+			 * aufgebaut/befüllt.
 			 */
 			while (resultset.next()) {
 				Auswahl a = new Auswahl();
@@ -241,12 +286,13 @@ public class AuswahlMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		//Ergebnis zurückgeben in Form der ArrayList 
 		return resultarray;
 	}
 
 	/**
-	 * Eine Auswahl erh�lt eine BesitzerId. Diese BesitzerId wird einem bestimmten
-	 * Anwender zugewiesen. Dadurch l�sst sich eine Eigentumsbeziehung zwischen den
+	 * Eine Auswahl erhält eine BesitzerId. Diese BesitzerId wird einem bestimmten
+	 * Anwender zugewiesen. Dadurch lässt sich eine Eigentumsbeziehung zwischen den
 	 * beiden Objekten herstellen. Wenn ein Anwender Besitzer eines (hier:
 	 * Auswahl-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Ver�nderungen vornehmen.
@@ -291,7 +337,7 @@ public class AuswahlMapper {
 
 	/**
 	 * Ein Auswahl-Objekt wird mithilfe einer vorgegebenen Umfrageoption, zu welcher
-	 * die Auswahl gehört gesucht. Außerdem wird der Anwender angegeben, welcher die
+	 * die Auswahl gehört, gesucht. Außerdem wird der Anwender angegeben, welcher die
 	 * Umfrageoption entsprechend der Auswahl beantwortet hat.
 	 * 
 	 * @param anwender      Objekt nach welchem die Suche nach der Auswahl gefiltert
@@ -363,6 +409,7 @@ public class AuswahlMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		//Ergebnis zurückgeben in Form der ArrayList 
 		return resultarray;
 	}
 

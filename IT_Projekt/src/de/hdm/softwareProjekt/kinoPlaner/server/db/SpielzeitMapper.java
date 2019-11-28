@@ -38,8 +38,8 @@ public class SpielzeitMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein spielzeitMapper existiert, falls nein,
-	 * wird ein neuer instanziiert. Existiert bereits ein gruppeMapper, wird dieser
-	 * zurückgegeben.
+	 * wird ein neuer instanziiert. Existiert bereits ein spielzeitMapper, wird
+	 * dieser zurückgegeben.
 	 */
 
 	public static SpielzeitMapper spielzeitMapper() {
@@ -53,6 +53,47 @@ public class SpielzeitMapper {
 	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. Sie
 	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	 */
+
+	/**
+	 * Suche nach allen Spielzeiten über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Spielzeiten tragen
+	 * @return Eine ArrayList, die alle gefundenen Spielzeiten enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Spielzeit> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Spielzeit> resultarray = new ArrayList<Spielzeit>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum"
+					+ "FROM spielzeit" + "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielzeit-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Spielzeit sz = new Spielzeit();
+				sz.setId(resultset.getInt("id"));
+				sz.setName(resultset.getString("name"));
+				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(sz);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Rückgabe des Ergebnisses in Form einer ArrayList
+		return resultarray;
+	}
 
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
@@ -95,7 +136,7 @@ public class SpielzeitMapper {
 			Statement stmt = con.createStatement();
 			/**
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Anwender ist.
+			 * Spielzeiten ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM spielzeit");
 			if (resultset.next()) {
@@ -112,7 +153,7 @@ public class SpielzeitMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * Rückgabe des Kinos. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
+		 * Rückgabe des Spielzeit-Objekts. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
 		 * angepasste Id)
 		 */
 		return spielzeit;
@@ -233,7 +274,7 @@ public class SpielzeitMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//Rückgabe des Ergebnisses in Form einer ArrayList
+		// Rückgabe des Ergebnisses in Form einer ArrayList
 		return resultarray;
 	}
 

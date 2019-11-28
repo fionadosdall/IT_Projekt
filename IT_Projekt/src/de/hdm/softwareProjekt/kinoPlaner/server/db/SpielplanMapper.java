@@ -42,8 +42,8 @@ public class SpielplanMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein spielplanMapper existiert, falls nein,
-	 * wird ein neuer instanziiert. Existiert bereits ein gruppeMapper, wird dieser
-	 * zurückgegebene.
+	 * wird ein neuer instanziiert. Existiert bereits ein spielplanMapper, wird
+	 * dieser zurückgegebene.
 	 */
 
 	public static SpielplanMapper spielplanMapper() {
@@ -57,6 +57,47 @@ public class SpielplanMapper {
 	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. Sie
 	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	 */
+
+	/**
+	 * Suche nach allen Spielplan-Objekten über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Spielpläne tragen
+	 * @return Eine ArrayList, die alle gefundenen Spielpläne enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Spielplan> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Spielplan> resultarray = new ArrayList<Spielplan>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum "
+					+ "FROM spieplan" + "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
+				sp.setKinoId(resultset.getInt("kinoId"));
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(sp);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Rückgabe des Ergebnisses in Form einer ArrayList
+		return resultarray;
+	}
 
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
@@ -99,7 +140,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 			/**
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Anwender ist.
+			 * Spielpläne ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM spielplan");
 			if (resultset.next()) {
@@ -116,8 +157,8 @@ public class SpielplanMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * Rückgabe des Spielplans. Durch die Methode wurde das Objekt ggf. angepasst
-		 * (z.B. angepasste Id)
+		 * Rückgabe des Spielplan-Objekts. Durch die Methode wurde das Objekt ggf.
+		 * angepasst (z.B. angepasste Id)
 		 */
 		return spielplan;
 	}
@@ -200,6 +241,44 @@ public class SpielplanMapper {
 	}
 
 	/**
+	 * Alle in der Datenbank vorhandenen Spielpläne sollen gesucht und ausgegeben
+	 * werden
+	 * 
+	 * @return Alle Spielplan-Objekte, die in der Datenbank eingetragen sind, werden
+	 *         in einer ArrayList zurückgegeben.
+	 */
+	public ArrayList<Spielplan> findAll() {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Spielplan> resultarray = new ArrayList<Spielplan>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT id, name, besitzerId, kinoId, erstellDatum " + "FROM spielplan" + "ORDER BY kinoId");
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+			while (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
+				sp.setKinoId(resultset.getInt("kinoId"));
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(sp);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Rückgabe des Ergebnisses in Form einer ArrayList
+		return resultarray;
+	}
+
+	/**
 	 * Suche nach allen Spielplan-Objekten, die eine Eigentumsbeziehung mit einem
 	 * vorgegebene Anwender haben. Daraus wird ersichtlich, welcher Anwender
 	 * besondere Rechte in Bezug auf welche Spielpläne hat. Besondere Rechte können
@@ -229,7 +308,7 @@ public class SpielplanMapper {
 				sp.setKinoId(resultset.getInt("kinoId"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzuf�gen des neuen Objekts zur ArrayList
+				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
 			}
 		} catch (SQLException e1) {
@@ -262,8 +341,8 @@ public class SpielplanMapper {
 			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum FROM spielplan"
 					+ "WHERE kinoId = " + kino.getId() + "ORDER BY kinoId");
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();
@@ -307,8 +386,8 @@ public class SpielplanMapper {
 					.executeQuery("SELECT id, name, besitzerId, kinoketteId, erstellDatum FROM spielplan"
 							+ "WHERE kinoketteId = " + kinokette.getId() + "ORDER BY kinoketteId");
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();

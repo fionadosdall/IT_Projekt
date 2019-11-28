@@ -55,6 +55,50 @@ public class KinoketteMapper {
 	 */
 
 	/**
+	 * Suche nach allen Kinoketten über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Kinoketten tragen
+	 * @return Eine ArrayList, die alle gefundenen Kinoketten enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Kinokette> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Kinokette> resultarray = new ArrayList<Kinokette>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, sitz, website, erstellDatum "
+			+ "FROM kinokette" + "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Kinoketten-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Kinokette kk = new Kinokette();
+				kk.setId(resultset.getInt("id"));
+				kk.setBesitzerId(resultset.getInt("besitzerId"));
+				kk.setName(resultset.getString("name"));
+				kk.setSitz(resultset.getString("sitz"));
+				kk.setWebsite(resultset.getString("website"));
+				kk.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzuf�gen des neuen Objekts zur ArrayList
+				resultarray.add(kk);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		//Ergebnis zurückgeben in Form der zuvor erstellen ArrayList
+		return resultarray;
+	}
+		
+	
+	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
@@ -94,12 +138,12 @@ public class KinoketteMapper {
 		try {
 			Statement stmt = con.createStatement();
 			/**
-			 * Im Folgenden: �berpr�fung, welches die h�chste Id der schon bestehenden
-			 * Anwender ist.
+			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
+			 * Kinoketten ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM kinokette");
 			if (resultset.next()) {
-				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
+				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				kinokette.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
@@ -111,7 +155,7 @@ public class KinoketteMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * R�ckgabe der Kinokette. Durch die Methode wurde das Objekt ggf. angepasst
+		 * Rückgabe der Kinokette. Durch die Methode wurde das Objekt ggf. angepasst
 		 * (z.B. angepasste Id)
 		 */
 		return kinokette;
@@ -146,7 +190,7 @@ public class KinoketteMapper {
 	}
 
 	/**
-	 * Mit dieser Methode kann ein Kinoketten-Objekt aus der Datenbank gel�scht
+	 * Mit dieser Methode kann ein Kinoketten-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
 	 * @param kinokette Objekt, welches gel�scht werden soll
@@ -271,12 +315,13 @@ public class KinoketteMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		//Ergebnis zurückgeben in Form der zuvor erstellten ArrayList 
 		return resultarray;
 	}
 
 	/**
-	 * Eine Kinokette erh�lt eine BesitzerId. Diese BesitzerId wird einem bestimmten
-	 * Anwender zugewiesen. Dadurch l�sst sich eine Eigentumsbeziehung zwischen den
+	 * Eine Kinokette erhält eine BesitzerId. Diese BesitzerId wird einem bestimmten
+	 * Anwender zugewiesen. Dadurch lässt sich eine Eigentumsbeziehung zwischen den
 	 * beiden Objekten herstellen. Wenn ein Anwender Besitzer eines (hier:
 	 * Kinoketten-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Ver�nderungen vornehmen.

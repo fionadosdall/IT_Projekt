@@ -39,7 +39,7 @@ public class UmfrageMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein umfrageMapper existiert, falls nein,
-	 * wird ein neuer instanziiert. Existiert bereits ein gruppeMapper, wird dieser
+	 * wird ein neuer instanziiert. Existiert bereits ein umfrageMapper, wird dieser
 	 * zurückgegeben.
 	 */
 
@@ -55,6 +55,49 @@ public class UmfrageMapper {
 	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
 	 */
 
+	/**
+	 * Suche nach allen Umfragen über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Umfragen tragen
+	 * @return Eine ArrayList, die alle gefundenen Umfragen enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Umfrage> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Umfrage> resultarray = new ArrayList<Umfrage>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum " + "FROM umfrage"
+					+ "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Umfrage u = new Umfrage();
+				u.setId(resultset.getInt("id"));
+				u.setName(resultset.getString("name"));
+				u.setGruppenId(resultset.getInt("gruppenId"));
+				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzuf�gen des neuen Objekts zur ArrayList
+				resultarray.add(u);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+
+		}
+		// Rückgabe des Ergebnisses in Form einer ArrayList
+		return resultarray;
+	}
+	
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
@@ -96,7 +139,7 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 			/**
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Anwender ist.
+			 * Umfragen ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM umfrage");
 			if (resultset.next()) {
@@ -113,7 +156,7 @@ public class UmfrageMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * Rückgabe des Kinos. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
+		 * Rückgabe der Umfrage. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
 		 * angepasste Id)
 		 */
 		return umfrage;
@@ -216,7 +259,7 @@ public class UmfrageMapper {
 					+ "FROM umfrage" + "WHERE anwenderId = " + anwender.getId() + "ORDER BY name");
 
 			/**
-			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
 			 * die ArrayListe Stück für Stück aufgebaut/gefüllt.
 			 */
 
@@ -341,7 +384,7 @@ public class UmfrageMapper {
 					+ "FROM umfrage" + "WHERE gruppeId = " + gruppe.getId() + "ORDER BY name");
 
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
 			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {

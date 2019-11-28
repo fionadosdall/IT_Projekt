@@ -55,6 +55,51 @@ public class KinoMapper {
 	 */
 
 	/**
+	 * Suche nach allen Kinos über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Kinos tragen
+	 * @return Eine ArrayList, die alle gefundenen Kinos enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Kino> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Kino> resultarray = new ArrayList<Kino>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum" + "FROM kino"
+					+ "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Kino k = new Kino();
+				k.setId(resultset.getInt("id"));
+				k.setBesitzerId(resultset.getInt("besitzerId"));
+				k.setName(resultset.getString("name"));
+				k.setPlz(resultset.getInt("plz"));
+				k.setStadt(resultset.getString("stadt"));
+				k.setStrasse(resultset.getString("strasse"));
+				k.setHausnummer(resultset.getString("hausnummer"));
+				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(k);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Rückgabe des Ergebnisses in Form der zuvor erstellten ArrayList
+		return resultarray;
+	}
+	
+	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
@@ -95,7 +140,7 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 			/**
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Anwender ist.
+			 * Kinos ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM kino");
 			if (resultset.next()) {
@@ -180,8 +225,8 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum FROM kino"
-							+ "ORDER BY name");
+					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum"
+							+ " FROM kino" + "ORDER BY name");
 
 			while (resultset.next()) {
 				Kino k = new Kino();
@@ -242,8 +287,8 @@ public class KinoMapper {
 	/**
 	 * Suche nach allen Kino-Objekten, die eine Eigentumsbeziehung mit einem
 	 * vorgegebene Anwender haben. Daraus wird ersichtlich, welcher Anwender
-	 * besondere Rechte in Bezug auf welche Kinos hat. Besondere Rechte können
-	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
+	 * besondere Rechte in Bezug auf welche Kinos hat. Besondere Rechte können zum
+	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
 	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
 	 *                 Kino-Objekte übereinstimmen soll.
@@ -392,8 +437,8 @@ public class KinoMapper {
 					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum FROM kino"
 							+ "WHERE kinokettenId = " + kinokette.getId() + "ORDER BY name");
 			/**
-			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und die
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {
 				Kino k = new Kino();

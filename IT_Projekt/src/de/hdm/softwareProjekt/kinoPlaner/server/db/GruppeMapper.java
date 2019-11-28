@@ -55,6 +55,47 @@ public class GruppeMapper {
 	 */
 
 	/**
+	 * Suche nach allen Gruppen über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Gruppen tragen 
+	 * @return Eine ArrayList, die alle gefundenen Gruppen enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Gruppe> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Gruppe> resultarray = new ArrayList<Gruppe>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, erstellDatum" + "FROM gruppe"
+					+ "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Gruppen-Objekt erstellt und
+			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Gruppe g = new Gruppe();
+				g.setId(resultset.getInt("id"));
+				g.setBesitzerId(resultset.getInt("besitzerId"));
+				g.setName(resultset.getString("name"));
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(g);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// ArrayList mit Ergebnis zurückgeben
+		return resultarray;
+	}
+	
+	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere

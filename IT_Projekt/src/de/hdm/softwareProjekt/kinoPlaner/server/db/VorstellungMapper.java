@@ -10,25 +10,36 @@ import java.util.ArrayList;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-// Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine relationale DB abbildet.
+/**
+ * Das hier ist eine Mapper-Klasse, die Umfrageoption-Objekte auf eine
+ * relationale DB abbildet.
+ * 
+ * @author annaf
+ *
+ */
 
 public class VorstellungMapper {
 
-//	Hier folgt die Klassenvariable. 
-//  Diese Variable ist wegen "static" nur einmal vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
+	/**
+	 * Hier folgt die Klassenvariable. Diese Variable ist wegen "static" nur einmal
+	 * vorhanden. Hier wird die einzige Instanz der Klasse gespeichert.
+	 */
 	private static VorstellungMapper vorstellungMapper;
 
-// Gesch�tzter Konstruktor, damit man nicht einfach neue Instanzen bilden kann?? Weil eigentlich wird von 
-// einem Mapper nur 1x eine Instanz erzeugt
+	/**
+	 * Geschützter Konstruktor, damit man nicht einfach neue Instanzen bilden kann.
+	 * Denn von diesem Mapper wird nur 1x eine Instanz erzeugt
+	 */
 	protected VorstellungMapper() {
 	}
 
 	/**
-	 * Um eine Instanz dieses Mappers erstellen zu k�nnen, nutzt man NICHT den
+	 * Um eine Instanz dieses Mappers erstellen zu können, nutzt man NICHT den
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
-	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert.
-	 * 
-	 * @param anwender
+	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
+	 * wird zuerst überprüft, ob bereis ein vorstellungMapper existiert, falls nein,
+	 * wird ein neuer instanziiert. Existiert bereits ein vorstellungMapper, wird
+	 * dieser zurückgegeben.
 	 */
 
 	public static VorstellungMapper vorstellungMapper() {
@@ -38,7 +49,55 @@ public class VorstellungMapper {
 		return vorstellungMapper;
 	}
 
-// Es folgt eine Reihe Methoden, die wir im StarUML aufgef�hrt haben. Sie erm�glichen, dass man Objekte z.B. suchen, l�schen und updaten kann.
+	/**
+	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgeführt haben. Sie
+	 * ermöglichen, dass man Objekte z.B. suchen, löschen und updaten kann.
+	 */
+
+	/**
+	 * Suche nach allen Vorstellungen über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Vorstellungen tragen
+	 * @return Eine ArrayList, die alle gefundenen Vorstellungen enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Vorstellung> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Vorstellung> resultarray = new ArrayList<Vorstellung>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum"
+					+ "FROM vorstellung" + "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Vorstellungs-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Vorstellung v = new Vorstellung();
+				v.setId(resultset.getInt("id"));
+				v.setName(resultset.getString("name"));
+				v.setFilmId(resultset.getInt("filmId"));
+				v.setSpielzeitId(resultset.getInt("spielzeitId"));
+				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				// Hinzuf�gen des neuen Objekts zur ArrayList
+				resultarray.add(v);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		/**
+		 * Rückgabe der Vorstellungen als ArrayList.
+		 */
+		return resultarray;
+	}
 
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
@@ -69,19 +128,27 @@ public class VorstellungMapper {
 		return true;
 	}
 
+	/**
+	 * Die insert-Methode fügt ein neues Vorstellungs-Objekt zur Datenbank hinzu.
+	 * 
+	 * @param vorstellung als das zu speichernde Objekt
+	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
+	 */
 	public Vorstellung insert(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			// Jetzt wird geschaut, welches die h�chste Id der schon bestehenden
-			// Vorstellungen ist.
+			/**
+			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
+			 * Vorstellungen ist.
+			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM vorstellung");
 			if (resultset.next()) {
-				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
+				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				vorstellung.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
-				// Jetzt wird die Id tats�chlich eingef�gt:
+				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate("INSERT INTO vorstellung (id, name, filmId, spielzeitId, spielplanId, erstellDatum)"
 						+ "VALUES(" + vorstellung.getId() + "','" + vorstellung.getName() + "','"
 						+ vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + "','"
@@ -90,15 +157,27 @@ public class VorstellungMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		/**
+		 * Rückgabe der Vostellung. Durch die Methode wurde das Objekt ggf. angepasst
+		 * (z.B. angepasste Id)
+		 */
 		return vorstellung;
 	}
 
+	/**
+	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
+	 * 
+	 * @param vorstellung als das Objekt, das verändert werden soll.
+	 * @return Das Objekt, welches im Parameter übergeben wurde.
+	 */
 	public Vorstellung update(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
-
+			/**
+			 * Update wird in die Datenbank eingetragen.
+			 */
 			stmt.executeUpdate("UPDATE vorstellung SET " + "name=\"" + vorstellung.getName() + "\", "
 					+ "erstellDatum=\"" + vorstellung.getErstellDatum() + "\", " + "spielplanId=\""
 					+ vorstellung.getSpielzeitId() + "\", " + "spielzeitId=\"" + vorstellung.getSpielzeitId() + "\", "
@@ -106,9 +185,18 @@ public class VorstellungMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+		/**
+		 * Rückgabe des neuen, veränderten Vorstellungs-Objektes
+		 */
 		return vorstellung;
 	}
 
+	/**
+	 * Mit dieser Methode kann ein Vorstellungs-Objekt aus der Datenbank gelöscht
+	 * werden.
+	 * 
+	 * @param vorstellung Objekt, welches gelöscht werden soll.
+	 */
 	public void delete(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
 
@@ -122,6 +210,13 @@ public class VorstellungMapper {
 		}
 	}
 
+	/**
+	 * Alle in der Datenbank vorhandenen Vorstellungen sollen gesucht und ausgegeben
+	 * werden
+	 * 
+	 * @return Alle Vorstellungs-Objekte, die in der Datenbank eingetragen sind,
+	 *         werden in einer ArrayList zurückgegeben.
+	 */
 	public ArrayList<Vorstellung> findAllVorstellungen() {
 		Connection con = DBConnection.connection();
 
@@ -143,15 +238,30 @@ public class VorstellungMapper {
 				v.setSpielplanId(resultset.getInt("spielplanId"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzuf�gen des neuen Objekts zur ArrayList
+				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(v);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		/**
+		 * Rückgabe der Vorstellungen als ArrayList.
+		 */
 		return resultarray;
 	}
 
+	/**
+	 * Suche nach allen Vorstellungs-Objekten, die eine Beziehung mit einem
+	 * vorgegebenen Spielplan haben. Liegt eine Beziehung zwischen Vorstellung und
+	 * Spielplan vor, ist in der Datenbank in der Vorstellungs-Tabelle die
+	 * entsprechende spielplanId hinterlegt. Diese spielplanId muss mit der Id des
+	 * im Methodenparamter übergebenen Spielplans übereinstimmen.
+	 * 
+	 * @param spielplan Objekt, dessen Id mit den spielplanIds in der
+	 *                  Vorstellungs-Tabelle übereinstimmen soll.
+	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielplanId dem
+	 *         übergebenen Spielplan entsprechen.
+	 */
 	public ArrayList<Vorstellung> findAllBySpielplan(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
 
@@ -160,15 +270,13 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
-							+ "WHERE spielplanId = " + spielplan.getId() + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum"
+					+ "FROM vorstellung" + "WHERE spielplanId = " + spielplan.getId() + "ORDER BY name");
 
 			/**
-			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
-			 * die ArrayListe St�ck f�r St�ck aufgebaut/gefuellt.
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Vorstellungs-Objekt erstellt
+			 * und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
-
 			while (resultset.next()) {
 				Vorstellung v = new Vorstellung();
 				v.setId(resultset.getInt("id"));
@@ -178,16 +286,26 @@ public class VorstellungMapper {
 				v.setSpielplanId(resultset.getInt("spielplanId"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
-				// Hinzuf�gen des neuen Objekts zur ArrayList
+				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(v);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 
 		}
+		// ArrayList mit Ergebnis zurückgeben
 		return resultarray;
 	}
 
+	/**
+	 * Suche nach einer Vorstellung mit vorgegebener Vorstellungs-Id
+	 * 
+	 * @param id zugehörig zu einer Vorstellung, nach welcher gesucht werden soll,
+	 *           also der Primärschlüssel in der Datenbank.
+	 * @return Das Vorstellungs-Objekt, das mit seiner Vorstellungs-Id der
+	 *         übergebenen Id entspricht. Falls keine Vorstellung zur übergebenen Id
+	 *         gefunden wurde, wird null zurückgegeben.
+	 */
 	public Vorstellung findById(int id) {
 		Connection con = DBConnection.connection();
 		try {

@@ -38,7 +38,7 @@ public class FilmMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein filmMapper existiert, falls nein, wird
-	 * ein neuer instanziiert. Existiert bereits ein gruppeMapper, wird dieser
+	 * ein neuer instanziiert. Existiert bereits ein filmMapper, wird dieser
 	 * zurückgegebene.
 	 */
 
@@ -53,6 +53,49 @@ public class FilmMapper {
 	 * Es folgt eine Reihe von Methoden, die wir im StarUML aufgef�hrt haben. Sie
 	 * erm�glichen, dass man Objekte z.B. suchen, l�schen und updaten kann.
 	 */
+
+	/**
+	 * Suche nach allen Film-Objekten über vorgegebenen Namen.
+	 * 
+	 * @param name den die gesuchten Filme tragen
+	 * @return Eine ArrayList, die alle gefundenen Film-Objekte enthält. Falls eine
+	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
+	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 */
+	public ArrayList<Film> findAllByName(String name) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Film> resultarray = new ArrayList<Film>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum " + "FROM film"
+							+ "WHERE name = " + name + "ORDER BY name");
+
+			/**
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Film-Objekt erstellt und die
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 */
+
+			while (resultset.next()) {
+				Film f = new Film();
+				f.setId(resultset.getInt("id"));
+				f.setName(resultset.getString("name"));
+				f.setBesitzerId(resultset.getInt("besitzerId"));
+				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setBewertung(resultset.getInt("bewertung"));
+				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+
+				resultarray.add(f);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Ergebnis zurückgeben in Form einer ArrayList
+		return resultarray;
+	}
 
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
@@ -84,10 +127,10 @@ public class FilmMapper {
 	}
 
 	/**
-	 * Die insert-Methode f�gt ein neues Anwender-Objekt zur Datenbank hinzu.
+	 * Die insert-Methode fügt ein neues Film-Objekt zur Datenbank hinzu.
 	 * 
 	 * @param film Objekt welches gespeichert werden soll
-	 * @return Das �bergebene Objekt, gg. mit abge�nderter Id.
+	 * @return Das übergebene Objekt, ggf. mit abgeänderter Id.
 	 */
 
 	public Film insert(Film film) {
@@ -95,8 +138,8 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 			/**
-			 * Im Folgenden: �berpr�fung, welches die h�chste Id der schon bestehenden
-			 * Anwender ist.
+			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
+			 * Filme ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM film");
 			if (resultset.next()) {
@@ -113,7 +156,7 @@ public class FilmMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * R�ckgabe des Films. Durch die Methode wurde das Objekt ggf. angepasst (z.B:
+		 * Rückgabe des Film-Objektes. Durch die Methode wurde das Objekt ggf. angepasst (z.B:
 		 * angepasste Id)
 		 */
 		return film;
@@ -169,8 +212,8 @@ public class FilmMapper {
 	 * Suche nach einem bestimmten Film mithilfe einer vorgegebenen Film-Id
 	 * 
 	 * @param id des Films, nach welchem gesucht werden soll
-	 * @return Das Film-Objekt, bei dem die FilmId mit der �bergebenen Id
-	 *         �bereinstimmt. Falls kein Film zur �bergebenen Id gefunden wurde,
+	 * @return Das Film-Objekt, bei dem die FilmId mit der übergebenen Id
+	 *         übereinstimmt. Falls kein Film zur übergebenen Id gefunden wurde,
 	 *         wird null zur�ckgegeben.
 	 */
 	public Film findById(int id) {
@@ -228,7 +271,8 @@ public class FilmMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		// Ergebnis zurückgeben in Form einer ArrayList
+		return resultarray;
 	}
 
 	/**
@@ -268,6 +312,7 @@ public class FilmMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		//Ergebnis zurückgeben in Form der eingangs erstellten ArrayList
 		return resultarray;
 	}
 
