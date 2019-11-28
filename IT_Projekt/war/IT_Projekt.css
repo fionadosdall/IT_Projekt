@@ -5,48 +5,38 @@
 
 
 
-body{
-	background-color:red;
-}
-	
-#header{	
-   	background-color:black;
-   	width: 100%;
+#container {
+  display: grid;
+  grid-template-rows: auto 1fr 30px;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-auto-flow: column;
 }
 
-#footer{
-	background-color:black;
-	width: 100%;
-	
+#header {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
 }
 
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+#navigator {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+#details {
+  grid-column-start: 2;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 3;
 }
 
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
-}
-
-.dialogVPanel {
-  margin: 5px;
-}
-
-.serverResponseLabelError {
-  color: red;
-}
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+#footer {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  background: black;
 }
