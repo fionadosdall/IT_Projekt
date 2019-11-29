@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
- * Hier wird die Verbindung zu unserer Datenbank verwaltet. 
+ * Hier wird die Verbindung zu unserer Datenbank verwaltet. Es kann nur auf
+ * unsere festgelegte Datenbank zugegriffen werden (Singleton-Eigenschaft)
+ * 
  * @author annaf
  *
  */
@@ -12,18 +14,32 @@ import java.sql.DriverManager;
 public class DBConnection {
 
 	/**
-	 *  Diese Klasse wird nur einmal instanziiert. 
-	 *  Die Klassenvariable con ist static, damit sie NUR EINMAL f�r s�mtliche Instanzen der DB Connection-Klasse vorkommt. 
-	 *  
+	 * Diese Klasse wird nur einmal instanziiert. Die Klassenvariable con ist
+	 * static, damit sie NUR EINMAL für sämtliche Instanzen der DB Connection-Klasse
+	 * vorkommt.
+	 * 
 	 */
-	
-	private static Connection con = null; 
-	
-	private static String googleURL = null; 
-	private static String localURL = null; 
-	
+
+	private static Connection con = null;
+
+	/**
+	 * Im Folgenden sind die URLs aufgeführt, mit deren Hilfe wir die Datenbank
+	 * ansprechen können.
+	 */
+	private static String googleURL = null;
+	private static String localURL = null;
+
+	/**
+	 * Diese statische Methode wird von allen Mappern aufgerufen:
+	 * <code>DBConnection.connection()</code>. Diese Methode ist Grund für die
+	 * eingangs erwähnte Singleton-Eigenschaft. Sie stellt sicher, dass immer nur
+	 * eine einzige Instanz dieser DBConnection-Klasse exisitiert.
+	 * 
+	 * @return Die Verbindung wird zurückgebeben
+	 */
+
 	public static Connection connection() {
-        // Wenn bisher noch keine Verbindung zur DB aufgebaut wurde: 
+		// Wenn bisher noch keine Verbindung zur DB aufgebaut wurde:
 //        if (con == null) {
 //            String url = null;
 //            try {
@@ -31,13 +47,24 @@ public class DBConnection {
 //                } else {
 //                    
 //                }
+		/**
+		 * Jetzt kann der DriverManager die Verbindung mit Hilfe der beiden angegebenen 
+		 * URLs aufbauen.
+		 */
 //                con = DriverManager.getConnection(url);
 //            } catch (Exception e) {
 //                con = null;
 //                e.printStackTrace();
 //                throw new RuntimeException(e.getMessage());
-//            }
+//            }catch (Exception e) {
+//            con = null;
+//            e.printStackTrace();
+//            throw new RuntimeException(e.getMessage());
 //        }
-        return con;
-    }
+//        }
+		/**
+		 * Zurückgeben der Verbindung
+		 */
+		return con;
+	}
 }
