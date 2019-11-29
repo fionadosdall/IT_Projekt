@@ -5,6 +5,7 @@
 	grid-template-rows: auto 1fr 30px;
 	grid-template-columns: 25% 25% 25% 25%;
 	grid-auto-flow: column;
+	height: 100vh;
 }
 
 #header {
@@ -19,6 +20,7 @@
 	grid-column-end: 2;
 	grid-row-start: 2;
 	grid-row-end: 3;
+	background-color: #363636;
 }
 
 #details {
@@ -26,6 +28,10 @@
 	grid-column-end: 5;
 	grid-row-start: 2;
 	grid-row-end: 3;
+	background: #d6d1d1;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 #footer {
@@ -94,4 +100,36 @@
 	padding: .5rem .75rem;
 	position: relative;
 	box-sizing: inherit;
+}
+.headerImage {
+  height: 16px;
+  width: 16px;
+  display: block;
+  position: relative;
+}
+.suchenImage {
+  height: auto;
+  max-width: 100%;
+}
+.userButton {
+  background-color: transparent;
+  border-color: #209cee;
+  color: #209cee;
+  border-width: 1px;
+  cursor: pointer;
+  border-width: 1px;
+  justify-content: center;
+  padding-bottom: calc(.375em - 1px);
+  padding-left: .75em;
+  padding-right: .75em;
+  padding-top: calc(.375em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: none;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.25em;
 }
