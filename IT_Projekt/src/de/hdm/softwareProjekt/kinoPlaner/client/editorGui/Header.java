@@ -52,6 +52,9 @@ public class Header extends FlowPanel {
 		headerLogo.add(headerLogoInput);
 
 		headerRechts.add(headerRechtsElement);
+		headerRechts.add(headerRechtsElement);
+		headerRechts.add(headerRechtsElement);
+		
 		headerRechtsElement.add(headerImage);
 		headerImage.add(suchenImage);
 
