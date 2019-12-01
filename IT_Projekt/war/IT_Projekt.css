@@ -101,71 +101,230 @@
 	position: relative;
 	box-sizing: inherit;
 }
+
 .headerImage {
-  height: 16px;
-  width: 16px;
-  display: block;
-  position: relative;
+	height: 16px;
+	width: 16px;
+	display: block;
+	position: relative;
 }
+
 .suchenImage {
-  height: auto;
-  max-width: 100%;
+	height: auto;
+	max-width: 100%;
 }
+
 .userButton {
-  background-color: transparent;
-  border-color: #209cee;
-  color: #209cee;
-  border-width: 1px;
-  cursor: pointer;
-  border-width: 1px;
-  justify-content: center;
-  padding-bottom: calc(.375em - 1px);
-  padding-left: .75em;
-  padding-right: .75em;
-  padding-top: calc(.375em - 1px);
-  text-align: center;
-  white-space: nowrap;
-  -webkit-appearance: none;
-  align-items: center;
-  border-radius: 4px;
-  box-shadow: none;
-  display: inline-flex;
-  font-size: 1rem;
-  height: 2.25em;
+	background-color: transparent;
+	border-color: #209cee;
+	color: #209cee;
+	border-width: 1px;
+	cursor: pointer;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
 }
 /** Styling des Navigators*/
 .navcontainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
+
 .navelement {
-  text-align: center;
-  color: white;
-  margin: 10px;
-  padding: 142px 0 142px 0;
+	text-align: center;
+	color: white;
+	margin: 10px;
+	padding: 142px 0 142px 0;
 }
+
 .navButton {
-  background-color: transparent;
-  border-color: #fff;
-  color: #fff;
-  border-width: 1px;
-  cursor: pointer;
-  justify-content: center;
-  padding-bottom: calc(.375em - 1px);
-  padding-left: .75em;
-  padding-right: .75em;
-  padding-top: calc(.375em - 1px);
-  text-align: center;
-  white-space: nowrap;
-  -webkit-appearance: none;
-  align-items: center;
-  border-radius: 4px;
-  box-shadow: none;
-  display: inline-flex;
-  font-size: 1rem;
-  height: 2.25em;
-  position: relative;
-  vertical-align: top;
-  border: 1px solid ;
+	background-color: transparent;
+	border-color: #fff;
+	color: #fff;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	position: relative;
+	vertical-align: top;
+	border: 1px solid;
+}
+/** Styling der UserForm*/
+.detailscontainer {
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+}
+
+.detailsoben {
+	background: #d6d1d1;
+	text-align: center;
+	color: white;
+	margin-bottom: 3px;
+	padding: 20px 0 20px 0;
+}
+
+.detailsunten {
+	text-align: center;
+	color: white;
+	background: #d6d1d1;
+}
+
+.detailsbox {
+	margin-top: 5%;
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
+.detailsboxInahlt {
+	margin-bottom: .75rem;
+	box-sizing: inherit;
+	display: block;
+}
+
+.detailsboxspeichern {
+	margin-top: 1%;
+	margin-bottom: 8%;
+}
+
+.detailsboxabmelden {
+	margin-top: 20%;
+	border-bottom: solid;
+	border-top: solid;
+	border-width: thin;
+	margin-bottom: 5%;
+	padding: 10px;
+}
+
+.detailsboxlöschen {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+}
+
+.detailsuntenBoxen {
+	display: flex;
+	flex-direction: column;
+	border-bottom: solid;
+	border-color: grey;
+	border-width: thin;
+	margin: 10px;
+}
+
+.detailsboxLabels {
+	font-size: 1.25rem;
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-weight: 700;
+}
+
+.nameTextBox {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #fff;
+	border-color: #dbdbdb;
+	max-width: 100%;
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	justify-content: flex-start;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+
+.helpTextLabel {
+	display: block;
+	font-size: .75rem;
+	margin-top: .25rem;
+}
+
+.speichernButton {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #23d160;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+}
+
+.mailLabel {
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.title {
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	word-break: break-word;
+}
+
+.löschenImage {
+	height: 32px;
+	width: 32px;
+	display: block;
+	position: relative;
+}
+
+.papierkorb {
+	height: auto;
+	max-width: 100%;
+}
+/** Styling der DialogBox*/
+.Abfrage {
+	color: red;
 }
