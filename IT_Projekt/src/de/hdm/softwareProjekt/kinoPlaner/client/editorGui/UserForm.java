@@ -51,6 +51,8 @@ public class UserForm extends FlowPanel {
 
 	public void onLoad() {
 
+		// Vergeben der Stylenames
+
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -162,7 +164,9 @@ public class UserForm extends FlowPanel {
 
 	}
 
-	// ClickHandler für die DailogBox
+	/***********************************************************************
+	 * CLICKHANDLER
+	 ***********************************************************************/
 	private class LoeschenClickHanlder implements ClickHandler {
 
 		private LoeschenUserBox loeschenUserBox;
@@ -178,7 +182,7 @@ public class UserForm extends FlowPanel {
 			anwender.setLogoutUrl(anwender.getLogoutUrl());
 			Window.open(anwender.getLogoutUrl(), "_self", "");
 
-			// kinoplaner.
+			kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
 		}
 
 	}
@@ -242,11 +246,11 @@ public class UserForm extends FlowPanel {
 
 		}
 	}
-	
+
 	private class SpeichernClickHanlder implements ClickHandler {
-		
+
 		private SpeichernUserBox speichernUserBox;
-		
+
 		public SpeichernClickHanlder(SpeichernUserBox speichernUserBox) {
 			this.speichernUserBox = speichernUserBox;
 
@@ -256,26 +260,26 @@ public class UserForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			String neuerName = nameTextBox.getValue();
-			
-			//Prüfen ob TextBox leer ist
+
+			// Prüfen ob TextBox leer ist
 			if (neuerName.isEmpty()) {
 				Window.alert("Der Name ist leer");
 			} else {
 				anwender.setName(neuerName);
 			}
-			
-			kinoplaner.speichern(anwender, new UpadteAnwenderCallback());
-			
+
+			kinoplaner.speichern(anwender, new UpdateAnwenderCallback());
+
 			this.speichernUserBox.hide();
-			
+
 		}
-		
+
 	}
-	
+
 	private class SpeichernAbbrechenClickHandler implements ClickHandler {
-		
-	private SpeichernUserBox speichernUserBox;
-		
+
+		private SpeichernUserBox speichernUserBox;
+
 		public SpeichernAbbrechenClickHandler(SpeichernUserBox speichernUserBox) {
 			this.speichernUserBox = speichernUserBox;
 
@@ -285,9 +289,9 @@ public class UserForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			this.speichernUserBox.hide();
-			
+
 		}
-		
+
 	}
 
 	private class AbmeldenClickHandler implements ClickHandler {
@@ -301,16 +305,37 @@ public class UserForm extends FlowPanel {
 		}
 
 	}
-	
-	// Callbacks 
-	
-	private class UpadteAnwenderCallback implements AsyncCallback<Void> {
+
+	/***********************************************************************
+	 * CALLBACKS
+	 ***********************************************************************/
+
+	private class LoeschenAnwenderCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Window.alert("Dein Profil könnte  nicht gelöscht werden");
+
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			Window.alert("Dein Profil wurde erfolgreich gelöscht");
+			Window.Location.assign(logoutUrl);
+
+		}
+
+	}
+
+	private class UpdateAnwenderCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Window.alert("UpadteAnwenderCallback hat nicht funktioniert");
-			
+
 		}
 
 		@Override
@@ -318,7 +343,7 @@ public class UserForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			Window.alert("UpadteAnwenderCallback war erfolgreich");
 		}
-		
+
 	}
 
 }
