@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 /**
@@ -17,6 +19,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * @author annaf
  *
  */
+
+//Findbyspielzeit und byfilm 
 
 public class VorstellungMapper {
 
@@ -259,7 +263,7 @@ public class VorstellungMapper {
 	 * 
 	 * @param spielplan Objekt, dessen Id mit den spielplanIds in der
 	 *                  Vorstellungs-Tabelle übereinstimmen soll.
-	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielplanId dem
+	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielplanIds dem
 	 *         übergebenen Spielplan entsprechen.
 	 */
 	public ArrayList<Vorstellung> findAllBySpielplan(Spielplan spielplan) {
@@ -328,6 +332,104 @@ public class VorstellungMapper {
 			e1.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Suche nach allen Vorstellungs-Objekten, die eine Beziehung mit einem
+	 * vorgegebenen Film haben. Liegt eine Beziehung zwischen Vorstellung und Film
+	 * vor, ist in der Datenbank in der Vorstellungs-Tabelle die entsprechende
+	 * filmId hinterlegt. Diese filmId muss mit der Id des im Methodenparamter
+	 * übergebenen Films übereinstimmen.
+	 * 
+	 * @param film Objekt, dessen Id mit den filmIds in der Vorstellungs-Tabelle
+	 *             übereinstimmen soll.
+	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren filmIds dem
+	 *         übergebenen Film entsprechen.
+	 */
+	public ArrayList<Vorstellung> findByFilm(Film film) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Vorstellung> resultarray = new ArrayList<Vorstellung>();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
+							+ "WHERE filmId = " + film + "ORDER BY name");
+			/**
+			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife
+			 * wird dann der Resultarray nach und nach aufgebaut und befüllt. Hierbei wird
+			 * für jeden Eintrag im Suchergebnis ein Vorstellungs-Objekt erstellt.
+			 */
+
+			while (resultset.next()) {
+				Vorstellung v = new Vorstellung();
+				v.setId(resultset.getInt("id"));
+				v.setName(resultset.getString("name"));
+				v.setFilmId(resultset.getInt("filmId"));
+				v.setSpielzeitId(resultset.getInt("spielzeitId"));
+				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des Objekts zur ArrayList
+				resultarray.add(v);
+			}
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+
+		}
+		/**
+		 * ResultArray mit Surchergebnis zurückgeben
+		 */
+		return resultarray;
+	}
+
+	/**
+	 * Suche nach allen Vorstellungs-Objekten, die eine Beziehung mit einer
+	 * vorgegebenen Spielzeit haben. Liegt eine Beziehung zwischen Vorstellung und
+	 * Spielzeit vor, ist in der Datenbank in der Vorstellungs-Tabelle die
+	 * entsprechende spielzeitId hinterlegt. Diese spielzeitId muss mit der Id der
+	 * im Methodenparamter übergebenen Spielzeit übereinstimmen.
+	 * 
+	 * @param spielzeit Objekt, dessen Id mit den spielzeitIds in der
+	 *                  Vorstellungs-Tabelle übereinstimmen soll.
+	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielzeitIds der
+	 *         übergebenen Spielzeit entsprechen.
+	 */
+	public ArrayList<Vorstellung> findBySpielzeit(Spielzeit spielzeit) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Vorstellung> resultarray = new ArrayList<Vorstellung>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT id, name, filmId, spielzeitId, spielplanId, erstellDatum FROM vorstellung"
+							+ "WHERE spielzeitId = " + spielzeit + "ORDER BY name");
+			/**
+			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife
+			 * wird dann der Resultarray nach und nach aufgebaut und befüllt. Hierbei wird
+			 * für jeden Eintrag im Suchergebnis ein Vorstellungs-Objekt erstellt.
+			 */
+			while (resultset.next()) {
+				Vorstellung v = new Vorstellung();
+				v.setId(resultset.getInt("id"));
+				v.setName(resultset.getString("name"));
+				v.setFilmId(resultset.getInt("filmId"));
+				v.setSpielzeitId(resultset.getInt("spielzeitId"));
+				v.setSpielplanId(resultset.getInt("spielplanId"));
+				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des Objekts zur ArrayList
+				resultarray.add(v);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		/**
+		 * ResultArray mit Surchergebnis zurückgeben
+		 */
+		return resultarray;
 	}
 
 }
