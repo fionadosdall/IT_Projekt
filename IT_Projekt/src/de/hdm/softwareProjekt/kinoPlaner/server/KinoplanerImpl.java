@@ -25,47 +25,46 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.sql.Date;
-import java.util.Vector;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * <p>
- * Die Klasse KinoplanerImpl serverseitige Implementierung des RPC Service und damit des Interface 
- * <code>Kinoplaner</code>. In den Methoden dieser Klasse ist die gesamte Applikationslogik der 
- * Website enthalten. Sie sorgt für eine dauerhafte Konsitenz der Methoden und Daten. Die Klasse 
- * bedient sich Mapper Klassen, welche der Datenbank-Schicht angehören. Diese bilden die Sicht der 
+ * Die Klasse KinoplanerImpl serverseitige Implementierung des RPC Service und
+ * damit des Interface <code>Kinoplaner</code>. In den Methoden dieser Klasse
+ * ist die gesamte Applikationslogik der Website enthalten. Sie sorgt fÃ¼r eine
+ * dauerhafte Konsitenz der Methoden und Daten. Die Klasse bedient sich Mapper
+ * Klassen, welche der Datenbank-Schicht angehoeren. Diese bilden die Sicht der
  * Applikationslogik auf der realtionalen Datenbank ab.
  * </p>
  * <p>
  * Die Klasse steht mit weiteren Datentypen in Verbindung:
  * <ol>
- * <li>{@link Kinoplaner}: Ist das lokale serverseitige Interface, in welchem die dem System 
- * verfügbaren Funktionen deklariert sind.</li>
- * <li>{@link KinoplanerAsync}: Mit <code>KinplanerImpl</code> und der <code>Kinplaner</code> wird
- * die serverseitige Sicht der Applikationslogik abgebildet, welche funktional vollständig synchron 
- * abläuft. Für die clientseiteige Sicht müssen asynchrone Aufrufe ermöglicht werden, wozu dieses 
- * zusätzliche Interface dient.Das Async Interface wird durch das Google Plugin semiautomatisch bei 
- * der Erstellung und Pflege unterstützt.</li>
- * <li>{@link RemoteServiceServlet}: Ist eine Klasse serverseitig instantiierbar und clientseitig 
- * über GWT RPC nutzbar, so muss sie die Klasse <code>RemoteServiceServlet</code> implementieren. 
- * Diese ist die funktionale Basis für die Anbindung an die Runtime des GWT RPC-Mechanismus.</li>
+ * <li>{@link Kinoplaner}: Ist das lokale serverseitige Interface, in welchem
+ * die dem System verfuegbaren Funktionen deklariert sind.</li>
+ * <li>{@link KinoplanerAsync}: Mit <code>KinplanerImpl</code> und der
+ * <code>Kinplaner</code> wird die serverseitige Sicht der Applikationslogik
+ * abgebildet, welche funktional vollstaendig synchron ablaeuft. Fuer die
+ * clientseiteige Sicht muessen asynchrone Aufrufe eroeglicht werden, wozu dieses
+ * zusaetzliche Interface dient.Das Async Interface wird durch das Google Plugin
+ * semiautomatisch bei der Erstellung und Pflege unterstuetzt.</li>
+ * <li>{@link RemoteServiceServlet}: Ist eine Klasse serverseitig instantiierbar
+ * und clientseitig ueber GWT RPC nutzbar, so muss sie die Klasse
+ * <code>RemoteServiceServlet</code> implementieren. Diese ist die funktionale
+ * Basis fÃ¼r die Anbindung an die Runtime des GWT RPC-Mechanismus.</li>
  * </ol>
  * </p>
  * <p>
- * Jede der folgenden Methode die mithilfe von GWT RPC aufgerufen werden kann, muss 
- * <code>throws IllegalArgumentException</code> in der Methodendeklaration aufweisen. Das Bedeutet 
- * das diese Methoden in der Lage sind eine Instant von {@link IllegalArgument Exception} auszuwerfen. 
- * Damit können Probleme von der serverseite einfach auf die clientseite transportiert und dann
- * mit einem Catch-Block abgearbeitet werden.
+ * Jede der folgenden Methode die mithilfe von GWT RPC aufgerufen werden kann,
+ * muss <code>throws IllegalArgumentException</code> in der Methodendeklaration
+ * aufweisen. Das Bedeutet das diese Methoden in der Lage sind eine Instant von
+ * {@link IllegalArgument Exception} auszuwerfen. Damit koennen Probleme von der
+ * serverseite einfach auf die clientseite transportiert und dann mit einem
+ * Catch-Block abgearbeitet werden.
  * </p>
- *  
+ * 
  * @see Kinoplaner
  * @see KinoplanerAsync
  * @see RemoteServiceServlet
@@ -73,113 +72,153 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
 public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
-	
+
+	/**
+	 * *****************************************************************************
+	 * Abschnitt: ATTRIBUTE
+	 * *****************************************************************************
+	 */
+
 	/**
 	 * <p>
-	 * Hier wird der Anwender gespeichert, in dessen Ansicht die Website momentan ausgeführt wird.
+	 * Hier wird der Anwender gespeichert, in dessen Ansicht die Website momentan
+	 * ausgefuehrt wird.
 	 * </p>
 	 */
 	private Anwender anwender = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Anwender in der Datenbank verwaltet.
+	 * Hier werden Anwender gespeichert, die nach erstellen der Gruppe dieser
+	 * hinzugefuegt werden.
+	 * </p>
+	 */
+	private ArrayList<Anwender> gruppenmitglieder = null;
+
+	/**
+	 * <p>
+	 * Referenziert auf den Datenbankmapper, welcher Anwender in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private AnwenderMapper anwenderMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Gruppen in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Gruppen in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private GruppeMapper gruppeMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Umfragen in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Umfragen in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private UmfrageMapper umfrageMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Spielpläne in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher SpielplÃ¤ne in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private SpielplanMapper spielplanMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Vorstellungen in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Vorstellungen in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private VorstellungMapper vorstellungMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Kinos in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Kinos in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private KinoMapper kinoMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Kinoketten in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Kinoketten in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private KinoketteMapper kinoketteMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Filme in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Filme in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private FilmMapper filmMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Spielzeiten in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Spielzeiten in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private SpielzeitMapper spielzeitMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Umfrageoptionenin der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Umfrageoptionenin der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private UmfrageoptionMapper umfrageoptionMapper = null;
-	
+
 	/**
 	 * <p>
-	 * Referenziert auf den Datenbankmapper, welcher Auswahlen in der Datenbank verwaltet.
+	 * Referenziert auf den Datenbankmapper, welcher Auswahlen in der Datenbank
+	 * verwaltet.
 	 * </p>
 	 */
 	private AuswahlMapper auswahlMapper = null;
-	
+
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: ATTRIBUTE
+	 * **************************************************************************
+	 */
+
+	/**
+	 * **************************************************************************
+	 * Abschnitt: INITIALISIERUNG
+	 * **************************************************************************
+	 */
+
 	/**
 	 * <p>
-	 * Hier wird ein <code>RemoteServiceServlet</code> unter GWT mithilfe von 
-	 * <code>GWT.create(Klassenname.class)</code> Client-seitig erzeugt. Dabei wird der folgende 
-	 * No-Argument Konstruktor benötigt. Ein anderer Konstrukor kann derzeit nicht aufgerufen 
-	 * werden. 
+	 * Hier wird ein <code>RemoteServiceServlet</code> unter GWT mithilfe von
+	 * <code>GWT.create(Klassenname.class)</code> Client-seitig erzeugt. Dabei wird
+	 * der folgende No-Argument Konstruktor benoetigt. Ein anderer Konstrukor kann
+	 * derzeit nicht aufgerufen werden.
 	 * </p>
 	 * 
 	 * @see #init()
 	 * @throws IllegalArgumentException
 	 */
-	public KinoplanerImpl () throws IllegalArgumentException {
-		
+	public KinoplanerImpl() throws IllegalArgumentException {
+
 	}
-	
-	/** 
+
+	/**
 	 * <p>
-	 * Da derzeit kein anderer Konstruktor als der No-Argument Konstruktor aufgerufen werden kann, ist 
-	 * eine seperate Instanzenmethode notwendig, welche direkt nach 
-	 * <code>GWT.create(Klassenname.class)</code> aufgerufen wird und die Initiialisierung bewirkt. Sie 
-	 * wird für jede Instanz von <code>KinoplanerImpl</code> aufgerufen. Bei der Initiialisierung wird 
-	 * ein vollständiger Satz Mapper erzeugt, so dass die KLasse mit der Datenbank kommunizieren kann.
+	 * Da derzeit kein anderer Konstruktor als der No-Argument Konstruktor
+	 * aufgerufen werden kann, ist eine seperate Instanzenmethode notwendig, welche
+	 * direkt nach <code>GWT.create(Klassenname.class)</code> aufgerufen wird und
+	 * die Initiialisierung bewirkt. Sie wird fÃ¼r jede Instanz von
+	 * <code>KinoplanerImpl</code> aufgerufen. Bei der Initiialisierung wird ein
+	 * vollstÃ¤ndiger Satz Mapper erzeugt, so dass die KLasse mit der Datenbank
+	 * kommunizieren kann.
 	 * </p>
 	 * 
 	 * @see #KinoplanerImpl()
@@ -199,80 +238,83 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.spielzeitMapper = SpielzeitMapper.spielzeitMapper();
 		this.umfrageoptionMapper = UmfrageoptionMapper.umfrageoptionMapper();
 		this.auswahlMapper = AuswahlMapper.auswahlMapper();
-		
+
 	}
+
 	/**
-	 * <p>
-	 * Rückgabe des Anwenders, in dessen Ansicht die Website ausgeführt wird.
-	 * </p>
+	 * **************************************************************************
+	 * Abschnitt Ende: INITIALISIERUNG
+	 * **************************************************************************
 	 */
-	@Override
-	public Anwender getAnwender()  throws IllegalArgumentException {
-		return this.anwender;
-	}
-	
+
 	/**
-	 * <p>
-	 * Setzen des Anwenders, in dessen Ansicht die Website ausgeführt wird.
-	 * </p>
+	 * **************************************************************************
+	 * Abschnitt: ERSTELLEN, LOESCHEN SPEICHERN VON BOS
+	 * **************************************************************************
 	 */
-	@Override
-	public void setAnwender(Anwender anwender)  throws IllegalArgumentException {
-		this.anwender = anwender;
-	}
-	
+
 	/**
 	 * <p>
-	 * Ein neuer Anwender wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Ein neuer Anwender wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
 	public Anwender erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException {
 		// Ein neues Anwender Objekt wird erstellt.
 		Anwender a = new Anwender();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befÃ¼llt.
 		a.setId(id);
 		a.setName(name);
 		a.setGmail(gmail);
 		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-	
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.anwenderMapper.insert(a);
 	}
-	
+
 	/**
 	 * <p>
-	 * Eine neue Gruppe wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Eine neue Gruppe wird angelegt und anschlieÃŸend in der Datenbank gespeichert.
 	 * </p>
 	 */
 	@Override
 	public Gruppe erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException {
 		// Ein neues Gruppe Objekt wird erstellt.
 		Gruppe g = new Gruppe();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		g.setId(id);
 		g.setName(name);
 		g.setBesitzerId(id);
 		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
+		if (gruppenmitglieder != null) {
+			for (Anwender a : gruppenmitglieder) {
+				this.gruppenmitgliedHinzufuegen(a, g);
+			}
+			gruppenmitglieder = null;
+		}
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.gruppeMapper.insert(g);
 	}
-	
+
 	/**
 	 * <p>
-	 * Ein neues Kino wird angelegt und anschließend in der Datenbank gespeichert. Hierbei 
-	 * mit der Verknüpfung zur Kinokette.
+	 * Ein neues Kino wird angelegt und anschlieÃŸend in der Datenbank gespeichert.
+	 * Hierbei mit der VerknÃ¼pfung zur Kinokette.
 	 * </p>
 	 */
 	@Override
-	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer, int kinokettenId) throws IllegalArgumentException {
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse,
+			String hausnummer, int kinokettenId) throws IllegalArgumentException {
 		// Ein neues Kino Objekt wird erstellt.
 		Kino k = new Kino();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		k.setId(id);
 		k.setName(name);
 		k.setBesitzerId(id);
@@ -281,23 +323,25 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setStrasse(strassse);
 		k.setHausnummer(hausnummer);
 		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		this.kinoMapper.addKinokette(this.kinoketteMapper.findById(kinokettenId), k);
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		k.setKinokettenId(kinokettenId);
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.kinoMapper.insert(k);
 	}
-	
+
 	/**
 	 * <p>
-	 * Ein neues Kino wird angelegt und anschließend in der Datenbank gespeichert. Hierbei 
-	 * ohne die Verknüpfung zur Kinokette.
+	 * Ein neues Kino wird angelegt und anschlieÃŸend in der Datenbank gespeichert.
+	 * Hierbei ohne die Verknuepfung zur Kinokette.
 	 * </p>
 	 */
-	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse, String hausnummer) throws IllegalArgumentException {
+	@Override
+	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse,
+			String hausnummer) throws IllegalArgumentException {
 		// Ein neues Kino Objekt wird erstellt.
 		Kino k = new Kino();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		k.setId(id);
 		k.setName(name);
 		k.setBesitzerId(id);
@@ -306,208 +350,228 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setStrasse(strassse);
 		k.setHausnummer(hausnummer);
 		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.kinoMapper.insert(k);
 	}
-	
+
 	/**
 	 * <p>
-	 * Eine neue Kinokette wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Eine neue Kinokette wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Kinokette erstellenKinokette(int id, String name, int besitzerId,  String sitz, String website) throws IllegalArgumentException {
+	public Kinokette erstellenKinokette(int id, String name, int besitzerId, String sitz, String website)
+			throws IllegalArgumentException {
 		// Ein neues Kinokette Objekt wird erstellt.
 		Kinokette k = new Kinokette();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		k.setId(id);
 		k.setName(name);
 		k.setBesitzerId(id);
 		k.setSitz(sitz);
 		k.setWebsite(website);
 		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.kinoketteMapper.insert(k);		
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		return this.kinoketteMapper.insert(k);
 	}
-	
+
 	/**
 	 * <p>
-	 * Ein neuer Spielplan wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Ein neuer Spielplan wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Spielplan erstellenSpielplan(int id, String name, int besitzerId,  int kinoId) throws IllegalArgumentException {
+	public Spielplan erstellenSpielplanKino(int id, String name, int besitzerId, int kinoId)
+			throws IllegalArgumentException {
 		// Ein neues Spielplan Objekt wird erstellt.
 		Spielplan s = new Spielplan();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		s.setId(id);
 		s.setName(name);
 		s.setBesitzerId(id);
 		s.setKinoId(kinoId);
 		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		s.setKinokettenSpielplan(false);
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.spielplanMapper.insert(s);
 	}
-	
+
 	/**
 	 * <p>
-	 * Eine neue Vorstellung wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Ein neuer Spielplan wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Vorstellung erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId) throws IllegalArgumentException {
+	public Spielplan erstellenSpielplanKinokette(int id, String name, int besitzerId, int kinoketteId)
+			throws IllegalArgumentException {
+		// Ein neues Spielplan Objekt wird erstellt.
+		Spielplan s = new Spielplan();
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
+		s.setId(id);
+		s.setName(name);
+		s.setBesitzerId(id);
+		s.setKinokettenId(kinoketteId);
+		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+		s.setKinokettenSpielplan(true);
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		return this.spielplanMapper.insert(s);
+	}
+
+	/**
+	 * <p>
+	 * Eine neue Vorstellung wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
+	 * </p>
+	 */
+	@Override
+	public Vorstellung erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId)
+			throws IllegalArgumentException {
 		// Ein neues Vorstellung Objekt wird erstellt.
 		Vorstellung v = new Vorstellung();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		v.setId(id);
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
 		v.setFilmId(filmId);
 		v.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.vorstellungMapper.insert(v);
 	}
-	
+
 	/**
 	 * <p>
-	 * Eine neue Umfrage wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Eine neue Umfrage wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(int id, String name, int besitzerId, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenUmfrage(int id, String name, int besitzerId, int gruppenId)
+			throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		u.setId(id);
 		u.setName(name);
 		u.setBesitzerId(id);
 		u.setGruppenId(gruppenId);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.umfrageMapper.insert(u);
 	}
-	
+
 	/**
 	 * <p>
-	 * Eine neue Umfrageoption wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Eine neue Umfrageoption wird angelegt und anschlieÃŸend in der Datenbank
+	 * gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Umfrageoption erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId) throws IllegalArgumentException {
+	public Umfrageoption erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId)
+			throws IllegalArgumentException {
 		// Ein neues Umfrageoption Objekt wird erstellt.
 		Umfrageoption u = new Umfrageoption();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		u.setId(id);
 		u.setName(name);
 		u.setUmfrageId(umfrageId);
 		u.setVorstellungsId(vorstellungId);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.umfrageoptionMapper.insert(u);		
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		return this.umfrageoptionMapper.insert(u);
 	}
-	
+
 	/**
 	 * <p>
-	 * Ein neuer Film wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Ein neuer Film wird angelegt und anschlieÃŸend in der Datenbank gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Film erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung) throws IllegalArgumentException {
+	public Film erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung)
+			throws IllegalArgumentException {
 		// Ein neues Film Objekt wird erstellt.
 		Film f = new Film();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		f.setId(id);
 		f.setName(name);
 		f.setBesitzerId(besitzerId);
 		f.setBeschreibung(beschreibung);
 		f.setBewertung(bewertung);
 		f.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.filmMapper.insert(f);
 	}
-	
-	
+
 	/**
 	 * <p>
-	 * Ein Spielzeit wird angelegt und anschließend in der Datenbank gespeichert.
+	 * Ein Spielzeit wird angelegt und anschlieÃŸend in der Datenbank gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Date zeit) throws IllegalArgumentException {
+	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Date zeit)
+			throws IllegalArgumentException {
 		// Ein neues Spielzeit Objekt wird erstellt.
 		Spielzeit s = new Spielzeit();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		s.setId(id);
 		s.setName(name);
 		s.setBesitzerId(besitzerId);
 		s.setZeit(zeit);
 		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.spielzeitMapper.insert(s);
 	}
-		
+
 	/**
 	 * <p>
-	 * Eine neue Auswahl wird angelegt,die zugehörige Umfrage als gevotet markiert und anschließend 
-	 * die Auswahl in der Datenbank gespeichert.
+	 * Eine neue Auswahl wird angelegt,die zugehoerige Umfrage als gevotet markiert
+	 * und anschlieÃŸend die Auswahl in der Datenbank gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Auswahl erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId) throws IllegalArgumentException {
+	public Auswahl erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId)
+			throws IllegalArgumentException {
 		// Ein neues Auswahl Objekt wird erstellt.
 		Auswahl a = new Auswahl();
-		
-		//Die Attribute des Objekts werden mit Werten befüllt.
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
 		a.setId(id);
 		a.setName(name);
 		a.setBesitzerId(besitzerId);
 		a.setVoting(voting);
 		a.setUmfrageoptionId(umfrageoptionId);
 		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		
-		//Die zugehörige Umfrage wird als votiert markiert.
+
+		// Die zugehoerige Umfrage wird als votiert markiert.
 		this.isVoted(a);
-		
-		//Die Umfrage ggegebenfalls schließen
+
+		// Die Umfrage gegebenfalls schlieÃŸen
 		this.isClosedSetzen(a);
-		
-		//Das Objekt wird in der Datenbank gespeichert und wiedergeben
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.auswahlMapper.insert(a);
 
 	}
-	
-	/**
-	 * <p>
-	 * Es wird geprüft ob der Boolean isVoted der Klasse Umfrage bereits auf True gesetzt wurde, da diese gevotet wurde. 
-	 * Ist dies nicht der Fall so wird der Boolean auf True gesetzt.
-	 * </p>
-	 */
-	public void isVoted(Auswahl auswahl) {
-		//Umfrage zur Auswahl herausfinden
-		Umfrage u = this.umfrageMapper.findById(this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId());
-		
-		//Wenn das Attribut isVoted noch auf false steht, auf true setzen
-		if (u.isVoted() == false) {
-			u.setVoted(true);
-		}
-	}
-	
+
 	/**
 	 * <p>
 	 * Speichern eines Anwenders.
@@ -516,7 +580,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Anwender anwender) throws IllegalArgumentException {
 		this.anwenderMapper.update(anwender);
-		
+
 	}
 
 	/**
@@ -527,7 +591,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Gruppe gruppe) throws IllegalArgumentException {
 		this.gruppeMapper.update(gruppe);
-		
+
 	}
 
 	/**
@@ -538,7 +602,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Kino kino) throws IllegalArgumentException {
 		this.kinoMapper.update(kino);
-		
+
 	}
 
 	/**
@@ -549,7 +613,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Kinokette kinokette) throws IllegalArgumentException {
 		this.kinoketteMapper.update(kinokette);
-		
+
 	}
 
 	/**
@@ -560,7 +624,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Spielplan spielplan) throws IllegalArgumentException {
 		this.spielplanMapper.update(spielplan);
-		
+
 	}
 
 	/**
@@ -571,7 +635,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Vorstellung vorstellung) throws IllegalArgumentException {
 		this.vorstellungMapper.update(vorstellung);
-		
+
 	}
 
 	/**
@@ -582,7 +646,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Umfrage umfrage) throws IllegalArgumentException {
 		this.umfrageMapper.update(umfrage);
-		
+
 	}
 
 	/**
@@ -593,7 +657,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Umfrageoption umfrageoption) throws IllegalArgumentException {
 		this.umfrageoptionMapper.update(umfrageoption);
-		
+
 	}
 
 	/**
@@ -604,7 +668,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Film film) throws IllegalArgumentException {
 		this.filmMapper.update(film);
-		
+
 	}
 
 	/**
@@ -615,7 +679,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Spielzeit spielzeit) throws IllegalArgumentException {
 		this.spielzeitMapper.update(spielzeit);
-		
+
 	}
 
 	/**
@@ -626,296 +690,508 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void speichern(Auswahl auswahl) throws IllegalArgumentException {
 		this.auswahlMapper.update(auswahl);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen eines Anwenders mit Löschweitergabe.
+	 * Loeschen eines Anwenders mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Anwender anwender) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Spielpläne
+	public void loeschen(Anwender anwender) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner(anwender);
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.löschen(s);
+				this.loeschen(s);
 			}
 		}
-		
-		//Löschen aller zugehörigen Filme
+
+		// Loeschen aller zugehoerigen Filme
 		ArrayList<Film> filme = this.getFilmeByAnwenderOwner(anwender);
 		if (filme != null) {
 			for (Film f : filme) {
-				this.löschen(f);
+				this.loeschen(f);
 			}
 		}
-		
-		//Löschen aller zugehörigen Spielzeiten
+
+		// Loeschen aller zugehoerigen Spielzeiten
 		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner(anwender);
 		if (spielzeiten != null) {
 			for (Spielzeit s : spielzeiten) {
-				this.löschen(s);
+				this.loeschen(s);
 			}
 		}
-		
-		//Löschen aller zugehörigen Kinos
+
+		// Loeschen aller zugehoerigen Kinos
 		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner(anwender);
 		if (kinos != null) {
 			for (Kino k : kinos) {
-				this.löschen(k);
+				this.loeschen(k);
 			}
 		}
-		
-		
-		//Löschen aller zugehöigen Kinoketten
+
+		// Loeschen aller zugehoerigen Kinoketten
 		ArrayList<Kinokette> kinoketten = this.getKinokettenByAnwenderOwner(anwender);
 		if (kinoketten != null) {
 			for (Kinokette k : kinoketten) {
-				this.löschen(k);
+				this.loeschen(k);
 			}
 		}
-		
-		//Löschen aller zugehörigen Auswahlen
+
+		// Loeschen aller zugehoerigen Auswahlen
 		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner(anwender);
 		if (auswahlen != null) {
 			for (Auswahl a : auswahlen) {
-				this.löschen(a);
+				this.loeschen(a);
 			}
 		}
-		
-		//Löschen aller zugehörigen Gruppen
+
+		// Weitergabe des Gruppenbesitz an anderes Gruppenmitglied
 		ArrayList<Gruppe> gruppen = this.getGruppenByAnwenderOwner(anwender);
 		if (gruppen != null) {
 			for (Gruppe g : gruppen) {
-				this.löschen(g);
+				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper.findAllByGruppe(g);
+				if (gruppenmitglieder != null) {
+					if (gruppenmitglieder.get(0).equals(anwender)) {
+						if (gruppenmitglieder.get(1) != null) {
+							g.setBesitzerId(gruppenmitglieder.get(1).getId());
+						} else {
+							this.loeschen(g);
+						}
+					} else {
+						g.setBesitzerId(gruppenmitglieder.get(0).getId());
+					}
+				} else {
+					this.loeschen(g);
+				}
 			}
 		}
-		
-		//Löschen aller zugehörigen Umfragen
+
+		// Weitergabe des Umfragebesitz an ein anderes Gruppenmitlgied
 		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
 		if (umfragen != null) {
 			for (Umfrage u : umfragen) {
-				this.löschen(u);
+				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper
+						.findAllByGruppe(this.gruppeMapper.findById(u.getGruppenId()));
+				if (gruppenmitglieder != null) {
+					if (gruppenmitglieder.get(0).equals(anwender)) {
+						if (gruppenmitglieder.get(1) != null) {
+							u.setBesitzerId(gruppenmitglieder.get(1).getId());
+						} else {
+							this.loeschen(u);
+						}
+					} else {
+						u.setBesitzerId(gruppenmitglieder.get(0).getId());
+					}
+				} else {
+					this.loeschen(u);
+				}
 			}
 		}
-		
-		//Löschen des Anwenders
+
+		// Loeschen des Anwenders aus allen Gruppen
+		ArrayList<Gruppe> gruppenAnwender = this.gruppeMapper.findAllByAnwender(anwender);
+		for (Gruppe g : gruppenAnwender) {
+			this.gruppeMapper.deleteGruppenmitgliedschaft(anwender, g);
+		}
+
+		// Loeschen des Anwenders
 		this.anwenderMapper.delete(anwender);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Gruppe mit Löschweitergabe.
+	 * Loeschen einer Gruppe mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Gruppe gruppe) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Umfragen
+	public void loeschen(Gruppe gruppe) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Umfragen
 		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
 		if (umfragen != null) {
 			for (Umfrage u : umfragen) {
-				this.löschen(u);
+				this.loeschen(u);
 			}
 		}
-		
-		//Löschen der Gruppe
+
+		// Loeschen der Gruppe
 		this.gruppeMapper.delete(gruppe);
-			
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen eines Kinos mit Löschweitergabe.
+	 * Loeschen eines Kinos mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Kino kino) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Kinos
+	public void loeschen(Kino kino) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKino(kino);
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.löschen(s);
+				this.loeschen(s);
 			}
 		}
-		
-		//Löschen des Kinos
+
+		// Loeschen des Kinos
 		this.kinoMapper.delete(kino);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Kinokette mit Löschweitergabe.
+	 * Loeschen einer Kinokette mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Kinokette kinokette) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Kinoketten
+	public void loeschen(Kinokette kinokette) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Spielplaene
+		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKinokette(kinokette);
+		if (spielplaene != null) {
+			for (Spielplan s : spielplaene) {
+				this.loeschen(s);
+			}
+		}
+
+		// Loeschen aller zugehoerigen Kinoketten
 		ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinokette);
 		if (kinos != null) {
 			for (Kino k : kinos) {
-				this.kinoMapper.deleteKinokette( k);
+				this.kinoMapper.deleteKinokette(k);
 			}
 		}
-		
-		//Löschen der Kinokette
+
+		// Loeschen der Kinokette
 		this.kinoketteMapper.delete(kinokette);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen eines Spielplans mit Löschweitergabe.
+	 * Loeschen eines Spielplans mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Spielplan spielplan) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Vorstellungen
+	public void loeschen(Spielplan spielplan) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Vorstellungen
 		ArrayList<Vorstellung> vorstellungen = this.getVorstellungenBySpielplan(spielplan);
 		if (vorstellungen != null) {
 			for (Vorstellung v : vorstellungen) {
-				this.vorstellungMapper.delete(v);
+				this.loeschen(v);
 			}
 		}
-		
-		//Löschen des Spielplans
+
+		// Loeschen des Spielplans
 		this.spielplanMapper.delete(spielplan);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Vorstellung mit Löschweitergabe.
+	 * Loeschen einer Vorstellung mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Vorstellung vorstellung) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Umfrageoptionen
+	public void loeschen(Vorstellung vorstellung) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Umfrageoptionen
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByVorstellung(vorstellung);
 		if (umfrageoptionen != null) {
 			for (Umfrageoption u : umfrageoptionen) {
-				this.umfrageoptionMapper.delete(u);
+				this.loeschen(u);
 			}
 		}
-		
-		//Löschen der Vorstellung
+
+		// Loeschen der Vorstellung
 		this.vorstellungMapper.delete(vorstellung);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Umfrage mit Löschweitergabe.
+	 * Loeschen einer Umfrage mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Umfrage umfrage) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Umfrageoptionen
+	public void loeschen(Umfrage umfrage) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Umfrageoptionen
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByUmfrage(umfrage);
 		if (umfrageoptionen != null) {
 			for (Umfrageoption u : umfrageoptionen) {
-				this.umfrageoptionMapper.delete(u);
+				this.loeschen(u);
 			}
 		}
-		
-		//Löschen der Umfrage
+
+		// Loeschen der Umfrage
 		this.umfrageMapper.delete(umfrage);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Umfrageoption mit Löschweitergabe.
+	 * Loeschen einer Umfrageoption mit Loeschweitergabe.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Umfrageoption umfrageoption) throws IllegalArgumentException {
-		//Löschen aller zugehörigen Auswahlen
+	public void loeschen(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Auswahlen
 		ArrayList<Auswahl> auswahlen = this.getAuswahlenByUmfrageoption(umfrageoption);
 		if (auswahlen != null) {
 			for (Auswahl a : auswahlen) {
-				this.löschen(a);
+				this.loeschen(a);
 			}
 		}
-		
-		//Löschen der Umfrageoption
+
+		// Loeschen der Umfrageoption
 		this.umfrageoptionMapper.delete(umfrageoption);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Löschen eines Films mit Löschweitergabe.
+	 * Loeschen eines Films mit Loeschweitergabe wenn moeglich (true). Moeglich ist
+	 * das Loeschen wenn das Objekt maximal einmal verwendet wird.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Film film) throws IllegalArgumentException {
-		/** Problem bei der löschweitergabe: entweder nur löschbar wenn nur 
-		*einmal benutzt oder löschbar und loch in den daten oder löschbar und 
-		*alle spielplaneintrage werden auch gelöscht
-		**/
+	public boolean loeschen(Film film) throws IllegalArgumentException {
+		ArrayList<Vorstellung> vorstellungen = this.vorstellungMapper.findByFilm(film);
+		if (vorstellungen.size() < 1) {
+			if (vorstellungen.size() == 1) {
+				this.loeschen(vorstellungen.get(0));
+			}
+			this.loeschen(film);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Spielzeit mit Löschweitergabe.
+	 * Loeschen einer Spielzeit mit Loeschweitergabe wenn moeglich (true). Moeglich
+	 * ist das Loeschen wenn das Objekt maximal einmal verwendet wird.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Spielzeit spielzeit) throws IllegalArgumentException {
-		// same wie film
-		
+	public boolean loeschen(Spielzeit spielzeit) throws IllegalArgumentException {
+		ArrayList<Vorstellung> spielzeiten = this.vorstellungMapper.findBySpielzeit(spielzeit);
+		if (spielzeiten.size() < 1) {
+			if (spielzeiten.size() == 1) {
+				this.loeschen(spielzeiten.get(0));
+			}
+			this.loeschen(spielzeit);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
 	 * <p>
-	 * Löschen einer Auswahl.
+	 * Loeschen einer Auswahl.
 	 * </p>
 	 */
 	@Override
-	public void löschen(Auswahl auswahl) throws IllegalArgumentException {
-		////Die Umfrage ggegebenfalls öffnen
+	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
+		// Die Umfrage ggegebenfalls oeffnen
 		this.isClosedEntfernen(auswahl);
-		
-		//Löschen der Auswahl
+
+		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
-		
+
 	}
 
 	/**
 	 * <p>
-	 * Rückgabe des Anwenders mit einer bestimmten Id.
+	 * Rueckgabe ob der Name des Anwenders verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarAnwender(String name) throws IllegalArgumentException {
+		return this.anwenderMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Gruppe verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarGruppe(String name) throws IllegalArgumentException {
+		return this.gruppeMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name des Kinos verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarKino(String name) throws IllegalArgumentException {
+		return this.kinoMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Kinokette verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarKinokette(String name) throws IllegalArgumentException {
+		return this.kinoketteMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name des Spielplans verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarSpielplan(String name) throws IllegalArgumentException {
+		return this.spielplanMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Vorstellung verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarVorstellung(String name) throws IllegalArgumentException {
+		return this.vorstellungMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Umfrage verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarUmfrage(String name) throws IllegalArgumentException {
+		return this.umfrageMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Umfrageoption verfÃ¼gbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarUmfrageoption(String name) throws IllegalArgumentException {
+		return this.umfrageoptionMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name des Films verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarFilm(String name) throws IllegalArgumentException {
+		return this.filmMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Spielzeit verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarSpielzeit(String name) throws IllegalArgumentException {
+		return this.spielzeitMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe ob der Name der Auswahl verfuegbar ist (true)
+	 * </p>
+	 */
+	@Override
+	public boolean nameVerfuegbarAuswahl(String name) throws IllegalArgumentException {
+		return this.auswahlMapper.nameVerfÃ¼gbar(name);
+	}
+
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: ERSTELLEN, LOESCHEN SPEICHERN VON BOS
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt: GETTER UND SETTER
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * <p>
+	 * Rueckgabe des Anwenders, in dessen Ansicht die Website ausgefuehrt wird.
+	 * </p>
+	 */
+	@Override
+	public Anwender getAnwender() throws IllegalArgumentException {
+		return this.anwender;
+	}
+
+	/**
+	 * <p>
+	 * Setzen des Anwenders, in dessen Ansicht die Website ausgefuehrt wird.
+	 * </p>
+	 */
+	@Override
+	public void setAnwender(Anwender anwender) throws IllegalArgumentException {
+		this.anwender = anwender;
+	}
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: GETTER UND SETTER
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt: DB GETTER
+	 * **************************************************************************
+	 */
+
+	/**
+	 * <p>
+	 * Rueckgabe des Anwenders mit einer bestimmten Id.
 	 * </p>
 	 */
 	@Override
 	public Anwender getAnwenderById(int anwenderId) throws IllegalArgumentException {
 		return this.anwenderMapper.findById(anwenderId);
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe eines Spielplans mit einer bestimmten Id.
+	 * Rueckgabe eines Spielplans mit einer bestimmten Id.
 	 * </p>
 	 */
-	public Spielplan getSpielplanById(int spielplanId) throws IllegalArgumentException{
+	@Override
+	public Spielplan getSpielplanById(int spielplanId) throws IllegalArgumentException {
 		return this.spielplanMapper.findById(spielplanId);
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe eines Kinos mit einer bestimmten Id.
+	 * Rueckgabe eines Kinos mit einer bestimmten Id.
 	 * </p>
 	 */
-	public Kino getKinoById(int kinoId) throws IllegalArgumentException{
+	@Override
+	public Kino getKinoById(int kinoId) throws IllegalArgumentException {
 		return this.kinoMapper.findById(kinoId);
 	}
 
 	/**
 	 * <p>
-	 * Rückgabe aller Gruppen in denen der Anwender Mitglied ist.
+	 * Rueckgabe aller Gruppen in denen der Anwender Mitglied ist.
 	 * </p>
 	 */
 	@Override
@@ -925,7 +1201,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Gruppen die einem bestimmten Anwender gehören.
+	 * Rueckgabe aller Gruppen die einem bestimmten Anwender gehoeren.
 	 * </p>
 	 */
 	@Override
@@ -935,7 +1211,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Umfragen eines Anwenders.
+	 * Rueckgabe aller Umfragen eines Anwenders.
 	 * </p>
 	 */
 	@Override
@@ -945,7 +1221,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Umfragen die der Anwender besitzt.
+	 * Rueckgabe aller Umfragen die der Anwender besitzt.
 	 * </p>
 	 */
 	@Override
@@ -955,7 +1231,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller geschlossenen Umfragen des Anwenders
+	 * Rueckgabe aller geschlossenen Umfragen des Anwenders
 	 * </p>
 	 */
 	@Override
@@ -965,7 +1241,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Kinoketten die der Anwender besitzt.
+	 * Rueckgabe aller Kinoketten die der Anwender besitzt.
 	 * </p>
 	 */
 	@Override
@@ -975,48 +1251,48 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Kinos die der Anwender besitzt.
+	 * Rueckgabe aller Kinos die der Anwender besitzt.
 	 * </p>
 	 */
 	@Override
 	public ArrayList<Kino> getKinosByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
 		return this.kinoMapper.findAllByAnwenderOwner(anwender);
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller Kinos die zu einer Kinokette gehören.
+	 * Rueckgabe aller Kinos die zu einer Kinokette gehoeren.
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kino> getKinosByKinoketteId(Kinokette kinokette) throws IllegalArgumentException{
+	public ArrayList<Kino> getKinosByKinoketteId(Kinokette kinokette) throws IllegalArgumentException {
 		return this.kinoMapper.findAllByKinokette(kinokette);
-		
+
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller Kinos einer Kinokette.
+	 * Rueckgabe aller Kinos einer Kinokette.
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kino> getKinosByKinoketteId(int kinoketteId) throws IllegalArgumentException{
+	public ArrayList<Kino> getKinosByKinoketteId(int kinoketteId) throws IllegalArgumentException {
 		return this.getKinosByKinoketteId(this.kinoketteMapper.findById(kinoketteId));
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller Spielpläne die einer Anwender besitzt.
+	 * Rueckgabe aller Spielplaene die einer Anwender besitzt.
 	 * </p>
 	 */
 	@Override
 	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
 		return this.spielplanMapper.findAllByAnwenderOwner(anwender);
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller Spielpläne eines Kinos.
+	 * Rueckgabe aller SpielplÃ¤ne eines Kinos.
 	 * </p>
 	 */
 	@Override
@@ -1026,7 +1302,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Filme die ein Anwender besitzt.
+	 * Rueckgabe aller Spielplaene einer Kinokette.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Spielplan> getSpielplaeneByKinokette(Kinokette kinokette) throws IllegalArgumentException {
+		return this.spielplanMapper.findAllByKinokette(kinokette);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe aller Filme die ein Anwender besitzt.
 	 * </p>
 	 */
 	@Override
@@ -1036,7 +1322,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Spielzeiten die ein Anwender besitzt.
+	 * Rueckgabe aller Spielzeiten die ein Anwender besitzt.
 	 * </p>
 	 */
 	@Override
@@ -1046,7 +1332,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Vorstellungen eines Spielplans.
+	 * Rueckgabe aller Vorstellungen eines Spielplans.
 	 * </p>
 	 */
 	@Override
@@ -1056,7 +1342,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe eines Anwenders der durch den Namen gesucht wird.
+	 * Rueckgabe eines Anwenders der durch den Namen gesucht wird.
 	 * </p>
 	 */
 	@Override
@@ -1066,27 +1352,28 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Umfrageoptionen einer Umfrage.
+	 * Rueckgabe aller Umfrageoptionen einer Umfrage.
 	 * </p>
 	 */
 	@Override
 	public ArrayList<Umfrageoption> getUmfrageoptionenByUmfrage(Umfrage umfrage) throws IllegalArgumentException {
 		return this.umfrageoptionMapper.findAllByUmfrage(umfrage);
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller Umfrageoptionen einer Vorstellung.
+	 * Rueckgabe aller Umfrageoptionen einer Vorstellung.
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrageoption> getUmfrageoptionenByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException {
+	public ArrayList<Umfrageoption> getUmfrageoptionenByVorstellung(Vorstellung vorstellung)
+			throws IllegalArgumentException {
 		return this.umfrageoptionMapper.findAllByVorstellung(vorstellung);
 	}
 
 	/**
 	 * <p>
-	 * Rückgabe aller Gruppenmitglieder (Anwender) einer Gruppe.
+	 * Rueckgabe aller Gruppenmitglieder (Anwender) einer Gruppe.
 	 * </p>
 	 */
 	@Override
@@ -1096,7 +1383,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Umfragen einer Gruppe.
+	 * Rueckgabe aller Umfragen einer Gruppe.
 	 * </p>
 	 */
 	@Override
@@ -1106,7 +1393,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Vorstellungen im System.
+	 * Rueckgabe aller Vorstellungen im System.
 	 * </p>
 	 */
 	@Override
@@ -1116,7 +1403,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Kinoketten im System.
+	 * Rueckgabe aller Kinoketten im System.
 	 * </p>
 	 */
 	@Override
@@ -1126,7 +1413,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Kinos im System
+	 * Rueckgabe aller Kinos im System
 	 * </p>
 	 */
 	@Override
@@ -1136,7 +1423,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Filme im System
+	 * Rueckgabe aller Filme im System
 	 * </p>
 	 */
 	@Override
@@ -1146,14 +1433,158 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Rückgabe aller Spielzeiten im System.
+	 * Rueckgabe aller Spielzeiten im System.
 	 * </p>
 	 */
 	@Override
 	public ArrayList<Spielzeit> getAllSpielzeiten() throws IllegalArgumentException {
 		return this.spielzeitMapper.findAllSpielzeiten();
 	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe aller Auswahlen einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Auswahl> getAuswahlenByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.auswahlMapper.findAllByUmfrageoption(umfrageoption);
+	}
 
+	/**
+	 * <p>
+	 * Rueckgabe einer Auswahl eines Anwenders bei einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption)
+			throws IllegalArgumentException {
+		return this.auswahlMapper.findByAnwenderAndUmfrageoption(anwender, umfrageoption);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe der Auswahlen die ein Anwender besitzt.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.auswahlMapper.findAllByAnwenderOwner(anwender);
+	}
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: DB GETTER
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt: DB Beziehungen von BOs
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * <p>
+	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender, Gruppe gruppe) throws IllegalArgumentException {
+		this.gruppeMapper.addGruppenmitgliedschaft(anwender, gruppe);
+		return anwender;
+	}
+
+	/**
+	 * <p>
+	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
+	 * erstellt ist.
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException {
+		this.gruppenmitglieder.add(anwender);
+		return anwender;
+	}
+
+	/**
+	 * <p>
+	 * Entfernen eines Gruppenmitglieds aus einer Gruppe.
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedEntfernen(Anwender anwender, Gruppe gruppe) throws IllegalArgumentException {
+		this.gruppeMapper.deleteGruppenmitgliedschaft(anwender, gruppe);
+		return anwender;
+	}
+
+	/**
+	 * <p>
+	 * Entfernen eines Gruppenmitglieds aus einer Gruppe die noch nicht fertig
+	 * erstellt ist.
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedEntfernen(Anwender anwender) throws IllegalArgumentException {
+		this.gruppenmitglieder.remove(anwender);
+		return anwender;
+	}
+
+	/**
+	 * <p>
+	 * Kinokette zu einem Kino hinzufuegen.
+	 * </p>
+	 */
+	@Override
+	public Kino kinoDerKinoketteHinzufuegen(Kino kino, Kinokette kinokette) throws IllegalArgumentException {
+		this.kinoMapper.addKinokette(kinokette, kino);
+		kino.setKinokettenId(kinokette.getId());
+		return kino;
+	}
+
+	/**
+	 * <p>
+	 * Kinokette von einem Kino entfernen.
+	 * </p>
+	 */
+	@Override
+	public Kino kinoketteEntfernen(Kino kino) throws IllegalArgumentException {
+		this.kinoMapper.deleteKinokette(kino);
+		kino.setKinokettenId(0);
+		return kino;
+	}
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: DB Beziehungen von BOs
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt: Methoden
+	 * **************************************************************************
+	 */
+	
+	/**
+	 * <p>
+	 * Es wird geprueft ob der Boolean isVoted der Klasse Umfrage bereits auf True
+	 * gesetzt wurde, da diese gevotet wurde. Ist dies nicht der Fall so wird der
+	 * Boolean auf True gesetzt.
+	 * </p>
+	 */
+	@Override
+	public void isVoted(Auswahl auswahl) {
+		// Umfrage zur Auswahl herausfinden
+		Umfrage u = this.umfrageMapper
+				.findById(this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId());
+
+		// Wenn das Attribut isVoted noch auf false steht, auf true setzen
+		if (u.isVoted() == false) {
+			u.setVoted(true);
+		}
+	}
+		
 	/**
 	 * <p>
 	 * Filtern von Vorstellungen nach Kino oder Kinokette.
@@ -1162,24 +1593,23 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
 			Kino kino) throws IllegalArgumentException {
-		
 
-		//Prüfen ob es überhaupt Vorstllungen gibt
+		// Pruefen ob es Ã¼berhaupt Vorstllungen gibt
 		if (resultSet != null) {
-			
-			//Leere ArrayList anlegen für das Filterergebnis
+
+			// Leere ArrayList anlegen fÃ¼r das Filterergebnis
 			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
-		
-			//Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
+
+			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
 			for (Vorstellung v : resultSet) {
 				if (kino.getId() == this.getSpielplanById(v.getSpielplanId()).getKinoId()) {
 					newResultSet.add(v);
 				}
 			}
-			
-			//Ergebnis zurückgeben
+
+			// Ergebnis zurueckgeben
 			return newResultSet;
-		}else {
+		} else {
 			return resultSet;
 		}
 	}
@@ -1192,23 +1622,23 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
 			Kinokette kinokette) throws IllegalArgumentException {
-		
 
-		//Prüfen ob es überhaupt Vorstllungen gibt
+		// PrÃ¼fen ob es ueberhaupt Vorstllungen gibt
 		if (resultSet != null) {
-			
-			//Leere ArrayList anlegen für das Filterergebnis
+
+			// Leere ArrayList anlegen fÃ¼r das Filterergebnis
 			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
-			
-			//Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
+
+			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
 			for (Vorstellung v : resultSet) {
-				if (kinokette.getId() == this.getKinoById(this.getSpielplanById(v.getSpielplanId()).getKinoId()).getKinokettenId()) {
+				if (kinokette.getId() == this.getKinoById(this.getSpielplanById(v.getSpielplanId()).getKinoId())
+						.getKinokettenId()) {
 					newResultSet.add(v);
 				}
 			}
-			//Ergebnis zurückgeben
+			// Ergebnis zurueckgeben
 			return newResultSet;
-		}else {
+		} else {
 			return resultSet;
 		}
 	}
@@ -1221,23 +1651,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenByFilm(ArrayList<Vorstellung> resultSet, Film film)
 			throws IllegalArgumentException {
-		
 
-		//Prüfen ob es überhaupt Vorstllungen gibt
+		// Pruefen ob es ueberhaupt Vorstellungen gibt
 		if (resultSet != null) {
-			
-			//Leere ArrayList anlegen für das Filterergebnis
+
+			// Leere ArrayList anlegen fÃ¼r das Filterergebnis
 			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
-			
-			//Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
+
+			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
 			for (Vorstellung v : resultSet) {
 				if (film.getId() == v.getFilmId()) {
 					newResultSet.add(v);
 				}
 			}
-			//Ergebnis zurückgeben
+			// Ergebnis zurueckgeben
 			return newResultSet;
-		}else {
+		} else {
 			return resultSet;
 		}
 	}
@@ -1250,79 +1679,50 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Vorstellung> filterResultVorstellungenBySpielzeit(ArrayList<Vorstellung> resultSet,
 			Spielzeit spielzeit) throws IllegalArgumentException {
-		
-	
-		//Prüfen ob es überhaupt Vorstllungen gibt
+
+		// Pruefen ob es ueberhaupt Vorstllungen gibt
 		if (resultSet != null) {
-			
-			//Leere ArrayList anlegen für das Filterergebnis
+
+			// Leere ArrayList anlegen fÃ¼r das Filterergebnis
 			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
-			
-			//Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
+
+			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufÃ¼gen
 			for (Vorstellung v : resultSet) {
 				if (spielzeit.getId() == v.getSpielzeitId()) {
 					newResultSet.add(v);
 				}
 			}
-			
-			//Ergebnis zurückgeben
+
+			// Ergebnis zurueckgeben
 			return newResultSet;
-		}else {
+		} else {
 			return resultSet;
 		}
 	}
 
 	/**
 	 * <p>
-	 * Setzen eines Spielplans für alle Kinos einer Kinokette.
+	 * Setzen eines Spielplans fÃ¼r alle Kinos einer Kinokette.
 	 * </p>
 	 */
 	@Override
 	public void setSpielplanForKinosByKinokette(Spielplan spielplan, Kino kino) throws IllegalArgumentException {
-		
-		//Alle Kinos einer Kinokette suchen.
+		// Setzen des Spielplans als Kinokettenspielplan
+		spielplan.setKinokettenSpielplan(true);
+		this.spielplanMapper.update(spielplan);
+
+		// Alle Kinos einer Kinokette suchen.
 		ArrayList<Kino> resultSet = this.getKinosByKinoketteId(kino.getKinokettenId());
-		
-		//Den Spielplan für alle Kinos setzen.
-		if(resultSet != null) {
+
+		// Den Spielplan fÃ¼r alle Kinos setzen.
+		if (resultSet != null) {
 			for (Kino k : resultSet) {
 				this.kinoMapper.addKinokette(this.kinoketteMapper.findById(kino.getKinokettenId()), kino);
 			}
 		}
-		
+
 	}
 
-	/**
-	 * <p>
-	 * Rückgabe aller Auswahlen einer Umfrageoption
-	 * </p>
-	 */
-	@Override
-	public ArrayList<Auswahl> getAuswahlenByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
-		return this.auswahlMapper.findAllByUmfrageoption(umfrageoption);
-	}
-
-	/**
-	 * <p>
-	 * Rückgabe einer Auswahl eines Anwenders bei einer Umfrageoption
-	 * </p>
-	 */
-	@Override
-	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption)
-			throws IllegalArgumentException {
-		return this.auswahlMapper.findByAnwenderAndUmfrageoption(anwender,umfrageoption);
-	}
-	
-	/**
-	 * <p>
-	 * Rückgabe der Auswahlen die ein Anwender besitzt.
-	 * </p>
-	 */
-	@Override
-	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		return this.auswahlMapper.findAllByAnwenderOwner(anwender);
-	}
-	
 	/**
 	 * <p>
 	 * Berechnen des Ergebnisses der Auswahlen bei einer Umfrageoption.
@@ -1330,166 +1730,169 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public int berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
-		//Alle Auswahlen der Umfrageoption suchen
+		// Alle Auswahlen der Umfrageoption suchen
 		ArrayList<Auswahl> resultSet = this.getAuswahlenByUmfrageoption(umfrageoption);
-		
-		//Auswahlen aufadieren
-		if(resultSet != null) {
+
+		// Auswahlen aufadieren
+		if (resultSet != null) {
 			int result = 0;
 			for (Auswahl a : resultSet) {
 				result += a.getVoting();
 			}
 			return result;
-		}else {
+		} else {
 			return 0;
 		}
-		
+
 	}
-	
+
 	/**
 	 * <p>
-	 * Prüfen ob ein Ergebnis gefunden wurde. Bei einem Ergebnis wird true zurückgegeben 
-	 * bei einer Stichwahl wird false zurückgegeben.
+	 * Pruefen ob ein Ergebnis gefunden wurde. Bei einem Ergebnis wird true
+	 * zurueckgegeben bei einer Stichwahl wird false zurueckgegeben.
 	 * </p>
 	 */
 	@Override
 	public boolean ergebnisGefunden(Umfrage umfrage) throws IllegalArgumentException {
-		//Alle Umfrageoptionen der Umfrage suchen
+		// Alle Umfrageoptionen der Umfrage suchen
 		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
-		
-		//Prüfen ob es Umfrageoptionen gibt
-		if(resultSet != null) {
-			
-			//Ergebnisse berechnen
+
+		// Pruefen ob es Umfrageoptionen gibt
+		if (resultSet != null) {
+
+			// Ergebnisse berechnen
 			for (Umfrageoption u : resultSet) {
 				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
-			}	
-			
+			}
+
 			Umfrageoption max = null;
-			
-			//Höchstes Ergebnis suchen
+
+			// Hoechstes Ergebnis suchen
 			for (Umfrageoption u : resultSet) {
 				if (max == null) {
 					max = u;
-				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
+				} else if (max.getVoteErgebnis() < u.getVoteErgebnis()) {
 					max = u;
 				}
 			}
-			
-			//Rausfinden ob sich das höchste Ergebnis doppelt
+
+			// Rausfinden ob sich das hoechste Ergebnis doppelt
 			for (Umfrageoption u : resultSet) {
 				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
 					return false;
-				} 
+				}
 			}
-			
+
 		}
-		return true; 
+		return true;
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe der Umfrageoption die die meisten Stimmen bekommen hat bei einer Umfrage.
+	 * Rueckgabe der Umfrageoption die die meisten Stimmen bekommen hat bei einer
+	 * Umfrage.
 	 * </p>
 	 */
+	@Override
 	public Umfrageoption umfrageGewinnerErmitteln(Umfrage umfrage) throws IllegalArgumentException {
-		//Umfrageoptionen anhand der Umfrage suchen
+		// Umfrageoptionen anhand der Umfrage suchen
 		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
-		
+
 		Umfrageoption max = null;
-		
-		//Prüfen ob es Umfrageoptionen gibt
-		if(resultSet != null) {
-			
-			//Ergebnisse berechenen
+
+		// Pruefen ob es Umfrageoptionen gibt
+		if (resultSet != null) {
+
+			// Ergebnisse berechenen
 			for (Umfrageoption u : resultSet) {
 				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
-			}	
-			
-			//Höchstes Ergebnis ermitteln
+			}
+
+			// Hoechstes Ergebnis ermitteln
 			for (Umfrageoption u : resultSet) {
 				if (max == null) {
 					max = u;
-				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
-					max = u;
-				}
-			}	
-							
-		}	
-		return max;	
-	}
-		
-	/**
-	 * <p>
-	 * Rückgabe der Umfrageoptionen, die bei einer Stichwahl für die Umfrage verwendet werden 
-	 * müssen.
-	 * </p>
-	 */
-	public ArrayList<Umfrageoption> stichwahlUmfrageoptionenErmitteln(Umfrage umfrage) {
-		//Umfrageoptionen der Umfrage suchen
-		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
-		
-		//Leere ArrayList für die Ergebnisse bereitstellen
-		ArrayList<Umfrageoption> stichwahlResultSet = null;
-		
-		//Prüfen ob es Umfrageoptionen gibt
-		if(resultSet != null) {
-			
-			//Ergebnisse berechnen
-			for (Umfrageoption u : resultSet) {
-				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
-			}	
-					
-			Umfrageoption max = null;
-			
-			//Höchstes Ergebnis finden
-			for (Umfrageoption u : resultSet) {
-				if (max == null) {
-					max = u;
-				} else if(max.getVoteErgebnis() < u.getVoteErgebnis()) {
+				} else if (max.getVoteErgebnis() < u.getVoteErgebnis()) {
 					max = u;
 				}
 			}
-			
-			//Stichwahlopionen suchen und hinzufügen
+
+		}
+		return max;
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe der Umfrageoptionen, die bei einer Stichwahl fÃ¼r die Umfrage
+	 * verwendet werden muessen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Umfrageoption> stichwahlUmfrageoptionenErmitteln(Umfrage umfrage) {
+		// Umfrageoptionen der Umfrage suchen
+		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
+
+		// Leere ArrayList fÃ¼r die Ergebnisse bereitstellen
+		ArrayList<Umfrageoption> stichwahlResultSet = null;
+
+		// Pruefen ob es Umfrageoptionen gibt
+		if (resultSet != null) {
+
+			// Ergebnisse berechnen
+			for (Umfrageoption u : resultSet) {
+				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
+			}
+
+			Umfrageoption max = null;
+
+			// Hoechstes Ergebnis finden
+			for (Umfrageoption u : resultSet) {
+				if (max == null) {
+					max = u;
+				} else if (max.getVoteErgebnis() < u.getVoteErgebnis()) {
+					max = u;
+				}
+			}
+
+			// Stichwahlopionen suchen und hinzufuegen
 			for (Umfrageoption u : resultSet) {
 				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
 					stichwahlResultSet.add(u);
-				} 
+				}
 			}
-		
+
 		}
 		return stichwahlResultSet;
 	}
 
 	/**
 	 * <p>
-	 * Starten einer Stichwahl für eine Umfrage.
+	 * Starten einer Stichwahl fÃ¼r eine Umfrage.
 	 * </p>
 	 */
 	@Override
 	public Umfrage stichwahlStarten(Umfrage umfrage) throws IllegalArgumentException {
-		
-		//Umfragename erstellen
+
+		// Umfragename erstellen
 		String name = "Stichwahl " + umfrage.getName();
-		
-		//Umfrage für die Stichwahl erstellen
+
+		// Umfrage fÃ¼r die Stichwahl erstellen
 		Umfrage u = this.erstellenUmfrage(1, name, umfrage.getBesitzerId(), umfrage.getGruppenId());
-		
-		//Stichwahlumfrageoptionen suchen
+
+		// Stichwahlumfrageoptionen suchen
 		ArrayList<Umfrageoption> umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
-		
-		//Stichwahlumfrageoptionen erstellen
-		if(umfrageoptionen != null) {
+
+		// Stichwahlumfrageoptionen erstellen
+		if (umfrageoptionen != null) {
 			for (Umfrageoption umfr : umfrageoptionen) {
 				String nameUmfrageoption = "Stichwahl " + umfr.getName();
 				this.erstellenUmfrageoption(1, nameUmfrageoption, umfr.getUmfrageId(), umfr.getVorstellungsId());
-			}	
+			}
 		}
-		
+
 		return u;
 	}
-	
+
 	/**
 	 * <p>
 	 * Setzen einer Umfrage auf den Zustand Closed
@@ -1497,45 +1900,50 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void isClosedSetzen(Auswahl auswahl) {
-		//Suchen der Umfrage zur Auswahl
-		Umfrage umfrage = this.umfrageMapper.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
-		
-		//Suchen aller Umfrageoptionen der Umfrage
+		// Suchen der Umfrage zur Auswahl
+		Umfrage umfrage = this.umfrageMapper
+				.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
+
+		// Suchen aller Umfrageoptionen der Umfrage
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByUmfrage(umfrage);
-				
-		//Erstellen einer leeren ArrayList für die Auswahlen
+
+		// Erstellen einer leeren ArrayList fÃ¼r die Auswahlen
 		ArrayList<Auswahl> resAuswahlen = null;
-		
-		//Suchen aller Auswahlen für die Umfrageoptionen und hinzufügen in die Auswahlen ArrayList
+
+		// Suchen aller Auswahlen fÃ¼r die Umfrageoptionen und hinzufuegen in die
+		// Auswahlen ArrayList
 		for (Umfrageoption u : umfrageoptionen) {
 			ArrayList<Auswahl> auswahlen = this.getAuswahlenByUmfrageoption(u);
 			for (Auswahl a : auswahlen) {
 				resAuswahlen.add(a);
 			}
 		}
-		
-		//Suchen aller Gruppenmitglieder die an der Umfrage teilnehemn
-		ArrayList<Anwender> gruppenmitglieder = this.getGruppenmitgliederByGruppe(this.gruppeMapper.findById(umfrage.getGruppenId()));
-		
-		//Alle Auswahlen für jeden Anwender durchlaufen und zählen wie oft er gevotet hat
-		for(Anwender a : gruppenmitglieder) {
+
+		// Suchen aller Gruppenmitglieder die an der Umfrage teilnehemn
+		ArrayList<Anwender> gruppenmitglieder = this
+				.getGruppenmitgliederByGruppe(this.gruppeMapper.findById(umfrage.getGruppenId()));
+
+		// Alle Auswahlen fÃ¼r jeden Anwender durchlaufen und zaehlen wie oft er gevotet
+		// hat
+		for (Anwender a : gruppenmitglieder) {
 			int count = 0;
-			for(Auswahl aus : resAuswahlen) {
-				if(aus.getBesitzerId() == a.getId()) {
+			for (Auswahl aus : resAuswahlen) {
+				if (aus.getBesitzerId() == a.getId()) {
 					count++;
 				}
 			}
-			
-			//Wenn der Anwender noch keinen Vote erstellt hat für die Umfrage, so ist die Umfrage noch offen
-			if(count == 0) {
+
+			// Wenn der Anwender noch keinen Vote erstellt hat fÃ¼r die Umfrage, so ist die
+			// Umfrage noch offen
+			if (count == 0) {
 				return;
 			}
 		}
-		
-		//Wenn alle Anwender gevotet haben so ist die Umfrage geschlossen
+
+		// Wenn alle Anwender gevotet haben so ist die Umfrage geschlossen
 		umfrage.setOpen(false);
 	}
-	
+
 	/**
 	 * <p>
 	 * Setzen einer Umfrage auf den Zustand Open
@@ -1543,62 +1951,74 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void isClosedEntfernen(Auswahl auswahl) {
-		//Suchen der Umfrage zur Auswahl
-		Umfrage umfrage = this.umfrageMapper.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
-		
-		//Suchen aller Umfrageoptionen der Umfrage
+		// Suchen der Umfrage zur Auswahl
+		Umfrage umfrage = this.umfrageMapper
+				.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
+
+		// Suchen aller Umfrageoptionen der Umfrage
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByUmfrage(umfrage);
-				
-		//Erstellen einer leeren ArrayList für die Auswahlen
+
+		// Erstellen einer leeren ArrayList fÃ¼r die Auswahlen
 		ArrayList<Auswahl> resAuswahlen = new ArrayList<Auswahl>();
-		
-		//Suchen aller Auswahlen für die Umfrageoptionen und hinzufügen in die Auswahlen ArrayList
+
+		// Suchen aller Auswahlen fÃ¼r die Umfrageoptionen und hinzufuegen in die
+		// Auswahlen ArrayList
 		for (Umfrageoption u : umfrageoptionen) {
 			ArrayList<Auswahl> auswahlen = this.getAuswahlenByUmfrageoption(u);
 			for (Auswahl a : auswahlen) {
 				resAuswahlen.add(a);
 			}
 		}
-				
-		//Alle Auswahlen für den Anwender durchlaufen und zählen wie oft er gevotet hat
+
+		// Alle Auswahlen fÃ¼r den Anwender durchlaufen und zaehlen wie oft er gevotet hat
 		int count = 0;
-		for(Auswahl aus : resAuswahlen) {
-			if(aus.getBesitzerId() == auswahl.getBesitzerId()) {
+		for (Auswahl aus : resAuswahlen) {
+			if (aus.getBesitzerId() == auswahl.getBesitzerId()) {
 				count++;
-		}
-						
-		/**
-		 * Wenn der Anwender mehr als einen Vote erstellt hat für die Umfrage, so ist die Umfrage noch geschlossen, 
-		 * nachdem die Auswahl gelöscht wurde
-		 */
-			if(count > 1) {
+			}
+
+			/**
+			 * Wenn der Anwender mehr als einen Vote erstellt hat fÃ¼r die Umfrage, so ist
+			 * die Umfrage noch geschlossen, nachdem die Auswahl gelÃ¶scht wurde
+			 */
+			if (count > 1) {
 				return;
 			}
 		}
-		
-		//Wenn der Anwender nur einen Vote erstellt hat, so ist sie wieder geöffnet nach dem löschen
+
+		// Wenn der Anwender nur einen Vote erstellt hat, so ist sie wieder geoeffnet
+		// nach dem lÃ¶schen
 		umfrage.setOpen(true);
-		
+
 	}
-	
+
 	/**
 	 * <p>
-	 * Rückgabe aller geschlosssenen Umfragen, die zeitlich noch gültig sind.
+	 * Rueckgabe aller geschlosssenen Umfragen, die zeitlich noch gueltig sind.
 	 * </p>
 	 */
 	@Override
 	public ArrayList<Umfrage> anzeigenVonClosedUmfragen(Anwender anwender) throws IllegalArgumentException {
 		ArrayList<Umfrage> umfragen = this.getClosedUmfragenByAnwender(anwender);
-		ArrayList<Umfrage> zeitgültigeUmfragen = null;
+		ArrayList<Umfrage> zeitgueltigeUmfragen = null;
 		Date date = new Date(System.currentTimeMillis());
-		
+
 		for (Umfrage u : umfragen) {
-			if ((this.spielzeitMapper.findById(this.vorstellungMapper.findById(this.umfrageGewinnerErmitteln(u).getVorstellungsId()).getSpielzeitId()).getZeit()).after(date)) {
-				zeitgültigeUmfragen.add(u);
+			if ((this.spielzeitMapper.findById(this.vorstellungMapper
+					.findById(this.umfrageGewinnerErmitteln(u).getVorstellungsId()).getSpielzeitId()).getZeit())
+							.after(date)) {
+				zeitgueltigeUmfragen.add(u);
 			}
 		}
-		
-		return zeitgültigeUmfragen;
+
+		return zeitgueltigeUmfragen;
 	}
+	
+	/**
+	 * **************************************************************************
+	 * Abschnitt Ende: Methoden
+	 * **************************************************************************
+	 */
+
 	
 }
