@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * </p>
  * <p>
  * Zentrales Merkmal ist, dass jedes <code>BusinessObjekt</code> eine Nummer
- * besitzt, die man in einer relationalen Datenbnak auch als Primaerschlüssle
+ * besitzt, die man in einer relationalen Datenbnak auch als PrimaerschlÃ¼ssle
  * bezeichnen wuerde. Ferner ist jedes <code>BusinessObjekt</code> als
  * {@link Serializable} gekennzeichnet. Durh diese eigentschaft kann jedes
  *  <code>BusinessObjekt</code> automatisch in eine textuell Form uberfuehrt werden
@@ -115,7 +115,7 @@ public abstract class BusinessObjekt implements Serializable {
 	}
 /**
  * Erzeugen einer texutellen Darstellung der jeweiligen Instanz
- * Kann in Subklassen überschrieben werden
+ * Kann in Subklassen ueberschrieben werden
  */
 
 	@Override
