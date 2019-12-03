@@ -1,7 +1,8 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 /**
- * 
+ * Die Klasse erweitert die allgemeine BusinessObjekt-Klasse
+ * um nutzerspezifische Funktionen und Parameter.
  * @author fiona
  *
  */
@@ -43,7 +44,7 @@ public class BesitzerBusinessObjekt extends BusinessObjekt{
 	
 /**
  * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
- * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ * Dies kann selbstverstï¿½ndlich in Subklassen ueberschrieben werden
  */
 
 	@Override

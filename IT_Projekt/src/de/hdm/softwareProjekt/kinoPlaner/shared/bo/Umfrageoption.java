@@ -1,5 +1,14 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
+
+/**
+ * Die Klasse <code>Umfrageoption</code> ist die Realisierung 
+ * @author fiona einer Umfrageoptionklasse. Die Klasse trÃ¤gt umfrageId, vorstellungsId
+ * und voteErgebnis als Attribute. Andere Attribute befinden sich in der 
+ * Superklasse <code>BusinessObjekt</code>
+ *. 
+ */
+
 public class Umfrageoption extends BusinessObjekt {
 	
 	private static final long serialVersionUID= 1L;
@@ -64,7 +73,7 @@ public class Umfrageoption extends BusinessObjekt {
 /**
  * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
  *
- * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ * Dies kann selbstverstï¿½ndlich in Subklassen ueberschrieben werden
 */
 	@Override
 	public String toString() {
