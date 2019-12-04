@@ -34,6 +34,7 @@ public class MenuForm extends FlowPanel {
 		// Zusammenbauen der Widgets
 		this.add(navelement);
 		this.add(navelement);
+		this.add(navelement);
 		
 		navelement.add(kinoketteErstellenButton);
 		navelement.add(kinoErstellenButton);

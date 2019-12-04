@@ -8,22 +8,20 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 
-public class KinoBearbeitenForm extends VerticalPanel{
+public class FilmBearbeiten extends VerticalPanel {
 
 private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
-	private Label kinoFormLabel = new Label("Kino bearbeiten");
-	private Label nameLabel = new Label("Kinoname:");
-	private Label plzLabel = new Label("PLZ:");
-	private Label stadtLabel = new Label("Stadt:");
-	private Label strasseLabel = new Label("Straße:");
-	private Label hnrLabel = new Label("Hausnummer:");
+	private Label filmFormLabel = new Label("Film beabeiten");
+	private Label nameLabel = new Label("Filmname:");
+	private Label beschreibungLabel = new Label("Beschreibung:");
+	private Label bewertungLabel = new Label("Bewertung:");
+	private Label laengeLabel = new Label("L&auml;nge:");
 	
 	private TextBox nameTextBox = new TextBox();
-	private TextBox plzTextBox = new TextBox();
-	private TextBox stadtTextBox = new TextBox();
-	private TextBox strasseTextBox = new TextBox();
-	private TextBox hnrTextBox = new TextBox();
+	private TextBox beschreibungTextBox = new TextBox();
+	private TextBox bewertungTextBox = new TextBox();
+	private TextBox laengeTextBox = new TextBox();
 	
 	private Button speichernButton = new Button("Speichern");
 	
