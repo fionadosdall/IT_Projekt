@@ -110,13 +110,26 @@ public class UserForm extends FlowPanel {
 
 		detailsboxAbmelden.add(abmeldenButton);
 
-		emailAnzeigenLabel.setText(anwender.getGmail());
-		nameTextBox.getElement().setPropertyString("placeholder", anwender.getName());
 
 		// Click-Handler
 		papierkorb.addClickHandler(new BenutzerLoeschenClickHandler());
 		speichernButton.addClickHandler(new AnwenderSpeichernClickHandler());
 		abmeldenButton.addClickHandler(new AbmeldenClickHandler());
+		
+		if (anwender == null) {
+			emailAnzeigenLabel.setText("Es ist noch keine Mailadresse vorhanden");
+		} else {
+			
+			emailAnzeigenLabel.setText(anwender.getGmail());
+			
+		}
+		
+		if (anwender == null) { 
+			nameTextBox.setText("Es ist noch kein Profil vorhanden");
+		} else {
+			
+			nameTextBox.getElement().setPropertyString("placeholder", anwender.getName());
+		}
 
 	}
 

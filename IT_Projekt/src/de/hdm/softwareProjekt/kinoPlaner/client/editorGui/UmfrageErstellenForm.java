@@ -8,7 +8,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	
-	private Label title = new Label("Gruppe erstellen");
+	private Label title = new Label("Umfrage erstellen");
 	
 	public void onLoad() {
 		

@@ -13,8 +13,8 @@ public class Navigator extends FlowPanel {
 	private Button gruppeErstellenButton = new Button("Gruppe Erstellen");
 	private Button umfrageErstellenButton = new Button("Umfrage Erstellen");
 	
-	private GruppenAnzeigenForm gaf;
-	private UmfragenAnzeigenForm uaf;
+	private GruppeErstellenForm gef;
+	private UmfrageErstellenForm uef;
 	
 	public void onLoad() {
 		
@@ -44,8 +44,8 @@ public class Navigator extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			gaf = new GruppenAnzeigenForm();
-		//	RootPanel.get("details").add(gaf);
+			gef = new GruppeErstellenForm();
+			RootPanel.get("details").add(gef);
 			
 		}
 		
@@ -57,8 +57,8 @@ public class Navigator extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			uaf = new UmfragenAnzeigenForm();
-		// 	RootPanel.get("details").add(uaf);
+			uef = new UmfrageErstellenForm();
+		 	RootPanel.get("details").add(uef);
 			
 		}
 		
