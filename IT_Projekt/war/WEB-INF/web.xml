@@ -16,9 +16,23 @@
     <url-pattern>/it_projekt/administration</url-pattern>
   </servlet-mapping>
   
+   <!--  
+  <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>de.hdm.softwareProjekt.kinoPlaner.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/kinoplaner/login</url-pattern>
+  </servlet-mapping>
+  
+  -->
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>IT_Projekt.html</welcome-file>
+     <welcome-file>AdminClient.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
