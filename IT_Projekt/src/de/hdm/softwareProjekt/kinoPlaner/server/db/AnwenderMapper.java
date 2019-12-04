@@ -303,6 +303,40 @@ public class AnwenderMapper {
 		}
 		return null;
 	}
+	
+	
+	/**
+	 * find by gmail
+	 * 
+	 */
+	
+	public Anwender findByGmail (String gmail) {
+		
+		Connection con = DBConnection.connection();
+		String sql = "SELECT * FROM user WHERE gmail= ' " + gmail + " ' ";
+		
+		try {
+			
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+			
+				if (rs.next()) {
+				Anwender anwender = new Anwender ();
+				
+				
+				anwender.setId(rs.getInt("id"));
+				anwender.setName(rs.getString("name"));
+				anwender.setGmail(rs.getString("gmail"));
+				anwender.setErstellDatum(rs.getTimestamp("createDATE"));
+				
+				return anwender;
+				}
+			
+		}catch (SQLException e) {
+				e.printStackTrace();
+			
+		} return null;
+	}
 
 	/**
 	 * Suche nach allen Anwendern, die zu einer vorgegebenen Gruppe geh�ren. Man
