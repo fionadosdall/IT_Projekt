@@ -19,10 +19,15 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
-	private FlowPanel detailsuntenBoxen = new FlowPanel();
 	private FlowPanel speichernBox = new FlowPanel();
-	private FlowPanel detailsBoxMitte = new FlowPanel();
+	private FlowPanel detailsBoxObenMitte = new FlowPanel();
+	private FlowPanel detailsBoxMitteMitte = new FlowPanel();
+	private FlowPanel detailsBoxMitteUnten = new FlowPanel();
+	private FlowPanel detailsBoxUntenMitte = new FlowPanel();
 	private FlowPanel detailsBoxUnten = new FlowPanel();
+	private FlowPanel detailsObenBox = new FlowPanel();
+	private FlowPanel detailsMitteBox = new FlowPanel();
+	private FlowPanel detailsUntenBox = new FlowPanel();
 
 	private Label title = new Label("Gruppe erstellen");
 	private Label gruppenname = new Label("Gruppenname");
@@ -34,7 +39,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	private MultiWordSuggestOracle alleAnwender = new MultiWordSuggestOracle();
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwender);
 
-	private Button hinzufuegenButton = new Button("hinzufügen");
+	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button("Mitglied entfernen");
 	private Button speichernButton = new Button("Speichern");
 
@@ -49,9 +54,15 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
-		detailsuntenBoxen.addStyleName("detailsuntenBoxen");
+		detailsObenBox.addStyleName("detailsuntenBoxen");
+		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsUntenBox.addStyleName("detailsuntenBoxen");
+		
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxMitte.addStyleName("detailsBoxMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
+		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 
 		title.addStyleName("title");
@@ -76,24 +87,24 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		detailsoben.add(title);
 
-		detailsunten.add(detailsuntenBoxen);
-		detailsunten.add(detailsuntenBoxen);
-		detailsunten.add(detailsuntenBoxen);
+		detailsunten.add(detailsObenBox);
+		detailsunten.add(detailsMitteBox);
+		detailsunten.add(detailsUntenBox);
 
-		detailsuntenBoxen.add(gruppenname);
-		detailsuntenBoxen.add(detailsBoxMitte);
-		detailsBoxMitte.add(gruppenameTB);
+		detailsObenBox.add(gruppenname);
+		detailsObenBox.add(detailsBoxObenMitte);
+		detailsBoxObenMitte.add(gruppenameTB);
 
-		detailsuntenBoxen.add(mitglied);
-		detailsuntenBoxen.add(detailsBoxMitte);
-		detailsBoxMitte.add(mitgliedTB);
-		detailsuntenBoxen.add(detailsBoxUnten);
-		detailsBoxUnten.add(hinzufuegenButton);
+		detailsMitteBox.add(mitglied);
+		detailsMitteBox.add(detailsBoxMitteMitte);
+		detailsBoxMitteMitte.add(mitgliedTB);
+		detailsMitteBox.add(detailsBoxMitteUnten);
+		detailsBoxMitteUnten.add(hinzufuegenButton);
 
-		detailsuntenBoxen.add(mitglieder);
-		detailsuntenBoxen.add(detailsBoxMitte);
-		detailsBoxMitte.add(mitgliederLB);
-		detailsuntenBoxen.add(detailsBoxUnten);
+		detailsUntenBox.add(mitglieder);
+		detailsUntenBox.add(detailsBoxUntenMitte);
+		detailsBoxUntenMitte.add(mitgliederLB);
+		detailsUntenBox.add(detailsBoxUnten);
 		detailsBoxUnten.add(entfernenButton);
 
 		detailsunten.add(speichernBox);

@@ -22,7 +22,10 @@ public class Header extends FlowPanel {
 	private FlowPanel headerLinks = new FlowPanel();
 	private FlowPanel headerRechts = new FlowPanel();
 	private FlowPanel headerLogo = new FlowPanel();
-	private FlowPanel headerRechtsElement = new FlowPanel();
+	private FlowPanel headerRechtsElementSuchen = new FlowPanel();
+	private FlowPanel headerRechtsElementLupe = new FlowPanel();
+	private FlowPanel headerRechtsElementHome = new FlowPanel();
+	private FlowPanel headerRechtsElementUser = new FlowPanel();
 	private FlowPanel headerImage = new FlowPanel();
 
 	private Label headerLogoInput = new Label("K I N O P L A N E R");
@@ -46,7 +49,10 @@ public class Header extends FlowPanel {
 		headerLogoInput.addStyleName("headerLogoInput");
 
 		headerRechts.addStyleName("headerRechts");
-		headerRechtsElement.addStyleName("headerRechtsElement");
+		headerRechtsElementSuchen.addStyleName("headerRechtsElement");
+		headerRechtsElementLupe.addStyleName("headerRechtsElement");
+		headerRechtsElementHome.addStyleName("headerRechtsElement");
+		headerRechtsElementUser.addStyleName("headerRechtsElement");
 
 		headerImage.addStyleName("headerImage");
 		suchenImage.addStyleName("suchenImage");
@@ -67,16 +73,17 @@ public class Header extends FlowPanel {
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
 
-		headerRechts.add(headerRechtsElement);
-		headerRechts.add(headerRechtsElement);
-		headerRechts.add(headerRechtsElement);
+		headerRechts.add(headerRechtsElementSuchen);
+		headerRechts.add(headerRechtsElementLupe);
+		headerRechts.add(headerRechtsElementHome);
+		headerRechts.add(headerRechtsElementUser);
 		
-		headerRechtsElement.add(suchenTextBox);
-		headerRechtsElement.add(headerImage);
+		headerRechtsElementSuchen.add(suchenTextBox);
+		headerRechtsElementLupe.add(headerImage);
 		headerImage.add(suchenImage);
 		
-		headerRechtsElement.add(homeAnchor);
-		headerRechtsElement.add(userButton);
+		headerRechtsElementHome.add(homeAnchor);
+		headerRechtsElementUser.add(userButton);
 
 		// Click-Handler
 		
