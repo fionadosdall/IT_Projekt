@@ -115,7 +115,7 @@
 }
 
 .userButton.gwt-Button {
-	background-color: transparent;
+	background: transparent;
 	border-color: #209cee;
 	color: #209cee;
 	border-width: 1px;
@@ -151,8 +151,9 @@
 }
 
 .navButton.gwt-Button {
-	background-color: transparent;
+	background: transparent;
 	border-color: #fff;
+	color: #fff;
 	border-width: 1px;
 	cursor: pointer;
 	justify-content: center;
@@ -238,10 +239,10 @@
 	border-radius: 290486px;
 	padding-left: 1em;
 	padding-right: 1em;
-	background-color: #23d160;
+	background: #23d160;
 	border-color: transparent;
 	color: #fff;
-	border-width: 1px cursor: pointer;
+	border-width: 1px;
 	justify-content: center;
 	padding-bottom: calc(.375em - 1px);
 	padding-top: calc(.375em - 1px);
@@ -257,6 +258,7 @@
 	line-height: 1.5;
 	position: relative;
 	vertical-align: top;
+	cursor: pointer;
 }
 
 .mailLabel {
@@ -280,6 +282,8 @@
 	width: 32px;
 	display: block;
 	position: relative;
+	cursor: pointer;
+	
 }
 
 .papierkorb {
@@ -367,7 +371,7 @@
 }
 
 .hinzufuegenButton.gwt-Button {
-	background-color: transparent;
+	background: transparent;
 	border-color: #23d160;
 	color: #23d160;
 	border-radius: 2px;
@@ -383,7 +387,7 @@
 }
 
 .entfernenButton.gwt-Button {
-	background-color: transparent;
+	background: transparent;
 	border-color: #ff3860;
 	color: #ff3860;
 	border-radius: 2px;
@@ -396,4 +400,18 @@
 	padding-right: .75em;
 	padding-top: calc(.375em - 1px);
 	text-align: center;
+}
+.homeBar {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	
+}
+.homeBarItem {
+	margin-left: 10px;
+	margin-right:10px;
+}
+.homeBarAnchor.gwt-Anchor {
+	color: #363636;
+	font-weight: bold;
 }
