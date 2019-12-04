@@ -71,9 +71,10 @@ public class Header extends FlowPanel {
 		headerRechts.add(headerRechtsElement);
 		headerRechts.add(headerRechtsElement);
 		
+		headerRechtsElement.add(suchenTextBox);
 		headerRechtsElement.add(headerImage);
 		headerImage.add(suchenImage);
-
+		
 		headerRechtsElement.add(homeAnchor);
 		headerRechtsElement.add(userButton);
 
