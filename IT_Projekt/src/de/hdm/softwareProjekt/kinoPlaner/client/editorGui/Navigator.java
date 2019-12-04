@@ -8,7 +8,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class Navigator extends FlowPanel {
 	
-	private FlowPanel navelement = new FlowPanel();
+	private FlowPanel navelementOben = new FlowPanel();
+	private FlowPanel navelementUnten = new FlowPanel();
 	
 	private Button gruppeErstellenButton = new Button("Gruppe Erstellen");
 	private Button umfrageErstellenButton = new Button("Umfrage Erstellen");
@@ -19,17 +20,18 @@ public class Navigator extends FlowPanel {
 	public void onLoad() {
 		
 		this.addStyleName("navcontainer");
-		navelement.addStyleName("navelement");
+		navelementOben.addStyleName("navelement");
+		navelementUnten.addStyleName("navelement");
 		
 		gruppeErstellenButton.addStyleName("navButton");
 		umfrageErstellenButton.addStyleName("navButton");
 		
 		// Zusammenbauen der Widgets
-		this.add(navelement);
-		this.add(navelement);
+		this.add(navelementOben);
+		this.add(navelementUnten);
 		
-		navelement.add(gruppeErstellenButton);
-		navelement.add(umfrageErstellenButton);
+		navelementOben.add(gruppeErstellenButton);
+		navelementUnten.add(umfrageErstellenButton);
 		
 		// Click-Handler
 		

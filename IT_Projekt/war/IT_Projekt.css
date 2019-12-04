@@ -114,7 +114,7 @@
 	max-width: 100%;
 }
 
-.userButton {
+.userButton.gwt-Button {
 	background-color: transparent;
 	border-color: #209cee;
 	color: #209cee;
@@ -150,10 +150,9 @@
 	padding: 142px 0 142px 0;
 }
 
-.navButton {
+.navButton.gwt-Button {
 	background-color: transparent;
 	border-color: #fff;
-	color: #fff;
 	border-width: 1px;
 	cursor: pointer;
 	justify-content: center;
@@ -235,7 +234,7 @@
 	margin-top: .25rem;
 }
 
-.speichernButton {
+.speichernButton.gwt-Button {
 	border-radius: 290486px;
 	padding-left: 1em;
 	padding-right: 1em;
@@ -367,7 +366,7 @@
 	vertical-align: top;
 }
 
-.hinzufuegenButton {
+.hinzufuegenButton.gwt-Button {
 	background-color: transparent;
 	border-color: #23d160;
 	color: #23d160;
@@ -383,7 +382,7 @@
 	text-align: center;
 }
 
-.entfernenButton {
+.entfernenButton.gwt-Button {
 	background-color: transparent;
 	border-color: #ff3860;
 	color: #ff3860;
