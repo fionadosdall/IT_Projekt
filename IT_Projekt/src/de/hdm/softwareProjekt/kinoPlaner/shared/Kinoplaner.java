@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -545,9 +546,12 @@ public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
-	 * Loeschen eines Films mit Loeschweitergabe, wenn moeglich (true). Moeglich ist es wenn das Objekt nur einmal verwendet wird.
+	 * Loeschen eines Films mit Loeschweitergabe, wenn moeglich (true). Moeglich ist
+	 * es wenn das Objekt nur einmal verwendet wird.
 	 * </p>
-	 * @param film Filobjekt das geloescht werden soll
+	 * 
+	 * @param film
+	 *            Filobjekt das geloescht werden soll
 	 * @return Rueckgabe ob das Loeschen moeglich ist (true).
 	 * @throws IllegalArgumentException
 	 */
@@ -555,10 +559,12 @@ public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
-	 * Loeschen einer Spielzeit mit Loeschweitergabe, wenn moeglich (ture). Moeglich ist es wenn das Objekt nur einmal verwendet wird.
+	 * Loeschen einer Spielzeit mit Loeschweitergabe, wenn moeglich (ture). Moeglich
+	 * ist es wenn das Objekt nur einmal verwendet wird.
 	 * </p>
 	 * 
-	 * @param spielzeit Spielzeitobjekt das geloescht werden soll
+	 * @param spielzeit
+	 *            Spielzeitobjekt das geloescht werden soll
 	 * @return Rueckgabe ob das Loeschen moeglich ist (true).
 	 * @throws IllegalArgumentException
 	 */
@@ -1328,15 +1334,53 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe aller Spielplaene einer Kinokette.
 	 * </p>
-	 * @param kinokette Kinokettenobjekt
+	 * 
+	 * @param kinokette
+	 *            Kinokettenobjekt
 	 * @return ArrayList der gefundenen Spielplaene
 	 * @throws IllegalArgumentException
 	 */
 	public ArrayList<Spielplan> getSpielplaeneByKinokette(Kinokette kinokette) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Gruppen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            String des Textes der zu suchen ist
+	 * @return ArrayList der Gruppen die gefunden wurden
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Gruppe> volltextSucheGruppen(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Umfragen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            String des Textes der zu suchen ist
+	 * @return ArrayList der Umfragen die gefunden wurden
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Umfrage> volltextSucheUmfragen(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            String des Textes der zu suchen ist
+	 * @return ArrayList der Ergebnissen die gefunden wurden
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Umfrage> volltextSucheErgebnisse(String text) throws IllegalArgumentException;
 
 }

@@ -13,6 +13,7 @@ import de.hdm.softwareProjekt.kinoPlaner.server.db.UmfrageoptionMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.VorstellungMapper;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -47,9 +48,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * <li>{@link KinoplanerAsync}: Mit <code>KinplanerImpl</code> und der
  * <code>Kinplaner</code> wird die serverseitige Sicht der Applikationslogik
  * abgebildet, welche funktional vollstaendig synchron ablaeuft. Fuer die
- * clientseiteige Sicht muessen asynchrone Aufrufe eroeglicht werden, wozu dieses
- * zusaetzliche Interface dient.Das Async Interface wird durch das Google Plugin
- * semiautomatisch bei der Erstellung und Pflege unterstuetzt.</li>
+ * clientseiteige Sicht muessen asynchrone Aufrufe eroeglicht werden, wozu
+ * dieses zusaetzliche Interface dient.Das Async Interface wird durch das Google
+ * Plugin semiautomatisch bei der Erstellung und Pflege unterstuetzt.</li>
  * <li>{@link RemoteServiceServlet}: Ist eine Klasse serverseitig instantiierbar
  * und clientseitig ueber GWT RPC nutzbar, so muss sie die Klasse
  * <code>RemoteServiceServlet</code> implementieren. Diese ist die funktionale
@@ -959,7 +960,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public boolean loeschen(Film film) throws IllegalArgumentException {
 		ArrayList<Vorstellung> vorstellungen = this.vorstellungMapper.findByFilm(film);
-		if (vorstellungen.size() < 1) {
+		if (vorstellungen.size() <= 1) {
 			if (vorstellungen.size() == 1) {
 				this.loeschen(vorstellungen.get(0));
 			}
@@ -978,8 +979,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean loeschen(Spielzeit spielzeit) throws IllegalArgumentException {
+		//Alle Vorstellungen mit der Spielzeit zuruekgeben
 		ArrayList<Vorstellung> spielzeiten = this.vorstellungMapper.findBySpielzeit(spielzeit);
-		if (spielzeiten.size() < 1) {
+		
+		//Wenn weniger oder gleich 1  
+		if (spielzeiten.size() <= 1) {
 			if (spielzeiten.size() == 1) {
 				this.loeschen(spielzeiten.get(0));
 			}
@@ -1120,13 +1124,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * Abschnitt Ende: ERSTELLEN, LOESCHEN SPEICHERN VON BOS
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt: GETTER UND SETTER
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe des Anwenders, in dessen Ansicht die Website ausgefuehrt wird.
@@ -1146,13 +1150,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public void setAnwender(Anwender anwender) throws IllegalArgumentException {
 		this.anwender = anwender;
 	}
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: GETTER UND SETTER
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt: DB GETTER
@@ -1440,7 +1444,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Spielzeit> getAllSpielzeiten() throws IllegalArgumentException {
 		return this.spielzeitMapper.findAllSpielzeiten();
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe aller Auswahlen einer Umfrageoption
@@ -1471,19 +1475,19 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
 		return this.auswahlMapper.findAllByAnwenderOwner(anwender);
 	}
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: DB GETTER
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt: DB Beziehungen von BOs
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * <p>
 	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe
@@ -1553,19 +1557,19 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		kino.setKinokettenId(0);
 		return kino;
 	}
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: DB Beziehungen von BOs
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt: Methoden
 	 * **************************************************************************
 	 */
-	
+
 	/**
 	 * <p>
 	 * Es wird geprueft ob der Boolean isVoted der Klasse Umfrage bereits auf True
@@ -1584,7 +1588,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			u.setVoted(true);
 		}
 	}
-		
+
 	/**
 	 * <p>
 	 * Filtern von Vorstellungen nach Kino oder Kinokette.
@@ -1970,7 +1974,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			}
 		}
 
-		// Alle Auswahlen für den Anwender durchlaufen und zaehlen wie oft er gevotet hat
+		// Alle Auswahlen für den Anwender durchlaufen und zaehlen wie oft er gevotet
+		// hat
 		int count = 0;
 		for (Auswahl aus : resAuswahlen) {
 			if (aus.getBesitzerId() == auswahl.getBesitzerId()) {
@@ -1999,10 +2004,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Umfrage> anzeigenVonClosedUmfragen(Anwender anwender) throws IllegalArgumentException {
+		// Alle geschlossenen Umfragen fuer den Anwender suchen
 		ArrayList<Umfrage> umfragen = this.getClosedUmfragenByAnwender(anwender);
+
+		// Leeres Ergebnissarray anlegen
 		ArrayList<Umfrage> zeitgueltigeUmfragen = null;
+
+		// Aktuelle Zeit abrufen
 		Date date = new Date(System.currentTimeMillis());
 
+		// Für jede Umfrage sehen, ob der Gewinner der Umfrage noch nach der aktuellen
+		// Zeit liegt und wenn ja, dem Ergebnissarray hinzufügen
 		for (Umfrage u : umfragen) {
 			if ((this.spielzeitMapper.findById(this.vorstellungMapper
 					.findById(this.umfrageGewinnerErmitteln(u).getVorstellungsId()).getSpielzeitId()).getZeit())
@@ -2013,12 +2025,101 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		return zeitgueltigeUmfragen;
 	}
-	
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Gruppen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Gruppe> volltextSucheGruppen(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Gruppe> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Gruppe> gruppen = this.gruppeMapper.findAllByAnwender(this.getAnwender());
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (gruppen != null) {
+			for (Gruppe g : gruppen) {
+				String name = g.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(g);
+				}
+			}
+		}
+		return ergebnisse;
+
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Umfragen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Umfrage> volltextSucheUmfragen(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Umfrage> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Umfrage> umfragen = this.umfrageMapper.findAllByAnwender(this.getAnwender());
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (umfragen != null) {
+			for (Umfrage u : umfragen) {
+				String name = u.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(u);
+				}
+			}
+		}
+		return ergebnisse;
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Umfrage> volltextSucheErgebnisse(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Umfrage> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Umfrage> closedUmfragen = this.anzeigenVonClosedUmfragen(this.getAnwender());
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (closedUmfragen != null) {
+			for (Umfrage u : closedUmfragen) {
+				String name = u.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(u);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: Methoden
 	 * **************************************************************************
 	 */
 
-	
 }

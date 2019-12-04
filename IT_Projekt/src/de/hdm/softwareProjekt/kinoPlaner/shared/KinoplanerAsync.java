@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -271,6 +272,15 @@ public interface KinoplanerAsync {
 			throws IllegalArgumentException;
 
 	public void getSpielplaeneByKinokette(Kinokette kinokette, AsyncCallback<ArrayList<Spielplan>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheGruppen(String text, AsyncCallback<ArrayList<Gruppe>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheUmfragen(String text, AsyncCallback<ArrayList<Umfrage>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheErgebnisse(String text, AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
 
 }
