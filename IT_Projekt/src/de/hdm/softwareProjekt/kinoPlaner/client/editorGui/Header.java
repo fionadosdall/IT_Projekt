@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -37,7 +38,7 @@ public class Header extends FlowPanel {
 	private Anchor homeAnchor = new Anchor("HOME");
 	private Button userButton = new Button("USER");
 
-	private GruppenAnzeigenForm gaf;
+	private Home home;
 	private UserForm uf;
 
 	public void onLoad() {
@@ -103,8 +104,8 @@ public class Header extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			gaf = new GruppenAnzeigenForm();
-			//RootPanel.get("details").add(gaf);
+			home = new Home();
+			RootPanel.get("details").add(home);
 			
 		}
 		
