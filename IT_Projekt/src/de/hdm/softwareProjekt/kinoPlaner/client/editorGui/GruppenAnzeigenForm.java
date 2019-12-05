@@ -1,9 +1,16 @@
 
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
-import com.google.gwt.user.client.ui.Button;
+import java.util.ArrayList;
+
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 //import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 //import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Label;
 
@@ -13,48 +20,49 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 //import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
 public class GruppenAnzeigenForm extends FlowPanel {
-
-	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
-	// private Anwender anwender = CurrentAnwender.getAnwender();
-//	private Anwender newAnwender= null;
-
-	Gruppe gruppe; 
-	
-//	private TextBox addAnwenderTextBox = new TextBox ();
-//	private Button speicherGruppenButton = new Button ("Speichern");
-//	private FlexTable mitgliedFlexTable = new FlexTable();
-//	
-
-	HomeBar hb = new HomeBar();
-
-	private FlowPanel detailsoben = new FlowPanel();
-	private FlowPanel detailsunten = new FlowPanel();
-	private FlowPanel detailsboxInhalt = new FlowPanel();
-	
-	private Label title = new Label("Gruppenname");
-	private Label mitgliederLabel = new Label ("Gruppenmitglieder");
-	private Label umfrageLabel = new Label ("Umfragen"); 
-
-	public void onLoad() {
-
-		this.addStyleName("detailscontainer");
-
-		detailsoben.addStyleName("detailsoben");
-		detailsunten.addStyleName("detailsunten");
 		
-		title.addStyleName("title");
-		mitgliederLabel.addStyleName("detailsboxLabels");
-		umfrageLabel.addStyleName("detailsboxLabels");
+		ArrayList<Gruppe> gruppen;
 
-		this.add(detailsoben);
-		this.add(detailsunten);
+		public void onLoad() {
+			KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+			kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
 
-		detailsoben.add(hb);
-		detailsoben.add(title);
-		detailsboxInhalt.add(mitgliederLabel);
-		detailsboxInhalt.add(umfrageLabel);
-		
+			Grid felder = new Grid();
+			felder.setWidget(0, 0, new Label("Gruppen"));
+			int i = 1;
+			for (Gruppe gruppe : gruppen) {
+				Label gruppenname = new Label(gruppe.getName());
+				gruppenname.addDoubleClickHandler(new UmfrageAuswaehlenClickHandler());
+				felder.setWidget(i, 0, gruppenname);
+				i++;
+			}
+			this.add(felder);
 
-	}
+		}
+
+		private class UmfrageAuswaehlenClickHandler implements DoubleClickHandler {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+
+			}
+
+		}
+
+		private class SucheGruppenByAnwenderCallback implements AsyncCallback<ArrayList<Gruppe>> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Gruppen nicht abrufbar.");
+
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Gruppe> result) {
+				gruppen = result;
+
+			}
+
+		}
 
 }

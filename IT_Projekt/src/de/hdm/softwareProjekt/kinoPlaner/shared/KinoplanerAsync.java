@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -121,24 +120,24 @@ public interface KinoplanerAsync {
 
 	public void getKinoById(int kinoId, AsyncCallback<Kino> callback) throws IllegalArgumentException;
 
-	public void getGruppenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Gruppe>> callback)
+	public void getGruppenByAnwender(AsyncCallback<ArrayList<Gruppe>> callback)
 			throws IllegalArgumentException;
 
-	public void getGruppenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Gruppe>> callback)
+	public void getGruppenByAnwenderOwner(AsyncCallback<ArrayList<Gruppe>> callback)
 			throws IllegalArgumentException;
 
-	public void getUmfragenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback)
+	public void getUmfragenByAnwender(AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
 
-	public void getUmfragenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback)
+	public void getUmfragenByAnwenderOwner(AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
 
-	public void getClosedUmfragenByAnwender(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback);
+	public void getClosedUmfragenByAnwender(AsyncCallback<ArrayList<Umfrage>> callback);
 
-	public void getKinokettenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Kinokette>> callback)
+	public void getKinokettenByAnwenderOwner(AsyncCallback<ArrayList<Kinokette>> callback)
 			throws IllegalArgumentException;
 
-	public void getKinosByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Kino>> callback)
+	public void getKinosByAnwenderOwner(AsyncCallback<ArrayList<Kino>> callback)
 			throws IllegalArgumentException;
 
 	public void getKinosByKinoketteId(Kinokette kinokette, AsyncCallback<ArrayList<Kino>> callback)
@@ -147,19 +146,19 @@ public interface KinoplanerAsync {
 	public void getKinosByKinoketteId(int kinoketteId, AsyncCallback<ArrayList<Kino>> callback)
 			throws IllegalArgumentException;
 
-	public void getSpielplaeneByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Spielplan>> callback)
+	public void getSpielplaeneByAnwenderOwner(AsyncCallback<ArrayList<Spielplan>> callback)
 			throws IllegalArgumentException;
 
 	public void getSpielplaeneByKino(Kino kino, AsyncCallback<ArrayList<Spielplan>> callback)
 			throws IllegalArgumentException;
 
-	public void getFilmeByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Film>> callback)
+	public void getFilmeByAnwenderOwner(AsyncCallback<ArrayList<Film>> callback)
 			throws IllegalArgumentException;
 
-	public void getSpielzeitenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Spielzeit>> callback)
+	public void getSpielzeitenByAnwenderOwner(AsyncCallback<ArrayList<Spielzeit>> callback)
 			throws IllegalArgumentException;
 
-	public void getAuswahlenByAnwenderOwner(Anwender anwender, AsyncCallback<ArrayList<Auswahl>> callback)
+	public void getAuswahlenByAnwenderOwner(AsyncCallback<ArrayList<Auswahl>> callback)
 			throws IllegalArgumentException;
 
 	public void getVorstellungenBySpielplan(Spielplan spielplan, AsyncCallback<ArrayList<Vorstellung>> callback)
@@ -207,7 +206,7 @@ public interface KinoplanerAsync {
 	public void getAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<ArrayList<Auswahl>> callback)
 			throws IllegalArgumentException;
 
-	public void getAuswahlByAnwenderAndUmfrageoption(Anwender anwender, Umfrageoption umfrageoption,
+	public void getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption,
 			AsyncCallback<Auswahl> callback) throws IllegalArgumentException;
 
 	public void berechneAuswahlenByUmfrageoption(Umfrageoption umfrageoption, AsyncCallback<Integer> callback);
@@ -225,7 +224,7 @@ public interface KinoplanerAsync {
 
 	public void isClosedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback);
 
-	public void anzeigenVonClosedUmfragen(Anwender anwender, AsyncCallback<ArrayList<Umfrage>> callback)
+	public void anzeigenVonClosedUmfragen(AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
 
 	public void gruppenmitgliedHinzufuegen(Anwender anwender, Gruppe gruppe, AsyncCallback<Anwender> callback)
@@ -283,4 +282,7 @@ public interface KinoplanerAsync {
 	public void volltextSucheErgebnisse(String text, AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
 
+	public void getUmfrageById(int umfrageId, AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
+
+	public void getGruppeById(int gruppeId, AsyncCallback<Gruppe> callback) throws IllegalArgumentException;
 }
