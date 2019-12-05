@@ -68,7 +68,7 @@ public class HomeBar extends FlowPanel {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			uaf = new UmfragenAnzeigenForm();
-//			RootPanel.get("details").add(uaf);
+			RootPanel.get("details").add(uaf);
 			
 		}
 	}

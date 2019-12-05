@@ -11,7 +11,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-public class UmfrageCell extends AbstractCell<Umfrage>{
+public class UmfrageCell extends AbstractCell<Umfrage> {
 	Gruppe gruppe;
 
 	@Override

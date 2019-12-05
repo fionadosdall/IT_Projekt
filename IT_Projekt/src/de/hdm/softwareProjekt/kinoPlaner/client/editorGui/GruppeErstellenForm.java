@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
 public class GruppeErstellenForm extends FlowPanel {
 
@@ -44,6 +45,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	private Button speichernButton = new Button("Speichern");
 
 	private ListBox mitgliederLB = new ListBox();
+	private Gruppe gruppe;
 
 	public void onLoad() {
 
@@ -115,6 +117,10 @@ public class GruppeErstellenForm extends FlowPanel {
 		entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 
+	}
+	
+	public void setUmfrage(Gruppe gruppe) {
+		this.gruppe = gruppe;
 	}
 
 	/***********************************************************************

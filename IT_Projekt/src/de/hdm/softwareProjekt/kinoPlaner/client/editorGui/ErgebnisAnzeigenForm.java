@@ -4,11 +4,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-public class UmfrageAnzeigenForm extends FlowPanel {
+public class ErgebnisAnzeigenForm extends FlowPanel{
 	private Umfrage umfrage;
 
 	public void setUmfrage(Umfrage umfrage) {
-		this.umfrage=umfrage;
+		this.umfrage = umfrage;
 		
 	}
 

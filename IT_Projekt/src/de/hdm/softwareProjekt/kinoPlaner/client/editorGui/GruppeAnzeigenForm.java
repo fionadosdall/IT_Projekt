@@ -24,7 +24,7 @@ public class GruppeAnzeigenForm extends FlowPanel{
 	// private Anwender anwender = CurrentAnwender.getAnwender();
 //	private Anwender newAnwender= null;
 
-	Gruppe gruppe; 
+	private Gruppe gruppe; 
 	
 //	private TextBox addAnwenderTextBox = new TextBox ();
 //	private Button speicherGruppenButton = new Button ("Speichern");
@@ -60,6 +60,9 @@ public class GruppeAnzeigenForm extends FlowPanel{
 		detailsboxInhalt.add(mitgliederLabel);
 		detailsboxInhalt.add(umfrageLabel);
 		
+	}
+	public void setGruppe(Gruppe gruppe) {
+		this.gruppe = gruppe;
 	}
 	
 
