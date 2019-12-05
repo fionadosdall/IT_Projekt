@@ -62,7 +62,7 @@ public class UserForm extends FlowPanel {
 		löschenImage.addStyleName("löschenImage");
 		papierkorb.addStyleName("papierkorb");
 		detailsbox.addStyleName("detailsbox");
-		detailsboxInhalt.addStyleName("detailsboxInahlt");
+		detailsboxInhalt.addStyleName("detailsboxInhalt");
 		detailsboxLabels.addStyleName("detailsboxLabels");
 		detailsboxAbmelden.addStyleName("detailsboxabmelden");
 
