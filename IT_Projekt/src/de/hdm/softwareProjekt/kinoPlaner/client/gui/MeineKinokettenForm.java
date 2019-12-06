@@ -102,6 +102,7 @@ public class MeineKinokettenForm extends FlowPanel{
 
 private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	private Kinokette kinokette;
+	
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
