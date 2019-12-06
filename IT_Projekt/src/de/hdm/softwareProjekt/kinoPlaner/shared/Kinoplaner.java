@@ -1005,8 +1005,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Gefundene Auswahl
 	 * @throws IllegalArgumentException
 	 */
-	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption)
-			throws IllegalArgumentException;
+	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1148,7 +1147,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return fertiges Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielplan erstellenSpielplanKinokette(int id, String name, int besitzerId, int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(int id, String name, int besitzerId, int kinoketteId)
 			throws IllegalArgumentException;
 
 	/**
@@ -1407,4 +1406,92 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Gruppe getGruppeById(int gruppeId) throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Rueckgabe der Vorstellung zu einer Umfrageoption.
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
+	 * @return Zugehoeriges Vorstellungsobejekt
+	 */
+	public Vorstellung getVorstellungByUmfrageoption(Umfrageoption umfrageoption);
+
+	/**
+	 * <p>
+	 * Rueckgabe des Films einer Umfrageoption
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
+	 * @return Film der Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Film getFilmByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe der Spielzeit einer Umfrageoption
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
+	 * @return Spielzeit der Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Spielzeit getSpielzeitByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Umfrageoption
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
+	 * @return Kino der Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Kino getKinoByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe der Kinokette einer Umfrageoption
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
+	 * @return Kinokette der Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Kinokette getKinoketteByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Alle Spielplaene ausgeben
+	 * </p>
+	 * 
+	 * @return Alle Spielplaene
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Spielplan> getAllSpielplaene() throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Spielplan der Umfrageoption ausgeben
+	 * </p>
+	 * @param umfrageoption Umfrageoptionobjekt
+	 * @return Spielplan der Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Spielplan getSpielplanByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe einer Kinokette mit einer bestimmten Id.
+	 * </p>
+	 * @param kinoketteId Kennung der Kinokette
+	 * @return Gesuchte Kinokette
+	 * @throws IllegalArgumentException
+	 */
+	public Kinokette getKinoketteById(int kinoketteId) throws IllegalArgumentException;
 }

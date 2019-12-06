@@ -127,6 +127,31 @@ public class SpielplanMapper {
 		}
 		return true;
 	}
+	
+	public ArrayList<Spielplan> findSpielplaeneByName(String name) {
+		Connection con = DBConnection.connection();
+		ArrayList<Spielplan> resultarray = new ArrayList<Spielplan>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, kinoId, erstellDatum FROM spielplan"
+					+ "WHERE name=" + name + " ORDER BY kinoId");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			while (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("id"));
+				sp.setName(resultset.getString("name"));
+				sp.setBesitzerId(resultset.getInt("besitzerId"));
+				sp.setKinoId(resultset.getInt("kinoId"));
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				// Hinzufügen des neuen Objekts zur ArrayList
+				resultarray.add(sp);
+			
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * Die insert-Methode fügt ein neues Spielplan-Objekt zur Datenbank hinzu.

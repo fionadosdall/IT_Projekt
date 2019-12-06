@@ -60,10 +60,11 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		kinoplaner.getUmfragenByAnwender(new SucheUmfrageByAnwenderCallback());
 
-		felder.setWidget(0, 0, umfrageLabel);
-		felder.setWidget(0, 1, gruppeLabel);
+
 
 		if (umfragen != null) {
+			felder.setWidget(0, 0, umfrageLabel);
+			felder.setWidget(0, 1, gruppeLabel);
 			felder.resizeRows(umfragen.size());
 			int i = 1;
 			int j = 0;
@@ -81,7 +82,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 				gruppe = null;
 			}
 		} else {
-			felder.setWidget(1, 0, new Label("Keine Umfragen verfügbar."));
+			felder.setWidget(0, 0, new Label("Keine Umfragen verfügbar."));
 			Button erstellenButton = new Button("Erstelle deine erste Umfrage!");
 			erstellenButton.setStyleName("navButton");
 			erstellenButton.addDoubleClickHandler(new UmfrageErstellenClickHandler());

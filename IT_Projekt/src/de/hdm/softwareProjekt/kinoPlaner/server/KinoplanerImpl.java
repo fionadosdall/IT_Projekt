@@ -406,25 +406,34 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Ein neuer Spielplan wird angelegt und anschließend in der Datenbank
-	 * gespeichert.
+	 * Ein neuer Spielplan wird fuer alle Kinos der Kinokette angelegt und
+	 * anschließend in der Datenbank gespeichert.
 	 * </p>
 	 */
 	@Override
-	public Spielplan erstellenSpielplanKinokette(int id, String name, int besitzerId, int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(int id, String name, int besitzerId, int kinoketteId)
 			throws IllegalArgumentException {
-		// Ein neues Spielplan Objekt wird erstellt.
-		Spielplan s = new Spielplan();
+		ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
+		ArrayList<Spielplan> spielplaene = null;
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		s.setId(id);
-		s.setName(name);
-		s.setBesitzerId(id);
-		s.setKinokettenId(kinoketteId);
-		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		s.setKinokettenSpielplan(true);
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.spielplanMapper.insert(s);
+		for (Kino k : kinos) {
+			// Ein neues Spielplan Objekt wird erstellt.
+			Spielplan s = new Spielplan();
+
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			s.setId(id);
+			s.setName(name);
+			s.setBesitzerId(id);
+			s.setKinoId(k.getId());
+			s.setKinokettenId(kinoketteId);
+			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			s.setKinokettenSpielplan(true);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			this.spielplanMapper.insert(s);
+			spielplaene.add(s);
+		}
+
+		return spielplaene;
 	}
 
 	/**
@@ -624,6 +633,27 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void speichern(Spielplan spielplan) throws IllegalArgumentException {
+		ArrayList<Spielplan> spielpl = this.spielplanMapper.findAllByName(spielplan.getName());
+		if (spielplan.isKinokettenSpielplan() == false) {
+			if (spielpl.size() > 1) {
+				for (Spielplan sp : spielpl) {
+					if (sp.getId() != spielplan.getId()) {
+						this.loeschen(sp);
+					}
+				}
+			}
+
+		} else {
+			for (Spielplan s : spielpl) {
+				s.setName(spielplan.getName());
+				s.setBesitzerId(spielplan.getBesitzerId());
+				s.setKinoId(spielplan.getKinoId());
+				s.setKinokettenId(spielplan.getKinokettenId());
+				s.setKinokettenSpielplan(true);
+				this.spielplanMapper.update(s);
+				return;
+			}
+		}
 		this.spielplanMapper.update(spielplan);
 
 	}
@@ -878,16 +908,23 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void loeschen(Spielplan spielplan) throws IllegalArgumentException {
+		ArrayList<Spielplan> spielpl = this.spielplanMapper.findAllByName(spielplan.getName());
+
 		// Loeschen aller zugehoerigen Vorstellungen
-		ArrayList<Vorstellung> vorstellungen = this.getVorstellungenBySpielplan(spielplan);
-		if (vorstellungen != null) {
-			for (Vorstellung v : vorstellungen) {
-				this.loeschen(v);
+		for (Spielplan sp : spielpl) {
+			ArrayList<Vorstellung> vorstellungen = this.getVorstellungenBySpielplan(sp);
+			if (vorstellungen != null) {
+				for (Vorstellung v : vorstellungen) {
+					this.loeschen(v);
+				}
 			}
 		}
 
 		// Loeschen des Spielplans
-		this.spielplanMapper.delete(spielplan);
+		for (Spielplan sp : spielpl) {
+			this.spielplanMapper.delete(sp);
+		}
+		
 
 	}
 
@@ -1230,12 +1267,41 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * Rueckgabe einer Gruppe mit einer bestimmten Id.
 	 * </p>
 	 */
-	
 	@Override
 	public Gruppe getGruppeById(int gruppeId) throws IllegalArgumentException {
 		return this.gruppeMapper.findById(gruppeId);
 	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Gruppe mit einer bestimmten Id.
+	 * </p>
+	 */
+	@Override
+	public Kinokette getKinoketteById(int kinoketteId) throws IllegalArgumentException {
+		return this.kinoketteMapper.findById(kinoketteId);
+	}
 
+	/**
+	 * <p>
+	 * Alle Spielplaene ausgeben
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Spielplan> getAllSpielplaene() throws IllegalArgumentException {
+		return this.spielplanMapper.findAll();
+	}
+	
+	/**
+	 * <p>
+	 * Spielplan der Umfrageoption ausgeben
+	 * </p>
+	 */
+	@Override
+	public Spielplan getSpielplanByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.spielplanMapper.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielplanId());
+	}
+	
 	/**
 	 * <p>
 	 * Rueckgabe aller Gruppen in denen der Anwender Mitglied ist.
@@ -1274,6 +1340,51 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Umfrage> getUmfragenByAnwenderOwner() throws IllegalArgumentException {
 		return this.umfrageMapper.findAllByAnwenderOwner(this.anwender);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe des Films einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public Film getFilmByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.filmMapper.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getFilmId());
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe der Spielzeit einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public Spielzeit getSpielzeitByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.spielzeitMapper
+				.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielzeitId());
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public Kino getKinoByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.kinoMapper.findById(this.spielplanMapper
+				.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielplanId())
+				.getKinoId());
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe der Kinokette einer Umfrageoption
+	 * </p>
+	 */
+	@Override
+	public Kinokette getKinoketteByUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
+		return this.kinoketteMapper.findById(this.spielplanMapper
+				.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielplanId())
+				.getKinokettenId());
 	}
 
 	/**
@@ -1504,8 +1615,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Auswahl getAuswahlByAnwenderAndUmfrageoption( Umfrageoption umfrageoption)
-			throws IllegalArgumentException {
+	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
 		return this.auswahlMapper.findByAnwenderAndUmfrageoption(this.anwender, umfrageoption);
 	}
 
@@ -1517,6 +1627,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner() throws IllegalArgumentException {
 		return this.auswahlMapper.findAllByAnwenderOwner(this.anwender);
+	}
+
+	/*
+	 * <p> Rueckgabe der Vorstellung zu einer Umfrageoption </p>
+	 */
+	@Override
+	public Vorstellung getVorstellungByUmfrageoption(Umfrageoption umfrageoption) {
+		return this.vorstellungMapper.findById(umfrageoption.getVorstellungsId());
 	}
 
 	/**
