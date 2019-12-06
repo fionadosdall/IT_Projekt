@@ -54,7 +54,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		speichernButton.setStylePrimaryName("speichernButton");
 		
 		
-		obenPanel.add(kinoketteErstellenForm);
+		obenPanel.add(kinoketteFormLabel);
 		
 		kinoketteGrid.setWidget(0, 0, nameLabel);
 		kinoketteGrid.setWidget(0, 1, nameTextBox);
@@ -69,7 +69,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		
 		
-	private class SpeichernClickHandler implements ClickHandler {
+	public class SpeichernClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
