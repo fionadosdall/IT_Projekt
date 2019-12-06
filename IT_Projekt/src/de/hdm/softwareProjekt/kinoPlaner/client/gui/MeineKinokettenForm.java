@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
@@ -115,7 +116,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	}
 }
 
-	
+
 
 	private class KinoketteErstellenClickHandler implements DoubleClickHandler {
 
@@ -138,6 +139,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		}
 
 	
+
 		
 		public void onSuccess (ArrayList <Kinokette> result) {
 			kinoketten = result;
@@ -145,6 +147,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		}
 		
 	}
+
+	
+
 	
 	private class KinoketteByIdCallback implements AsyncCallback <Kinokette> {
 
