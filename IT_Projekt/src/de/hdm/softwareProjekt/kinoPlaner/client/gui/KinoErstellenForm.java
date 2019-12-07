@@ -49,7 +49,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	public void onLoad() {
 		
-		kinoFormLabel.setStylePrimaryName("kinoFormLabel");
+		kinoFormLabel.setStylePrimaryName("FormHeaderLabel");
 		nameLabel.setStylePrimaryName("nameLabel");
 		strasseLabel.setStylePrimaryName("strasseLabel");
 		hnrLabel.setStylePrimaryName("hnrLabel");

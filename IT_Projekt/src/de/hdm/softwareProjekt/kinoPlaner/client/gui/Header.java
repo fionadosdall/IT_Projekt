@@ -10,9 +10,15 @@ public class Header extends HorizontalPanel{
 	private HorizontalPanel headerPanel = new HorizontalPanel();
 	
 	private Button homeButton = new Button("Home");
+	private Button clientButton = new Button("Client");
 	private Button einstellungenButton = new Button("Einstellungen");
 	
 	public Header() {
+		
+	}
+	
+	public void onLoad() {
+		
 		
 	}
 	
@@ -26,7 +32,7 @@ public class Header extends HorizontalPanel{
 		
 	}
 	
-	private class einstellungenButtonClickHandler implements ClickHandler {
+	private class EinstellungenButtonClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {

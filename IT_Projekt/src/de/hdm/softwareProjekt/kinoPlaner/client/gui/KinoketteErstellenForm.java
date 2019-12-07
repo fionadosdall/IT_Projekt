@@ -47,11 +47,13 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	public void onLoad() {
 		
-		kinoketteFormLabel.setStylePrimaryName("kinoketteFormLabel");
+		kinoketteFormLabel.setStylePrimaryName("FormHeaderLabel");
 		nameLabel.setStylePrimaryName("nameLabel");
 		sitzLabel.setStylePrimaryName("sitzLabel");;
 		websiteLabel.setStylePrimaryName("websiteLabel");
 		speichernButton.setStylePrimaryName("speichernButton");
+		obenPanel.setStylePrimaryName("obenPanel");
+		untenPanel.setStylePrimaryName("untenPanel");
 		
 		
 		obenPanel.add(kinoketteFormLabel);

@@ -41,6 +41,8 @@ public void onLoad() {
 		nameLabel.setStylePrimaryName("nameLabel");
 		spielzeitLabel.setStylePrimaryName("spielzeitLabel");
 		speichernButton.setStylePrimaryName("speichernButton");
+		obenPanel.setStylePrimaryName("obenPanel");
+		untenPanel.setStylePrimaryName("untenPanel");
 		
 		
 		obenPanel.add(spielzeitFormLabel);
