@@ -2,7 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.Systemmeldung;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.Fehlermeldung;
 //import de.hdm.softwarepraktikum.client.Anchor;
 //import de.hdm.softwarepraktikum.client.Button;
 //import de.hdm.softwarepraktikum.client.VerticalPanel;
