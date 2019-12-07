@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 public class MeineKinosForm extends FlowPanel {
 	
@@ -29,7 +30,7 @@ public class MeineKinosForm extends FlowPanel {
 	
 	private ArrayList<Kino> kinos;
 	
-	private Kino kino;
+	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
 	
@@ -79,6 +80,7 @@ public class MeineKinosForm extends FlowPanel {
 				kinoname.addDoubleClickHandler(click);
 				felder.setWidget(i, 0,kinoname);
 				j++;
+				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
 				
 				
 			}
@@ -136,6 +138,20 @@ public class MeineKinosForm extends FlowPanel {
 		public void onSuccess(ArrayList<Kino> result) {
 			 kinos = result;
 			
+		}
+		
+	}
+	
+	private class KinoketteByIdCallback implements AsyncCallback<Kinokette> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("Kinokette nicht auffindbar.");
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			kinokette = result;
 		}
 		
 	}
