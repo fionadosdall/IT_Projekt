@@ -860,12 +860,23 @@ public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
+	 * Rückgabe aller Anwender im System.
+	 * </p>
+	 * 
+	 * @return ArrayList aller Vorstellungen
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Anwender> getAllAnwender() throws IllegalArgumentException;
+	
+	/**
+	 * <p>
 	 * Rückgabe aller Vorstellungen im System.
 	 * </p>
 	 * 
 	 * @return ArrayList aller Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
+	
 	public ArrayList<Vorstellung> getAllVorstellungen() throws IllegalArgumentException;
 
 	/**

@@ -42,6 +42,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 		
 		umfrageTextBox.addStyleName("gruppenameTB");
 		
+		umfrageTextBox.getElement().setPropertyString("placeholder", "Anlass für die Umfrage?");
+		
 		// Zusammenbauen der Widgets
 		
 		this.add(detailsoben);
@@ -60,6 +62,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsBoxMitteMitte.add(gruppenListBox);
 		
 	}
+	
+	
 
 
 }

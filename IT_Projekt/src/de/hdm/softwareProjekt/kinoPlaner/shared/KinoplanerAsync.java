@@ -170,6 +170,8 @@ public interface KinoplanerAsync {
 
 	public void getUmfragenByGruppe(Gruppe gruppe, AsyncCallback<ArrayList<Umfrage>> callback)
 			throws IllegalArgumentException;
+	
+	public void getAllAnwender(AsyncCallback<ArrayList<Anwender>> callback) throws IllegalArgumentException;
 
 	public void getAllVorstellungen(AsyncCallback<ArrayList<Vorstellung>> callback) throws IllegalArgumentException;
 
