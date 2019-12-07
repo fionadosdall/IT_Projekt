@@ -49,7 +49,7 @@ public class HomeBar extends FlowPanel {
 		public void onClick (ClickEvent event) {
 			
 			RootPanel.get("details").clear();
-			kkf = new MeineKinokettenForm();
+			kkf = new MeineKinoKettenForm();
 			RootPanel.get("details").add(kkf);
 			
 		}
@@ -69,7 +69,7 @@ public class HomeBar extends FlowPanel {
 	
 	private class MeineSpielplaeneClickHandler implements ClickHandler {
 		
-		public void onClick (ClickEvent event) {
+		public void onClikc (ClickEvent event) {
 			
 			RootPanel.get("details").clear();
 			spf = new MeineSpielplaeneForm();
