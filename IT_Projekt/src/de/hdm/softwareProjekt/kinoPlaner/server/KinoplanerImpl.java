@@ -2276,6 +2276,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		return ergebnisse;
 
 	}
+	/**
+	 * <p>
+	 * Zurückgeben aller Anwender im System
+	 * </p>
+	 */
+
+	@Override
+	public ArrayList<Anwender> getAllAnwender() throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return this.anwenderMapper.findAll();
+	}
 
 	/**
 	 * **************************************************************************

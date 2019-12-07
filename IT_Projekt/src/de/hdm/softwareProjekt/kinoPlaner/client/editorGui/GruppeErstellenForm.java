@@ -1,7 +1,12 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
+
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -12,6 +17,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
 public class GruppeErstellenForm extends FlowPanel {
@@ -39,13 +45,17 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private MultiWordSuggestOracle alleAnwender = new MultiWordSuggestOracle();
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwender);
+	private ArrayList<Anwender> anwender = new ArrayList<Anwender>();
 
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button("Mitglied entfernen");
 	private Button speichernButton = new Button("Speichern");
 
+
 	private ListBox mitgliederLB = new ListBox();
-	private Gruppe gruppe;
+	
+	private Anwender neuerAnwender = null;
+	private Gruppe gruppe = null;
 
 	public void onLoad() {
 
@@ -116,6 +126,23 @@ public class GruppeErstellenForm extends FlowPanel {
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
 		entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		
+		// Alle User die im System vorhanden sind werden geladen
+		kinoplaner.getAllAnwender(new AsyncCallback<ArrayList<Anwender>>() {
+
+			public void onFailure(Throwable caught) {
+			
+			}
+
+			public void onSuccess(ArrayList<Anwender> result) {
+				for (Anwender u : result) {
+					anwender.add(u);
+					alleAnwender.add(u.getName());
+				}
+
+			}
+		});
+
 
 	}
 	
@@ -132,6 +159,8 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+		//	kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderCallback());
+			mitgliedTB.setText("");
 
 		}
 
@@ -148,13 +177,57 @@ public class GruppeErstellenForm extends FlowPanel {
 	}
 
 	private class SpeichernClickHandler implements ClickHandler {
+		
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-
-		}
+			//kinoplaner.erstellenGruppe(id, gruppenameTB.getValue(), Anwender.getSerialversionuid(), new GruppeErstellenCallback());
+			
 
 	}
+	}
+	/***********************************************************************
+	 * CALLBACKS
+	 ***********************************************************************/
+	
+	private class AnwenderCallback implements AsyncCallback<Anwender> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Window.alert("AnwenderCallback funktioniert nicht");
+			
+		}
+
+
+		@Override
+		public void onSuccess(Anwender anwender) {
+			// TODO Auto-generated method stub
+			
+			neuerAnwender = anwender;
+			
+			mitgliederLB.addItem(anwender.getName());
+	
+		}
+		
+	}
+	
+	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Gruppe result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
 
 }
