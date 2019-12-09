@@ -261,12 +261,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Anwender erstellenAnwender(int id, String name, String gmail) throws IllegalArgumentException {
+	public Anwender erstellenAnwender(String name, String gmail) throws IllegalArgumentException {
 		// Ein neues Anwender Objekt wird erstellt.
 		Anwender a = new Anwender();
 
 		// Die Attribute des Objekts werden mit Werten befüllt.
-		a.setId(id);
 		a.setName(name);
 		a.setGmail(gmail);
 		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -281,14 +280,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Gruppe erstellenGruppe(int id, String name, int besitzerId) throws IllegalArgumentException {
+	public Gruppe erstellenGruppe(String name) throws IllegalArgumentException {
 		// Ein neues Gruppe Objekt wird erstellt.
 		Gruppe g = new Gruppe();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		g.setId(id);
+		
 		g.setName(name);
-		g.setBesitzerId(id);
+		g.setBesitzerId(this.anwender.getId());
 		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
@@ -310,15 +309,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse,
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse,
 			String hausnummer, int kinokettenId) throws IllegalArgumentException {
 		// Ein neues Kino Objekt wird erstellt.
 		Kino k = new Kino();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setId(id);
 		k.setName(name);
-		k.setBesitzerId(id);
+		k.setBesitzerId(this.anwender.getId());
 		k.setPlz(plz);
 		k.setStadt(stadt);
 		k.setStrasse(strassse);
@@ -337,15 +335,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kino erstellenKino(int id, String name, int besitzerId, int plz, String stadt, String strassse,
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse,
 			String hausnummer) throws IllegalArgumentException {
 		// Ein neues Kino Objekt wird erstellt.
 		Kino k = new Kino();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setId(id);
 		k.setName(name);
-		k.setBesitzerId(id);
+		k.setBesitzerId(this.anwender.getId());
 		k.setPlz(plz);
 		k.setStadt(stadt);
 		k.setStrasse(strassse);
@@ -363,15 +360,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kinokette erstellenKinokette(int id, String name, int besitzerId, String sitz, String website)
+	public Kinokette erstellenKinokette(String name, String sitz, String website)
 			throws IllegalArgumentException {
 		// Ein neues Kinokette Objekt wird erstellt.
 		Kinokette k = new Kinokette();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setId(id);
 		k.setName(name);
-		k.setBesitzerId(id);
+		k.setBesitzerId(this.anwender.getId());
 		k.setSitz(sitz);
 		k.setWebsite(website);
 		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -387,15 +383,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielplan erstellenSpielplanKino(int id, String name, int besitzerId, int kinoId)
+	public Spielplan erstellenSpielplanKino(String name, int kinoId)
 			throws IllegalArgumentException {
 		// Ein neues Spielplan Objekt wird erstellt.
 		Spielplan s = new Spielplan();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		s.setId(id);
 		s.setName(name);
-		s.setBesitzerId(id);
+		s.setBesitzerId(this.anwender.getId());
 		s.setKinoId(kinoId);
 		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 		s.setKinokettenSpielplan(false);
@@ -411,7 +406,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(int id, String name, int besitzerId, int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId)
 			throws IllegalArgumentException {
 		ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
 		ArrayList<Spielplan> spielplaene = null;
@@ -421,9 +416,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			Spielplan s = new Spielplan();
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
-			s.setId(id);
 			s.setName(name);
-			s.setBesitzerId(id);
+			s.setBesitzerId(this.anwender.getId());
 			s.setKinoId(k.getId());
 			s.setKinokettenId(kinoketteId);
 			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -443,13 +437,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Vorstellung erstellenVorstellung(int id, String name, int spielplanId, int spielzeitId, int filmId)
+	public Vorstellung erstellenVorstellung(String name, int spielplanId, int spielzeitId, int filmId)
 			throws IllegalArgumentException {
 		// Ein neues Vorstellung Objekt wird erstellt.
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		v.setId(id);
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -467,15 +460,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(int id, String name, int besitzerId, int gruppenId)
+	public Umfrage erstellenUmfrage(String name, int gruppenId)
 			throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		u.setId(id);
 		u.setName(name);
-		u.setBesitzerId(id);
+		u.setBesitzerId(this.anwender.getId());
 		u.setGruppenId(gruppenId);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
@@ -490,13 +482,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrageoption erstellenUmfrageoption(int id, String name, int umfrageId, int vorstellungId)
+	public Umfrageoption erstellenUmfrageoption(String name, int umfrageId, int vorstellungId)
 			throws IllegalArgumentException {
 		// Ein neues Umfrageoption Objekt wird erstellt.
 		Umfrageoption u = new Umfrageoption();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		u.setId(id);
 		u.setName(name);
 		u.setUmfrageId(umfrageId);
 		u.setVorstellungsId(vorstellungId);
@@ -512,15 +503,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Film erstellenFilm(int id, String name, int besitzerId, String beschreibung, int bewertung)
+	public Film erstellenFilm(String name,  String beschreibung, int bewertung)
 			throws IllegalArgumentException {
 		// Ein neues Film Objekt wird erstellt.
 		Film f = new Film();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		f.setId(id);
 		f.setName(name);
-		f.setBesitzerId(besitzerId);
+		f.setBesitzerId(this.anwender.getId());
 		f.setBeschreibung(beschreibung);
 		f.setBewertung(bewertung);
 		f.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -535,15 +525,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielzeit erstellenSpielzeit(int id, String name, int besitzerId, Date zeit)
+	public Spielzeit erstellenSpielzeit( String name, Date zeit)
 			throws IllegalArgumentException {
 		// Ein neues Spielzeit Objekt wird erstellt.
 		Spielzeit s = new Spielzeit();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		s.setId(id);
 		s.setName(name);
-		s.setBesitzerId(besitzerId);
+		s.setBesitzerId(this.anwender.getId());
 		s.setZeit(zeit);
 		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
@@ -558,15 +547,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Auswahl erstellenAuswahl(int id, String name, int besitzerId, int voting, int umfrageoptionId)
+	public Auswahl erstellenAuswahl(String name,  int voting, int umfrageoptionId)
 			throws IllegalArgumentException {
 		// Ein neues Auswahl Objekt wird erstellt.
 		Auswahl a = new Auswahl();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		a.setId(id);
 		a.setName(name);
-		a.setBesitzerId(besitzerId);
+		a.setBesitzerId(this.anwender.getId());
 		a.setVoting(voting);
 		a.setUmfrageoptionId(umfrageoptionId);
 		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -2042,7 +2030,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String name = "Stichwahl " + umfrage.getName();
 
 		// Umfrage für die Stichwahl erstellen
-		Umfrage u = this.erstellenUmfrage(1, name, umfrage.getBesitzerId(), umfrage.getGruppenId());
+		Umfrage u = this.erstellenUmfrage( name, umfrage.getGruppenId());
+		u.setBesitzerId(umfrage.getBesitzerId());
+		this.speichern(u);
 
 		// Stichwahlumfrageoptionen suchen
 		ArrayList<Umfrageoption> umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
@@ -2051,7 +2041,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		if (umfrageoptionen != null) {
 			for (Umfrageoption umfr : umfrageoptionen) {
 				String nameUmfrageoption = "Stichwahl " + umfr.getName();
-				this.erstellenUmfrageoption(1, nameUmfrageoption, umfr.getUmfrageId(), umfr.getVorstellungsId());
+				this.erstellenUmfrageoption(nameUmfrageoption, umfr.getUmfrageId(), umfr.getVorstellungsId());
 			}
 		}
 
@@ -2107,6 +2097,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Wenn alle Anwender gevotet haben so ist die Umfrage geschlossen
 		umfrage.setOpen(false);
+		
+		// Dann wird geprüft ob eine Stichwahl oder ein Ergebnis vorliegt
+		if (ergebnisGefunden(umfrage)==false) {
+			this.stichwahlStarten(umfrage);
+		}
 	}
 
 	/**
@@ -2155,6 +2150,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Wenn der Anwender nur einen Vote erstellt hat, so ist sie wieder geoeffnet
 		// nach dem löschen
 		umfrage.setOpen(true);
+		
+		// Dann wird geprüft ob eine Stichwahl gestartet wurde
+		ArrayList<Umfrage> stichwahlen = this.volltextSucheUmfragen("Stichwahl " + umfrage.getName());
+		if (stichwahlen!=null) {
+			for(Umfrage u : stichwahlen) {
+				this.loeschen(u);
+			}
+		}
+		
 
 	}
 

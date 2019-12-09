@@ -391,7 +391,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		public void onSuccess(Gruppe result) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			gaf = new GruppeAnzeigenForm();
+			gaf = new GruppeAnzeigenForm(result);
 			RootPanel.get("details").add(gaf);
 			
 		}

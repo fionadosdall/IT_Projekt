@@ -91,8 +91,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		public void onDoubleClick(DoubleClickEvent event) {
 
 			RootPanel.get("details").clear();
-			anzeigen = new ErgebnisAnzeigenForm();
-			anzeigen.setUmfrage(umfrage);
+			anzeigen = new ErgebnisAnzeigenForm(umfrage);
 			RootPanel.get("details").add(anzeigen);
 
 		}
@@ -135,6 +134,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
 
 
 }

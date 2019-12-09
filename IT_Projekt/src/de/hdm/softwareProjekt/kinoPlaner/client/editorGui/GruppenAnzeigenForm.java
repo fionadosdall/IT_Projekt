@@ -3,6 +3,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
@@ -72,7 +74,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 			felder.setWidget(1, 0, new Label("Keine Gruppen verfügbar."));
 			Button erstellenButton= new Button("Erstelle deine erste Gruppe!");
 			erstellenButton.setStyleName("navButton");
-			erstellenButton.addDoubleClickHandler(new GruppeErstellenClickHandler());
+			erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
 			felder.setWidget(2, 0, erstellenButton);
 			
 		}
@@ -81,10 +83,10 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 	}
 	
-	private class GruppeErstellenClickHandler implements DoubleClickHandler {
+	private class GruppeErstellenClickHandler implements ClickHandler {
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			erstellen = new GruppeErstellenForm();
 			RootPanel.get("details").add(erstellen);		
@@ -99,9 +101,8 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
 			RootPanel.get("details").clear();
-			anzeigen = new GruppeAnzeigenForm();
+			anzeigen = new GruppeAnzeigenForm(gruppe);
 			RootPanel.get("details").add(anzeigen);
-			anzeigen.setGruppe(gruppe);
 
 		}
 

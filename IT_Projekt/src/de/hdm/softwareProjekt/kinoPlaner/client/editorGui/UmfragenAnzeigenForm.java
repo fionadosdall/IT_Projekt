@@ -2,8 +2,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
-import javax.swing.RootPaneContainer;
-
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -36,6 +37,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 	private Grid felder = new Grid(3, 2);
 	private HomeBar hb = new HomeBar();
+	private RadioButton rb1 = new RadioButton("JaNein", "Ja");
 
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -60,8 +62,6 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		kinoplaner.getUmfragenByAnwender(new SucheUmfrageByAnwenderCallback());
 
-
-
 		if (umfragen != null) {
 			felder.setWidget(0, 0, umfrageLabel);
 			felder.setWidget(0, 1, gruppeLabel);
@@ -85,10 +85,11 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 			felder.setWidget(0, 0, new Label("Keine Umfragen verfügbar."));
 			Button erstellenButton = new Button("Erstelle deine erste Umfrage!");
 			erstellenButton.setStyleName("navButton");
-			erstellenButton.addDoubleClickHandler(new UmfrageErstellenClickHandler());
+			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
+
 			felder.setWidget(2, 0, erstellenButton);
 		}
-		this.add(felder);
+		detailsboxInhalt.add(felder);
 
 	}
 
@@ -98,8 +99,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		@Override
 		public void onDoubleClick(DoubleClickEvent event) {
 			RootPanel.get("details").clear();
-			anzeigen = new UmfrageAnzeigenForm();
-			anzeigen.setUmfrage(umfrage);
+			anzeigen = new UmfrageAnzeigenForm(umfrage);
 			RootPanel.get("details").add(anzeigen);
 
 		}
@@ -111,10 +111,10 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 	}
 
-	private class UmfrageErstellenClickHandler implements DoubleClickHandler {
+	private class UmfrageErstellenClickHandler implements ClickHandler {
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			erstellen = new UmfrageErstellenForm();
 			RootPanel.get("details").add(erstellen);

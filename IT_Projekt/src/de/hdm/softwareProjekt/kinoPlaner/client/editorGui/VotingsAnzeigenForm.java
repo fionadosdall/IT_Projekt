@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -23,18 +22,15 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
-public class ErgebnisAnzeigenForm extends FlowPanel {
+public class VotingsAnzeigenForm extends FlowPanel {
 	private Umfrage umfrage;
-	private Umfrage umfrageStichwahl;
 	private ArrayList<Umfrageoption> umfrageoptionen;
 	private KinoplanerAsync kinoplaner;
 	private Film film;
 	private Spielzeit spielzeit;
 	private Kino kino;
 	private Kinokette kinokette;
-	private Umfrageoption umfrageoption;
 	private int auswahl;
-	private boolean ergebnis;
 
 	private HomeBar hb = new HomeBar();
 
@@ -51,16 +47,9 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	private Label title = new Label("Umfrage: " + umfrage.getName());
 	private Grid grid = new Grid(2, 4);
-	private TextArea txt = new TextArea();
+	private Button voten = new Button("Voten");
 
-	public ErgebnisAnzeigenForm(Umfrage umfrage) {
-		this.umfrage = umfrage;
-
-	}
-
-	@Override
-	protected void onLoad() {
-		super.onLoad();
+	public void onLoad() {
 		kinoplaner = ClientsideSettings.getKinoplaner();
 
 		this.addStyleName("detailscontainer");
@@ -86,6 +75,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		kinoketteLabel.setStyleName("detailsboxLabels");
 		votingLabel.setStyleName("detailsboxLabels");
 		stadtLabel.setStyleName("detailsboxLabels");
+		voten.setStyleName("");
 
 		if (umfrageoptionen != null) {
 			grid.setWidget(0, 0, votingLabel);
@@ -140,102 +130,25 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		} else {
 			detailsboxInhalt.add(new Label("Keine Umfrageoptionen verfügbar!"));
 		}
-		detailsunten.add(txt);
-		StringBuffer buffi = new StringBuffer();
-		kinoplaner.ergebnisGefunden(umfrage, new ErgebnisGefundenCallback());
-		buffi.append("Für deine Umfrage ");
-		buffi.append(umfrage.getName());
-		if (ergebnis == true) {
-			buffi.append(" konnte ein Gewinner ermittelt werden!\nIhr geht am ");
-			kinoplaner.umfrageGewinnerErmitteln(umfrage, new UmfrageGewinnerErmittelnCallback());
-			kinoplaner.getFilmByUmfrageoption(umfrageoption, new GetFilmByUmfrageoptionCallback());
-			kinoplaner.getSpielzeitByUmfrageoption(umfrageoption, new GetSpielzeitByUmfrageoptionCallback());
-			kinoplaner.getKinoByUmfrageoption(umfrageoption, new GetKinoByUmfrageoptionCallback());
-			SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-			date.format(spielzeit.getZeit());
-			buffi.append(date.toPattern());
-			buffi.append(" in den Film " + film.getName() + " im Kino " + kino.getName() + ". Das Kino liegt in "
-					+ kino.getStadt() + ".");
-			if (kino.getKinokettenId() != 0) {
-				kinoplaner.getKinoketteById(kino.getKinokettenId(), new GetKinoketteByIdCallback());
-				buffi.append(" Das Kino gehört zur Kinokette " + kinokette.getName()+".");
-			}
-			buffi.append("\n Viel Spaß!");
-			txt.setText(buffi.toString());
-		} else {
-			buffi.append(" konnte kein Gewinner ermittelt werden! \n Wie haben eine Stichwahl für deine Gruppe gestaret! ");
-			txt.setText(buffi.toString());
-			Button stichwahl = new Button("Stichwahl");
-			kinoplaner.volltextSucheUmfragen("Stichwahl " + umfrage.getName(), new VolltextSucheUmfragenCallback());
-			stichwahl.addClickHandler(new StichwahlClickHandler());
-			detailsunten.add(stichwahl);
-		}
 
-		String text = buffi.toString();
-		txt.setText(text);
-		detailsunten.add(txt);
+		detailsunten.add(voten);
+
+		voten.addClickHandler(new VotingsAnzeigenClickHandler());
 
 	}
-	
-	private class StichwahlClickHandler implements ClickHandler {
+
+	public VotingsAnzeigenForm(Umfrage umfrage) {
+		this.umfrage = umfrage;
+
+	}
+
+	private class VotingsAnzeigenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
-			UmfrageAnzeigenForm anzeigen = new UmfrageAnzeigenForm(umfrageStichwahl);
+			UmfrageAnzeigenForm anzeigen = new UmfrageAnzeigenForm(umfrage);
 			RootPanel.get("details").add(anzeigen);
-			
-		}
-		
-	}
-	
-	private class VolltextSucheUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(ArrayList<Umfrage> result) {
-			for (Umfrage u : result) {
-				if (u.isOpen()==true) {
-					umfrageStichwahl = u;
-				}
-			}
-			
-		}
-		
-	}
-
-	private class UmfrageGewinnerErmittelnCallback implements AsyncCallback<Umfrageoption> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Gewinner konnte nicht ermittelt werden.");
-
-		}
-
-		@Override
-		public void onSuccess(Umfrageoption result) {
-			umfrageoption = result;
-
-		}
-
-	}
-
-	private class ErgebnisGefundenCallback implements AsyncCallback<Boolean> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Ergebnis nicht ermittelbar.");
-
-		}
-
-		@Override
-		public void onSuccess(Boolean result) {
-			ergebnis = result;
 
 		}
 
@@ -334,7 +247,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 			kinokette = result;
 
 		}
-		
+
 	}
 
 }
