@@ -64,7 +64,7 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		kinoLabel.setStyleName("detailsboxLabels");
 		spielplanLabel.setStyleName("detailsboxLabels");
 		
-		kinoplaner.getSpielplaeneByAnwenderOwner(new SucheSpielplaeneByAnwenderCallback());
+		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
 		
 		
 		if (spielplaene != null) {
@@ -129,7 +129,7 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		
 	}
 	
-	private class SucheSpielplanByAnwenderCallback implements AsyncCallback<ArrayList<Spielplan>> {
+	private class GetSpielplaeneByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Spielplan>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
