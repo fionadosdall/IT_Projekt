@@ -1,6 +1,5 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -107,9 +106,8 @@ public class VotingsAnzeigenForm extends FlowPanel {
 				String st = "" + auswahl;
 				grid.setWidget(i, 0, new Label(st));
 				grid.setWidget(i, 1, new Label(film.getName()));
-				SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-				date.format(spielzeit.getZeit());
-				grid.setWidget(i, 2, new Label(date.toPattern()));
+				String date = spielzeit.getZeit().toString();
+				grid.setWidget(i, 2, new Label(date));
 				grid.setWidget(i, 3, new Label(kino.getName()));
 
 				if (j == 5) {

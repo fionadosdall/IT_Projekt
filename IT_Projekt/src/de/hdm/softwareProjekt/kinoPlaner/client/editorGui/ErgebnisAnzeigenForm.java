@@ -1,6 +1,5 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -117,9 +116,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 				String st = "" + auswahl;
 				grid.setWidget(i, 0, new Label(st));
 				grid.setWidget(i, 1, new Label(film.getName()));
-				SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-				date.format(spielzeit.getZeit());
-				grid.setWidget(i, 2, new Label(date.toPattern()));
+				String date = spielzeit.getZeit().toString();
+				grid.setWidget(i, 2, new Label(date));
 				grid.setWidget(i, 3, new Label(kino.getName()));
 
 				if (j == 5) {
@@ -151,19 +149,19 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 			kinoplaner.getFilmByUmfrageoption(umfrageoption, new GetFilmByUmfrageoptionCallback());
 			kinoplaner.getSpielzeitByUmfrageoption(umfrageoption, new GetSpielzeitByUmfrageoptionCallback());
 			kinoplaner.getKinoByUmfrageoption(umfrageoption, new GetKinoByUmfrageoptionCallback());
-			SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-			date.format(spielzeit.getZeit());
-			buffi.append(date.toPattern());
+			String date = spielzeit.getZeit().toString();
+			buffi.append(date);
 			buffi.append(" in den Film " + film.getName() + " im Kino " + kino.getName() + ". Das Kino liegt in "
 					+ kino.getStadt() + ".");
 			if (kino.getKinokettenId() != 0) {
 				kinoplaner.getKinoketteById(kino.getKinokettenId(), new GetKinoketteByIdCallback());
-				buffi.append(" Das Kino gehört zur Kinokette " + kinokette.getName()+".");
+				buffi.append(" Das Kino gehört zur Kinokette " + kinokette.getName() + ".");
 			}
 			buffi.append("\n Viel Spaß!");
 			txt.setText(buffi.toString());
 		} else {
-			buffi.append(" konnte kein Gewinner ermittelt werden! \n Wie haben eine Stichwahl für deine Gruppe gestaret! ");
+			buffi.append(
+					" konnte kein Gewinner ermittelt werden! \n Wie haben eine Stichwahl für deine Gruppe gestaret! ");
 			txt.setText(buffi.toString());
 			Button stichwahl = new Button("Stichwahl");
 			kinoplaner.volltextSucheUmfragen("Stichwahl " + umfrage.getName(), new VolltextSucheUmfragenCallback());
@@ -176,7 +174,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		detailsunten.add(txt);
 
 	}
-	
+
 	private class StichwahlClickHandler implements ClickHandler {
 
 		@Override
@@ -184,29 +182,29 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 			RootPanel.get("details").clear();
 			UmfrageAnzeigenForm anzeigen = new UmfrageAnzeigenForm(umfrageStichwahl);
 			RootPanel.get("details").add(anzeigen);
-			
+
 		}
-		
+
 	}
-	
+
 	private class VolltextSucheUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			for (Umfrage u : result) {
-				if (u.isOpen()==true) {
+				if (u.isOpen() == true) {
 					umfrageStichwahl = u;
 				}
 			}
-			
+
 		}
-		
+
 	}
 
 	private class UmfrageGewinnerErmittelnCallback implements AsyncCallback<Umfrageoption> {
@@ -334,7 +332,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 			kinokette = result;
 
 		}
-		
+
 	}
 
 }
