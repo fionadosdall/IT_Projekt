@@ -116,8 +116,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 				String st = "" + auswahl;
 				grid.setWidget(i, 0, new Label(st));
 				grid.setWidget(i, 1, new Label(film.getName()));
-				String date = spielzeit.getZeit().toString();
-				grid.setWidget(i, 2, new Label(date));
+				DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
+				grid.setWidget(i, 2, new Label(date.toString()));
 				grid.setWidget(i, 3, new Label(kino.getName()));
 
 				if (j == 5) {

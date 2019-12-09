@@ -1262,6 +1262,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	
 	/**
 	 * <p>
+	 * Rueckgabe eines Films mit einer bestimmten Id.
+	 * </p>
+	 */
+	@Override
+	public Film getFilmById (int filmId) throws IllegalArgumentException {
+		return this.filmMapper.findById(filmId);
+	}
+	
+	/**
+	 * <p>
 	 * Rueckgabe einer Gruppe mit einer bestimmten Id.
 	 * </p>
 	 */
@@ -1535,6 +1545,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Umfrage> getUmfragenByGruppe(Gruppe gruppe) throws IllegalArgumentException {
 		return this.umfrageMapper.findAllByGruppe(gruppe);
+	}
+
+	/**
+	 * <p>
+	 * Zurueckgeben aller Anwender im System
+	 * </p>
+	 */
+
+	@Override
+	public ArrayList<Anwender> getAllAnwender() throws IllegalArgumentException {
+		return this.anwenderMapper.findAll();
 	}
 
 	/**
@@ -2279,17 +2300,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		return ergebnisse;
 
-	}
-	/**
-	 * <p>
-	 * Zurückgeben aller Anwender im System
-	 * </p>
-	 */
-
-	@Override
-	public ArrayList<Anwender> getAllAnwender() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return this.anwenderMapper.findAll();
 	}
 
 	/**

@@ -121,8 +121,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 				vrbpList.add(vrbp);
 				grid.setWidget(i, 0, vrbp);
 				grid.setWidget(i, 1, new Label(film.getName()));
-				String date = spielzeit.getZeit().toString();
-				grid.setWidget(i, 2, new Label(date));
+				DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
+				grid.setWidget(i, 2, new Label(date.toString()));
 				grid.setWidget(i, 3, new Label(kino.getName()));
 
 				if (j == 5) {

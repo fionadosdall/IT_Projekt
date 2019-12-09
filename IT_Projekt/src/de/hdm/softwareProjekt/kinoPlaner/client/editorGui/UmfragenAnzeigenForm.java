@@ -37,7 +37,6 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 	private Grid felder = new Grid(3, 2);
 	private HomeBar hb = new HomeBar();
-	private RadioButton rb1 = new RadioButton("JaNein", "Ja");
 
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();

@@ -130,8 +130,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Kino Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Kino erstellenKino(String name, int plz, String stadt, String strassse,
-			String hausnummer, int kinokettenId) throws IllegalArgumentException;
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -156,8 +156,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Kino Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Kino erstellenKino(String name, int plz, String stadt, String strassse,
-			String hausnummer) throws IllegalArgumentException;
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -178,8 +178,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Kinoketten Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Kinokette erstellenKinokette( String name,String sitz, String website)
-			throws IllegalArgumentException;
+	public Kinokette erstellenKinokette(String name, String sitz, String website) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -198,8 +197,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielplan Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielplan erstellenSpielplanKino( String name, int kinoId)
-			throws IllegalArgumentException;
+	public Spielplan erstellenSpielplanKino(String name, int kinoId) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -220,7 +218,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Vorstellung Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Vorstellung erstellenVorstellung( String name, int spielplanId, int spielzeitId, int filmId)
+	public Vorstellung erstellenVorstellung(String name, int spielplanId, int spielzeitId, int filmId)
 			throws IllegalArgumentException;
 
 	/**
@@ -240,7 +238,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Umfrage Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrage erstellenUmfrage( String name,  int gruppenId) throws IllegalArgumentException;
+	public Umfrage erstellenUmfrage(String name, int gruppenId) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -259,7 +257,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Umfrageoption Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrageoption erstellenUmfrageoption( String name, int umfrageId, int vorstellungId)
+	public Umfrageoption erstellenUmfrageoption(String name, int umfrageId, int vorstellungId)
 			throws IllegalArgumentException;
 
 	/**
@@ -280,8 +278,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Film Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Film erstellenFilm(String name, String beschreibung, int bewertung)
-			throws IllegalArgumentException;
+	public Film erstellenFilm(String name, String beschreibung, int bewertung) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -299,7 +296,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielzeit Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielzeit erstellenSpielzeit( String name, Date zeit) throws IllegalArgumentException;
+	public Spielzeit erstellenSpielzeit(String name, Date zeit) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -320,8 +317,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Auswahl Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Auswahl erstellenAuswahl( String name,int voting, int umfrageoptionId)
-			throws IllegalArgumentException;
+	public Auswahl erstellenAuswahl(String name, int voting, int umfrageoptionId) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -867,7 +863,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public ArrayList<Anwender> getAllAnwender() throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rückgabe aller Vorstellungen im System.
@@ -876,7 +872,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList aller Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	
+
 	public ArrayList<Vorstellung> getAllVorstellungen() throws IllegalArgumentException;
 
 	/**
@@ -1158,7 +1154,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return fertiges Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name,  int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId)
 			throws IllegalArgumentException;
 
 	/**
@@ -1490,7 +1486,9 @@ public interface Kinoplaner extends RemoteService {
 	 * <p>
 	 * Spielplan der Umfrageoption ausgeben
 	 * </p>
-	 * @param umfrageoption Umfrageoptionobjekt
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoptionobjekt
 	 * @return Spielplan der Umfrageoption
 	 * @throws IllegalArgumentException
 	 */
@@ -1500,9 +1498,21 @@ public interface Kinoplaner extends RemoteService {
 	 * <p>
 	 * Rueckgabe einer Kinokette mit einer bestimmten Id.
 	 * </p>
-	 * @param kinoketteId Kennung der Kinokette
+	 * 
+	 * @param kinoketteId
+	 *            Kennung der Kinokette
 	 * @return Gesuchte Kinokette
 	 * @throws IllegalArgumentException
 	 */
 	public Kinokette getKinoketteById(int kinoketteId) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe eines Films mit einer bestimmten Id.
+	 * </p>
+	 * @param filmId Kennung des Films
+	 * @return Filmobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Film getFilmById(int filmId) throws IllegalArgumentException;
 }
