@@ -86,7 +86,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	private Anwender neuerAnwender = null;
 	private Gruppe gruppe = null;
 	
-	private GruppeAnzeigenForm gaf;
+	private GruppenAnzeigenForm gruppenAF;
 
 	public void onLoad() {
 
@@ -193,7 +193,7 @@ public class GruppeErstellenForm extends FlowPanel {
 			public String getValue(Anwender anwender) {
 				// TODO Auto-generated method stub
 				
-				if (anwender.getName() == null) {
+				if (anwender == null) {
 					return "test";
 				} else {
 				
@@ -260,7 +260,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		anwenderCellTable.addColumn(namenColumn, "Mitglieder");
 		anwenderCellTable.addColumn(loeschenColumn, "Mitglied entfernen");
 		anwenderCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
-		
+		anwenderCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
 		
 
 	}
@@ -307,7 +307,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			//kinoplaner.erstellenGruppe(id, gruppenameTB.getValue(), Anwender.getSerialversionuid(), new GruppeErstellenCallback());
+			kinoplaner.erstellenGruppe(gruppenameTB.getValue(), new GruppeErstellenCallback());
 			
 
 	}
@@ -390,9 +390,15 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Gruppe result) {
 			// TODO Auto-generated method stub
+			
+			if (gruppenameTB.getValue()=="") {
+				Window.alert("Es wurde kein Gruppenname eingegeben");
+			} else {
 			RootPanel.get("details").clear();
-			gaf = new GruppeAnzeigenForm(result);
-			RootPanel.get("details").add(gaf);
+			gruppenAF = new GruppenAnzeigenForm();
+			RootPanel.get("details").add(gruppenAF);
+			
+			}
 			
 		}
 		

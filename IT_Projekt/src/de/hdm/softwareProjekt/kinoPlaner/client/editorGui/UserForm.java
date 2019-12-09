@@ -50,6 +50,7 @@ public class UserForm extends FlowPanel {
 	String logoutUrl;
 
 	public void onLoad() {
+		
 
 		// Vergeben der Stylenames
 
@@ -221,8 +222,15 @@ public class UserForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			
+			if (nameTextBox.getValue() == "") {
+				Window.alert("Es wurde kein neuer Name eingegeben");
+				
+			} else {
 			SpeichernUserBox speichernUB = new SpeichernUserBox();
 			speichernUB.center();
+			
+			}
 
 		}
 
