@@ -109,11 +109,10 @@ public class MeineSpielplaeneForm extends FlowPanel {
 			RootPanel.get("details").add(anzeigen);
 			
 		}
+
+
 		
-	public void setSpielplan (Spielplan spielplan ) {
-		this.spielplan = spielplan ;
-	}
-		
+	
 	}
 	
 	private class SpielplanErstellenClickHandler implements DoubleClickHandler {
@@ -158,6 +157,14 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		}
 		
 	}
+
+	public void setSpielplan(Spielplan spielplan) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+		
 } 
 	
 	

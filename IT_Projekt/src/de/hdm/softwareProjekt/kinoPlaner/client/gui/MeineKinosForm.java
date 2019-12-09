@@ -33,12 +33,10 @@ public class MeineKinosForm extends FlowPanel {
 	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
+	private Label kino = new Label ("Kino");
 	
-	private Label kinokettenLabel = new Label ("Kinokette");
-	private Label kinoLabel = new Label ("Kino");
-	private Label spielplanLabel = new Label ("Spielplan");
 	
-	private Grid felder = new Grid(3,2);
+	private Grid felder = new Grid(3,1);
 	private HomeBar hb = new HomeBar ();
 	
 	public void onLoad() {
@@ -48,6 +46,7 @@ public class MeineKinosForm extends FlowPanel {
 		
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		detailsboxInhalt.addStyleName("deatilsboxInhalt");
 		
 		title.addStyleName("title");
 		
@@ -58,20 +57,16 @@ public class MeineKinosForm extends FlowPanel {
 		detailsoben.add(hb);
 		detailsoben.add(title);
 		
-		kinokettenLabel.setStyleName("detailsboxLabels");
-		kinoLabel.setStyleName("detailsboxLabels");
-		spielplanLabel.setStyleName("detailsboxLabels");
+		
 		
 		kinoplaner.getKinosByAnwenderOwner(new SucheKinosByAnwenderCallback());
 		
-		felder.setWidget(0, 0, kinokettenLabel);
-		felder.setWidget(0,1,kinoLabel);
-		felder.setWidget(0, 2, spielplanLabel);
+		kino.setStyleName("detailsboxLabel");
 		
 		if (kinos != null) {
-			felder.resizeRows(kinos.size());
+			felder.resizeRows(kinos.size() +1 );
 			int i= 1;
-			int j=0;
+			
 			
 			for (Kino kino : kinos) {
 				Label kinoname = new Label (kino.getName());
@@ -79,8 +74,8 @@ public class MeineKinosForm extends FlowPanel {
 				click.setKino(kino);
 				kinoname.addDoubleClickHandler(click);
 				felder.setWidget(i, 0,kinoname);
-				j++;
-				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
+				i++;
+				
 				
 				
 			}
@@ -92,7 +87,7 @@ public class MeineKinosForm extends FlowPanel {
 			felder.setWidget(2, 0,  erstellenButton);
 		}
 		
-		this.add(felder);
+		detailsboxInhalt.add(felder);
 	}
 	
 	private class KinoAuswaehlenClickHandler implements DoubleClickHandler {
@@ -102,7 +97,6 @@ public class MeineKinosForm extends FlowPanel {
 		public void onDoubleClick(DoubleClickEvent event) {
 			RootPanel.get("details").clear();
 			anzeigen = new MeineKinosForm();
-			anzeigen.setKino(kino);
 			RootPanel.get("details").add(anzeigen);
 			
 		}
