@@ -33,11 +33,10 @@ public class MeineSpielplaeneForm extends FlowPanel {
 	private Kino kino;
 	private MeineSpielplaeneForm anzeigen;
 	private SpielplanErstellenForm erstellen;
-	private Label kinokettenLabel = new Label ("Kinokette");
-	private Label kinoLabel = new Label ("Kino");
+	;
 	private Label spielplanLabel = new Label ("Spielplan");
 	
-	private Grid felder = new Grid (3,2);
+	private Grid felder = new Grid (3,1);
 	private HomeBar hb = new HomeBar();
 	
 	
@@ -60,43 +59,39 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		detailsoben.add(hb);
 		detailsoben.add(title);
 		
-		kinokettenLabel.setStyleName("detailsboxLabels");
-		kinoLabel.setStyleName("detailsboxLabels");
 		spielplanLabel.setStyleName("detailsboxLabels");
 		
 		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
 		
 		
 		if (spielplaene != null) {
-			felder.setWidget(0,2, kinokettenLabel);
-			felder.setWidget(0, 1, kinoLabel);
-			felder.setWidget(0, 0,  spielplanLabel);
-			felder.resizeRows(spielplaene.size());
+			felder.resizeRows(spielplaene.size()+1);
 			int i=1;
-			int j=0;
+			
+			
 			for (Spielplan spielplan : spielplaene) {
 				Label spielplanname = new Label(spielplan.getName());
 				SpielplanAuswaehlenClickHandler click = new SpielplanAuswaehlenClickHandler();
 				click.setSpielplan(spielplan);
 				spielplanname.addDoubleClickHandler(click);
 				felder.setWidget(i, 0, spielplanname);
-				j++;
-				kinoplaner.getKinoById(spielplan.getKinoId(), new KinoByIdCallback());
-				felder.setWidget(i, j, new Label(kino.getName()));
 				i++;
-				j=0;
-				kino= null;
+				
+	
 				
 			}
 		} else {
-			felder.setWidget(0, 0, new Label("Keine Spielpläne verfügbar."));
+			felder.setWidget(1, 0, new Label("Keine Spielpläne verfügbar."));
 			Button erstellenButton = new Button ("Erstelle deinen ersten Spielplan");
 			erstellenButton.setStyleName("navButton");
 			erstellenButton.addDoubleClickHandler(new SpielplanErstellenClickHandler());
 			felder.setWidget(2, 0, erstellenButton);
 		}
-		this.add(felder);
+		detailsboxInhalt.add(felder);
 	}
+	
+	
+	
 	
 	private class SpielplanAuswaehlenClickHandler implements DoubleClickHandler {
 		private Spielplan spielplan;
@@ -105,8 +100,12 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		public void onDoubleClick(DoubleClickEvent event) {
 			RootPanel.get("details").clear();
 			anzeigen = new MeineSpielplaeneForm();
-			anzeigen.setSpielplan(spielplan);
 			RootPanel.get("details").add(anzeigen);
+			
+		}
+
+		public void setSpielplan(Spielplan spielplan) {
+			this.spielplan = spielplan;
 			
 		}
 
@@ -142,29 +141,12 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		
 	}
 	
-	private class KinoByIdCallback implements AsyncCallback <Kino> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Kino nicht auffindbar");
-			
-		}
-
-		@Override
-		public void onSuccess(Kino result) {
-			kino = result;
-			
-		}
-		
-	}
-
-	public void setSpielplan(Spielplan spielplan) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
 	
 		
-} 
+
+
 	
 	

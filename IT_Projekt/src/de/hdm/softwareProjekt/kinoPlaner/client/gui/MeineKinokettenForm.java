@@ -35,9 +35,9 @@ public class MeineKinokettenForm extends FlowPanel{
 	private MeineKinokettenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
 	private Label kinokettenlabel = new Label("Kinokette");
-	private Label kinolabel = new Label("Kino");
 	
-	private Grid felder = new Grid (3,2);
+	
+	private Grid felder = new Grid (3,1);
 	private HomeBar hb = new HomeBar ();
 
 	
@@ -59,18 +59,17 @@ public class MeineKinokettenForm extends FlowPanel{
 		detailsoben.add(hb);
 		detailsoben.add(title);
 		
+	
+		kinoplaner.getKinokettenByAnwenderOwner(new SucheKinoKettenByAnwenderOwnerCallback());
+		
 		kinokettenlabel.setStyleName("detailsboxLabels");
-		kinolabel.setStyleName("detailsboxLabels");
-		
-		kinoplaner.getAllKinoketten(new SucheKinoketteCallback());
-		
 		felder.setWidget(0, 0, kinokettenlabel);
-		felder.setWidget(0, 1, kinolabel);
+		
+		
 		
 		if (kinoketten != null) {
-			felder.resizeRows(kinoketten.size());
+			felder.resizeRows(kinoketten.size()+1);
 			int i=1;
-			int j=0;
 			
 			for ( Kinokette kinokette : kinoketten) {
 				Label kinokettename = new Label (kinokette.getName());
@@ -79,12 +78,8 @@ public class MeineKinokettenForm extends FlowPanel{
 				click.setKinokette(kinokette);
 				kinokettename.addDoubleClickHandler(click);
 				felder.setWidget(i, 0, kinokettename);
-				j++;
-				kinoplaner.getKinoById(kinokette.getKinokettenId(),new KinoketteByIdCallback());
-				felder.setWidget(i, j, new Label(kino.getName()));
 				i++;
-				j=0;
-				kino= null;
+				
 				}
 			
 			} else {
@@ -105,16 +100,13 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		// TODO Auto-generated method stub
+		
 		RootPanel.get("details").clear();
 		anzeigen = new MeineKinokettenForm ();
-		anzeigen.setKinokette(kinokette);
 		RootPanel.get("details").add(anzeigen);
 	}
 
-	Kinokette kinokette;
 	
-	private Label kinokettenFormLabel = new Label("Kinoketten");
 
 	public void setKinokette (Kinokette kinokette) {
 		this.kinokette = kinokette;
@@ -135,38 +127,29 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		
 }
 	
-	private class SucheKinoketteCallback implements AsyncCallback {
+	private class SucheKinoKettenByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Kinokette>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Kinokette nicht abrufbar");
+			Window.alert("Kinoketten nicht abrufbar");
 			
 		}
 
-	
-		
-		public void onSuccess (ArrayList <Kinokette> result) {
+		@Override
+		public void onSuccess(ArrayList<Kinokette> result) {
 			kinoketten = result;
 			
 		}
+
 		
-	}
+		
+			
+		}
+		
 	
-	private class KinoketteByIdCallback implements AsyncCallback <Kinokette> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Kinokette nicht auffindbar");
-			
-		}
-
-		@Override
-		public void onSuccess(Kinokette result) {
-			kinokette = result;
-			
-		}
+	
+	
 		
-	}
 	
 
 
