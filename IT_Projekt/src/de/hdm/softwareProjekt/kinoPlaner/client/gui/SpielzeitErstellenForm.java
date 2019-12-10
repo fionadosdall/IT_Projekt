@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinoketteErstellenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
@@ -34,6 +35,19 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 
 	private Button speichernButton = new Button("Speichern");
 	private Grid spielzeitGrid = new Grid(2, 2);
+	
+/**
+ * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
+ */	
+	
+	
+public SpielzeitErstellenForm() {
+	
+	speichernButton.addClickHandler(new SpeichernClickHandler());
+	untenPanel.add(speichernButton);
+	
+}
+
 	
 public void onLoad() {
 		
@@ -68,6 +82,8 @@ public void onLoad() {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			administration.erstellenSpielzeit(nameTextBox.getText(), 
+					spielzeitTextBox.getValue(), new SpielzeitErstellenCallback());
 			
 		}		
 		

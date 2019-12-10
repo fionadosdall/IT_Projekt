@@ -1,6 +1,8 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class Systemmeldung {
 
@@ -10,12 +12,27 @@ public class Systemmeldung {
 	}
 	
 	
-	private Label systemmeldungLabel = new Label();
+	private static Label systemmeldungLabel = new Label();
 	
 	
-	public static void anzeigen(String message) {
+	public static void anzeigen(String meldung) {
 		
 		
+		systemmeldungLabel.setStyleName("systemmeldungLabel");
+		systemmeldungLabel.setText(meldung);
 		
+		RootPanel.get("Header").add(systemmeldungLabel);
+		
+		final Timer anzeigedauer = new Timer() {
+			
+			@Override
+			public void run() {
+				
+				RootPanel.get("Header").remove(RootPanel.get("Header").getWidgetIndex(systemmeldungLabel));
+			
+			}
+		};
+		
+		anzeigedauer.schedule(5000);
 	}
 }

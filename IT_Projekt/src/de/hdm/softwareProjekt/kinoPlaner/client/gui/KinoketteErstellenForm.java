@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
@@ -36,6 +37,11 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private KinoketteErstellenForm kinoketteErstellenForm;
 	
+	
+	/**
+	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
+	 */	
+	
 	public KinoketteErstellenForm() {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
@@ -48,9 +54,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	public void onLoad() {
 		
 		kinoketteFormLabel.setStylePrimaryName("FormHeaderLabel");
-		nameLabel.setStylePrimaryName("nameLabel");
-		sitzLabel.setStylePrimaryName("sitzLabel");;
-		websiteLabel.setStylePrimaryName("websiteLabel");
+		nameLabel.setStylePrimaryName("textLabel");
+		sitzLabel.setStylePrimaryName("textLabel");;
+		websiteLabel.setStylePrimaryName("textLabel");
 		speichernButton.setStylePrimaryName("speichernButton");
 		obenPanel.setStylePrimaryName("obenPanel");
 		untenPanel.setStylePrimaryName("untenPanel");
@@ -76,7 +82,8 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(),
+					websiteTextBox.getText(), new KinoketteErstellenCallback());
 		}		
 		
 	}
