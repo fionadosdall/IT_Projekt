@@ -11,11 +11,12 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielzeitErstellenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 
 
-public class FilmErstellen extends VerticalPanel {
+public class FilmErstellenForm extends VerticalPanel {
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
@@ -37,11 +38,27 @@ public class FilmErstellen extends VerticalPanel {
 	private Grid filmGrid = new Grid(4, 2);
 	
 	
+	/**
+	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
+	 */	
+		
+		
+	public FilmErstellenForm() {
+		
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		untenPanel.add(speichernButton);
+		
+	}
 	
 	
 	public void onLoad() {
 	
 	filmFormLabel.setStylePrimaryName("FormHeaderLabel");
+	nameLabel.setStylePrimaryName("textLabel");
+	beschreibungLabel.setStylePrimaryName("textLabel");
+	bewertungLabel.setStylePrimaryName("textLabel");
+	laengeLabel.setStylePrimaryName("textLabel");
+	
 	obenPanel.setStylePrimaryName("obenPanel");
 	untenPanel.setStylePrimaryName("untenPanel");
 	speichernButton.setStylePrimaryName("speichernButton");
@@ -65,6 +82,8 @@ public class FilmErstellen extends VerticalPanel {
 	
 	
 }
+	
+	/*CLickhandler*/
 
 
 private class SpeichernClickHandler implements ClickHandler {
@@ -72,7 +91,8 @@ private class SpeichernClickHandler implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent event) {
 		// TODO Auto-generated method stub
-		
+		administration.erstellenFilm(nameTextBox.getText(), beschreibungTextBox.getText(),
+				bewertungTextBox.getValue(), new FilmErstellenCallback());
 	}		
 	
 }
