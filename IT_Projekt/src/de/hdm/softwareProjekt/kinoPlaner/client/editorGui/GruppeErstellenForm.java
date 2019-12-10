@@ -1,8 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
-
 import java.util.ArrayList;
-
+import java.util.List;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
@@ -31,8 +30,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-
-
 public class GruppeErstellenForm extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -58,34 +55,32 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private MultiWordSuggestOracle alleAnwenderOracle = new MultiWordSuggestOracle();
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwenderOracle);
+
 	private ArrayList<Anwender> anwenderTB = new ArrayList<Anwender>();
-	 
 
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button("Mitglied entfernen");
 	private Button speichernButton = new Button("Speichern");
-	
+
 	private CellTable<Anwender> anwenderCellTable = new CellTable<Anwender>(KEY_PROVIDER);
-	
+
 	private ListDataProvider<Anwender> dataProvider = new ListDataProvider<Anwender>();
-	
+	private List<Anwender> list = dataProvider.getList();
+
 	private static final ProvidesKey<Anwender> KEY_PROVIDER = new ProvidesKey<Anwender>() {
 
 		@Override
 		public Object getKey(Anwender anwender) {
 			// TODO Auto-generated method stub
-			
+
 			return anwender.getId();
 		}
-		
+
 	};
 
-
-//	private ListBox mitgliederLB = new ListBox();
-	
 	private Anwender neuerAnwender = null;
 	private Gruppe gruppe = null;
-	
+
 	private GruppenAnzeigenForm gruppenAF;
 
 	public void onLoad() {
@@ -100,7 +95,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsObenBox.addStyleName("detailsuntenBoxen");
 		detailsMitteBox.addStyleName("detailsuntenBoxen");
 		detailsUntenBox.addStyleName("detailsuntenBoxen");
-		
+
 		speichernBox.addStyleName("speichernBox");
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
@@ -122,8 +117,6 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		gruppenameTB.getElement().setPropertyString("placeholder", "Gruppenname eingeben");
 		mitgliedTB.getElement().setPropertyString("placeholder", "User suchen");
-		
-	
 
 		// Zusammenbauen der Widgets
 
@@ -157,17 +150,15 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		// Click-Handler
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
-		//entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
+		// entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 
-		
-		
 		// Alle Anwender die im System vorhanden sind werden geladen
 		kinoplaner.getAllAnwender(new AsyncCallback<ArrayList<Anwender>>() {
 
 			public void onFailure(Throwable caught) {
 				Window.alert("Anwender konnten nicht geladen werden");
-			
+
 			}
 
 			public void onSuccess(ArrayList<Anwender> result) {
@@ -178,35 +169,33 @@ public class GruppeErstellenForm extends FlowPanel {
 
 			}
 		});
-		
-	/***********************************************************************
-	 * CELL TABLE
-	 ***********************************************************************/
-		
 
-		
+		/***********************************************************************
+		 * CELL TABLE
+		 ***********************************************************************/
+
 		TextCell namenTextCell = new TextCell();
-		
+
 		Column<Anwender, String> namenColumn = new Column<Anwender, String>(namenTextCell) {
 
 			@Override
 			public String getValue(Anwender anwender) {
 				// TODO Auto-generated method stub
-				
+
 				if (anwender == null) {
 					return "test";
 				} else {
-				
-				return anwender.getName();
+
+					return anwender.getName();
 
 				}
-	
+
 			}
-			
+
 		};
-		
+
 		Cell<String> loeschenCell = new ButtonCell();
-		
+
 		Column<Anwender, String> loeschenColumn = new Column<Anwender, String>(loeschenCell) {
 
 			@Override
@@ -214,37 +203,37 @@ public class GruppeErstellenForm extends FlowPanel {
 				// TODO Auto-generated method stub
 				return "-";
 			}
-			
+
 		};
-		
+
 		loeschenColumn.setFieldUpdater(new FieldUpdater<Anwender, String>() {
 
 			@Override
 			public void update(int index, Anwender anwender, String value) {
 				// TODO Auto-generated method stub
 				dataProvider.getList().remove(anwender);
-				
+
 				AsyncCallback<Anwender> loeschenCallback = new AsyncCallback<Anwender>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void onSuccess(Anwender result) {
 						// TODO Auto-generated method stub
-						
+
 					}
-					
+
 				};
-				
+
 				kinoplaner.gruppenmitgliedEntfernen(anwender, loeschenCallback);
 			}
-			
+
 		});
-		
+
 		namenColumn.setFieldUpdater(new FieldUpdater<Anwender, String>() {
 
 			@Override
@@ -252,27 +241,21 @@ public class GruppeErstellenForm extends FlowPanel {
 				// TODO Auto-generated method stub
 				anwender.setName(name);
 			}
-			
-		});
-		
 
-		
+		});
+
 		anwenderCellTable.addColumn(namenColumn, "Mitglieder");
 		anwenderCellTable.addColumn(loeschenColumn, "Mitglied entfernen");
 		anwenderCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
 		anwenderCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
-		
+
+		dataProvider.addDataDisplay(anwenderCellTable);
 
 	}
-//	
-//	public void setUmfrage(Gruppe gruppe) {
-//		this.gruppe = gruppe;
-//	}
 
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
-
 
 	private class MitgliedHinzufuegenClickHandler implements ClickHandler {
 
@@ -286,82 +269,63 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	}
 
-//	private class MitgliedEntfernenClickHandler implements ClickHandler {
-//
-//		@Override
-//		public void onClick(ClickEvent event) {
-//			// TODO Auto-generated method stub
-//			
-////			mitgliederLB.removeItem();
-////			anwenderListe.remove(anwender);
-//		
-//			kinoplaner.gruppenmitgliedEntfernen(anwender, new MitgliedEntfernenCallback());
-//
-//		}
-//
-//	}
-
 	private class SpeichernClickHandler implements ClickHandler {
-		
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			kinoplaner.erstellenGruppe(gruppenameTB.getValue(), new GruppeErstellenCallback());
-			
 
+		}
 	}
-}
+
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
-	
+
 	private class AnwenderCallback implements AsyncCallback<Anwender> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Window.alert("AnwenderCallback funktioniert nicht");
-			
-		}
 
+		}
 
 		public void onSuccess(Anwender anwender) {
 			// TODO Auto-generated method stub
-			
+
 			neuerAnwender = anwender;
 			anwender.getName();
-			
+
 			kinoplaner.gruppenmitgliedHinzufuegen(neuerAnwender, new AnwenderHinzufuegenCallback());
-			
-			//Updaten des DataProviders
+
+			// Updaten des DataProviders
 			dataProvider.getList().add(neuerAnwender);
 			dataProvider.refresh();
-			
-			dataProvider.addDataDisplay(anwenderCellTable);
-			
+
+		}
+
 	}
-		
-}
-	
+
 	private class AnwenderHinzufuegenCallback implements AsyncCallback<Anwender> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Window.alert("AnwenderHinzufügenCallback funktioniert nicht");
-			
+
 		}
 
 		@Override
 		public void onSuccess(Anwender result) {
 			// TODO Auto-generated method stub
 			Window.alert("Gruppenmitglied wurde hinzugefügt");
-			
+
 		}
-		
+
 	}
-	
+
 //	private class MitgliedEntfernenCallback implements AsyncCallback<Anwender> {
 //
 //		@Override
@@ -377,31 +341,30 @@ public class GruppeErstellenForm extends FlowPanel {
 //		}
 //		
 //	}
-	
+
 	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Window.alert("Gruppe erstellen ist fehlgeschlagen");
-			
+
 		}
 
 		@Override
 		public void onSuccess(Gruppe result) {
 			// TODO Auto-generated method stub
-			
-			if (gruppenameTB.getValue()=="") {
+
+			if (gruppenameTB.getValue() == "") {
 				Window.alert("Es wurde kein Gruppenname eingegeben");
 			} else {
-			RootPanel.get("details").clear();
-			gruppenAF = new GruppenAnzeigenForm();
-			RootPanel.get("details").add(gruppenAF);
-			
+				RootPanel.get("details").clear();
+				gruppenAF = new GruppenAnzeigenForm();
+				RootPanel.get("details").add(gruppenAF);
+
 			}
-			
+
 		}
-		
+
 	}
 }
-
