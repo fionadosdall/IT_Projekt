@@ -17,14 +17,12 @@ import com.google.gwt.user.client.ui.TextBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
+
+
 
 public class UmfrageErstellenForm extends FlowPanel {
 	
@@ -53,11 +51,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 	
 	private ArrayList<Gruppe> gruppen;
 	
-	private Film film = null;
-	private Spielzeit spielzeit = null;
-	private Kino kino = null;
-	private Kinokette kinokette = null;
-	
 	private ArrayList<Vorstellung> vorstellungen = null;
 	private ArrayList<Umfrageoption> umfrageoptionen = null;
 	 
@@ -79,7 +72,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	
 	private ScrollPanel scrollPanelUmfrage = new ScrollPanel();
 	private ScrollPanel scrollPanelSpielplan = new ScrollPanel();
-
+	
 	
 	public void onLoad() {
 		
@@ -170,16 +163,25 @@ public class UmfrageErstellenForm extends FlowPanel {
 		} else {
 			
 			for (Gruppe g : gruppen) {
+				
 				gruppenListBox.addItem(g.getName());
+				
 			}
+		
+			
 		}
 		
 		
+		// findBy
+	
 		
+				
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
 
 		
 	}
+	
+
 	
 	
 	private class UmfrageErstellenClickHandler implements ClickHandler {
@@ -187,7 +189,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-		//	kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), gruppenListBox, new UmfrageErstellenCallback());
+		//kinoplaner.erstellenUmfrage(name, gruppenListBox.getSelectedIndex(), callback);
 			
 		}
 		
