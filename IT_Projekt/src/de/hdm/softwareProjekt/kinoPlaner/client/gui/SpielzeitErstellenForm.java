@@ -77,13 +77,13 @@ public void onLoad() {
 	
 	
 	
-	private class SpeichernClickHandler implements ClickHandler {
+	public class SpeichernClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			administration.erstellenSpielzeit(nameTextBox.getText(), 
-					spielzeitTextBox.getValue(), new SpielzeitErstellenCallback());
+			//administration.erstellenSpielzeit(nameTextBox.getText(), 
+			//		spielzeitTextBox.getValue(), new SpielzeitErstellenCallback());
 			
 		}		
 		

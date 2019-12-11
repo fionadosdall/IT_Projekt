@@ -92,7 +92,7 @@ private class SpeichernClickHandler implements ClickHandler {
 	public void onClick(ClickEvent event) {
 		// TODO Auto-generated method stub
 		administration.erstellenFilm(nameTextBox.getText(), beschreibungTextBox.getText(),
-				bewertungTextBox.getValue(), new FilmErstellenCallback());
+				bewertungTextBox.hashCode(), new FilmErstellenCallback());
 	}		
 	
 }

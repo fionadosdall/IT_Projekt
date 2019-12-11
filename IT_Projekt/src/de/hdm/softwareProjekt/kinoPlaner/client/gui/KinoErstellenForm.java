@@ -92,7 +92,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			administration.erstellenKino(nameTextBox.getText(), plzTextBox.getValue(), 
+			administration.erstellenKino(nameTextBox.getText(), plzTextBox.hashCode(), 
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getValue(), 
 					new KinoErstellenCallback());
 		}		

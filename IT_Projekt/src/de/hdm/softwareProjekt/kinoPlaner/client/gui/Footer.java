@@ -1,5 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
-public class Footer {
+import com.google.gwt.user.client.ui.FlowPanel;
+
+public class Footer extends FlowPanel {
 
 }

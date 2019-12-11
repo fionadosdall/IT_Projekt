@@ -1,47 +1,45 @@
 package de.hdm.softwareProjekt.kinoPlaner.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.Systemmeldung;
-//import de.hdm.softwarepraktikum.client.Anchor;
-//import de.hdm.softwarepraktikum.client.Button;
-//import de.hdm.softwarepraktikum.client.VerticalPanel;
-//import de.hdm.softwarepraktikum.client.gui.Notification;
-//import de.hdm.softwarepraktikum.shared.LoginServiceAsync;
+import com.google.gwt.user.client.ui.RootPanel;
+
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.Footer;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.Header;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.Navigator;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
+
 
 public class AdminEntry implements EntryPoint {
 	
-//	private LoginServiceAsync loginService = null;
-//	private Button loginButton = new Button("Login");
-//	private Anchor signInLink = new Anchor("Login");
-//	private VerticalPanel loginPanel = new VerticalPanel();
+	
+	Header header = new Header();
+	Navigator navigator = new Navigator();
+	Footer footer = new Footer();
 
 	
-	@Override
 	public void onModuleLoad() {
-		// TODO Auto-generated method stub
 		
-		
+		RootPanel.get("header").add(header);
+		RootPanel.get("navigator").add(navigator);
+		RootPanel.get("footer").add(footer);
 		
 	}
 	
-//	private class loginServiceCallback implements AsyncCallback<Anwender> {
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			Fehlermeldung.anzeigen("EntryFehler" + caught.toString());
-//			
-//		}
-//
-//		@Override
-//		public void onSuccess(Anwender a) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//	}
-//	
 	
+
+	public static class aktuellerAnwender {
+		
+		public static Anwender anwender = null;
+		
+		public static Anwender getAnwender() {
+			return anwender;
+		}
+		
+		public static void setAnwender(Anwender anwender) {
+			aktuellerAnwender.anwender = anwender;
+		}
+		
+	}
 
 
 }
