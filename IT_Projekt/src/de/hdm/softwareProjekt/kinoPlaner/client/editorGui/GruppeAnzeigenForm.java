@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -41,27 +42,36 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
+	private FlowPanel detailsboxlöschen = new FlowPanel();
+	private FlowPanel löschenImage = new FlowPanel();
 
 	private Label title = new Label("Gruppenname");
 	private Label mitgliederLabel = new Label("Gruppenmitglieder");
 	private Label umfrageLabel = new Label("Umfragen");
 
 	private Grid felder = new Grid(2, 4);
-	private Grid felder2 = new Grid(2, 4);
+	
+	private Image papierkorb = new Image();
 
 	public void onLoad() {
 
 		this.addStyleName("detailscontainer");
-
+		detailsboxlöschen.addStyleName("detailsboxlöschen");
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
 		title.addStyleName("title");
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
+		löschenImage.addStyleName("löschenImage");
+		löschenImage.add(papierkorb);
+		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
+		detailsboxlöschen.add(löschenImage);
 
 		this.add(detailsoben);
 		this.add(detailsunten);
+		this.add(detailsboxlöschen);
+		this.add(detailsboxInhalt);
 
 		detailsoben.add(hb);
 		detailsoben.add(title);
@@ -114,6 +124,16 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		this.gruppe = gruppe;
 	}
 
+	private class GruppeLoeschenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
+			
+		}
+		
+	}
+	
 	private class UmfrageAuswaehlenClickHandler implements DoubleClickHandler {
 		private Umfrage umfrage;
 
@@ -139,6 +159,24 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			UmfrageErstellenForm erstellen = new UmfrageErstellenForm();
 			RootPanel.get("details").add(erstellen);
 
+		}
+		
+	}
+	
+	private class GruppeLoeschenCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			RootPanel.get("details").clear();
+			GruppenAnzeigenForm anzeigen = new GruppenAnzeigenForm();
+			RootPanel.get("details").add(anzeigen);
+			
 		}
 		
 	}

@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -38,6 +39,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
+	private FlowPanel detailsboxlöschen = new FlowPanel();
+	private FlowPanel löschenImage = new FlowPanel();
 
 	private Label filmLabel = new Label("Film");
 	private Label spielzeitLabel = new Label("Spielzeit");
@@ -50,6 +53,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	private Grid grid = new Grid(2, 4);
 	private Button speichern = new Button("speichern");
 	private Button votingsAnzeigen = new Button("Votings anzeigen");
+
+	private Image papierkorb = new Image();
 
 	public void onLoad() {
 		kinoplaner = ClientsideSettings.getKinoplaner();
@@ -65,21 +70,30 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		this.add(detailsoben);
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
+		this.add(detailsboxlöschen);
 
 		detailsoben.add(hb);
 		detailsoben.add(title);
 
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
-
+		
+		detailsboxlöschen.addStyleName("detailsboxlöschen");
 		filmLabel.setStyleName("detailsboxLabels");
 		spielzeitLabel.setStyleName("detailsboxLabels");
 		kinoLabel.setStyleName("detailsboxLabels");
 		kinoketteLabel.setStyleName("detailsboxLabels");
 		votingLabel.setStyleName("detailsboxLabels");
 		stadtLabel.setStyleName("detailsboxLabels");
-
+		papierkorb.addStyleName("papierkorb");
+		papierkorb.setUrl("/images/papierkorb.png");
 		speichern.setStyleName("");
 		votingsAnzeigen.setStyleName("");
+		löschenImage.addStyleName("löschenImage");
+		löschenImage.add(papierkorb);
+		papierkorb.addClickHandler(new UmfrageLoeschenClickHandler());
+		detailsboxlöschen.add(löschenImage);
+		
+		
 
 		if (umfrageoptionen != null) {
 			grid.setWidget(0, 0, votingLabel);
@@ -110,13 +124,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 				VotingRadioButtonPanel vrbp = new VotingRadioButtonPanel(u);
 				kinoplaner.getAuswahlByAnwenderAndUmfrageoption(u, new GetAuswahlByUmfrageoptionAndAnwender());
 				if (auswahl != null) {
-					if (auswahl.getVoting() == 1) {
-						vrbp.setValueJa(true);
-						vrbp.setValueNein(false);
-					} else {
-						vrbp.setValueJa(false);
-						vrbp.setValueNein(true);
-					}
+					vrbp.setAlteAuswahl(auswahl);
 				}
 				vrbpList.add(vrbp);
 				grid.setWidget(i, 0, vrbp);
@@ -156,6 +164,16 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		this.umfrage = umfrage;
 
 	}
+	
+	public class UmfrageLoeschenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(umfrage, new UmfrageLoeschenCallback());
+			
+		}
+		
+	}
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -183,6 +201,24 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		}
 
+	}
+	
+	private class UmfrageLoeschenCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("Löschen nicht möglich!");
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			RootPanel.get("details").clear();
+			UmfragenAnzeigenForm anzeigen = new UmfragenAnzeigenForm();
+			RootPanel.get("details").add(anzeigen);
+			
+		}
+		
 	}
 
 	private class GetAuswahlByUmfrageoptionAndAnwender implements AsyncCallback<Auswahl> {

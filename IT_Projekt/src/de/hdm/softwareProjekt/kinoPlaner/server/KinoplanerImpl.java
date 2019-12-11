@@ -289,17 +289,18 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		g.setName(name);
 		g.setBesitzerId(this.anwender.getId());
 		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-
+		
+		Gruppe gFertig = this.gruppeMapper.insert(g);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
 		if (gruppenmitglieder != null) {
 			for (Anwender a : gruppenmitglieder) {
-				this.gruppenmitgliedHinzufuegen(a, g);
+				this.gruppenmitgliedHinzufuegen(a, gFertig);
 			}
 			gruppenmitglieder = null;
 		}
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.gruppeMapper.insert(g);
+		return gFertig;
 	}
 
 	/**

@@ -22,6 +22,7 @@ public class VotingRadioButtonPanel extends FlowPanel {
 	private boolean jaIsClicked = false;
 	private boolean neinIsClicked = false;
 	private Umfrageoption umfrageoption;
+	private Auswahl alteAuswahl;
 
 	public VotingRadioButtonPanel(Umfrageoption umfrageoption) {
 		this.umfrageoption = umfrageoption;
@@ -39,23 +40,52 @@ public class VotingRadioButtonPanel extends FlowPanel {
 		this.add(rb2);
 
 	}
-	
+
+	public void setAlteAuswahl(Auswahl auswahl) {
+		this.alteAuswahl = auswahl;
+		if (alteAuswahl.getVoting() == 1) {
+			this.setValueJa(true);
+			this.setValueNein(false);
+			
+		} else {
+			this.setValueJa(false);
+			this.setValueNein(true);
+		}
+	}
+
+	public Auswahl getAlteAuswahl() {
+		return this.alteAuswahl;
+	}
+
 	public void setValueJa(boolean value) {
 		rb1.setValue(value);
 		jaIsClicked = value;
 	}
-	
+
 	public void setValueNein(boolean value) {
 		rb2.setValue(value);
 		neinIsClicked = value;
 	}
 
 	public void save() {
-		String name = umfrageoption.getName() + counter;
-		if (jaIsClicked == true) {
-			kinoplaner.erstellenAuswahl(name, 1, umfrageoption.getId(), new ErstellenAuswahlCallback());
-		} else if (neinIsClicked == true) {
-			kinoplaner.erstellenAuswahl(name, -1, umfrageoption.getId(), new ErstellenAuswahlCallback());
+		if (alteAuswahl == null) {
+			String name = umfrageoption.getName() + counter;
+			if (jaIsClicked == true) {
+				kinoplaner.erstellenAuswahl(name, 1, umfrageoption.getId(), new ErstellenAuswahlCallback());
+			} else if (neinIsClicked == true) {
+				kinoplaner.erstellenAuswahl(name, -1, umfrageoption.getId(), new ErstellenAuswahlCallback());
+			}
+
+		} else {
+			if (jaIsClicked == true) {
+				alteAuswahl.setVoting(1);
+				kinoplaner.speichern(alteAuswahl, new SpeichernAuswahlCallback());
+			} else if (neinIsClicked == true) {
+				alteAuswahl.setVoting(-1);
+				kinoplaner.speichern(alteAuswahl, new SpeichernAuswahlCallback());
+			}else {
+				kinoplaner.loeschen(alteAuswahl, new LoeschenAuswahlCallback());
+			}
 		}
 	}
 
@@ -71,6 +101,38 @@ public class VotingRadioButtonPanel extends FlowPanel {
 			neinIsClicked = rb2.getValue();
 		}
 
+	}
+	
+	private class LoeschenAuswahlCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	private class SpeichernAuswahlCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	private class ErstellenAuswahlCallback implements AsyncCallback<Auswahl> {

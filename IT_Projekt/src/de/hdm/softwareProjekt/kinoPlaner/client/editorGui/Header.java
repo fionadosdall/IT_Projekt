@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -95,6 +98,7 @@ public class Header extends FlowPanel {
 		homeAnchor.addClickHandler(new HomeClickHandler());
 		userButton.addClickHandler(new UserFormClickHandler());
 		suchenImage.addClickHandler(new SuchenClickHandler());
+		suchenTextBox.addKeyPressHandler(new SuchenKeyPressHandler());
 
 		kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
 		kinoplaner.getUmfragenByAnwender(new GetUmfragenByAnwenderCallback());
@@ -105,7 +109,20 @@ public class Header extends FlowPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
+	private class SuchenKeyPressHandler implements KeyPressHandler {
 
+		@Override
+		public void onKeyPress(KeyPressEvent event) {
+			if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+				RootPanel.get("details").clear();
+				vsf = new VolltextSucheForm(suchenTextBox.getText());
+				RootPanel.get("details").add(vsf);
+			}
+			
+		}
+		
+	}
+	
 	private class HomeClickHandler implements ClickHandler {
 
 		@Override
