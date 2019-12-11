@@ -32,13 +32,19 @@ public class Kinokette extends BesitzerBusinessObjekt {
 	}
 	
 /**
- * Auslesen der Website des Kinos
+ * Auslesen der Website des Kinokette
  * @return
  */
 	public String getWebsite() {
 		return website;
 	}
-
+	
+	/**
+	 * Setzen der Website der Kinokette
+	 */
+	public void setWebsite(String website) {
+		this.website = website;
+	}
 
 
 

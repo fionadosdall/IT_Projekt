@@ -1510,9 +1510,66 @@ public interface Kinoplaner extends RemoteService {
 	 * <p>
 	 * Rueckgabe eines Films mit einer bestimmten Id.
 	 * </p>
-	 * @param filmId Kennung des Films
+	 * 
+	 * @param filmId
+	 *            Kennung des Films
 	 * @return Filmobjekt
 	 * @throws IllegalArgumentException
 	 */
 	public Film getFilmById(int filmId) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Hinzufuegen einer Umfrageoption zu einer Gruppe
+	 * </p>
+	 * 
+	 * @param vorstellung
+	 *            Vorstellung der Umfrageoption
+	 * @param umfrageFertig
+	 *            Umfrageobjekt
+	 * @return Erstellte Umfrageoption
+	 * @throws IllegalArgumentException
+	 */
+	public Umfrageoption umfrageoptionHinzufuegen(Vorstellung vorstellung, Umfrage umfrageFertig)
+			throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Hinzufuegen einer Umfrageoption zu einer Gruppe die noch nicht fertig ist
+	 * </p>
+	 * 
+	 * @param vorstellung
+	 *            Vorstellung der Umfrageoption
+	 * @return Vorstellung die eine Umfrageoption werden soll
+	 * @throws IllegalArgumentException
+	 */
+	public Vorstellung umfrageoptionHinzufuegen(Vorstellung vorstellung) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Entfernen einer Umfrageoption von einer Gruppe
+	 * </p>
+	 * 
+	 * @param umfrageoption
+	 *            Umfrageoption die entfernt werden soll
+	 * @param umfrageFertig
+	 *            Umfrage zur Umfrageoption
+	 * @return Vorstellung die keine Umfrageoption mehr ist in der Umfrage
+	 * @throws IllegalArgumentException
+	 */
+	public Vorstellung umfrageoptionEntfernen(Umfrageoption umfrageoption, Umfrage umfrageFertig)
+			throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Entfernen einer Umfrageoption von einer Gruppe die noch nicht fertig ist
+	 * </p>
+	 * 
+	 * @param vorstellung
+	 *            Vorstellung die keine Umfrageoption werden soll
+	 * @return Vorstellung die keine Umfrageoption wird
+	 * @throws IllegalArgumentException
+	 */
+	public Vorstellung umfrageoptionEntfernen(Vorstellung vorstellung) throws IllegalArgumentException;
+
 }
