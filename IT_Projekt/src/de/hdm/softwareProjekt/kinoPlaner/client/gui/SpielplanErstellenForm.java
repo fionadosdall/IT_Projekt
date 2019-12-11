@@ -18,20 +18,17 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	
 	private int kinoId;
 
-	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
+	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
-	private Label spielplanFormLabel = new Label("Spielplan erstellen");
-	private Label nameLabel = new Label("name:");
-	private Label spielzeitLabel = new Label("Spielzeit:");
-	private Label filmHinzufuegenLabel = new Label("Film  hinzuf&uuml;gen");
-	private Label filmBearbeitenLabel = new Label("Film bearbeiten");
-	private Label spielzeitHinzufuegenLabel = new Label("Spielzeit  hinzuf&uuml;gen");
-	private Label spielzeitBearbeitenLabel = new Label("Spielzeit bearbeiten");
+	private Label title = new Label("Spielplan erstellen");
+	private Label spielplanname = new Label ("Spielplanname");
+	private Label vorstellung = new Label ("Vorstellung hinzufügen");
+	private Label vorstellungen = new Label ("Spielplan-Vorstellungen");
 	
-	private TextBox nameTextBox = new TextBox();
+	private TextBox spielplannameTB = new TextBox();
 	
 	private Button speichernButton = new Button("Speichern");
 	
@@ -49,25 +46,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	
 public void onLoad() {
 		
-		spielplanFormLabel.setStylePrimaryName("spielzeitFormLabel");
-		nameLabel.setStylePrimaryName("textLabel");
-		filmHinzufuegenLabel.setStylePrimaryName("textLabel");
-		filmBearbeitenLabel.setStylePrimaryName("textLabel");
-		spielzeitHinzufuegenLabel.setStylePrimaryName("textLabel");
-		spielzeitBearbeitenLabel.setStylePrimaryName("textLabel");
-		
-		spielzeitLabel.setStylePrimaryName("spielzeitLabel");
-		speichernButton.setStylePrimaryName("speichernButton");
-		obenPanel.setStylePrimaryName("obenPanel");
-		untenPanel.setStylePrimaryName("untenPanel");
-		
-		
-		obenPanel.add(spielplanFormLabel);
 		
 		
 		
 	
-		untenPanel.add(speichernButton);
 	}
 	
 	
@@ -79,7 +61,7 @@ public void onLoad() {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			administration.erstellenSpielplanKino(nameTextBox.getText(), kinoId,
+			kinoplaner.erstellenSpielplanKino(spielplannameTB.getText(), kinoId,
 					new SpielplanErstellenCallback() );
 			
 		}		
