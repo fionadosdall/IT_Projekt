@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 
 
-public class MenuForm extends FlowPanel {
+public class Navigator extends FlowPanel {
 	
 	private FlowPanel navelement = new FlowPanel();
 	
@@ -56,7 +56,7 @@ public class MenuForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			kkef = new KinoketteErstellenForm();
-//			RootPanel.get("details").add(kkef);
+			RootPanel.get("details").add(kkef);
 		}
 		
 	}
@@ -68,7 +68,7 @@ public class MenuForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			kef = new KinoErstellenForm();
-		//	RootPanel.get("details").add(kef);
+			RootPanel.get("details").add(kef);
 			
 		}
 		
@@ -81,7 +81,7 @@ public class MenuForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			spe = new SpielplanErstellenForm();
-		//	RootPanel.get("details").add(spe);
+			RootPanel.get("details").add(spe);
 		}
 		
 	}

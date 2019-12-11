@@ -3,11 +3,22 @@ html {
 }
 
 body {
-	
+	border: 0px none !important;
+	margin: 0;
+	padding: 0;
 	
 }
 
-header {
+#container {
+	display: grid;
+	grid-template-rows: auto 1fr 30px;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-auto-flow: column;
+	height: 100vh;
+	
+}
+
+#header {
 	grid-column-start: 1;
 	grid-column-end: 5;
 	grid-row-start: 1;
@@ -15,7 +26,7 @@ header {
 }
 
 
-footer {
+#footer {
 	grid-column-start: 1;
 	grid-column-end: 5;
 	grid-row-start: 3;
@@ -42,6 +53,103 @@ footer {
 	margin-right: 5px;
 }
 
+/** Styling des Headers*/
+
+.headerGesamt {
+	background-color: #363636;
+	color: #F5F5D8;
+	min-height: 3.25rem;
+	align-items: stretch;
+	display: flex;
+	position: relative;
+	z-index: 30;
+	box-sizing: inherit;
+}
+
+.headerLinks {
+	justify-content: flex-start;
+	margin-right: auto;
+	align-items: stretch;
+	display: flex;
+	box-sizing: inherit;
+}
+
+.headerLogo {
+	align-items: stretch;
+	display: flex;
+	flex-shrink: 0;
+	min-height: 3.25rem;
+	box-sizing: inherit;
+}
+
+.headerLogoInput {
+	display: flex;
+	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	text-decoration: none;
+}
+
+.headerRechts {
+	justify-content: flex-end;
+	margin-left: auto;
+	align-items: stretch;
+	display: flex;
+	box-sizing: inherit;
+}
+
+.headerRechtsElement {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
+}
+
+.headerImage {
+	height: 16px;
+	width: 16px;
+	display: block;
+	position: relative;
+}
+
+.suchenImage {
+	height: auto;
+	max-width: 100%;
+}
+
+.userButton.gwt-Button {
+	background: transparent;
+	border-color: #209cee;
+	color: #209cee;
+	border-width: 1px;
+	cursor: pointer;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+}
+
 /** Styling des Navigators*/
 .navcontainer {
 	display: flex;
@@ -56,8 +164,8 @@ footer {
 	padding: 142px 0 142px 0;
 }
 
-.navButton {
-	background-color: transparent;
+.navButton.gwt-Button {
+	background: transparent;
 	border-color: #fff;
 	color: #fff;
 	border-width: 1px;
