@@ -28,6 +28,14 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 	private Gruppe gruppe;
 	
+	public Gruppe getGruppe() {
+		return gruppe;
+	}
+
+	public void setGruppe(Gruppe gruppe) {
+		this.gruppe = gruppe;
+	}
+
 	private ArrayList<Anwender> mitglieder;
 
 	// private TextBox addAnwenderTextBox = new TextBox ();
