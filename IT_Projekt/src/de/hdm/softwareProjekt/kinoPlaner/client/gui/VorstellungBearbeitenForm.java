@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -69,7 +70,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 	private Button entfernenButton = new Button ("entfernen");
 	private Button speichernButton = new Button("Speichern");
 
-	private CellTable <Film> filmCellTable = new CellTable<Film>(KEY_PROVIDER);
+	private CellTable<Film> filmCellTable = new CellTable<Film>(KEY_PROVIDER);
 	
 	private ListDataProvider<Kino> dataProvider = new ListDataProvider<Kino>();
 	private List<Kino> list = dataProvider.getList();
@@ -190,7 +191,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 		
 		TextCell namenTextCell = new TextCell();
 		
-		Column<Film, String> namenColumn = new Column<Film, String>(nameTextCell) {
+		Column<Film, String> namenColumn = new Column<Film, String>(namenTextCell) {
 
 			@Override
 			public String getValue(Film film) {
