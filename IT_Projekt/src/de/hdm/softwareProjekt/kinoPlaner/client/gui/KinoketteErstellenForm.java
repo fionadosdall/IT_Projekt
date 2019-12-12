@@ -35,7 +35,6 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
 	
-	private KinoketteErstellenForm kinoketteErstellenForm;
 	
 	
 	/**
@@ -53,7 +52,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	public void onLoad() {
 		
-		kinoketteFormLabel.setStylePrimaryName("FormHeaderLabel");
+		kinoketteFormLabel.setStylePrimaryName("formHeaderLabel");
 		nameLabel.setStylePrimaryName("textLabel");
 		sitzLabel.setStylePrimaryName("textLabel");;
 		websiteLabel.setStylePrimaryName("textLabel");
@@ -63,6 +62,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		
 		obenPanel.add(kinoketteFormLabel);
+		this.add(obenPanel);
 		
 		kinoketteGrid.setWidget(0, 0, nameLabel);
 		kinoketteGrid.setWidget(0, 1, nameTextBox);
@@ -71,8 +71,10 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		kinoketteGrid.setWidget(2, 0, websiteLabel);
 		kinoketteGrid.setWidget(2, 1, websiteTextBox);
 		
+		this.add(kinoketteGrid);
 	
 		untenPanel.add(speichernButton);
+		this.add(untenPanel);
 	}
 		
 		

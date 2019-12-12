@@ -188,3 +188,15 @@ body {
 	vertical-align: top;
 	border: 1px solid;
 }
+
+.formHeaderPanel {
+	width: 100%;
+}
+
+.obenPanel {
+	width: 100%;
+}
+
+.untenPanel {
+	width: 100%;
+}

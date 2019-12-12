@@ -21,7 +21,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
-	private Label kinoFormLabel = new Label("Neue Kinokette");
+	private Label kinoFormLabel = new Label("Neues Kino");
 	private Label nameLabel = new Label("Kinoname:");
 	private Label plzLabel = new Label("PLZ:");
 	private Label stadtLabel = new Label("Stadt:");
@@ -35,9 +35,8 @@ public class KinoErstellenForm extends VerticalPanel {
 	private TextBox hnrTextBox = new TextBox();
 	
 	private Button speichernButton = new Button("Speichern");
-	private Grid kinoGrid = new Grid(2, 5);
+	private Grid kinoGrid = new Grid(5, 2);
 	
-	private KinoketteErstellenForm kinoErstellenForm;
 	
 	
 	
@@ -55,7 +54,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	public void onLoad() {
 		
-		kinoFormLabel.setStylePrimaryName("FormHeaderLabel");
+		kinoFormLabel.setStylePrimaryName("formHeaderLabel");
 		nameLabel.setStylePrimaryName("textLabel");
 		strasseLabel.setStylePrimaryName("textLabel");
 		hnrLabel.setStylePrimaryName("textLabel");
@@ -68,6 +67,9 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		obenPanel.add(kinoFormLabel);
 		
+		this.add(obenPanel);
+		
+		
 		kinoGrid.setWidget(0, 0, nameLabel);
 		kinoGrid.setWidget(0, 1, nameTextBox);
 		kinoGrid.setWidget(1, 0, strasseLabel);
@@ -79,10 +81,10 @@ public class KinoErstellenForm extends VerticalPanel {
 		kinoGrid.setWidget(4, 0, stadtLabel);
 		kinoGrid.setWidget(4, 1, stadtTextBox);
 
-		
+		this.add(kinoGrid);
 	
 		untenPanel.add(speichernButton);
-		
+		this.add(untenPanel);
 		
 	}
 	
