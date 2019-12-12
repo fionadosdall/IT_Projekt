@@ -14,7 +14,7 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
-public class EinstellungenBearbeiten extends VerticalPanel {
+public class EinstellungenBearbeitenForm extends VerticalPanel {
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
@@ -35,21 +35,25 @@ public class EinstellungenBearbeiten extends VerticalPanel {
 public void onLoad() {
 		
 		einstellungenFormLabel.setStylePrimaryName("FormHeaderLabel");
+		nicknameLabel.setStylePrimaryName("textLabel");
+		emailLabel.setStylePrimaryName("textLabel");
 		obenPanel.setStylePrimaryName("obenPanel");
 		untenPanel.setStylePrimaryName("untenPanel");
 		speichernButton.setStylePrimaryName("speichernButton");
 		
 		
 		obenPanel.add(einstellungenFormLabel);
+		this.add(obenPanel);
 		
 		einstellungenGrid.setWidget(0, 0, nicknameLabel);
 		einstellungenGrid.setWidget(0, 1, nicknameTextBox);
 		einstellungenGrid.setWidget(1, 0, emailLabel);
 		einstellungenGrid.setWidget(1, 1, emailTextBox);
 	
-		
+		this.add(einstellungenGrid);
 	
 		untenPanel.add(speichernButton);
+		this.add(untenPanel);
 	}
 	
 private class SpeichernClickHandler implements ClickHandler {
@@ -57,7 +61,8 @@ private class SpeichernClickHandler implements ClickHandler {
 	@Override
 	public void onClick(ClickEvent event) {
 		// TODO Auto-generated method stub
-		
+		administration.erstellenAnwender(nicknameTextBox.getText(),
+				emailTextBox.getText(), new EinstellungenBearbeitenCallback());
 	}		
 	
 }

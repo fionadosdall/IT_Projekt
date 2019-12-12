@@ -40,6 +40,7 @@ public class Header extends FlowPanel{
 	
 	private AdminDashboardForm home;
 	private VolltextSucheForm vsf;
+	private EinstellungenBearbeitenForm ebf;
 	
 	public Header() {
 		
@@ -127,7 +128,9 @@ public class Header extends FlowPanel{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+			RootPanel.get("details").clear();
+			ebf = new EinstellungenBearbeitenForm();
+			RootPanel.get("details").add(ebf);
 		}
 		
 	}
