@@ -40,28 +40,25 @@ public class DBConnection {
 
 	public static Connection connection() {
 		// Wenn bisher noch keine Verbindung zur DB aufgebaut wurde:
-//        if (con == null) {
-//            String url = null;
-//            try {
-//                
-//                } else {
-//                    
-//                }
+			if (con == null) {
+				String url = null;
+				try {
+					// Local MySQL instance to use during development.
+					Class.forName("com.mysql.jdbc.Driver");
+					url = localURL;
+//                  
+				
 		/**
 		 * Jetzt kann der DriverManager die Verbindung mit Hilfe der beiden angegebenen 
 		 * URLs aufbauen.
 		 */
-//                con = DriverManager.getConnection(url);
-//            } catch (Exception e) {
-//                con = null;
-//                e.printStackTrace();
-//                throw new RuntimeException(e.getMessage());
-//            }catch (Exception e) {
-//            con = null;
-//            e.printStackTrace();
-//            throw new RuntimeException(e.getMessage());
-//        }
-//        }
+                con = DriverManager.getConnection(url);
+             } catch (Exception e) {
+                 con = null;
+                  e.printStackTrace();
+                  throw new RuntimeException(e.getMessage());
+              }
+          }
 		/**
 		 * Zurückgeben der Verbindung
 		 */

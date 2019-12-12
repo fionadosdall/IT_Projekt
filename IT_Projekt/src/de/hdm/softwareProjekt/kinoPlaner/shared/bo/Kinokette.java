@@ -39,6 +39,9 @@ public class Kinokette extends BesitzerBusinessObjekt {
 		return website;
 	}
 
+	public String setWebsite(String website) {
+		return website;
+	}
 
 
 
