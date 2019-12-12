@@ -189,14 +189,94 @@ body {
 	border: 1px solid;
 }
 
+/* Styling der Detailsansicht */
+
 .formHeaderPanel {
 	width: 100%;
 }
 
 .obenPanel {
 	width: 100%;
+	background: #d6d1d1;
+	text-align: center;
+	color: white;
+	margin-bottom: 3px;
+	padding: 20px 0 20px 0;
+}
+
+.dashboardPanel{
+	width: 100%;
 }
 
 .untenPanel {
 	width: 100%;
+	text-align: center;
+	color: white;
+	background: #d6d1d1;
+}
+
+.formHeaderLabel {
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	word-break: break-word;
+}
+
+.speichernButton.gwt-Button {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #23d160;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.hinzufuegenButton.gwt-Button {
+	background: transparent;
+	border-color: #23d160;
+	color: #23d160;
+	border-radius: 2px;
+	font-size: .75rem;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+}
+
+.entfernenButton.gwt-Button {
+	background: transparent;
+	border-color: #ff3860;
+	color: #ff3860;
+	border-radius: 2px;
+	font-size: .75rem;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
 }

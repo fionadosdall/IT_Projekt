@@ -44,7 +44,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	public KinoketteErstellenForm() {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
-		untenPanel.add(speichernButton);
+		
 		
 		
 	}
@@ -52,14 +52,18 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	public void onLoad() {
 		
-		kinoketteFormLabel.setStylePrimaryName("formHeaderLabel");
-		nameLabel.setStylePrimaryName("textLabel");
-		sitzLabel.setStylePrimaryName("textLabel");;
-		websiteLabel.setStylePrimaryName("textLabel");
-		speichernButton.setStylePrimaryName("speichernButton");
-		obenPanel.setStylePrimaryName("obenPanel");
-		untenPanel.setStylePrimaryName("untenPanel");
+		/* Setzen der Style-Namen */
 		
+		kinoketteFormLabel.addStyleName("formHeaderLabel");
+		nameLabel.addStyleName("textLabel");
+		sitzLabel.addStyleName("textLabel");;
+		websiteLabel.addStyleName("textLabel");
+		speichernButton.addStyleName("speichernButton");
+		obenPanel.addStyleName("obenPanel");
+		untenPanel.addStyleName("untenPanel");
+		
+		
+		/*Zusammensetzen der Widgets */
 		
 		obenPanel.add(kinoketteFormLabel);
 		this.add(obenPanel);

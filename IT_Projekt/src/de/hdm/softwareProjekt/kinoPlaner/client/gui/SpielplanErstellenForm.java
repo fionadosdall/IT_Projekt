@@ -97,6 +97,10 @@ public class SpielplanErstellenForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		
+		hinzufuegenButton.addStyleName("hinzufuegenButton");
+		entfernenButton.addStyleName("entfernenButton");
+		speichernButton.addStyleName("speichernButton");
 
 		detailsObenBox.addStyleName("detailsuntenBoxen");
 		detailsMitteBox.addStyleName("detailsuntenBoxen");
@@ -109,7 +113,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 		
-		title.addStyleName("title");
+		title.addStyleName("formHeaderLabel");
 		spielplanname.addStyleName("detailsboxLabels");
 		vorstellung.addStyleName("detailsboxLabels");
 		vorstellungen.addStyleName("detailsboxLabels");

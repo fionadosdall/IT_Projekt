@@ -54,16 +54,20 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	public void onLoad() {
 		
-		kinoFormLabel.setStylePrimaryName("formHeaderLabel");
-		nameLabel.setStylePrimaryName("textLabel");
-		strasseLabel.setStylePrimaryName("textLabel");
-		hnrLabel.setStylePrimaryName("textLabel");
-		plzLabel.setStylePrimaryName("textLabel");
-		stadtLabel.setStylePrimaryName("textLabel");
-		speichernButton.setStylePrimaryName("speichernButton");
-		obenPanel.setStylePrimaryName("obenPanel");
-		untenPanel.setStylePrimaryName("untenPanel");
+		/*Vergeben der Style-Namen*/
 		
+		kinoFormLabel.addStyleName("formHeaderLabel");
+		nameLabel.addStyleName("textLabel");
+		strasseLabel.addStyleName("textLabel");
+		hnrLabel.addStyleName("textLabel");
+		plzLabel.addStyleName("textLabel");
+		stadtLabel.addStyleName("textLabel");
+		speichernButton.addStyleName("speichernButton");
+		obenPanel.addStyleName("obenPanel");
+		untenPanel.addStyleName("untenPanel");
+		
+		
+		/*Zusammensetzen der Widgets */
 		
 		obenPanel.add(kinoFormLabel);
 		
@@ -88,6 +92,8 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 	}
 	
+	
+	/* ClickHandler */
 	
 	private class SpeichernClickHandler implements ClickHandler {
 
