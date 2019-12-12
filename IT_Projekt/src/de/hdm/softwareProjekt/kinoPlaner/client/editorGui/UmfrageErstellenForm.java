@@ -55,6 +55,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private ArrayList<Vorstellung> vorstellungen = null;
 	private ArrayList<Umfrageoption> umfrageoptionen = null;
 
+
 	private Grid umfrageGrid = new Grid(2, 5);
 	private Grid spielplanGrid = new Grid(2, 5);
 
@@ -74,6 +75,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private Spielzeit spielzeit = null;
 	private Kino kino = null;
 	private Kinokette kinokette = null;
+	
+	
 
 	//DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
 
@@ -120,10 +123,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		umfrageGrid.setWidget(0, 3, umfrageKinokettenLabel);
 		umfrageGrid.setWidget(0, 4, umfrageStadtLabel);
 		
-		spielplanGrid.setCellSpacing(3);
+		spielplanGrid.setCellSpacing(1);
 		spielplanGrid.setBorderWidth(1);
 		spielplanGrid.setTitle("Mögliche Termine");
-		umfrageGrid.setCellSpacing(3);
+		umfrageGrid.setCellSpacing(1);
 		umfrageGrid.setBorderWidth(1);
 		umfrageGrid.setTitle("Umfrageoptionen");
 		
@@ -180,11 +183,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 			for (Gruppe g : gruppen) {
 
 				gruppenListBox.addItem(g.getName());
-
-			}
+				GruppeAuswaehlenClickHandler gruppeClickHandler = new GruppeAuswaehlenClickHandler();
+				gruppeClickHandler.setGruppe(g);
+				gruppenListBox.addClickHandler(gruppeClickHandler);
+			
 
 		}
-
+	}
 		// findBy
 
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
@@ -210,6 +215,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 				} else {
 					spielplanGrid.setWidget(i, 3, new Label("keine Kette"));
 				}
+				
 			
 				spielplanGrid.setWidget(i, 0, new Label(film.getName()));
 			//	spielplanGrid.setWidget(i, 1, new Label(date.toString()));
@@ -240,14 +246,29 @@ public class UmfrageErstellenForm extends FlowPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
+	
+	private class GruppeAuswaehlenClickHandler implements ClickHandler {
+		private Gruppe gruppe;
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public void setGruppe(Gruppe gruppe) {
+			this.gruppe = gruppe;
+		}
+
+		
+	}
 
 	private class UmfrageErstellenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			// kinoplaner.erstellenUmfrage(name, gruppenListBox.getSelectedIndex(),
-			// callback);
+			//kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), gruppenListBox.getSelectedIndex(), new UmfrageErstellenCallback());
 
 		}
 
