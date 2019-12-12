@@ -27,7 +27,7 @@ public class DBConnection {
 	 * ansprechen können.
 	 */
 	private static String googleURL = null;
-	private static String localURL = null;
+	private static String localURL = "jdbc:mysql://127.0.0.1:3306/itProjekt?user=root&password=H1lfig3r!";
 
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
