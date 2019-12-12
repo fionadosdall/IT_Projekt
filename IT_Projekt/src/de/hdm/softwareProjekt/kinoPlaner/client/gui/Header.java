@@ -38,7 +38,7 @@ public class Header extends FlowPanel{
 	private Button clientButton = new Button("Client");
 	private Image suchenImage = new Image();
 	
-	private Home home;
+	private AdminDashboardForm home;
 	private VolltextSucheForm vsf;
 	
 	public Header() {
@@ -116,7 +116,7 @@ public class Header extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			home = new Home();
+			home = new AdminDashboardForm();
 			RootPanel.get("details").add(home);
 		}
 		

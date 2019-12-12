@@ -271,7 +271,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getVorstellungenBySpielplan(vorstellungTB.getValue(), new KinoCallback());
+			//TODO kinoplaner.getVorstellungenBySpielplan(vorstellungTB.getValue(), new KinoCallback());
 			vorstellungTB.setText("");
 			
 		}
@@ -313,7 +313,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 			neuesKino = kino;
 			kino.getName();
 			
-			kinoplaner.kinoHinzufuegen(neuesKino, new KinoHinzufuegenCallback());
+			//TODO kinoplaner.kinoHinzufuegen(neuesKino, new KinoHinzufuegenCallback());
 			
 			//Updaten des DataProviders
 			
