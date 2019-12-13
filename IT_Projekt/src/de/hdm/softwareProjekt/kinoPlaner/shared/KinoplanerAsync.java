@@ -91,7 +91,7 @@ public interface KinoplanerAsync {
 
 	public void speichern(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void loeschen(Anwender anwender, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void loeschen(Film film, AsyncCallback<Film> loeschenCallback) throws IllegalArgumentException;
 
 	public void loeschen(Gruppe gruppe, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -117,7 +117,7 @@ public interface KinoplanerAsync {
 
 	public void getSpielplanById(int spielplanId, AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
 
-	public void getKinoById(int kinoId, AsyncCallback<Kino> callback) throws IllegalArgumentException;
+	public void getKinoById(Kino kino, AsyncCallback<ArrayList<Kinokette>> asyncCallback) throws IllegalArgumentException;
 
 	public void getGruppenByAnwender(AsyncCallback<ArrayList<Gruppe>> callback) throws IllegalArgumentException;
 
@@ -258,7 +258,7 @@ public interface KinoplanerAsync {
 	public void kinoDerKinoketteHinzufuegen(Kino kino, Kinokette kinokette, AsyncCallback<Kino> callback)
 			throws IllegalArgumentException;
 
-	public void kinoketteEntfernen(Kino kino, AsyncCallback<Kino> callback) throws IllegalArgumentException;
+	public void kinoketteEntfernen(Kinokette kinokette, AsyncCallback<Kinokette> loeschenCallback) throws IllegalArgumentException;
 
 	public void gruppenmitgliedHinzufuegen(Anwender anwender, AsyncCallback<Anwender> callback)
 			throws IllegalArgumentException;
