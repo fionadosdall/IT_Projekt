@@ -56,7 +56,7 @@ public class MeineKinokettenForm extends FlowPanel{
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 		
-		detailsoben.add(hb);
+		//TODO detailsoben.add(hb);
 		detailsoben.add(title);
 		
 	

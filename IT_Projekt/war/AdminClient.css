@@ -197,6 +197,8 @@ body {
 
 .formHeaderPanel {
 	width: 100%;
+	text-align: center;
+	align-items: center;
 }
 
 .obenPanel {
@@ -206,15 +208,18 @@ body {
 	color: white;
 	margin-bottom: 3px;
 	padding: 20px 0 20px 0;
+	align-items: center;
 }
 
 .dashboardPanel{
 	width: 100%;
+	align-items: center;
 }
 
 .untenPanel {
 	width: 100%;
 	text-align: center;
+	align-items: center;
 	color: white;
 	background: #d6d1d1;
 }
@@ -283,4 +288,174 @@ body {
 	padding-right: .75em;
 	padding-top: calc(.375em - 1px);
 	text-align: center;
+}
+
+.loeschenButton.gwt-Button{
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #ff3860;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;	
+}
+
+.bearbeitenButton.gwt-Button{
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #595959;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;	
+}
+
+
+/** Styling der UserForm*/
+.detailsbox {
+	margin-top: 5%;
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
+.detailsboxInahlt {
+	margin-bottom: .75rem;
+	box-sizing: inherit;
+	display: block;
+}
+
+.detailsboxspeichern {
+	margin-top: 1%;
+	margin-bottom: 8%;
+}
+
+.detailsboxabmelden {
+	margin-top: 20%;
+	border-bottom: solid;
+	border-top: solid;
+	border-width: thin;
+	margin-bottom: 5%;
+	padding: 10px;
+}
+
+.detailsboxlöschen {
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+}
+
+.nameTextBox {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #fff;
+	border-color: #dbdbdb;
+	max-width: 100%;
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	justify-content: flex-start;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+
+.helpTextLabel {
+	display: block;
+	font-size: .75rem;
+	margin-top: .25rem;
+}
+
+.speichernButton.gwt-Button {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #23d160;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.mailLabel {
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.title {
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	word-break: break-word;
+}
+
+.löschenImage {
+	height: 32px;
+	width: 32px;
+	display: block;
+	position: relative;
+	cursor: pointer;
+	
+}
+
+.papierkorb {
+	height: auto;
+	max-width: 100%;
 }
