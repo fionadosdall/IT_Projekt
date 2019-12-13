@@ -26,9 +26,9 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.GruppeLoeschenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.MitgliedHinzufuegenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.SpeichernClickHandler;
+//TODO import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.GruppeLoeschenClickHandler;
+//TODO import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.MitgliedHinzufuegenClickHandler;
+//TODO import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -185,7 +185,7 @@ public class KinoketteBearbeitenForm extends FlowPanel{
 			@Override
 			public void onSuccess(ArrayList<Kino> result) {
 				for (Kino u : result ) {
-					kinoTB.add(u);
+					//TODO kinoTB.add(u);
 					alleKinosOracle.add(u.getName());
 				}
 				
@@ -272,7 +272,7 @@ public class KinoketteBearbeitenForm extends FlowPanel{
 					
 				};
 				
-				kinoplaner.loeschen(kino, loeschenCallback);
+				//TODO kinoplaner.loeschen(kino, loeschenCallback);
 				
 				
 			}
@@ -308,7 +308,7 @@ public class KinoketteBearbeitenForm extends FlowPanel{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getKinoById(kinoTB.getValue(), new KinoCallback());
+			//TODO kinoplaner.getKinoById(kinoTB.getValue(), new KinoCallback());
 			kinoTB.setText("");
 		}
 		

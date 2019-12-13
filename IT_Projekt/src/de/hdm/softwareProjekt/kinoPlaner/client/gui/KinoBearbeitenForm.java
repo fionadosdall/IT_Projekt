@@ -20,15 +20,10 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.GruppeLoeschenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.MitgliedHinzufuegenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -199,7 +194,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 			
 			
 			for (Kinokette a : kinokette) {
-				list.add(a);
+				//TODO list.add(a);
 			}
 		}
 		
@@ -300,7 +295,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.getKinoketteById(kinoketteTB.getValue(),new KinoketteCallback() );
+			//TODO kinoplaner.getKinoketteById(kinoketteTB.getValue(),new KinoketteCallback() );
 			kinoketteTB.setText("");
 			
 			
@@ -351,7 +346,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 			kinokette.getName();
 			
 			
-			kinoplaner.kinoDerKinoketteHinzufuegen(neueKinokette, new KinoketteHinzufuegenCallback());
+			//TODO kinoplaner.kinoDerKinoketteHinzufuegen(neueKinokette, new KinoketteHinzufuegenCallback());
 			
 			//Updaten des DataProvider
 			

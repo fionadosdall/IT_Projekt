@@ -216,7 +216,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
-				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
+				 //TODO kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
 				return kino.getName();
 			}
 

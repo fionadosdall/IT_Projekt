@@ -194,6 +194,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 		
 		TextCell namenTextCell = new TextCell();
 		
+		/*
 		Column<Film, String> namenColumn = new Column<Film, String>(nameTextCell) {
 
 			@Override
@@ -207,7 +208,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 			    }
 			}
 			
-		};
+		}; */
 		
 		
 		Cell <String> loeschenCell = new ButtonCell();
@@ -254,7 +255,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 			
 		});
 		
-		namenColumn.setFieldUpdater(new FieldUpdater <Film, String> () {
+		/*namenColumn.setFieldUpdater(new FieldUpdater <Film, String> () {
 
 			@Override
 			public void update(int index, Film film, String name) {
@@ -262,14 +263,14 @@ public class VorstellungErstellenForm extends FlowPanel {
 				film.setName(name);
 			}
 			
-		});
+		}); 
 		
 		filmCellTable.addColumn(namenColumn, "Filme");
 		filmCellTable.addColumn(loeschenColumn, "Film entfernen");
 		filmCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
-		filmCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
+		filmCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC); */
 		
-		dataProvider.addDataDisplay(filmCellTable);
+		//TODO dataProvider.addDataDisplay(filmCellTable);
 	
 	}
 	
@@ -286,7 +287,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.getAllFilme(filmTB.getValue(), new FilmCallback());
+			//TODO kinoplaner.getAllFilme(filmTB.getValue(), new FilmCallback());
 			filmTB.setText("");
 			
 		}
@@ -299,7 +300,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.erstellenVorstellung(vorstellungsnameTB.getValue(), new VorstellungErstellenCallback());
+			//TODO kinoplaner.erstellenVorstellung(vorstellungsnameTB.getValue(), new VorstellungErstellenCallback());
 			
 		
 		}
@@ -328,11 +329,11 @@ public class VorstellungErstellenForm extends FlowPanel {
 			
 			
 			
-			kinoplaner.filmhinzufueen(neuerFilm, new FilmHinzufuegenCallback());
+			//TODO kinoplaner.filmhinzufueen(neuerFilm, new FilmHinzufuegenCallback());
 			
 			// Updaten des DataPrivders
 			
-			dataProvider.getList().add(neuerFilm);
+			//TODO dataProvider.getList().add(neuerFilm);
 			dataProvider.refresh();
 			
 			

@@ -240,7 +240,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 					
 				};
 				
-				kinoplaner.kinoketteEntfernen(kino, loeschenCallback);
+				//TODO kinoplaner.kinoketteEntfernen(kino, loeschenCallback);
 				
 			}
 			

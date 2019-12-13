@@ -25,10 +25,10 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.FilmCallback;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.FilmHinzufuegenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.SpeichernClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.VorstellungErstellenCallback;
+//TODO import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.FilmCallback;
+//TODO import de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.FilmHinzufuegenClickHandler;
+//TODOimport de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.SpeichernClickHandler;
+//TODOimport de.hdm.softwareProjekt.kinoPlaner.client.gui.VorstellungErstellenForm.VorstellungErstellenCallback;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -266,7 +266,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 		filmCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
 		filmCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
 		
-		dataProvider.addDataDisplay(filmCellTable);
+		//TODO dataProvider.addDataDisplay(filmCellTable);
 	
 	}
 	
@@ -283,7 +283,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.getAllFilme(filmTB.getValue(), new FilmCallback());
+			//TODO	kinoplaner.getAllFilme(filmTB.getValue(), new FilmCallback());
 			filmTB.setText("");
 			
 		}
@@ -296,7 +296,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.erstellenVorstellung(vorstellungsnameTB.getValue(), new VorstellungErstellenCallback());
+			//TODO	kinoplaner.erstellenVorstellung(vorstellungsnameTB.getValue(), new VorstellungErstellenCallback());
 			
 		
 		}
@@ -338,9 +338,9 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 			neuerFilm = film;
 			film.getName();
 			
-			kinoplaner.vorstellungHinzufuegen(neuerFilm, new FilmHinzufuegenCallback());
+			//TODO kinoplaner.vorstellungHinzufuegen(neuerFilm, new FilmHinzufuegenCallback());
 			
-			dataProvider.getList().add(neuerFilm);
+			//TODO	dataProvider.getList().add(neuerFilm);
 			dataProvider.refresh();
 			
 		}

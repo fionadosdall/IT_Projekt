@@ -196,7 +196,7 @@ public class UserForm extends FlowPanel {
 			anwender.setLogoutUrl(anwender.getLogoutUrl());
 			Window.open(anwender.getLogoutUrl(), "_self", "");
 
-			kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
+			//TODO kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
 		}
 
 	}
