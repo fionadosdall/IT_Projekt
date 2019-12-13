@@ -3,6 +3,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,11 +27,11 @@ public class AdminDashboardForm extends VerticalPanel {
 		
 		/* Vergeben der Stylename*/
 		
-		dashboardFormLabel.setStylePrimaryName("formHeaderLabel");
-		untenPanel.setStylePrimaryName("untenPanel");
-		obenPanel.setStylePrimaryName("obenPanel");
-		loeschenButton.setStylePrimaryName("loeschenButton");
-		bearbeitenButton.setStylePrimaryName("bearbeitenButton");		
+		dashboardFormLabel.addStyleName("formHeaderLabel");
+		untenPanel.addStyleName("untenPanel");
+		obenPanel.addStyleName("obenPanel");
+		loeschenButton.addStyleName("loeschenButton");
+		bearbeitenButton.addStyleName("bearbeitenButton");		
 		
 		
 		
@@ -45,7 +46,7 @@ public class AdminDashboardForm extends VerticalPanel {
 		dashboardboardPanel.add(mspf);
 		this.add(dashboardboardPanel);
 		
-		
+		untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		untenPanel.add(loeschenButton);
 		untenPanel.add(bearbeitenButton);
 		this.add(untenPanel);
