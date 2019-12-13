@@ -3,7 +3,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -71,7 +72,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 	};
 
-	private Label stadtLabel = new Label("Ort");
 
 	private Film film = null;
 	private Spielzeit spielzeit = null;
@@ -167,21 +167,45 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
 
-//		for (Vorstellung v : vorstellungen) {
-//				
-//				list.add(v);
+		if (vorstellungen != null) {
 
-		CheckboxCell cbCell = new CheckboxCell(true, false);
-		Column<Vorstellung, Boolean> checkBoxColumn = new Column<Vorstellung, Boolean>(cbCell) {
+			for (Vorstellung v : vorstellungen) {
 
-			public Boolean getValue(Vorstellung object) {
+				Window.alert("hier");
 
-				return selectionModel.isSelected(object);
+				list.add(v);
+
+			}
+
+		} else {
+
+			detailsBoxUmfrage.add(new Label("Es sind noch keine Vorstellungen vorhanden "));
+		}
+
+		ButtonCell buttonCell = new ButtonCell();
+		Column<Vorstellung, String> buttonColumn = new Column<Vorstellung, String>(buttonCell) {
+
+			public String getValue(Vorstellung object) {
+
+				return "+";
+				
 
 			}
 		};
+		
+		buttonColumn.setFieldUpdater(new FieldUpdater<Vorstellung, String>() {
 
-		vorstellungenCellTable.addColumn(checkBoxColumn, "Auswählen");
+			@Override
+			public void update(int index, Vorstellung object, String value) {
+				// TODO Auto-generated method stub
+		
+			kinoplaner.umfrageoptionHinzufuegen(object, new UmfrageOptionHinzufuegenCallback());
+				
+			}
+			
+		});
+
+		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
 
 		TextCell filmCell = new TextCell();
 		Column<Vorstellung, String> filmColumn = new Column<Vorstellung, String>(filmCell) {
@@ -216,7 +240,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
-				 //TODO kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
+				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
 				return kino.getName();
 			}
 
@@ -249,7 +273,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		};
 
-		vorstellungenCellTable.addColumn(stadtCellColumn, "Stadt");
+		vorstellungenCellTable.addColumn(stadtCellColumn, "Ort");
 
 		vorstellungenCellTable.setSelectionModel(selectionModel,
 				DefaultSelectionEventManager.<Vorstellung>createCheckboxManager());
@@ -372,6 +396,22 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	private class UmfrageOptionHinzufuegenCallback implements AsyncCallback<Vorstellung>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Vorstellung result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
 
@@ -390,3 +430,4 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 }
+
