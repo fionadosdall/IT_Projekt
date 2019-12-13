@@ -180,7 +180,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 	});
 	
 	// Hier msss noch das Kino aus der listbox gezogen werden
-	kinoplaner.getKinoById(kino, new AsyncCallback<ArrayList<Kinokette>>() {
+	/* kinoplaner.getKinoById(kino, new AsyncCallback<ArrayList<Kinokette>>() {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -198,7 +198,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 			}
 		}
 		
-	});
+	}); */
 	
 	/******
 	 * CELLL TABLE
@@ -257,7 +257,7 @@ public class KinoBearbeitenForm extends FlowPanel{
 				
 			};
 			
-			kinoplaner.kinoketteEntfernen(kinokette, loeschenCallback);
+			//TODO kinoplaner.kinoketteEntfernen(kinokette, loeschenCallback);
 		}
 		
 	});
