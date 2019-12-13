@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -11,7 +12,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Home;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UserForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.VolltextSucheForm;
 
 
@@ -34,13 +35,13 @@ public class Header extends FlowPanel{
 	
 	
 	private Anchor homeAnchor = new Anchor("HOME");
-	private Anchor einstellungenAnchor = new Anchor("Einstellungen");
-	private Button clientButton = new Button("Client");
+	private Anchor clientAnchor = new Anchor("Client");
+	private Button einstellungenButton = new Button("USER");
 	private Image suchenImage = new Image();
 	
 	private AdminDashboardForm home;
 	private VolltextSucheForm vsf;
-	private EinstellungenBearbeitenForm ebf;
+	private UserForm uf;
 	
 	public Header() {
 		
@@ -63,11 +64,12 @@ public class Header extends FlowPanel{
 
 		headerImage.addStyleName("headerImage");
 		suchenImage.addStyleName("suchenImage");
-		homeAnchor.addStyleName("homeAnchor");
-		einstellungenAnchor.addStyleName("homeAnchor");
-		clientButton.addStyleName("userButton");
+		homeAnchor.addStyleName("headerAnchor");
+		clientAnchor.addStyleName("headerAnchor");
+		einstellungenButton.addStyleName("userButton");
 
 		suchenImage.setUrl("/images/suchen.png");
+		
 
 		suchenTextBox.addStyleName("nameTextBox");
 
@@ -92,20 +94,17 @@ public class Header extends FlowPanel{
 		headerImage.add(suchenImage);
 
 		headerRechtsElementHome.add(homeAnchor);
-		headerRechtsElementHome.add(einstellungenAnchor);
-		headerRechtsElementUser.add(clientButton);
+		headerRechtsElementHome.add(clientAnchor);
+		headerRechtsElementUser.add(einstellungenButton);
 		
 
 		// Click-Handler
 
 		homeAnchor.addClickHandler(new HomeButtonClickHandler());
-		clientButton.addClickHandler(new ClientButtonClickHandler());
+		einstellungenButton.addClickHandler(new EinstellungenButtonClickHandler());
 		suchenImage.addClickHandler(new SuchenClickHandler());
-		einstellungenAnchor.addClickHandler(new EinstellungenButtonClickHandler());
+		clientAnchor.addClickHandler(new ClientAnchorClickHandler());
 
-		//kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
-		//kinoplaner.getUmfragenByAnwender(new GetUmfragenByAnwenderCallback());
-		//kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
 
 		
 		
@@ -129,8 +128,8 @@ public class Header extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			ebf = new EinstellungenBearbeitenForm();
-			RootPanel.get("details").add(ebf);
+			uf = new UserForm();
+			RootPanel.get("details").add(uf);
 		}
 		
 	}
@@ -148,12 +147,12 @@ public class Header extends FlowPanel{
 	}
 	
 	
-	private class ClientButtonClickHandler implements ClickHandler {
+	private class ClientAnchorClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+			clientAnchor.setHref(GWT.getHostPageBaseURL() + "IT_Projekt.html");
 		}
 		
 	}

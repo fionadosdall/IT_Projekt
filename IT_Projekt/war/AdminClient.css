@@ -150,6 +150,10 @@ body {
 	height: 2.25em;
 }
 
+.headerAnchor{
+	margin: 5px;
+}
+
 /** Styling des Navigators*/
 .navcontainer {
 	display: flex;
