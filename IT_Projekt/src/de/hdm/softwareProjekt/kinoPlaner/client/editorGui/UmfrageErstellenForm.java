@@ -1,18 +1,25 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -22,7 +29,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class UmfrageErstellenForm extends FlowPanel {
@@ -53,35 +59,26 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private ArrayList<Gruppe> gruppen;
 
 	private ArrayList<Vorstellung> vorstellungen = null;
-	private ArrayList<Umfrageoption> umfrageoptionen = null;
 
+	private CellTable<Vorstellung> vorstellungenCellTable = new CellTable<Vorstellung>(KEY_PROVIDER);
+	private final MultiSelectionModel<Vorstellung> selectionModel = new MultiSelectionModel<Vorstellung>();
+	private ListDataProvider<Vorstellung> dataProvider = new ListDataProvider<Vorstellung>();
+	private List<Vorstellung> list = dataProvider.getList();
 
-	private Grid umfrageGrid = new Grid(2, 5);
-	private Grid spielplanGrid = new Grid(2, 5);
+	private static final ProvidesKey<Vorstellung> KEY_PROVIDER = new ProvidesKey<Vorstellung>() {
+		public Object getKey(Vorstellung v) {
+			return v.getId();
+		}
+	};
 
-	private Label umfrageFilmLabel = new Label("Film");
-	private Label umfrageSpielzeitLabel = new Label("Uhrzeit");
-	private Label umfrageKinoLabel = new Label("Kino");
-	private Label umfrageKinokettenLabel = new Label("Kinokette");
-	private Label umfrageStadtLabel = new Label("Ort");
-
-	private Label filmLabel = new Label("Film");
-	private Label spielzeitLabel = new Label("Uhrzeit");
-	private Label kinoLabel = new Label("Kino");
-	private Label kinokettenLabel = new Label("Kinokette");
 	private Label stadtLabel = new Label("Ort");
 
 	private Film film = null;
 	private Spielzeit spielzeit = null;
 	private Kino kino = null;
 	private Kinokette kinokette = null;
-	
-	
 
-	//DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
-
-//	private ScrollPanel scrollPanelUmfrage = new ScrollPanel();
-//	private ScrollPanel scrollPanelSpielplan = new ScrollPanel();
+	// DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
 
 	/*
 	 * (non-Javadoc)
@@ -117,23 +114,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		umfrageTextBox.getElement().setPropertyString("placeholder", "Anlass für die Umfrage?");
 
-		umfrageGrid.setWidget(0, 0, umfrageFilmLabel);
-		umfrageGrid.setWidget(0, 1, umfrageSpielzeitLabel);
-		umfrageGrid.setWidget(0, 2, umfrageKinoLabel);
-		umfrageGrid.setWidget(0, 3, umfrageKinokettenLabel);
-		umfrageGrid.setWidget(0, 4, umfrageStadtLabel);
-		
-		spielplanGrid.setCellSpacing(1);
-		spielplanGrid.setBorderWidth(1);
-		spielplanGrid.setTitle("Mögliche Termine");
-		umfrageGrid.setCellSpacing(1);
-		umfrageGrid.setBorderWidth(1);
-		umfrageGrid.setTitle("Umfrageoptionen");
-		
-
-//		scrollPanelUmfrage.setHeight("30px");
-//		scrollPanelSpielplan.setHeight("30px");
-
 		// Zusammenbauen der Widgets
 
 		this.add(detailsoben);
@@ -153,13 +133,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
-		detailsBoxUmfrage.add(umfrageGrid);
-		detailsBoxUmfrage.add(spielplanGrid);
-		
-//		detailsBoxUmfrage.add(scrollPanelUmfrage);
-//		detailsBoxUmfrage.add(scrollPanelSpielplan);
-//		scrollPanelUmfrage.add(umfrageGrid);
-//		scrollPanelSpielplan.add(spielplanGrid);
+		detailsBoxUmfrage.add(vorstellungenCellTable);
 
 		detailsunten.add(detailsBoxFiltern);
 		detailsBoxFiltern.add(filternLabel);
@@ -167,7 +141,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsunten.add(detailsBoxSpeichern);
 		detailsBoxSpeichern.add(erstellenButton);
 
-		// KlickHandler
+		// ClickHandler
 		erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 
 		gruppenListBox.setSize("200px", "25px");
@@ -183,92 +157,129 @@ public class UmfrageErstellenForm extends FlowPanel {
 			for (Gruppe g : gruppen) {
 
 				gruppenListBox.addItem(g.getName());
-				GruppeAuswaehlenClickHandler gruppeClickHandler = new GruppeAuswaehlenClickHandler();
-				gruppeClickHandler.setGruppe(g);
-				gruppenListBox.addClickHandler(gruppeClickHandler);
-			
 
+			}
 		}
-	}
-		// findBy
+
+		/***********************************************************************
+		 * CELL TABLE
+		 ***********************************************************************/
 
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
 
-		if (vorstellungen != null) {
-			spielplanGrid.setWidget(0, 0, filmLabel);
-			spielplanGrid.setWidget(0, 1, spielzeitLabel);
-			spielplanGrid.setWidget(0, 2, kinoLabel);
-			spielplanGrid.setWidget(0, 3, kinokettenLabel);
-			spielplanGrid.setWidget(0, 4, stadtLabel);
+//		for (Vorstellung v : vorstellungen) {
+//				
+//				list.add(v);
 
-			spielplanGrid.resizeRows(vorstellungen.size() + 1);
-			int i = 1;
+		CheckboxCell cbCell = new CheckboxCell(true, false);
+		Column<Vorstellung, Boolean> checkBoxColumn = new Column<Vorstellung, Boolean>(cbCell) {
 
-			for (Vorstellung v : vorstellungen) {
+			public Boolean getValue(Vorstellung object) {
 
-				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback());
-				// kinoplaner.getSpielzeitBy
-				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
-				
-				if (kino.getKinokettenId() != 0 ) {
-				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
-				} else {
-					spielplanGrid.setWidget(i, 3, new Label("keine Kette"));
-				}
-				
-			
-				spielplanGrid.setWidget(i, 0, new Label(film.getName()));
-			//	spielplanGrid.setWidget(i, 1, new Label(date.toString()));
-				spielplanGrid.setWidget(i, 2, new Label(kino.getName()));
-				spielplanGrid.setWidget(i, 3, new Label(kinokette.getName()));
-				spielplanGrid.setWidget(i, 4, new Label(kino.getStadt()));
-
-				i++;
+				return selectionModel.isSelected(object);
 
 			}
+		};
 
-		} else {
-			spielplanGrid.setWidget(0, 0, filmLabel);
-			spielplanGrid.setWidget(0, 1, spielzeitLabel);
-			spielplanGrid.setWidget(0, 2, kinoLabel);
-			spielplanGrid.setWidget(0, 3, kinokettenLabel);
-			spielplanGrid.setWidget(0, 4, stadtLabel);
-			
-			spielplanGrid.setWidget(1, 0, new Label("kein Film"));
-			spielplanGrid.setWidget(1, 1, new Label("keine Zeit"));
-			spielplanGrid.setWidget(1, 2, new Label("kein Kino"));
-			spielplanGrid.setWidget(1, 3, new Label("keine Kinokette"));
-			spielplanGrid.setWidget(1, 4, new Label("keine Stadt"));
+		vorstellungenCellTable.addColumn(checkBoxColumn, "Auswählen");
 
-		}
+		TextCell filmCell = new TextCell();
+		Column<Vorstellung, String> filmColumn = new Column<Vorstellung, String>(filmCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				kinoplaner.getFilmById(object.getFilmId(), new FilmByIdCallback());
+				return film.getName();
+			}
+
+		};
+
+		vorstellungenCellTable.addColumn(filmColumn, "Film");
+
+		TextCell spielzeitCell = new TextCell();
+		Column<Vorstellung, String> spielzeitColumn = new Column<Vorstellung, String>(spielzeitCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+		};
+
+		vorstellungenCellTable.addColumn(spielzeitColumn, "Spielzeit");
+
+		TextCell kinoCell = new TextCell();
+		Column<Vorstellung, String> kinoColumn = new Column<Vorstellung, String>(kinoCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
+				return kino.getName();
+			}
+
+		};
+
+		vorstellungenCellTable.addColumn(kinoColumn, "Kino");
+
+		TextCell kinokettenCell = new TextCell();
+		Column<Vorstellung, String> kinokettenCellColumn = new Column<Vorstellung, String>(kinokettenCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
+				return kinokette.getName();
+			}
+
+		};
+
+		vorstellungenCellTable.addColumn(kinokettenCellColumn, "Kinokette");
+
+		TextCell stadtCell = new TextCell();
+		Column<Vorstellung, String> stadtCellColumn = new Column<Vorstellung, String>(stadtCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				return kino.getStadt();
+			}
+
+		};
+
+		vorstellungenCellTable.addColumn(stadtCellColumn, "Stadt");
+
+		vorstellungenCellTable.setSelectionModel(selectionModel,
+				DefaultSelectionEventManager.<Vorstellung>createCheckboxManager());
+
+		dataProvider.addDataDisplay(vorstellungenCellTable);
+
+//}
+
 	}
 
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
-	
-	private class GruppeAuswaehlenClickHandler implements ClickHandler {
-		private Gruppe gruppe;
-
-		@Override
-		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		public void setGruppe(Gruppe gruppe) {
-			this.gruppe = gruppe;
-		}
-
-		
-	}
 
 	private class UmfrageErstellenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			String gruppenname = gruppenListBox.getSelectedValue();
+			Gruppe g = null;
+
+			if (gruppenname != "") {
+				// g = kinoplaner.getGruppeByName(gruppenname);
+
+			} else {
+				Window.alert("Bitte zuerst eine Gruppe auswählen");
+				return;
+			}
 			// TODO Auto-generated method stub
-			//kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), gruppenListBox.getSelectedIndex(), new UmfrageErstellenCallback());
+			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), g.getId(), new UmfrageErstellenCallback());
 
 		}
 
