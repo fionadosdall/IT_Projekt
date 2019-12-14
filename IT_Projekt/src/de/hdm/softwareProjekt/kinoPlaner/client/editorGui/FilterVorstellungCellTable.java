@@ -10,7 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -26,7 +25,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-public class VorstellungCellTable extends VerticalPanel {
+public class FilterVorstellungCellTable extends VerticalPanel {
 	
 	public interface CellTableResources extends CellTable.Resources {
 
@@ -85,20 +84,20 @@ public class VorstellungCellTable extends VerticalPanel {
 		 * CELL TABLE
 		 ***********************************************************************/
 
-		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
-
-		if (vorstellungen != null) {
-
-			for (Vorstellung v : vorstellungen) {
-
-				list.add(v);
-
-			}
-
-		} else {
-
-			vorstellungenCellTable.setEmptyTableWidget(new Label("Es sind noch keine Vorstellungen vorhanden"));
-		}
+//		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
+//
+//		if (vorstellungen != null) {
+//
+//			for (Vorstellung v : vorstellungen) {
+//
+//				list.add(v);
+//
+//			}
+//
+//		} else {
+//
+//			vorstellungenCellTable.setEmptyTableWidget(new Label("Es sind noch keine Vorstellungen vorhanden"));
+//		}
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Vorstellung, String> buttonColumn = new Column<Vorstellung, String>(buttonCell) {
