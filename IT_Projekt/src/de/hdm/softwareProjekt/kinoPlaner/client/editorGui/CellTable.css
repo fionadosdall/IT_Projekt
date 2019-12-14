@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+.cellTableHeader {
+	padding: 2px;
+	text-align: center;
+	font-size: 15px;
+	height: 25px;
+	vertical-align: middle;
+	font-weight: thin;
+	border-bottom: 1px solid #6f7277;
+  	border-left: 1px solid #6f7277;
+  	border-right: 1px solid #6f7277;
+  	border-top: 1px solid #6f7277;
+  	border-radius: 2px;
+  	color: #209cee;
+  	background-color: #363636;
+	
+}
