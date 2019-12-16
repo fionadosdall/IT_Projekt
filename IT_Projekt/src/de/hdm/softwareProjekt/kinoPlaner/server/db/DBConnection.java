@@ -54,7 +54,7 @@ private static Connection con = null;
                   e.printStackTrace();
                   throw new RuntimeException(e.getMessage());
               }
-  //        }
+       }
 		/**
 		 * Zurückgeben der Verbindung
 		 */
