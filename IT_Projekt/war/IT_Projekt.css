@@ -6,6 +6,7 @@
 	grid-template-columns: 25% 25% 25% 25%;
 	grid-auto-flow: column;
 	height: 100vh;
+	  
 }
 
 #header {
@@ -414,4 +415,10 @@
 .homeBarAnchor.gwt-Anchor {
 	color: #363636;
 	font-weight: bold;
+}
+.filternBox {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 5px;
 }

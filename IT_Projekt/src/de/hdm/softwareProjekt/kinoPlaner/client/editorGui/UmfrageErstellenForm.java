@@ -10,11 +10,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 public class UmfrageErstellenForm extends FlowPanel {
@@ -30,22 +34,38 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private FlowPanel detailsBoxUmfrage = new FlowPanel();
 	private FlowPanel detailsBoxFiltern = new FlowPanel();
 	private FlowPanel detailsBoxSpeichern = new FlowPanel();
+	private FlowPanel filternBox = new FlowPanel();
+	private FlowPanel filternBoxLinks = new FlowPanel();
+	private FlowPanel filternBoxMitte = new FlowPanel();
+	private FlowPanel filternBoxRechts = new FlowPanel();
 
 	private Label title = new Label("Umfrage erstellen");
 	private Label umfrageLabel = new Label("Umfrage");
 	private Label gruppenLabel = new Label("Gruppe");
 	private Label terminLabel = new Label("Mögliche Termine");
 	private Label filternLabel = new Label("Termine Filtern");
-
+	private Label kinoLabel = new Label("Kino");
+	private Label SpiezeitLabel = new Label("Spielzeit");
+	private Label filmLabel = new Label("Filme");
+	
 	private TextBox umfrageTextBox = new TextBox();
+	
 	private ListBox gruppenListBox = new ListBox();
-
+	private ListBox kinoListBox = new ListBox();
+	private ListBox spielzeitListBox = new ListBox();
+	private ListBox filmListBox = new ListBox();
+ 
 	private Button erstellenButton = new Button("Umfrage starten");
 
 	private ArrayList<Gruppe> gruppen;
+	private ArrayList<Kino> kinos;
+	private ArrayList<Spielzeit> spielzeiten;
+	private ArrayList<Film> filme;
 	
 	private UmfrageCellTable uct = new UmfrageCellTable();
 	private VorstellungCellTable vct = new VorstellungCellTable();
+	
+	private UmfrageAnzeigenForm uaf = null;
 
 	/*
 	 * (non-Javadoc)
@@ -74,6 +94,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		
+		filternBox.addStyleName("filternBox");
 
 		erstellenButton.addStyleName("speichernButton");
 
@@ -105,14 +127,27 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxFiltern);
 		detailsBoxFiltern.add(filternLabel);
+		detailsBoxFiltern.add(filternBox);
+		filternBox.add(filternBoxLinks);
+		filternBox.add(filternBoxMitte);
+		filternBox.add(filternBoxRechts);
+		filternBoxLinks.add(kinoLabel);
+		filternBoxLinks.add(kinoListBox);
+		filternBoxMitte.add(SpiezeitLabel);
+		filternBoxMitte.add(spielzeitListBox);
+		filternBoxRechts.add(filmLabel);
+		filternBoxRechts.add(filmListBox);
 
 		detailsunten.add(detailsBoxSpeichern);
 		detailsBoxSpeichern.add(erstellenButton);
+		
+		kinoListBox.setSize("100px", "25px");
+		spielzeitListBox.setSize("100px", "25px");
+		filmListBox.setSize("100px", "25px");
+		gruppenListBox.setSize("200px", "25px");
 
 		// ClickHandler
 		erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
-
-		gruppenListBox.setSize("200px", "25px");
 
 		kinoplaner.getGruppenByAnwender(new GruppenCallback());
 
@@ -177,17 +212,26 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
-
+		
+		private Umfrage umfrage;
+		
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-
+			Window.alert("Umfrage erstellen hat NICHT funktioniert");
 		}
 
 		@Override
 		public void onSuccess(Umfrage result) {
 			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			uaf = new UmfrageAnzeigenForm(umfrage);
+			RootPanel.get("details").add(uaf);
 
+		}
+		
+		public void setUmfrage(Umfrage umfrage) {
+			this.umfrage = umfrage;
 		}
 
 	}
