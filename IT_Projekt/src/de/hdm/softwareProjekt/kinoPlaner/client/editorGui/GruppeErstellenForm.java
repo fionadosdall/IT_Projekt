@@ -147,6 +147,8 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
+		
+		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hunzugefügt"));
 
 		// Click-Handler
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
@@ -182,13 +184,7 @@ public class GruppeErstellenForm extends FlowPanel {
 			public String getValue(Anwender anwender) {
 				// TODO Auto-generated method stub
 
-				if (anwender == null) {
-					return "test";
-				} else {
-
 					return anwender.getName();
-
-				}
 
 			}
 

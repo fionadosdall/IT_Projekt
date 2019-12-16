@@ -78,6 +78,10 @@ public class FilterVorstellungCellTable extends VerticalPanel {
 		this.add(vorstellungenCellTable);
 		
 		vorstellungenCellTable.setWidth("100%");
+		
+//		kinoplaner.filterResultVorstellungenByKinoOrKinokette(vorstellungen, kino, callback);
+//		kinoplaner.filterResultVorstellungenByFilm(vorstellungen, film, callback);
+//		kinoplaner.filterResultVorstellungenBySpielzeit(vorstellungen, spielzeit, callback);
 	
 
 		/***********************************************************************

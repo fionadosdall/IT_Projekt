@@ -65,7 +65,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private UmfrageCellTable uct = new UmfrageCellTable();
 	private VorstellungCellTable vct = new VorstellungCellTable();
 	
-	private UmfrageAnzeigenForm uaf = null;
 
 	/*
 	 * (non-Javadoc)
@@ -141,13 +140,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsunten.add(detailsBoxSpeichern);
 		detailsBoxSpeichern.add(erstellenButton);
 		
-		kinoListBox.setSize("100px", "25px");
-		spielzeitListBox.setSize("100px", "25px");
-		filmListBox.setSize("100px", "25px");
+		kinoListBox.setSize("180px", "25px");
+		spielzeitListBox.setSize("180px", "25px");
+		filmListBox.setSize("180px", "25px");
 		gruppenListBox.setSize("200px", "25px");
-
-		// ClickHandler
-		erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 
 		kinoplaner.getGruppenByAnwender(new GruppenCallback());
 
@@ -163,6 +159,60 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 			}
 		}
+		
+		kinoplaner.getAllKinos(new KinoCallback());
+		
+		if (kinos == null) {
+			kinoListBox.addItem("Keine Kinos verfügbar");
+			kinoListBox.setEnabled(false);
+
+		} else {
+
+			for (Kino k : kinos) {
+
+				kinoListBox.addItem(k.getName());
+
+			}
+		}
+
+		
+		kinoplaner.getAllSpielzeiten(new SpielzeitCallback());
+		
+		
+		if (spielzeiten == null) {
+			spielzeitListBox.addItem("Keine Spielzeit verfügbar");
+			spielzeitListBox.setEnabled(false);
+
+		} else {
+
+			for (Spielzeit s : spielzeiten) {
+				
+				DateFormaterSpielzeit date = new DateFormaterSpielzeit(s.getZeit());
+
+				spielzeitListBox.addItem(date.toString());
+
+			}
+		}
+		
+		
+		kinoplaner.getAllFilme(new FilmeCalllback());
+		
+		if (filme == null) {
+			filmListBox.addItem("Keine Filme verfügbar");
+			filmListBox.setEnabled(false);
+
+		} else {
+
+			for (Film f : filme) {
+
+				filmListBox.addItem(f.getName());
+
+			}
+		}
+		
+		// ClickHandler
+		erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
+		
 
 	}
 
@@ -210,6 +260,56 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	private class KinoCallback implements AsyncCallback<ArrayList<Kino>>  {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kino> result) {
+			// TODO Auto-generated method stub
+			kinos = result;
+			
+		}
+		
+	}
+	
+	private class SpielzeitCallback implements AsyncCallback<ArrayList<Spielzeit>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Spielzeit> result) {
+			// TODO Auto-generated method stub
+			spielzeiten = result;
+		}
+		
+	}
+	
+	private class FilmeCalllback implements AsyncCallback<ArrayList<Film>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Film> result) {
+			// TODO Auto-generated method stub
+			filme = result;
+			
+		}
+		
+	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
 		
@@ -224,8 +324,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Umfrage result) {
 			// TODO Auto-generated method stub
+			umfrage = result;
 			RootPanel.get("details").clear();
-			uaf = new UmfrageAnzeigenForm(umfrage);
+			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(umfrage);
 			RootPanel.get("details").add(uaf);
 
 		}
