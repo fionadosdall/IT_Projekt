@@ -10,24 +10,20 @@ import java.sql.DriverManager;
  * @author annaf
  *
  */
-
 public class DBConnection {
-
 	/**
 	 * Diese Klasse wird nur einmal instanziiert. Die Klassenvariable con ist
 	 * static, damit sie NUR EINMAL für sämtliche Instanzen der DB Connection-Klasse
 	 * vorkommt.
 	 * 
 	 */
-
-	private static Connection con = null;
-
+private static Connection con = null;
 	/**
 	 * Im Folgenden sind die URLs aufgeführt, mit deren Hilfe wir die Datenbank
 	 * ansprechen können.
 	 */
-	private static String googleURL = null;
-	private static String localURL = "jdbc:mysql://127.0.0.1:3306/itProjekt?user=root&password=H1lfig3r!";
+//	private static String googleURL = null;
+	private static String localURL = "jdbc:mysql://127.0.0.1:3306/test?user=root&password=H1lfig3r!";
 
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
@@ -54,11 +50,11 @@ public class DBConnection {
 		 */
                 con = DriverManager.getConnection(url);
              } catch (Exception e) {
-                 con = null;
+                  con = null;
                   e.printStackTrace();
                   throw new RuntimeException(e.getMessage());
               }
-          }
+  //        }
 		/**
 		 * Zurückgeben der Verbindung
 		 */

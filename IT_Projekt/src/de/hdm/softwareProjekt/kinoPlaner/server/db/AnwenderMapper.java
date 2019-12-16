@@ -69,8 +69,8 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name, erstellDatum " + "FROM anwender"
-					+ "WHERE name = " + name + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM Anwender"
+					+ "WHERE aName = " + name + "ORDER BY aName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -79,9 +79,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
-				a.setGmail(resultset.getString("gmail"));
-				a.setName(resultset.getString("name"));
+				a.setId(resultset.getInt("aId"));
+				a.setGmail(resultset.getString("gMail"));
+				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -112,7 +112,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM anwender" + "WHERE name =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM Anwender" + "WHERE aName =" + name);
 
 			if (resultset.next()) {
 				return false;
@@ -138,14 +138,14 @@ public class AnwenderMapper {
 			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM anwender");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (aId) AS maxId " + "FROM Anwender");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO anweder (id, gmail, name, erstellDatum)" + "VALUES(" + anwender.getId()
+				stmt.executeUpdate("INSERT INTO Anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + anwender.getId()
 						+ "','" + anwender.getGmail() + "','" + anwender.getName() + "','" + anwender.getErstellDatum()
 						+ ")");
 			}
@@ -173,9 +173,9 @@ public class AnwenderMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE anwender SET " + "name=\"" + anwender.getName() + "\", " + "gmail=\""
+			stmt.executeUpdate("UPDATE Anwender SET " + "aName=\"" + anwender.getName() + "\", " + "gMail=\""
 					+ anwender.getGmail() + "\", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
-					+ "WHERE id=" + anwender.getId());
+					+ "WHERE aId=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -197,7 +197,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM anwender " + "WHERE id=" + anwender.getId());
+			stmt.executeUpdate("DELETE FROM Anwender " + "WHERE aId=" + anwender.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -218,8 +218,8 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender"
-			+ "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM Anwender"
+			+ "ORDER BY aName");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -228,9 +228,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
-				a.setGmail(resultset.getString("gmail"));
-				a.setName(resultset.getString("name"));
+				a.setId(resultset.getInt("aId"));
+				a.setGmail(resultset.getString("gMail"));
+				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -258,13 +258,13 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE id=" + id + " ORDER BY name");
-			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+					"SELECT aId, gMail, aName, erstellDatum FROM Anwender" + "WHERE aId=" + id + " ORDER BY aName");
+			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
-				a.setGmail(resultset.getString("gmail"));
-				a.setName(resultset.getString("name"));
+				a.setId(resultset.getInt("aId"));
+				a.setGmail(resultset.getString("gMail"));
+				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;
 			}
@@ -288,12 +288,12 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT id, gmail, name, erstellDatum FROM anwender" + "WHERE name=" + name + "ORDER BY name");
+					"SELECT aId, gMail, aName, erstellDatum FROM Anwender" + "WHERE aName=" + name + "ORDER BY aName");
 			if (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
-				a.setGmail(resultset.getString("gmail"));
-				a.setName(resultset.getString("name"));
+				a.setId(resultset.getInt("aId"));
+				a.setGmail(resultset.getString("gMail"));
+				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;
 			}
@@ -322,9 +322,9 @@ public class AnwenderMapper {
 				Anwender anwender = new Anwender ();
 				
 				
-				anwender.setId(rs.getInt("id"));
-				anwender.setName(rs.getString("name"));
-				anwender.setGmail(rs.getString("gmail"));
+				anwender.setId(rs.getInt("aId"));
+				anwender.setName(rs.getString("aName"));
+				anwender.setGmail(rs.getString("gMail"));
 				anwender.setErstellDatum(rs.getTimestamp("erstellDatum"));
 				
 				return anwender;
@@ -356,10 +356,10 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppenmitglieder.gid, gruppenmitglieder.id, anwender.gmail, anwender.name, "
-							+ "anwender.erstellDatum FROM gruppenmitglieder " + "INNER JOIN anwender "
-							+ "ON gruppenmitglieder.id = anwender.id " + "WHERE id = " + gruppe.getId()
-							+ "ORDER BY anwenderId");
+					"SELECT Gruppe.gId, Gruppe.gruppe_anwender_Id, Anwender.gMail, Anwender.aName, "
+							+ "Anwender.erstellDatum FROM Gruppe " + "INNER JOIN Anwender "
+							+ "ON Gruppe.gruppe_anwender_Id = Anwender.aId " + "WHERE gId = " + gruppe.getId()
+							+ "ORDER BY aId");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -369,9 +369,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("id"));
-				a.setGmail(resultset.getString("gmail"));
-				a.setName(resultset.getString("name"));
+				a.setId(resultset.getInt("aId"));
+				a.setGmail(resultset.getString("gMail"));
+				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
