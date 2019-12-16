@@ -10,24 +10,20 @@ import java.sql.DriverManager;
  * @author annaf
  *
  */
-
 public class DBConnection {
-
 	/**
 	 * Diese Klasse wird nur einmal instanziiert. Die Klassenvariable con ist
 	 * static, damit sie NUR EINMAL für sämtliche Instanzen der DB Connection-Klasse
 	 * vorkommt.
 	 * 
 	 */
-
-	private static Connection con = null;
-
+private static Connection con = null;
 	/**
 	 * Im Folgenden sind die URLs aufgeführt, mit deren Hilfe wir die Datenbank
 	 * ansprechen können.
 	 */
-	private static String googleURL = null;
-	private static String localURL = "jdbc:mysql://127.0.0.1:3306/itProjekt?user=root&password=H1lfig3r!";
+//	private static String googleURL = null;
+	private static String localURL = "jdbc:mysql://127.0.0.1:3306/test?user=root&password=H1lfig3r!";
 
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
@@ -40,28 +36,25 @@ public class DBConnection {
 
 	public static Connection connection() {
 		// Wenn bisher noch keine Verbindung zur DB aufgebaut wurde:
-//        if (con == null) {
-//            String url = null;
-//            try {
-//                
-//                } else {
-//                    
-//                }
+			if (con == null) {
+				String url = null;
+				try {
+					// Local MySQL instance to use during development.
+					Class.forName("com.mysql.jdbc.Driver");
+					url = localURL;
+//                  
+				
 		/**
 		 * Jetzt kann der DriverManager die Verbindung mit Hilfe der beiden angegebenen 
 		 * URLs aufbauen.
 		 */
-//                con = DriverManager.getConnection(url);
-//            } catch (Exception e) {
-//                con = null;
-//                e.printStackTrace();
-//                throw new RuntimeException(e.getMessage());
-//            }catch (Exception e) {
-//            con = null;
-//            e.printStackTrace();
-//            throw new RuntimeException(e.getMessage());
-//        }
-//        }
+                con = DriverManager.getConnection(url);
+             } catch (Exception e) {
+                  con = null;
+                  e.printStackTrace();
+                  throw new RuntimeException(e.getMessage());
+              }
+       }
 		/**
 		 * Zurückgeben der Verbindung
 		 */
