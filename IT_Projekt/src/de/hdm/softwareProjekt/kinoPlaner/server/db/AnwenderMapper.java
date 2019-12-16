@@ -61,7 +61,7 @@ public class AnwenderMapper {
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
 	 */
-	public ArrayList<Anwender> findAllByName(String Name) {
+	public ArrayList<Anwender> findAllByName(String name) {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Anwender> resultarray = new ArrayList<Anwender>();
@@ -69,8 +69,8 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM Anwender"
-					+ "WHERE aName = " + Name + "ORDER BY aName");
+			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name, erstellDatum " + "FROM anwender"
+					+ "WHERE name = " + name + "ORDER BY name");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -79,9 +79,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("aId"));
-				a.setGmail(resultset.getString("gMail"));
-				a.setName(resultset.getString("aName"));
+				a.setId(resultset.getInt("id"));
+				a.setGmail(resultset.getString("gmail"));
+				a.setName(resultset.getString("name"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -106,13 +106,13 @@ public class AnwenderMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String aName) {
+	public boolean nameVerfügbar(String name) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM anwender" + "WHERE name =" + aName);
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM anwender" + "WHERE name =" + name);
 
 			if (resultset.next()) {
 				return false;
@@ -130,7 +130,7 @@ public class AnwenderMapper {
 	 * @param anwender bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
-	public Anwender insert(Anwender Anwender) {
+	public Anwender insert(Anwender anwender) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -141,12 +141,12 @@ public class AnwenderMapper {
 			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM anwender");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
-				Anwender.setId(resultset.getInt("maxId") + 1);
+				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + Anwender.getId()
-						+ "','" + Anwender.getGmail() + "','" + Anwender.getName() + "','" + Anwender.getErstellDatum()
+				stmt.executeUpdate("INSERT INTO anweder (id, gmail, name, erstellDatum)" + "VALUES(" + anwender.getId()
+						+ "','" + anwender.getGmail() + "','" + anwender.getName() + "','" + anwender.getErstellDatum()
 						+ ")");
 			}
 		} catch (SQLException e1) {
@@ -156,7 +156,7 @@ public class AnwenderMapper {
 		 * Rückgabe des Anwenders. Durch die Methode wurde das Objekt ggf. angepasst
 		 * (z.B. angepasste Id)
 		 */
-		return Anwender;
+		return anwender;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class AnwenderMapper {
 	 * @param anwender bzw. Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Paramter übergeben wurde.
 	 */
-	public Anwender update(Anwender Anwender) {
+	public Anwender update(Anwender anwender) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -173,16 +173,16 @@ public class AnwenderMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE anwender SET " + "aName=\"" + Anwender.getName() + "\", " + "gMail=\""
-					+ Anwender.getGmail() + "\", " + "erstellDatum=\"" + Anwender.getErstellDatum() + "\" "
-					+ "WHERE id=" + Anwender.getId());
+			stmt.executeUpdate("UPDATE anwender SET " + "name=\"" + anwender.getName() + "\", " + "gmail=\""
+					+ anwender.getGmail() + "\", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
+					+ "WHERE id=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
 		/**
 		 * Rückgabe des neuen, veränderten Anwender-Objektes
 		 */
-		return Anwender;
+		return anwender;
 	}
 
 	/**
@@ -191,13 +191,13 @@ public class AnwenderMapper {
 	 * 
 	 * @param anwender Objekt, welches gelöscht werden soll.
 	 */
-	public void delete(Anwender Anwender) {
+	public void delete(Anwender anwender) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM anwender " + "WHERE id=" + Anwender.getId());
+			stmt.executeUpdate("DELETE FROM anwender " + "WHERE id=" + anwender.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -218,8 +218,8 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM Anwender"
-			+ "ORDER BY aName");
+			ResultSet resultset = stmt.executeQuery("SELECT id, gmail, name, erstellDatum FROM anwender"
+			+ "ORDER BY name");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -228,9 +228,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("aId"));
-				a.setGmail(resultset.getString("gMail"));
-				a.setName(resultset.getString("aName"));
+				a.setId(resultset.getInt("id"));
+				a.setGmail(resultset.getString("gmail"));
+				a.setName(resultset.getString("name"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -308,10 +308,10 @@ public class AnwenderMapper {
 	 * find by gmail
 	 */
 	
-	public Anwender findByGmail (String gMail) {
+	public Anwender findByGmail (String gmail) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM Anwender WHERE gMail= ' " + gMail + " ' ";
+		String sql = "SELECT * FROM Anwender WHERE gMail= ' " + gmail + " ' ";
 		
 		try {
 			
@@ -322,9 +322,9 @@ public class AnwenderMapper {
 				Anwender anwender = new Anwender ();
 				
 				
-				anwender.setId(rs.getInt("aId"));
-				anwender.setName(rs.getString("aName"));
-				anwender.setGmail(rs.getString("gMail"));
+				anwender.setId(rs.getInt("id"));
+				anwender.setName(rs.getString("name"));
+				anwender.setGmail(rs.getString("gmail"));
 				anwender.setErstellDatum(rs.getTimestamp("erstellDatum"));
 				
 				return anwender;
@@ -356,9 +356,9 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppenmitglieder.gId, gruppenmitglieder.aId, anwender.gMail, anwender.aName, "
-							+ "anwender.erstellDatum FROM gruppenmitglieder " + "INNER JOIN Anwender "
-							+ "ON gruppenmitglieder.aId = anwender.id " + "WHERE gId = " + gruppe.getId()
+					"SELECT gruppenmitglieder.gid, gruppenmitglieder.id, anwender.gmail, anwender.name, "
+							+ "anwender.erstellDatum FROM gruppenmitglieder " + "INNER JOIN anwender "
+							+ "ON gruppenmitglieder.id = anwender.id " + "WHERE id = " + gruppe.getId()
 							+ "ORDER BY anwenderId");
 
 			/**
@@ -369,9 +369,9 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("aId"));
-				a.setGmail(resultset.getString("gMail"));
-				a.setName(resultset.getString("aName"));
+				a.setId(resultset.getInt("id"));
+				a.setGmail(resultset.getString("gmail"));
+				a.setName(resultset.getString("name"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
