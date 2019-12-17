@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -128,7 +129,7 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
 
-		spielplannameTB.getElement().setPropertyString("placeholder", "Gruppenname: " + gruppe.getName());
+		spielplannameTB.getElement().setPropertyString("placeholder", "Spielplanname: " + spielplan.getName());
 		kinoTB.getElement().setPropertyString("placeholder", "User suchen");
 
 		papierkorb.setUrl("/images/papierkorb.png");
@@ -182,7 +183,7 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 			public void onSuccess(ArrayList<Kino> result) {
 				
 				for (Kino u: result) {
-					kinoTB.add(u);
+					//kinoTB.add(u);
 					alleKinosOracle.add(u.getName());
 				}
 				
@@ -304,7 +305,7 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getKinoById(kinoTB.getValue(), new KinoCallback());
+			//kinoplaner.getKinoById(kinoTB.getValue(), new KinoCallback());
 			kinoTB.setText("");
 		}
 		
@@ -321,8 +322,104 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 		
 	}
 	
+	private class SpielplanLoeschenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoplaner.loeschen(spielplan, new LoeschenSpielplanCallback());
+		}
+		
+	}
+	
 	
 	/***
 	 * CALLBACKS
 	 */
+	
+	private class KinoCallback implements AsyncCallback<Kino> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("KinoCallback funktioniert nicht");
+		}
+
+		@Override
+		public void onSuccess(Kino kino) {
+			// TODO Auto-generated method stub
+			neuesKino = kino;
+			kino.getName();
+			
+		
+			kinoplaner.erstellenSpielplanKino(neuesKino, kinoId, new KinoHinzufuegenCallback());
+			
+			//Updaten des DataProviders
+			
+			dataProvider.getList().add(neuesKino);
+			dataProvider.refresh();
+			
+		}
+		
+	}
+	
+	private class KinoHinzufuegenCallback implements AsyncCallback <Kino> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("KinoHinzufuegenCallback funktioniert nicht");
+			
+		}
+
+		@Override
+		public void onSuccess(Kino result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kino wurde dem Spielplan hinzugefügt");
+			
+		}
+		
+	}
+	
+	
+	private class SpielplanSpeichernCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			
+			if (spielplannameTB.getValue() == "" ) {
+				Systemmeldung.anzeigen("Es wurde kein Spielplanname eingegeben");
+			} else {
+				RootPanel.get("details").clear();
+				spielplaeneF = new MeineSpielplaeneForm();
+				RootPanel.get("details").add(spielplaeneF);
+				
+			}
+			
+		}
+		
+	}
+	
+	private class LoeschenSpielplanCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 }
