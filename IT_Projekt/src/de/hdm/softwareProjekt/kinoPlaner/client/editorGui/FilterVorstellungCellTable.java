@@ -10,7 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
@@ -78,6 +78,10 @@ public class FilterVorstellungCellTable extends VerticalPanel {
 		this.add(vorstellungenCellTable);
 		
 		vorstellungenCellTable.setWidth("100%");
+		
+//		kinoplaner.filterResultVorstellungenByKinoOrKinokette(vorstellungen, kino, callback);
+//		kinoplaner.filterResultVorstellungenByFilm(vorstellungen, film, callback);
+//		kinoplaner.filterResultVorstellungenBySpielzeit(vorstellungen, spielzeit, callback);
 	
 
 		/***********************************************************************

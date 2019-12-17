@@ -70,8 +70,8 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum" + "FROM kino"
-					+ "WHERE name = " + name + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum" + "FROM Kino"
+					+ "WHERE kName = " + name + "ORDER BY kName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und
@@ -80,9 +80,9 @@ public class KinoMapper {
 
 			while (resultset.next()) {
 				Kino k = new Kino();
-				k.setId(resultset.getInt("id"));
-				k.setBesitzerId(resultset.getInt("besitzerId"));
-				k.setName(resultset.getString("name"));
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
 				k.setPlz(resultset.getInt("plz"));
 				k.setStadt(resultset.getString("stadt"));
 				k.setStrasse(resultset.getString("strasse"));
@@ -116,7 +116,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM kino" + "WHERE name =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT kName FROM Kino" + "WHERE kName =" + name);
 
 			if (resultset.next()) {
 				return false;
@@ -142,7 +142,7 @@ public class KinoMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Kinos ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM kino");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM Kino");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				kino.setId(resultset.getInt("maxId") + 1);
@@ -150,7 +150,7 @@ public class KinoMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO kino (id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum)"
+						"INSERT INTO Kino (kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum)"
 								+ "VALUES(" + kino.getId() + "','" + kino.getName() + "','" + kino.getBesitzerId()
 								+ "','" + kino.getPlz() + "','" + kino.getStadt() + "','" + kino.getStrasse() + "','"
 								+ kino.getHausnummer() + "','" + kino.getErstellDatum() + ")");
@@ -179,10 +179,10 @@ public class KinoMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE kino SET " + "besitzerId=\"" + kino.getBesitzerId() + "\", " + "name=\""
+			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id=\"" + kino.getBesitzerId() + "\", " + "kName=\""
 					+ kino.getName() + "\", " + "erstellDatum=\"" + kino.getErstellDatum() + "\", " + "plz=\""
 					+ kino.getPlz() + "\", " + "stadt=\"" + kino.getStadt() + "\", " + "strasse=\"" + kino.getStrasse()
-					+ "\", " + "hausnummer=\"" + kino.getHausnummer() + "\" " + "WHERE id=" + kino.getId());
+					+ "\", " + "hausnummer=\"" + kino.getHausnummer() + "\" " + "WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -203,7 +203,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM kino " + "WHERE id=" + kino.getId());
+			stmt.executeUpdate("DELETE FROM Kino " + "WHERE kId=" + kino.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -225,14 +225,14 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum"
-							+ " FROM kino" + "ORDER BY name");
+					.executeQuery("SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum"
+							+ " FROM Kino" + "ORDER BY kName");
 
 			while (resultset.next()) {
 				Kino k = new Kino();
-				k.setId(resultset.getInt("id"));
-				k.setBesitzerId(resultset.getInt("besitzerId"));
-				k.setName(resultset.getString("name"));
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
 				k.setPlz(resultset.getInt("plz"));
 				k.setStadt(resultset.getString("stadt"));
 				k.setStrasse(resultset.getString("strasse"));
@@ -263,14 +263,14 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum FROM kino"
-							+ "WHERE id=" + id + " ORDER BY name");
+					.executeQuery("SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+							+ "WHERE kId=" + id + " ORDER BY kName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Kino k = new Kino();
-				k.setId(resultset.getInt("id"));
-				k.setBesitzerId(resultset.getInt("besitzerId"));
-				k.setName(resultset.getString("name"));
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
 				k.setPlz(resultset.getInt("plz"));
 				k.setStadt(resultset.getString("stadt"));
 				k.setStrasse(resultset.getString("strasse"));
@@ -286,7 +286,7 @@ public class KinoMapper {
 
 	/**
 	 * Suche nach allen Kino-Objekten, die eine Eigentumsbeziehung mit einem
-	 * vorgegebene Anwender haben. Daraus wird ersichtlich, welcher Anwender
+	 * vorgegebenen Anwender haben. Daraus wird ersichtlich, welcher Anwender
 	 * besondere Rechte in Bezug auf welche Kinos hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
@@ -304,14 +304,14 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum FROM kino"
-							+ "WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY name");
+					.executeQuery("SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+							+ "WHERE kino_anwender_Id = " + anwenderOwner.getId() + "ORDER BY kName");
 
 			while (resultset.next()) {
 				Kino k = new Kino();
-				k.setId(resultset.getInt("id"));
-				k.setBesitzerId(resultset.getInt("besitzerId"));
-				k.setName(resultset.getString("name"));
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
 				k.setPlz(resultset.getInt("plz"));
 				k.setStadt(resultset.getString("stadt"));
 				k.setStrasse(resultset.getString("strasse"));
@@ -342,7 +342,7 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate(
-					"UPDATE kino SET " + "kinokettenId=\"" + kinokette.getId() + "\" " + "WHERE id=" + kino.getId());
+					"UPDATE Kino SET " + "kino_kinokette_Id=\"" + kinokette.getId() + "\" " + "WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -363,7 +363,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE kino SET " + "kinokettenId=\"" + "" + "\" " + "WHERE id=" + kino.getId());
+			stmt.executeUpdate("UPDATE Kino SET " + "kino_kinokette_Id=\"" + "" + "\" " + "WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -387,7 +387,7 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate(
-					"UPDATE kino SET " + "besitzerId=\"" + anwender.getId() + "\" " + "WHERE id=" + kino.getId());
+					"UPDATE Kino SET " + "kino_anwender_Id=\"" + anwender.getId() + "\" " + "WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -407,7 +407,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE kino SET " + "besitzerId=\"" + "" + "\" " + "WHERE id=" + kino.getId());
+			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id=\"" + "" + "\" " + "WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -434,17 +434,17 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, plz, stadt, strasse, hausnummer, erstellDatum FROM kino"
-							+ "WHERE kinokettenId = " + kinokette.getId() + "ORDER BY name");
+					.executeQuery("SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+							+ "WHERE kkId = " + kinokette.getId() + "ORDER BY kName");
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und die
 			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {
 				Kino k = new Kino();
-				k.setId(resultset.getInt("id"));
-				k.setBesitzerId(resultset.getInt("besitzerId"));
-				k.setName(resultset.getString("name"));
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
 				k.setPlz(resultset.getInt("plz"));
 				k.setStadt(resultset.getString("stadt"));
 				k.setStrasse(resultset.getString("strasse"));
