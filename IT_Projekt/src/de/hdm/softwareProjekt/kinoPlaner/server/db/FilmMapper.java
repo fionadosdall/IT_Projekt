@@ -71,8 +71,8 @@ public class FilmMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum " + "FROM film"
-							+ "WHERE name = " + name + "ORDER BY name");
+					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum " + "FROM film"
+							+ "WHERE fName = " + name + "ORDER BY fName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Film-Objekt erstellt und die
@@ -81,10 +81,10 @@ public class FilmMapper {
 
 			while (resultset.next()) {
 				Film f = new Film();
-				f.setId(resultset.getInt("id"));
-				f.setName(resultset.getString("name"));
-				f.setBesitzerId(resultset.getInt("besitzerId"));
-				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setId(resultset.getInt("fId"));
+				f.setName(resultset.getString("fName"));
+				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
+				f.setBeschreibung(resultset.getString("fBeschreibung"));
 				f.setBewertung(resultset.getInt("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
@@ -114,7 +114,7 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM film" + "WHERE name =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT fName FROM film" + "WHERE fName =" + name);
 
 			if (resultset.next()) {
 				return false;
@@ -141,14 +141,14 @@ public class FilmMapper {
 			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
 			 * Filme ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM film");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (fId) AS maxId " + "FROM film");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				film.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO film (id, name, besitzerId, erstellDatum, beschreibung, bewertung)"
+				stmt.executeUpdate("INSERT INTO film (fId, fName, film_anwender_Id, erstellDatum, fBeschreibung, bewertung)"
 						+ "VALUES(" + film.getId() + "','" + film.getName() + "','" + film.getBesitzerId() + "','"
 						+ film.getErstellDatum() + "','" + film.getBeschreibung() + "','" + film.getBewertung() + ")");
 			}
@@ -177,9 +177,9 @@ public class FilmMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen
 			 */
-			stmt.executeUpdate("UPDATE film SET " + "besitzerId=\"" + film.getBesitzerId() + "\", " + "name=\""
-					+ film.getName() + "\", " + "beschreibung=\"" + film.getBeschreibung() + "\", " + "bewertung=\""
-					+ film.getBewertung() + "\", " + "erstellDatum=\"" + film.getErstellDatum() + "\" " + "WHERE id="
+			stmt.executeUpdate("UPDATE film SET " + "film_anwender_Id=\"" + film.getBesitzerId() + "\", " + "fName=\""
+					+ film.getName() + "\", " + "fBeschreibung=\"" + film.getBeschreibung() + "\", " + "bewertung=\""
+					+ film.getBewertung() + "\", " + "erstellDatum=\"" + film.getErstellDatum() + "\" " + "WHERE fId="
 					+ film.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -201,7 +201,7 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM film " + "WHERE id=" + film.getId());
+			stmt.executeUpdate("DELETE FROM film " + "WHERE fId=" + film.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -221,15 +221,15 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film"
-							+ "WHERE id=" + id + " ORDER BY name");
+					.executeQuery("SELECT fId, fName, film_anwender_Id, beschreibung, bewertung, erstellDatum FROM film"
+							+ "WHERE fId=" + id + " ORDER BY fName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Film f = new Film();
-				f.setId(resultset.getInt("id"));
-				f.setName(resultset.getString("name"));
-				f.setBesitzerId(resultset.getInt("besitzerId"));
-				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setId(resultset.getInt("fId"));
+				f.setName(resultset.getString("fName"));
+				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
+				f.setBeschreibung(resultset.getString("fBeschreibung"));
 				f.setBewertung(resultset.getInt("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return f;
@@ -255,14 +255,14 @@ public class FilmMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film" + "ORDER BY name");
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film" + "ORDER BY fName");
 
 			while (resultset.next()) {
 				Film f = new Film();
-				f.setId(resultset.getInt("id"));
-				f.setName(resultset.getString("name"));
-				f.setBesitzerId(resultset.getInt("besitzerId"));
-				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setId(resultset.getInt("fId"));
+				f.setName(resultset.getString("fName"));
+				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
+				f.setBeschreibung(resultset.getString("fBeschreibung"));
 				f.setBewertung(resultset.getInt("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
@@ -295,14 +295,14 @@ public class FilmMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, beschreibung, bewertung, erstellDatum FROM film"
-							+ "WHERE besitzerId=" + anwender.getId() + "ORDER BY id");
+					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+							+ "WHERE film_anwender_Id=" + anwender.getId() + "ORDER BY film_anwender_Id");
 			while (resultset.next()) {
 				Film f = new Film();
-				f.setId(resultset.getInt("id"));
-				f.setName(resultset.getString("name"));
-				f.setBesitzerId(resultset.getInt("besitzerId"));
-				f.setBeschreibung(resultset.getString("beschreibung"));
+				f.setId(resultset.getInt("fId"));
+				f.setName(resultset.getString("fName"));
+				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
+				f.setBeschreibung(resultset.getString("fBbeschreibung"));
 				f.setBewertung(resultset.getInt("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 

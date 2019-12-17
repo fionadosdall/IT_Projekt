@@ -69,7 +69,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM Anwender"
+			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM anwender"
 					+ "WHERE aName = " + name + "ORDER BY aName");
 
 			/**
@@ -138,14 +138,14 @@ public class AnwenderMapper {
 			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (aId) AS maxId " + "FROM Anwender");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (aId) AS maxId " + "FROM anwender");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO Anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + anwender.getId()
+				stmt.executeUpdate("INSERT INTO anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + anwender.getId()
 						+ "','" + anwender.getGmail() + "','" + anwender.getName() + "','" + anwender.getErstellDatum()
 						+ ")");
 			}
@@ -173,7 +173,7 @@ public class AnwenderMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Anwender SET " + "aName=\"" + anwender.getName() + "\", " + "gMail=\""
+			stmt.executeUpdate("UPDATE anwender SET " + "aName=\"" + anwender.getName() + "\", " + "gMail=\""
 					+ anwender.getGmail() + "\", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
 					+ "WHERE aId=" + anwender.getId());
 		} catch (SQLException e2) {
@@ -197,7 +197,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Anwender " + "WHERE aId=" + anwender.getId());
+			stmt.executeUpdate("DELETE FROM anwender " + "WHERE aId=" + anwender.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -218,7 +218,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM Anwender"
+			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM anwender"
 			+ "ORDER BY aName");
 
 			/**
@@ -258,7 +258,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT aId, gMail, aName, erstellDatum FROM Anwender" + "WHERE aId=" + id + " ORDER BY aName");
+					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aId=" + id + " ORDER BY aName");
 			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
@@ -288,7 +288,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT aId, gMail, aName, erstellDatum FROM Anwender" + "WHERE aName=" + name + "ORDER BY aName");
+					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aName=" + name + "ORDER BY aName");
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("aId"));
@@ -311,7 +311,7 @@ public class AnwenderMapper {
 	public Anwender findByGmail (String gmail) {
 		
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM Anwender WHERE gMail= ' " + gmail + " ' ";
+		String sql = "SELECT * FROM anwender WHERE gMail= ' " + gmail + " ' ";
 		
 		try {
 			
@@ -356,9 +356,9 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT Gruppe.gId, Gruppe.gruppe_anwender_Id, Anwender.gMail, Anwender.aName, "
-							+ "Anwender.erstellDatum FROM Gruppe " + "INNER JOIN Anwender "
-							+ "ON Gruppe.gruppe_anwender_Id = Anwender.aId " + "WHERE gId = " + gruppe.getId()
+					"SELECT Gruppe.gId, Gruppe.gruppe_anwender_Id, anwender.gMail, anwender.aName, "
+							+ "anwender.erstellDatum FROM gruppe " + "INNER JOIN anwender "
+							+ "ON gruppe.gruppe_anwender_Id = anwender.aId " + "WHERE gId = " + gruppe.getId()
 							+ "ORDER BY aId");
 
 			/**
