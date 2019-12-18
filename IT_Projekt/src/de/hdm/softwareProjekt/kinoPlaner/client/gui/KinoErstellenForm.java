@@ -65,6 +65,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		speichernButton.addStyleName("speichernButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
+		nameTextBox.addStyleName("formularTextBox");
+		strasseTextBox.addStyleName("formularTextBox");
+		hnrTextBox.addStyleName("formularTextBox");
+		plzTextBox.addStyleName("formularTextBox");
+		stadtTextBox.addStyleName("formularTextBox");
+		this.addStyleName("center");
+		
 		
 		
 		/*Zusammensetzen der Widgets */

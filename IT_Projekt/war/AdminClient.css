@@ -196,9 +196,11 @@ body {
 /* Styling der Detailsansicht */
 
 .formHeaderPanel {
-	width: 100%;
-	text-align: center;
-	align-items: center;
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	word-break: break-word;
 }
 
 .obenPanel {
@@ -214,6 +216,27 @@ body {
 .dashboardPanel{
 	width: 100%;
 	align-items: center;
+	text-align: center;
+}
+
+}
+.homeBar {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	margin-left: 30%;
+	margin-right: 30%;
+	
+}
+.homeBarItem {
+	margin-left: 10px;
+	margin-right:10px;
+}
+.homeBarAnchor.gwt-Anchor {
+	color: #363636;
+	font-weight: bold;
 }
 
 .untenPanel {
@@ -229,8 +252,64 @@ body {
 	font-size: 2rem;
 	font-weight: 600;
 	line-height: 1.125;
-	word-break: break-word;
+	word-break: break-word;	
+	text-align: center;
+	align-items: center;
 }
+
+.center {
+	align-items: center;
+	text-align: center;
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
+.formularTextBox {
+	background-color: #fff;
+	border-color: #dbdbdb;
+	color: #363636;
+	box-shadow: inset 0 1px 2px rgba(10, 10, 10, .1);
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	justify-content: flex-start;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: calc(.625em - 1px);
+	padding-right: calc(.625em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+
+.formularSearchTextBox {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #fff;
+	border-color: #dbdbdb;
+	max-width: 100%;
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	justify-content: flex-start;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+
+
 
 .speichernButton.gwt-Button {
 	border-radius: 290486px;

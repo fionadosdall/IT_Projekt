@@ -12,9 +12,11 @@ public class AdminDashboardForm extends VerticalPanel {
 	
 	
 	private HorizontalPanel dashboardboardPanel = new HorizontalPanel();
+	private HorizontalPanel hbPanel = new HorizontalPanel();
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
+	private HomeBarAdmin hb = new HomeBarAdmin();
 	private MeineKinokettenForm mkkf = new MeineKinokettenForm();
 	private MeineKinosForm mkf = new MeineKinosForm();
 	private MeineSpielplaeneForm mspf = new MeineSpielplaeneForm();
@@ -27,7 +29,10 @@ public class AdminDashboardForm extends VerticalPanel {
 		
 		/* Vergeben der Stylename*/
 		
+		this.addStyleName("center");
+		
 		dashboardFormLabel.addStyleName("formHeaderLabel");
+		hbPanel.addStyleName("hbPanel");
 		untenPanel.addStyleName("untenPanel");
 		obenPanel.addStyleName("obenPanel");
 		loeschenButton.addStyleName("loeschenButton");
@@ -39,12 +44,13 @@ public class AdminDashboardForm extends VerticalPanel {
 		
 		obenPanel.add(dashboardFormLabel);
 		this.add(obenPanel);
+		hbPanel.add(hb);
+		this.add(hbPanel);
 		
-		
-		dashboardboardPanel.add(mkkf);
-		dashboardboardPanel.add(mkf);
-		dashboardboardPanel.add(mspf);
-		this.add(dashboardboardPanel);
+		//dashboardboardPanel.add(mkkf);
+		//dashboardboardPanel.add(mkf);
+		//dashboardboardPanel.add(mspf);
+		//this.add(dashboardboardPanel);
 		
 		untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		untenPanel.add(loeschenButton);

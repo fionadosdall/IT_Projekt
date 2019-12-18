@@ -93,10 +93,12 @@ public class SpielplanErstellenForm extends FlowPanel {
 		
 		// Vergeben der Stylenamen
 		
-		this.addStyleName("detailscontainer");
+		this.addStyleName("center");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		spielplannameTB.addStyleName("formularTextBox");
+		vorstellungTB.addStyleName("formularSearchTextBox");
 		
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
