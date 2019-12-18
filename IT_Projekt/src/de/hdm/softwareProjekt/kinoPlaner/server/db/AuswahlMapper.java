@@ -232,7 +232,7 @@ public class AuswahlMapper {
 				a.setId(resultset.getInt("awId"));
 				a.setName(resultset.getString("awName"));
 				a.setBesitzerId(resultset.getInt("auswahl_anwender_Id"));
-				a.setUmfrageoptionId(resultset.getInt("auswahl_umfrageoptionId"));
+				a.setUmfrageoptionId(resultset.getInt("auswahl_umfrageoption_Id"));
 				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;

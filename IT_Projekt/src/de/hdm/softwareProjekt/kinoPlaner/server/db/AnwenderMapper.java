@@ -112,7 +112,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aName FROM Anwender" + "WHERE aName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + "WHERE aName =" + name);
 
 			if (resultset.next()) {
 				return false;

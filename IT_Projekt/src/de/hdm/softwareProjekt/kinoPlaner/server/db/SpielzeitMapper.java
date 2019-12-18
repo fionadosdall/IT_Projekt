@@ -70,8 +70,8 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum"
-					+ "FROM spielzeit" + "WHERE name = " + name + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum"
+					+ "FROM spielzeit" + "WHERE szName = " + name + "ORDER BY szName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielzeit-Objekt erstellt
@@ -80,9 +80,9 @@ public class SpielzeitMapper {
 
 			while (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
-				sz.setId(resultset.getInt("id"));
-				sz.setName(resultset.getString("name"));
-				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
 				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -112,7 +112,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM spielzeit" + "WHERE name =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT szName FROM spielzeit" + "WHERE szName =" + name);
 
 			if (resultset.next()) {
 				return false;
@@ -138,14 +138,14 @@ public class SpielzeitMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Spielzeiten ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM spielzeit");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX (szId) AS maxId " + "FROM spielzeit");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				spielzeit.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO spielzeit (id, name, besitzerId, zeit, erstellDatum)" + "VALUES("
+				stmt.executeUpdate("INSERT INTO spielzeit (szId, szName, spielzeit_anwender_Id, zeit, erstellDatum)" + "VALUES("
 						+ spielzeit.getId() + "','" + spielzeit.getName() + "','" + spielzeit.getBesitzerId() + "','"
 						+ spielzeit.getZeit() + "','" + spielzeit.getErstellDatum() + ")");
 			}
@@ -173,9 +173,9 @@ public class SpielzeitMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE spielzeit SET " + "name=\"" + spielzeit.getName() + "\", " + "erstellDatum=\""
-					+ spielzeit.getErstellDatum() + "\", " + "besitzerId=\"" + spielzeit.getBesitzerId() + "\", "
-					+ "zeit=\"" + spielzeit.getZeit() + "\" " + "WHERE id=" + spielzeit.getId());
+			stmt.executeUpdate("UPDATE spielzeit SET " + "szName=\"" + spielzeit.getName() + "\", " + "erstellDatum=\""
+					+ spielzeit.getErstellDatum() + "\", " + "spielzeit_anwender_Id=\"" + spielzeit.getBesitzerId() + "\", "
+					+ "zeit=\"" + spielzeit.getZeit() + "\" " + "WHERE szId=" + spielzeit.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -197,7 +197,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM spielzeit " + "WHERE id=" + spielzeit.getId());
+			stmt.executeUpdate("DELETE FROM spielzeit " + "WHERE szId=" + spielzeit.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -220,13 +220,13 @@ public class SpielzeitMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit" + "ORDER BY zeit");
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit" + "ORDER BY zeit");
 
 			while (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
-				sz.setId(resultset.getInt("id"));
-				sz.setName(resultset.getString("name"));
-				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
 				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -258,14 +258,14 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit"
-					+ "WHERE besitzerId=" + anwender.getId() + "ORDER BY zeit");
+			ResultSet resultset = stmt.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit"
+					+ "WHERE spielzeit_anwender_Id=" + anwender.getId() + "ORDER BY zeit");
 
 			while (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
-				sz.setId(resultset.getInt("id"));
-				sz.setName(resultset.getString("name"));
-				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
 				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -291,14 +291,14 @@ public class SpielzeitMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, zeit, erstellDatum FROM spielzeit"
-					+ "WHERE id=" + id + " ORDER BY zeit");
+			ResultSet resultset = stmt.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit"
+					+ "WHERE szId=" + id + " ORDER BY zeit");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
-				sz.setId(resultset.getInt("id"));
-				sz.setName(resultset.getString("name"));
-				sz.setBesitzerId(resultset.getInt("besitzerId"));
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
 				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return sz;

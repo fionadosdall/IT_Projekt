@@ -36,7 +36,7 @@ import java.sql.DriverManager;
 
 		public static Connection connection() {
 		// Wenn bisher noch keine Verbindung zur DB aufgebaut wurde:
-		if (con != null) {
+		if (con == null) {
 				String url = null;
 				
 			try {

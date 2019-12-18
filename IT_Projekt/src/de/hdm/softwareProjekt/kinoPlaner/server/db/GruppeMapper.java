@@ -335,10 +335,10 @@ public class GruppeMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppenmitglieder.gruppe_Id, gruppenmitglieder.anwender_Id, gruppe.gruppe_anwender_Id, gruppe.gName, "
+					"SELECT gruppenmitglieder.gruppID, gruppenmitglieder.anwendID, gruppe.gruppe_anwender_Id, gruppe.gName, "
 							+ "gruppe.erstellDatum FROM gruppenmitglieder " + "INNER JOIN gruppe "
-							+ "ON gruppenmitglieder.gruppe_Id = gruppe.gruppe_Id " + "WHERE anwender_Id = " + anwender.getId()
-							+ "ORDER BY gruppe_Id");
+							+ "ON gruppenmitglieder.gruppID = gruppe.gId " + "WHERE anwendID = " + anwender.getId()
+							+ "ORDER BY gruppID");
 
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Gruppe-Objekt erstellt und
