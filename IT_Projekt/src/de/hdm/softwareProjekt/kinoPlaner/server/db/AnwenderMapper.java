@@ -138,16 +138,21 @@ public class AnwenderMapper {
 			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (aId) AS maxId " + "FROM anwender");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(aId) AS maxId " + "FROM anwender");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + anwender.getId()
-						+ "','" + anwender.getGmail() + "','" + anwender.getName() + "','" + anwender.getErstellDatum()
-						+ ")");
+				stmt.executeUpdate("INSERT INTO anwender(aId, aName, gMail)" + "VALUES(" + anwender.getId()
+						+ ",'" + anwender.getName() + "','" + anwender.getGmail() +"')");
+				
+				ResultSet resultset2 = stmt.executeQuery("SELECT erstellDatum " + "FROM anwender WHERE aID ="+anwender.getId()+")");
+				if (resultset2.next()) {
+					// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
+					anwender.setErstellDatum(resultset2.getTimestamp("erstellDatum"));
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
