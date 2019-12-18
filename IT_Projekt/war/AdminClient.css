@@ -195,7 +195,7 @@ body {
 
 /* Styling der Detailsansicht */
 
-.formHeaderPanel {
+.formHeaderLabel {
 	color: #363636;
 	font-size: 2rem;
 	font-weight: 600;
@@ -208,9 +208,9 @@ body {
 	background: #d6d1d1;
 	text-align: center;
 	color: white;
-	margin-bottom: 3px;
 	padding: 20px 0 20px 0;
 	align-items: center;
+	margin: 3px
 }
 
 .dashboardPanel{
@@ -245,6 +245,16 @@ body {
 	align-items: center;
 	color: white;
 	background: #d6d1d1;
+	border-top: solid;
+	border-width: thin;
+	margin-top: 10%;
+	
+}
+
+.hbPanel {
+	border-top: solid;
+	border-bottom: solid;
+	border-width: thin;
 }
 
 .formHeaderLabel {
@@ -335,9 +345,11 @@ body {
 	position: relative;
 	vertical-align: top;
 	cursor: pointer;
+	margin: 5px;
 }
 
 .hinzufuegenButton.gwt-Button {
+	margin: 5px;
 	background: transparent;
 	border-color: #23d160;
 	color: #23d160;
@@ -354,6 +366,7 @@ body {
 }
 
 .entfernenButton.gwt-Button {
+	margin: 5px;
 	background: transparent;
 	border-color: #ff3860;
 	color: #ff3860;
@@ -370,6 +383,7 @@ body {
 }
 
 .loeschenButton.gwt-Button{
+	margin: 5px;
 	border-radius: 290486px;
 	padding-left: 1em;
 	padding-right: 1em;
@@ -396,6 +410,7 @@ body {
 }
 
 .bearbeitenButton.gwt-Button{
+	margin: 5px;
 	border-radius: 290486px;
 	padding-left: 1em;
 	padding-right: 1em;
