@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -23,8 +24,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 public class MeineSpielplaeneForm extends FlowPanel {
 
 	private FlowPanel detailsoben = new FlowPanel();
+	private HorizontalPanel hbPanel = new HorizontalPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
+	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
 	
 	private Label title = new Label ("Deine Spielpläne");
@@ -37,15 +40,20 @@ public class MeineSpielplaeneForm extends FlowPanel {
 	private Label spielplanLabel = new Label ("Spielplan");
 	
 	private Grid felder = new Grid (3,1);
-	private HomeBar hb = new HomeBar();
+	private HomeBarAdmin hb = new HomeBarAdmin();
+	private Button loeschenButton = new Button(" Auswahl löschen");
+	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
+	
 	
 	
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner ();
 	
 		this.addStyleName("detailscontainer");
+		this.addStyleName("center");
 		
 		detailsoben.addStyleName("detailsoben");
+		hbPanel.addStyleName("hbPanel");
 		detailsunten.addStyleName("detailsunten");
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
 
@@ -53,6 +61,8 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		
 
 		this.add(detailsoben);
+		hbPanel.add(hb);
+		this.add(hbPanel);
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 
