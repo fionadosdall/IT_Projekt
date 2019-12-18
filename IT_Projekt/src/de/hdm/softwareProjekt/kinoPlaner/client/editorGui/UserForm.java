@@ -51,11 +51,11 @@ public class UserForm extends FlowPanel {
 	String logoutUrl;
 
 	public void onLoad() {
-		
 
 		// Vergeben der Stylenames
 
 		this.addStyleName("detailscontainer");
+		this.addStyleName("center");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
@@ -127,7 +127,7 @@ public class UserForm extends FlowPanel {
 		}
 		
 		if (anwender == null) { 
-			nameTextBox.setText("Es ist noch kein Profil vorhanden");
+			nameTextBox.getElement().setPropertyString("placeholder", "Es ist noch kein Name vorhanden");
 		} else {
 			
 			nameTextBox.getElement().setPropertyString("placeholder", anwender.getName());
@@ -197,7 +197,7 @@ public class UserForm extends FlowPanel {
 			anwender.setLogoutUrl(anwender.getLogoutUrl());
 			Window.open(anwender.getLogoutUrl(), "_self", "");
 
-			//TODO kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
+			 kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
 		}
 
 	}

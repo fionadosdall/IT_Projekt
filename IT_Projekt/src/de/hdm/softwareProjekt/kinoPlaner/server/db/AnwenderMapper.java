@@ -257,8 +257,8 @@ public class AnwenderMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery(
-					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aId=" + id + " ORDER BY aName");
+			ResultSet resultset = stmt.executeQuery
+					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aId=" + id + " ORDER BY aName");
 			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
@@ -356,7 +356,7 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT Gruppe.gId, Gruppe.gruppe_anwender_Id, anwender.gMail, anwender.aName, "
+					"SELECT gruppe.gId, gruppe.gruppe_anwender_Id, anwender.gMail, anwender.aName, "
 							+ "anwender.erstellDatum FROM gruppe " + "INNER JOIN anwender "
 							+ "ON gruppe.gruppe_anwender_Id = anwender.aId " + "WHERE gId = " + gruppe.getId()
 							+ "ORDER BY aId");
