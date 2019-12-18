@@ -27,7 +27,7 @@ public class Navigator extends FlowPanel {
 	public void onLoad() {
 		
 		
-		//KinoketteErstellenForm.setEdit(edit);
+		KinoketteErstellenForm.setEdit(edit);
 		
 		this.addStyleName("navcontainer");
 		navelement.addStyleName("navelement");

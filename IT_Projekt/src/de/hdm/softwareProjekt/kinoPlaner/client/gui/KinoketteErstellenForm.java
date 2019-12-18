@@ -29,15 +29,16 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private Label sitzLabel = new Label("Sitz:");
 	private Label websiteLabel = new Label("Website:");
 	
-	private TextBox nameTextBox = new TextBox();
-	private TextBox sitzTextBox = new TextBox();
-	private TextBox websiteTextBox = new TextBox();
+	private static TextBox nameTextBox = new TextBox();
+	private static TextBox sitzTextBox = new TextBox();
+	private static TextBox websiteTextBox = new TextBox();
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
 	private Button loeschenButton = new Button("Löschen");
 	
 	private static Boolean edit = false;
+	private Kinokette kinoketteBearbeiten;
 	
 	/**
 	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
@@ -46,6 +47,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	public KinoketteErstellenForm() {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
 		
 		
 		
@@ -114,6 +116,18 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		}		
 		
 	}
+	
+	private class KinoketteLoeschenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+			// TODO administration.kinoketteEntfernen(kinoketteBearbeiten.getId(), new KinoketteLoeschenCallback());
+			
+		}
+		
+	}
 
 		
 	/* Callback */
@@ -134,6 +148,22 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 	}
 	
+	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kinokette wurde gelöscht");
+		}
+	}
+	
+	/**Methoden***/
 	
 	public Boolean getEdit() {
 		return edit;
@@ -143,4 +173,13 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		KinoketteErstellenForm.edit = edit;
 	}
 
+	
+	public static void setBearbeiten(Kinokette kinokette) {
+		
+		
+			nameTextBox.setText(kinokette.getName());
+			sitzTextBox.setText(kinokette.getSitz());
+			websiteTextBox.setText(kinokette.getWebsite());
+		
+	}
 }

@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -26,6 +27,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 public class MeineKinokettenForm extends VerticalPanel{
 	
+	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
 	private HorizontalPanel detailsoben = new HorizontalPanel();
 	private HorizontalPanel homebarPanel = new HorizontalPanel();
@@ -38,6 +40,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	private ArrayList <Kinokette> kinoketten;
 	private Kinokette kinokette;
+	private Kinokette ausgewaehlteKinokette = new Kinokette();
 	private Kino kino;
 	private KinoketteErstellenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
@@ -55,7 +58,15 @@ public class MeineKinokettenForm extends VerticalPanel{
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		
-		KinoketteErstellenForm.setEdit(edit);
+		
+		/***Anzeigetest***/
+		
+		ausgewaehlteKinokette.setId(1);
+		ausgewaehlteKinokette.setName("UFA");
+		ausgewaehlteKinokette.setSitz("Stuttgart");
+		ausgewaehlteKinokette.setWebsite("www.ufa.de");
+		
+		
 		
 		/*Vergeben der Style-Namen*/
 		
@@ -70,6 +81,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");	
 		title.addStyleName("formHeaderLabel");
+		
 		
 		
 		
@@ -133,7 +145,11 @@ public class MeineKinokettenForm extends VerticalPanel{
 	/*** CLickHandler ***/
 	
 private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
+	
+
 	private Kinokette kinokette;
+
+
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
@@ -170,7 +186,11 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
+			//Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
+			
+			KinoketteErstellenForm.setEdit(edit);
 			bearbeiten = new KinoketteErstellenForm();
+			KinoketteErstellenForm.setBearbeiten(ausgewaehlteKinokette);
 			RootPanel.get("details").add(bearbeiten);
 		}
 		
@@ -182,6 +202,8 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			
+			//TODO administration.kinoketteEntfernen(kinokette.getId(), new KinoketteLoeschenCallback());
 			
 		}
 		
@@ -208,6 +230,22 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		
 			
 		}
+	
+	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 		
 	
 	
