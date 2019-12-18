@@ -35,8 +35,7 @@ public class AdminDashboardForm extends VerticalPanel {
 		hbPanel.addStyleName("hbPanel");
 		untenPanel.addStyleName("untenPanel");
 		obenPanel.addStyleName("obenPanel");
-		loeschenButton.addStyleName("loeschenButton");
-		bearbeitenButton.addStyleName("bearbeitenButton");		
+			
 		
 		
 		
@@ -52,10 +51,10 @@ public class AdminDashboardForm extends VerticalPanel {
 		//dashboardboardPanel.add(mspf);
 		//this.add(dashboardboardPanel);
 		
-		untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		untenPanel.add(loeschenButton);
-		untenPanel.add(bearbeitenButton);
-		this.add(untenPanel);
+		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		//untenPanel.add(loeschenButton);
+		//untenPanel.add(bearbeitenButton);
+		//this.add(untenPanel);
 		
 		loeschenButton.addClickHandler(new AuswahlLoeschenClickHandler());
 		bearbeitenButton.addClickHandler(new AuswahlBearbeitenClickHandler());

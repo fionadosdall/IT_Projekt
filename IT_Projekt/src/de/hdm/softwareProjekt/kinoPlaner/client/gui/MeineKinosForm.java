@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -22,11 +23,12 @@ public class MeineKinosForm extends FlowPanel {
 	
 	
 	private FlowPanel detailsoben = new FlowPanel ();
+	private HorizontalPanel hbPanel = new HorizontalPanel();
 	private FlowPanel detailsunten = new FlowPanel ();
 	private FlowPanel detailsboxInhalt = new FlowPanel ();
 	
 	
-	private Label title = new Label ("Deine Kinos");
+	private Label title = new Label ("Dashboard");
 	
 	private ArrayList<Kino> kinos;
 	
@@ -37,20 +39,26 @@ public class MeineKinosForm extends FlowPanel {
 	
 	
 	private Grid felder = new Grid(3,1);
-	private HomeBar hb = new HomeBar ();
+	private HomeBarAdmin hb = new HomeBarAdmin();
+	private Button loeschenButton = new Button(" Auswahl löschen");
+	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 	
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 		this.addStyleName("detailscontainer");
+		this.addStyleName("center");
 		
 		detailsoben.addStyleName("detailsoben");
+		hbPanel.addStyleName("hbPanel");
 		detailsunten.addStyleName("detailsunten");
 		detailsboxInhalt.addStyleName("deatilsboxInhalt");
 		
-		title.addStyleName("title");
+		title.addStyleName("formHeaderLabel");
 		
 		this.add(detailsoben);
+		hbPanel.add(hb);
+		this.add(hbPanel);
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 		
