@@ -21,8 +21,13 @@ public class Navigator extends FlowPanel {
 	private KinoErstellenForm kef;
 	private SpielplanErstellenForm spe;
 	
+	private Boolean edit = false;
+	
 	
 	public void onLoad() {
+		
+		
+		//KinoketteErstellenForm.setEdit(edit);
 		
 		this.addStyleName("navcontainer");
 		navelement.addStyleName("navelement");
@@ -55,6 +60,7 @@ public class Navigator extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
+			KinoketteErstellenForm.setEdit(edit);
 			kkef = new KinoketteErstellenForm();
 			RootPanel.get("details").add(kkef);
 		}

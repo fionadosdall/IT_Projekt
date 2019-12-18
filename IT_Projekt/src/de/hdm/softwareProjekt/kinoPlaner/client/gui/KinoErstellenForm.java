@@ -37,7 +37,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private Button speichernButton = new Button("Speichern");
 	private Grid kinoGrid = new Grid(5, 2);
 	
-	
+	private static Boolean edit;
 	
 	
 	/**
@@ -76,6 +76,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		/*Zusammensetzen der Widgets */
 		
+		
 		obenPanel.add(kinoFormLabel);
 		
 		this.add(obenPanel);
@@ -101,7 +102,8 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	
 	/* ClickHandler */
-	
+
+
 	private class SpeichernClickHandler implements ClickHandler {
 
 		@Override
@@ -132,6 +134,10 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 		
 	}
+	
+	
+	
+	
 	
 	
 }

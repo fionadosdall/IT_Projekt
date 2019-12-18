@@ -49,10 +49,10 @@ public class MeineKinosForm extends FlowPanel {
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
-		detailsoben.addStyleName("detailsoben");
+		detailsoben.addStyleName("obenPanel");
 		hbPanel.addStyleName("hbPanel");
-		detailsunten.addStyleName("detailsunten");
-		detailsboxInhalt.addStyleName("deatilsboxInhalt");
+		detailsunten.addStyleName("untenPanel");
+		detailsboxInhalt.addStyleName("dashboardPanel");
 		
 		title.addStyleName("formHeaderLabel");
 		

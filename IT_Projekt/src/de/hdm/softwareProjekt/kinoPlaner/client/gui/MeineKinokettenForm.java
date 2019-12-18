@@ -2,6 +2,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
@@ -22,28 +24,30 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
-public class MeineKinokettenForm extends FlowPanel{
+public class MeineKinokettenForm extends VerticalPanel{
 	
 	
-	private FlowPanel detailsoben = new FlowPanel ();
-	private HorizontalPanel hbPanel = new HorizontalPanel();
-	private FlowPanel detailsunten = new FlowPanel ();
-	private FlowPanel detailsboxInhalt = new FlowPanel ();
+	private HorizontalPanel detailsoben = new HorizontalPanel();
+	private HorizontalPanel homebarPanel = new HorizontalPanel();
+	private FlowPanel detailsunten = new FlowPanel();
+	private HorizontalPanel hPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
+	private Boolean edit = true;
 	
-	private Label title = new Label ("Dashboard");
+	private Label title = new Label("Dashboard");
 	
 	private ArrayList <Kinokette> kinoketten;
 	private Kinokette kinokette;
 	private Kino kino;
-	private MeineKinokettenForm anzeigen;
+	private KinoketteErstellenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
+	private KinoketteErstellenForm bearbeiten;
 	private Label kinokettenlabel = new Label("Meine Kinoketten");
 	
 	
 	
-	private Grid felder = new Grid (3,1);
-	private HomeBarAdmin hb = new HomeBarAdmin();
+	private Grid felder = new Grid (2,1);
+	private HomeBarAdmin homebar = new HomeBarAdmin();
 	private Button loeschenButton = new Button(" Auswahl löschen");
 	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 
@@ -51,37 +55,45 @@ public class MeineKinokettenForm extends FlowPanel{
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		
+		KinoketteErstellenForm.setEdit(edit);
+		
+		/*Vergeben der Style-Namen*/
+		
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
-		detailsoben.addStyleName("detailsoben");
-		hbPanel.addStyleName("hbPanel");
-		detailsunten.addStyleName("detailsunten");
+		detailsoben.addStyleName("obenPanel");
+		homebarPanel.addStyleName("hbPanel");
 		untenPanel.addStyleName("untenPanel");
-		detailsboxInhalt.addStyleName("detailsboxInhalt");
+		kinokettenlabel.addStyleName("formHeaderLabel");
+		hPanel.addStyleName("h2Panel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");	
-		
 		title.addStyleName("formHeaderLabel");
 		
 		
 		
+		/*Zusammensetzen der Widgets */
 		
 		
-		this.add(detailsoben);
-		hbPanel.add(hb);
-		this.add(hbPanel);
-		this.add(detailsunten);
-		this.add(detailsboxInhalt);
 		
-		//TODO detailsoben.add(hb);
 		detailsoben.add(title);
+		this.add(detailsoben);
+		
+		homebarPanel.add(homebar);
+		this.add(homebarPanel);
+		
+		hPanel.add(kinokettenlabel);
+		this.add(hPanel);
+		
+		
+		bearbeitenButton.addClickHandler(new KinoketteBearbeitenClickHandler());
 		
 	
 		kinoplaner.getKinokettenByAnwenderOwner(new SucheKinoKettenByAnwenderOwnerCallback());
 		
-		kinokettenlabel.setStyleName("detailsboxLabels");
-		felder.setWidget(0, 0, kinokettenlabel);
+		
+		//felder.setWidget(0, 0, kinokettenlabel);
 		
 		
 		
@@ -101,11 +113,11 @@ public class MeineKinokettenForm extends FlowPanel{
 				}
 			
 			} else {
-					felder.setWidget(1, 0, new Label("Keine Kinoketten verfügbar"));
+					felder.setWidget(0, 0, new Label("Keine Kinoketten verfügbar"));
 					Button erstellenButton = new Button ("Erstelle deine erste Kinokette");
 					erstellenButton.setStyleName("navButton");
 					erstellenButton.addDoubleClickHandler(new KinoketteErstellenClickHandler());
-					felder.setWidget(2, 0, erstellenButton);
+					felder.setWidget(1, 0, erstellenButton);
 		}
 		
 		this.add(felder);
@@ -118,6 +130,8 @@ public class MeineKinokettenForm extends FlowPanel{
 	}
 	
 
+	/*** CLickHandler ***/
+	
 private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	private Kinokette kinokette;
 
@@ -125,7 +139,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	public void onDoubleClick(DoubleClickEvent event) {
 		
 		RootPanel.get("details").clear();
-		anzeigen = new MeineKinokettenForm ();
+		anzeigen = new KinoketteErstellenForm();
 		RootPanel.get("details").add(anzeigen);
 	}
 
@@ -149,6 +163,32 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		}
 		
 }
+	
+	private class KinoketteBearbeitenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			bearbeiten = new KinoketteErstellenForm();
+			RootPanel.get("details").add(bearbeiten);
+		}
+		
+	}
+	
+	
+	private class KinoketteLoeschenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	
+	/***Callbacks***/
 	
 	private class SucheKinoKettenByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Kinokette>> {
 

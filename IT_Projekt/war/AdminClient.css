@@ -210,7 +210,7 @@ body {
 	color: white;
 	padding: 20px 0 20px 0;
 	align-items: center;
-	margin: 3px
+	padding: 10px;
 }
 
 .dashboardPanel{
@@ -247,7 +247,8 @@ body {
 	background: #d6d1d1;
 	border-top: solid;
 	border-width: thin;
-	margin-top: 10%;
+	margin-top: 5%;
+	padding-top: 5%;
 	
 }
 
@@ -255,6 +256,10 @@ body {
 	border-top: solid;
 	border-bottom: solid;
 	border-width: thin;
+	text-align: center;
+	align-items: center;
+	margin-top: 5%;
+	margin-bottom: 5%;
 }
 
 .formHeaderLabel {
@@ -444,10 +449,24 @@ body {
 	margin-right: 30%;
 }
 
-.detailsboxInahlt {
+.h2Panel {
 	margin-bottom: .75rem;
 	box-sizing: inherit;
 	display: block;
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 400;
+	line-height: 1.125;
+	word-break: break-word;	
+	text-align: center;
+	align-items: center;
+	border-bottom: solid;
+	border-width: thin;
+	width: 100%;
+	background: #d6d1d1;
+	color: white;
+	padding: 20px 0 20px 0;
+	padding: 10px;
 }
 
 .detailsboxspeichern {

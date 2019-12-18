@@ -24,6 +24,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
 	private Label kinoketteFormLabel = new Label("Neue Kinokette");
+	private Label kinoketteBearbeitenFormLabel = new Label("Kinokette bearbeiten");
 	private Label nameLabel = new Label("Kinokettenname:");
 	private Label sitzLabel = new Label("Sitz:");
 	private Label websiteLabel = new Label("Website:");
@@ -34,8 +35,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
+	private Button loeschenButton = new Button("Löschen");
 	
-	
+	private static Boolean edit = false;
 	
 	/**
 	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
@@ -56,10 +58,12 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		this.addStyleName("center");
 		
 		kinoketteFormLabel.addStyleName("formHeaderLabel");
+		kinoketteBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
 		sitzLabel.addStyleName("textLabel");;
 		websiteLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
 		nameTextBox.addStyleName("formularTextBox");
@@ -68,7 +72,13 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		/*Zusammensetzen der Widgets */
 		
-		obenPanel.add(kinoketteFormLabel);
+		if(edit == true) {
+			obenPanel.add(kinoketteBearbeitenFormLabel);
+		}else {
+			obenPanel.add(kinoketteFormLabel);
+		}
+		
+		
 		this.add(obenPanel);
 		
 		kinoketteGrid.setWidget(0, 0, nameLabel);
@@ -80,7 +90,15 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		this.add(kinoketteGrid);
 	
-		untenPanel.add(speichernButton);
+		
+		if(edit == true) {
+			untenPanel.add(loeschenButton);
+			untenPanel.add(speichernButton);
+		} else {
+			untenPanel.add(speichernButton);
+		}
+		
+		
 		this.add(untenPanel);
 	}
 		
@@ -116,5 +134,13 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 	}
 	
+	
+	public Boolean getEdit() {
+		return edit;
+	}
+
+	public static void setEdit(Boolean edit) {
+		KinoketteErstellenForm.edit = edit;
+	}
 
 }
