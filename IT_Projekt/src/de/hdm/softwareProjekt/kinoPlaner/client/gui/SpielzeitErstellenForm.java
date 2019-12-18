@@ -175,7 +175,7 @@ private Spielzeit spielzeit2 = null;
 		
 		//CLICK HANDLER
 		hinzufuegenButton.addClickHandler(new VorstellungHinzufuegenClickHandler());
-		entfernenButton.addClickHandler(new VorstellungEntfernenClickHandler());
+		//entfernenButton.addClickHandler(new VorstellungEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 
 		
@@ -313,15 +313,15 @@ private Spielzeit spielzeit2 = null;
 		
 	}
 	
-	private class VorstellungEntfernenClickHandler implements ClickHandler {
+	//private class VorstellungEntfernenClickHandler implements ClickHandler {
 
-		@Override
-		public void onClick(ClickEvent event) {
+		//@Override
+		//public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-		}
+		//}
 		
-	}
+	//}
 	
 /**
  * Callbacks
