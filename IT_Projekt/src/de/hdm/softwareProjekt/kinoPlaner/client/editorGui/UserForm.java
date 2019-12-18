@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
@@ -21,8 +22,7 @@ public class UserForm extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
-//	Anwender anwender = aktuellerAnwender.getAnwender();
-	Anwender anwender = null;
+	Anwender anwender = aktuellerAnwender.getAnwender();
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
@@ -51,8 +51,6 @@ public class UserForm extends FlowPanel {
 	String logoutUrl;
 
 	public void onLoad() {
-		
-		kinoplaner.getAnwender(new AnwenderCallback());
 
 		// Vergeben der Stylenames
 
@@ -368,23 +366,6 @@ public class UserForm extends FlowPanel {
 			Window.alert("UpadteAnwenderCallback war erfolgreich");
 		}
 
-	}
-	
-	private class AnwenderCallback implements AsyncCallback<Anwender> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onSuccess(Anwender result) {
-			// TODO Auto-generated method stub
-			
-			anwender = result;
-		}
-		
 	}
 
 }
