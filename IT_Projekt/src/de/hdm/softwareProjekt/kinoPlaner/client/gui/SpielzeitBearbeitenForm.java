@@ -29,7 +29,7 @@ private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	private Label title = new Label("Spielzeit bearbeiten");
 	private Label spielzeitname = new Label("Spielzeit");
-	private Label spiel
+	
 	
 	private TextBox nameTextBox = new TextBox();
 	
@@ -66,7 +66,7 @@ private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		speichernButton.addStyleName("speichernButton");
 		
 		
-		papierkorb.setUrl("/images/papierkorb.png");
+		//papierkorb.setUrl("/images/papierkorb.png");
 
 // Widget
 		

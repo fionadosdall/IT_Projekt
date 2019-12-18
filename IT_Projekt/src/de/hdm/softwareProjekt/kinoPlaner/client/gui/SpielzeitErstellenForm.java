@@ -157,7 +157,7 @@ private Spielzeit neueSpielzeit = null;
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.erstellenSpielzeit(spielzeitTB.getValue(), (Date) dateBox.getValue(), new SpielzeitErstellenCallback());
+		//	kinoplaner.erstellenSpielzeit(spielzeitTB.getValue(), (Date) dateBox.getValue(), new SpielzeitErstellenCallback());
 			
 		}
 		
@@ -195,7 +195,7 @@ private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 		neueSpielzeit = spielzeit;
 		spielzeit.getZeit();
 		
-		kinoplaner.erstellenSpielzeit(neueSpielzeit,date, new SpielzeitHinzufuegenCallback());
+		//kinoplaner.erstellenSpielzeit(neueSpielzeit,date, new SpielzeitHinzufuegenCallback());
 		
 	}
 	
