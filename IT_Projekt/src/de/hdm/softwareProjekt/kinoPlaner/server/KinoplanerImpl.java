@@ -27,8 +27,11 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Set;
 import java.sql.Date;
 
+import com.google.gwt.dev.util.collect.HashSet;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -1722,6 +1725,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				break;
 			}
 			i++;
+			
+
+			
 		}
 		return vorstellung;
 

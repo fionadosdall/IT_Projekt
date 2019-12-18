@@ -42,6 +42,67 @@
 	grid-row-end: 4;
 	background: black;
 }
+
+#dropdown {
+	grid-column-start: 4;
+	grid-column-end: 5;
+	grid-row-start: 2;
+	grid-row-end: 3;
+	background: transparent;
+	z-index: 40;
+	margin-top: 5px;
+	margin-left: 60px;
+	margin-right: 5px;
+}
+
+.dropdownGesamt{
+	background-color: transparent;
+	min-height: 3.25rem;
+	align-items: right;
+	display: flex;
+	position: relative;
+	justify-content: flex-end;
+	z-index: 40;
+	box-sizing: inherit;
+}
+
+.dropdownButton {
+	background: withe;
+	width: 160px;
+	border-color: #363636;
+	color: #363636;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	position: relative;
+	vertical-align: top;
+	border: 1px solid;
+	margin-top: 1px;
+
+}
+
+.menueBar {
+	position: absolut;
+	background: white;
+	bottom: 200px;
+	right: 200px;
+	z-index: 40;
+	align-items: right;
+	
+}
 /** Styling des Heders*/
 .headerGesamt {
 	background-color: #363636;

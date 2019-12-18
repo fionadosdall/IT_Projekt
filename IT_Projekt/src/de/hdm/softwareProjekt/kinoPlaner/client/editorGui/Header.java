@@ -43,6 +43,7 @@ public class Header extends FlowPanel {
 	private Image suchenImage = new Image();
 	private Anchor homeAnchor = new Anchor("HOME");
 	private Button userButton = new Button("USER");
+	private BurgerMenue burgerMenue = new BurgerMenue();
 
 	private Home home;
 	private UserForm uf;
@@ -81,6 +82,7 @@ public class Header extends FlowPanel {
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
 
+		
 		headerRechts.add(headerRechtsElementSuchen);
 		headerRechts.add(headerRechtsElementLupe);
 		headerRechts.add(headerRechtsElementHome);
@@ -92,6 +94,7 @@ public class Header extends FlowPanel {
 
 		headerRechtsElementHome.add(homeAnchor);
 		headerRechtsElementUser.add(userButton);
+		headerRechts.add(burgerMenue);
 
 		// Click-Handler
 
