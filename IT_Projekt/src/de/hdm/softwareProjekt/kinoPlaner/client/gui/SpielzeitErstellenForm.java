@@ -1,24 +1,39 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinoketteErstellenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielzeitErstellenForm extends FlowPanel {
 	
@@ -42,23 +57,49 @@ public class SpielzeitErstellenForm extends FlowPanel {
 	private Label spielzeitname = new Label ("Name: ");
 	private Label spielzeit = new Label ("Spielzeit ");
 	private Label datum = new Label ("Datum: ");
+	private Label vorstellung = new Label ("Spielzeit einer Vorstellung hinzufügen");
+	private Label vorstellungen = new Label ("Vorstellungen");
 
 
 	
-	private TextBox nameTB = new TextBox();
+	private TextBox spielzeitnameTB = new TextBox();
 	private TextBox spielzeitTB = new TextBox();
 	private DateBox dateBox = new DateBox();
 	
 	
+
+	private MultiWordSuggestOracle alleVorstellungenOracle = new MultiWordSuggestOracle();
+	private SuggestBox vorstellungTB = new SuggestBox(alleVorstellungenOracle);
+	
+	private ArrayList<Vorstellung> vorstellung2TB = new ArrayList<Vorstellung>();
+	
 	private Button hinzufuegenButton = new Button("Hinzufügen");
-	private Button entfernenButton = new Button ("Spielzeit entfernen");
+	private Button entfernenButton = new Button ("Vorstellung entfernen");
 	private Button speichernButton = new Button("Speichern");
 	
 	
+	private CellTable<Vorstellung> vorstellungCellTable = new CellTable<Vorstellung>(KEY_PROVIDER);
+	
+	private ListDataProvider<Vorstellung> dataProvider = new ListDataProvider<Vorstellung>();
+	
+	private List<Vorstellung> list = dataProvider.getList();
+	
+	private static final ProvidesKey<Vorstellung> KEY_PROVIDER = new ProvidesKey<Vorstellung>() {
 
-private Spielzeit neueSpielzeit = null;
+		@Override
+		public Object getKey(Vorstellung vorstellung) {
+			// TODO Auto-generated method stub
+			return vorstellung.getId();
+		}
+		
+	};
+	
+private Vorstellung neueVorstellung = null;
+private Spielzeit spielzeit2 = null;
 
 
+	
+	
 	
 	public void onLoad() {
 		
@@ -86,17 +127,18 @@ private Spielzeit neueSpielzeit = null;
 		datum.addStyleName("detailsboxLabels");
 		
 		
-		nameTB.addStyleName("nameTB");
+		spielzeitnameTB.addStyleName("nameTB");
 		spielzeitTB.addStyleName("SpielzeitTB");
 		dateBox.addStyleName("DatumB");
+		vorstellungTB.addStyleName("VorstellungTB");
 		
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
 		
-		nameTB.getElement().setPropertyString("placeholder", "Name eingeben");
+		spielzeitnameTB.getElement().setPropertyString("placeholder", "Name eingeben");
 		spielzeitTB.getElement().setPropertyString("placeholder", "Spielzeit eingeben");
-		
+		vorstellungTB.getElement().setPropertyString("placeholder", "Vorstellung eingeben");
 		
 		// Zusammenbauen der Widgets
 		
@@ -109,45 +151,153 @@ private Spielzeit neueSpielzeit = null;
 		detailsunten.add(detailsMitteBox);
 		detailsunten.add(detailsUntenBox);
 
-		detailsObenBox.add(spielzeit);
+		detailsObenBox.add(spielzeitname);
 		detailsObenBox.add(detailsBoxObenMitte);
-		detailsBoxObenMitte.add(spielzeitTB);
+		detailsBoxObenMitte.add(spielzeitnameTB);
 
-		detailsMitteBox.add(spielzeitname);
+		detailsMitteBox.add(vorstellung);
 		detailsMitteBox.add(detailsBoxMitteMitte);
-		detailsBoxMitteMitte.add(nameTB);
+		detailsBoxMitteMitte.add(vorstellungTB);
 		detailsMitteBox.add(detailsBoxMitteUnten);
 		detailsBoxMitteUnten.add(hinzufuegenButton);
 
-		detailsUntenBox.add(datum);
+		detailsUntenBox.add(vorstellungen);
 		detailsUntenBox.add(detailsBoxUntenMitte);
-		detailsBoxUntenMitte.add(dateBox);
+		detailsBoxUntenMitte.add(vorstellungCellTable);
 		detailsUntenBox.add(detailsBoxUnten);
 		detailsBoxUnten.add(entfernenButton);
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
 		
+		vorstellungCellTable.setEmptyTableWidget(new Label("Es wurde noch keine Vorstellung hinzugefügt "));
 		
-		hinzufuegenButton.addClickHandler(new SpielzeitHinzufuegenClickHandler());
-		entfernenButton.addClickHandler(new SpielzeitEntfernenClickHandler());
+		
+		//CLICK HANDLER
+		hinzufuegenButton.addClickHandler(new VorstellungHinzufuegenClickHandler());
+		entfernenButton.addClickHandler(new VorstellungEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 
-	}
+		
+		// Alle Vorstellungen die im System vorhanden sind werden geladen
+		kinoplaner.getAllVorstellungen(new AsyncCallback<ArrayList<Vorstellung>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Systemmeldung.anzeigen("Vorstellung konnte nicht geladen werden");
+				
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Vorstellung> result) {
+				for (Vorstellung v: result) {
+					//vorstellungTB.add(v);
+					alleVorstellungenOracle.add(v.getName());
+				}
+				
+			}
+	});
+		
+/**
+ * CELL TABLE
+ * 
+ */
+		
+		TextCell namenTextCell = new TextCell();
+		
+		Column <Vorstellung, String> namenColumn = new Column <Vorstellung, String>(namenTextCell) {
+
+			@Override
+			public String getValue(Vorstellung vorstellung) {
+				// TODO Auto-generated method stub
+				return vorstellung.getName();
+			}
+			
+		};
+		
 	
+		Cell<String> loeschenCell = new ButtonCell();
+		
+		Column<Vorstellung, String> loeschenColumn = new Column<Vorstellung, String>(loeschenCell) {
+
+			@Override
+			public String getValue(Vorstellung object) {
+				// TODO Auto-generated method stub
+				return "-";
+			}
+			
+		};
+		
+		
+		loeschenColumn.setFieldUpdater(new FieldUpdater<Vorstellung, String>() {
+
+			@Override
+			public void update(int index, Vorstellung vorstellung, String value) {
+				// TODO Auto-generated method stub
+				dataProvider.getList().remove(vorstellung);
+				
+				AsyncCallback<Vorstellung> loeschenCallback = new AsyncCallback<Vorstellung> () {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(Vorstellung result) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				};
+				
+				// kinoplaner.
+				
+			}
+			
+		});
+		
+		namenColumn.setFieldUpdater(new FieldUpdater<Vorstellung,String> () {
+
+			@Override
+			public void update(int index, Vorstellung vorstellung, String name) {
+				// TODO Auto-generated method stub
+				vorstellung.setName(name);
+			}
+		
+		});
+		
+	vorstellungCellTable.addColumn(namenColumn, "Vorstellung hinzufügen");
+	vorstellungCellTable.addColumn(loeschenColumn, "Vorstellung entfernen");
+	vorstellungCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
+	vorstellungCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
+	
+	dataProvider.addDataDisplay(vorstellungCellTable);
 /**
  * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
  */	
 	
+/**
+ * CLICKHANDLER
+ * 
+ *
+ */
 	
-	private class SpielzeitHinzufuegenClickHandler implements ClickHandler {
+		
+		
+	}
+	private class VorstellungHinzufuegenClickHandler implements ClickHandler {
 
 	@Override
 	public void onClick(ClickEvent event) {
 		// TODO Auto-generated method stub
-		//kinoplaner.getSpielzeitenByAnwenderOwner(spielzeitTB.getValue(), new SpielzeitCallback());
+		//kinoplaner.getVorstellungenBySpielplan(vorstellungTB.getValue(), new VorstellungCallback());
+		vorstellungTB.setText("");
 		
-	}
+			}
+
+	
 		
 	}
 	
@@ -157,13 +307,13 @@ private Spielzeit neueSpielzeit = null;
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-		//	kinoplaner.erstellenSpielzeit(spielzeitTB.getValue(), (Date) dateBox.getValue(), new SpielzeitErstellenCallback());
+	//kinoplaner.erstellenSpielzeit(spielzeitnameTB, zeit, new SpielzeitErstellenCallback() );
 			
 		}
 		
 	}
 	
-	private class SpielzeitEntfernenClickHandler implements ClickHandler {
+	private class VorstellungEntfernenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -179,7 +329,7 @@ private Spielzeit neueSpielzeit = null;
  *
  */
 	
-private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
+private class VorstellungCallback implements AsyncCallback<Vorstellung> {
 
 	@Override
 	public void onFailure(Throwable caught) {
@@ -189,37 +339,40 @@ private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 	}
 
 	@Override
-	public void onSuccess(Spielzeit spielzeit) {
+	public void onSuccess(Vorstellung vorstellung) {
 		
-		
-		neueSpielzeit = spielzeit;
-		spielzeit.getZeit();
+		neueVorstellung = vorstellung;
+		vorstellung.getName();
 		
 		//kinoplaner.erstellenSpielzeit(neueSpielzeit,date, new SpielzeitHinzufuegenCallback());
 		
+		// Update des DataProviders
+		
+		dataProvider.getList().add(neueVorstellung);
+		dataProvider.refresh();
 	}
 	
 }
 	
 	
 	
-private class SpielzeitHinzufuegenCallback implements AsyncCallback<Spielzeit> {
+	private class VorstellungHinzufuegenCallback implements AsyncCallback<Vorstellung> {
 
 	@Override
 	public void onFailure(Throwable caught) {
 		// TODO Auto-generated method stub
-		Systemmeldung.anzeigen("SpielzeitHinzufügenCallback funktioniert nicht");
+		Systemmeldung.anzeigen("VorstellungHinzufügenCallback funktioniert nicht");
 	}
 
 	@Override
-	public void onSuccess(Spielzeit result) {
+	public void onSuccess(Vorstellung result) {
 		// TODO Auto-generated method stub
-		Systemmeldung.anzeigen("Spielzeit wurde hinzugefügt");
+		Systemmeldung.anzeigen("Vorstellung wurde hinzugefügt");
+	}
 	}
 	
 	
-	
-private class SpielzeitEntfernenCallback implements AsyncCallback<Spielzeit> {
+private class VorstellungEntfernenCallback implements AsyncCallback<Vorstellung> {
 
 	@Override
 	public void onFailure(Throwable caught) {
@@ -228,7 +381,7 @@ private class SpielzeitEntfernenCallback implements AsyncCallback<Spielzeit> {
 	}
 
 	@Override
-	public void onSuccess(Spielzeit result) {
+	public void onSuccess(Vorstellung result) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -249,14 +402,20 @@ private class SpielzeitEntfernenCallback implements AsyncCallback<Spielzeit> {
 		@Override
 		public void onSuccess(Spielzeit result) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Spielzeit wurde angelegt");
+			
+			if (spielzeitnameTB.getValue() == "") {
+				Systemmeldung.anzeigen("Es wurde kein Spielzeitname eingegeben");
+			}else {
+				
+				RootPanel.get("details").clear();
+				
+			}
+			
 		}
 		
-	}
+	}}
 
 	
 
 
-	
-	
-}}
+
