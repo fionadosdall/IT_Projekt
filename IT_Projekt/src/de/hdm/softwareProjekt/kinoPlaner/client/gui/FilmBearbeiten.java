@@ -264,7 +264,7 @@ public class FilmBearbeiten extends FlowPanel {
 				 * TO DO: Vermutlich eine FilmAnzeigenForm-Klasse zum Anzeigen des Films, den
 				 * man soeben gespeichert hat??
 				 */
-				filmAF = new FilmAnzeigenForm();
+				filmAF = new FilmAnzeigenForm(result);
 				RootPanel.get("details").add(filmAF);
 			}
 		}
