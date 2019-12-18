@@ -148,7 +148,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
 		
-		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hunzugefügt"));
+		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hinzugefügt"));
 
 		// Click-Handler
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
