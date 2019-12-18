@@ -53,6 +53,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	public void onLoad() {
 		
 		/* Setzen der Style-Namen */
+		this.addStyleName("center");
 		
 		kinoketteFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
@@ -61,7 +62,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		speichernButton.addStyleName("speichernButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
-		
+		nameTextBox.addStyleName("formularTextBox");
+		sitzTextBox.addStyleName("formularTextBox");
+		websiteTextBox.addStyleName("formularTextBox");
 		
 		/*Zusammensetzen der Widgets */
 		

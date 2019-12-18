@@ -56,6 +56,7 @@ public class UserForm extends FlowPanel {
 		// Vergeben der Stylenames
 
 		this.addStyleName("detailscontainer");
+		this.addStyleName("center");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
