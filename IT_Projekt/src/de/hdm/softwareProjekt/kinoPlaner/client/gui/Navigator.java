@@ -74,6 +74,7 @@ public class Navigator extends FlowPanel {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			kef = new KinoErstellenForm();
+			
 			RootPanel.get("details").add(kef);
 			
 		}

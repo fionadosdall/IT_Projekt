@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -22,6 +23,8 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
+	
+	private MeineKinokettenForm mkkf;
 	
 	private Label kinoketteFormLabel = new Label("Neue Kinokette");
 	private Label kinoketteBearbeitenFormLabel = new Label("Kinokette bearbeiten");
@@ -75,9 +78,11 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		/*Zusammensetzen der Widgets */
 		
 		if(edit == true) {
+			
 			obenPanel.add(kinoketteBearbeitenFormLabel);
 		}else {
 			obenPanel.add(kinoketteFormLabel);
+			clearForm();
 		}
 		
 		
@@ -97,6 +102,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			untenPanel.add(loeschenButton);
 			untenPanel.add(speichernButton);
 		} else {
+			clearForm();
 			untenPanel.add(speichernButton);
 		}
 		
@@ -110,9 +116,12 @@ public class KinoketteErstellenForm extends VerticalPanel{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+			
 			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(),
 					websiteTextBox.getText(), new KinoketteErstellenCallback());
+			
+			clearForm();
+			
 		}		
 		
 	}
@@ -124,7 +133,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			// TODO Auto-generated method stub
 			
 			// TODO administration.kinoketteEntfernen(kinoketteBearbeiten.getId(), new KinoketteLoeschenCallback());
-			
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
 		}
 		
 	}
@@ -137,13 +148,15 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Eine neue Kinokette konnte leider nicht erstellt werden");
+			Systemmeldung.anzeigen("Eine neue Kinokette konnte leider nicht erstellt werden.");
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde angelegt");
+			//Kinokette neueKinokette = new Kinokette();
+			// administration.erstellenKinokette(name, sitz, website, callback);
 		}
 		
 	}
@@ -153,13 +166,14 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("<Kinokette konnte nicht gelöscht werden.");
 			
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Kinokette wurde gelöscht");
+			Systemmeldung.anzeigen("Kinokette wurde gelöscht.");
 		}
 	}
 	
@@ -181,5 +195,11 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			sitzTextBox.setText(kinokette.getSitz());
 			websiteTextBox.setText(kinokette.getWebsite());
 		
+	}
+	
+	public void clearForm() {
+		nameTextBox.setText("");
+		sitzTextBox.setText("");
+		websiteTextBox.setText("");
 	}
 }

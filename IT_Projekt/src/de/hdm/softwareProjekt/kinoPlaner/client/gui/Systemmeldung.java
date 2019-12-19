@@ -21,14 +21,14 @@ public class Systemmeldung {
 		systemmeldungLabel.setStyleName("systemmeldungLabel");
 		systemmeldungLabel.setText(meldung);
 		
-		RootPanel.get("Header").add(systemmeldungLabel);
+		RootPanel.get("details").add(systemmeldungLabel);
 		
 		final Timer anzeigedauer = new Timer() {
 			
 			@Override
 			public void run() {
 				
-				RootPanel.get("Header").remove(RootPanel.get("Header").getWidgetIndex(systemmeldungLabel));
+				RootPanel.get("details").remove(RootPanel.get("details").getWidgetIndex(systemmeldungLabel));
 			
 			}
 		};
