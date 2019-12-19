@@ -98,7 +98,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * hinzugefuegt werden.
 	 * </p>
 	 */
-	private ArrayList<Anwender> gruppenmitglieder = null;
+	private ArrayList<Anwender> gruppenmitglieder = new ArrayList<Anwender>();
 
 	/**
 	 * <p>
@@ -1754,9 +1754,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException {
-		this.gruppenmitglieder.add(anwender);
-		return anwender;
+	public Anwender gruppenmitgliedHinzufuegen(Anwender an) throws IllegalArgumentException {
+		this.gruppenmitglieder.add(an);
+		return an;
 	}
 	
 	/**

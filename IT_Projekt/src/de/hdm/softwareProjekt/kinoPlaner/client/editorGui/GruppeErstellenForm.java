@@ -147,7 +147,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
-		
+
 		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hinzugefügt"));
 
 		// Click-Handler
@@ -184,7 +184,7 @@ public class GruppeErstellenForm extends FlowPanel {
 			public String getValue(Anwender anwender) {
 				// TODO Auto-generated method stub
 
-					return anwender.getName();
+				return anwender.getName();
 
 			}
 
@@ -258,7 +258,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.gruppenmitgliedHinzufuegen(mitgliedTB.getValue(), new AnwenderHinzufuegenCallback());
+			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderByNameCallback());
 			mitgliedTB.setText("");
 
 		}
@@ -279,48 +279,63 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
+	private class AnwenderByNameCallback implements AsyncCallback<Anwender> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("AnwenderSuchenCallback funktioniert nicht");
+
+		}
+
+		@Override
+		public void onSuccess(Anwender result) {
+			if (result == null) {
+				Window.alert("Kein gültiger Anwender ausgewählt!");
+				return;
+			}
+			neuerAnwender = result;
+			kinoplaner.gruppenmitgliedHinzufuegen(result, new AnwenderHinzufuegenCallback());
+			
+			// Updaten des DataProviders
+			dataProvider.getList().add(result);
+			dataProvider.refresh();
+
+		}
+
+	}
+
 	private class AnwenderHinzufuegenCallback implements AsyncCallback<Anwender> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
 			Window.alert("AnwenderHinzufügenCallback funktioniert nicht");
 
 		}
 
 		@Override
 		public void onSuccess(Anwender result) {
-			// TODO Auto-generated method stub
-			if(result == null ) {
-				Window.alert("Kein gültiger Anwender ausgewählt!");
-				return;
-			} 
-			neuerAnwender = result;
-			// Updaten des DataProviders
+
 			Window.alert("Hinzugefügt");
-			dataProvider.getList().add(result);
-			dataProvider.refresh();
-			
-			
+
 		}
 
 	}
 
-//	private class MitgliedEntfernenCallback implements AsyncCallback<Anwender> {
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onSuccess(Anwender result) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//	}
+	// private class MitgliedEntfernenCallback implements AsyncCallback<Anwender> {
+	//
+	// @Override
+	// public void onFailure(Throwable caught) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void onSuccess(Anwender result) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// }
 
 	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
 
