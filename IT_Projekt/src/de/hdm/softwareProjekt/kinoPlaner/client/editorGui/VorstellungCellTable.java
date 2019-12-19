@@ -86,11 +86,15 @@ public class VorstellungCellTable extends VerticalPanel {
 		 ***********************************************************************/
 
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
+		
+		Window.alert("Hier");
+		
 
 		if (vorstellungen != null) {
 
 			for (Vorstellung v : vorstellungen) {
 
+				Window.alert(v.getName());
 				list.add(v);
 
 			}

@@ -265,7 +265,7 @@
 
 .detailsboxlöschen {
 	display: flex;
-	align-items: flex-end;
+	align-items: flex-start;
 	flex-direction: column;
 }
 
@@ -342,9 +342,8 @@
 .löschenImage {
 	height: 32px;
 	width: 32px;
-	display: block;
-	position: relative;
 	cursor: pointer;
+
 	
 }
 
