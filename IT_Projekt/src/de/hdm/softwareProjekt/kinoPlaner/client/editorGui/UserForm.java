@@ -51,6 +51,7 @@ public class UserForm extends FlowPanel {
 	String logoutUrl;
 
 	public void onLoad() {
+		
 
 		// Vergeben der Stylenames
 
@@ -114,9 +115,10 @@ public class UserForm extends FlowPanel {
 
 
 		// Click-Handler
-		papierkorb.addClickHandler(new BenutzerLoeschenClickHandler());
 		speichernButton.addClickHandler(new AnwenderSpeichernClickHandler());
 		abmeldenButton.addClickHandler(new AbmeldenClickHandler());
+		
+		papierkorb.addClickHandler(new BenutzerLoeschenClickHandler());
 		
 		if (anwender == null) {
 			emailAnzeigenLabel.setText("Es ist noch keine Mailadresse vorhanden");
@@ -183,6 +185,8 @@ public class UserForm extends FlowPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
+	
+	
 	private class LoeschenClickHanlder implements ClickHandler {
 
 		private LoeschenUserBox loeschenUserBox;

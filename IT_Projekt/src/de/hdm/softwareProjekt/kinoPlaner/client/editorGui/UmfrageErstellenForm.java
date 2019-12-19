@@ -144,21 +144,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 		spielzeitListBox.setSize("180px", "25px");
 		filmListBox.setSize("180px", "25px");
 		gruppenListBox.setSize("200px", "25px");
+		
+		
 
 		kinoplaner.getGruppenByAnwender(new GruppenCallback());
-
-		if (gruppen == null) {
-			gruppenListBox.addItem("Keine Gruppen verfügbar");
-			gruppenListBox.setEnabled(false);
-
-		} else {
-
-			for (Gruppe g : gruppen) {
-
-				gruppenListBox.addItem(g.getName());
-
-			}
-		}
+		
 		
 		kinoplaner.getAllKinos(new KinoCallback());
 		
@@ -256,8 +246,25 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
 			// TODO Auto-generated method stub
+			Window.alert("hier");
 			gruppen = result;
+			
+			if (result != null) {
+				
+				for (Gruppe g : result) {
+					
+					gruppenListBox.addItem(g.getName());
+
+				}
+	
+			} else {
+				
+			gruppenListBox.addItem("Keine Gruppen verfügbar");
+			gruppenListBox.setEnabled(false);
+}
 		}
+		
+		
 
 	}
 	
