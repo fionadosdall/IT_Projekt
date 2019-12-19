@@ -25,11 +25,6 @@ public class EditorEntry implements EntryPoint {
 
 	
 	public void onModuleLoad() {
-		
-		RootPanel.get("header").add(header);
-		RootPanel.get("navigator").add(navigator);
-		RootPanel.get("footer").add(footer);
-		
 	
 		kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 		
@@ -63,7 +58,9 @@ public class EditorEntry implements EntryPoint {
 
 		@Override
 		public void onSuccess(Void result) {
-			Window.alert("Abgelegt");
+			RootPanel.get("header").add(header);
+			RootPanel.get("navigator").add(navigator);
+			RootPanel.get("footer").add(footer);
 			
 		}
 		

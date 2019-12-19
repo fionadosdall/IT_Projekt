@@ -396,8 +396,8 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum "
-					+ "FROM umfrage" + "WHERE gruppeId = " + gruppe.getId() + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery("SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
+					+ "FROM umfrage " + "WHERE umfrage_gruppe_Id = " + gruppe.getId() + " ORDER BY name");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und

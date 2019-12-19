@@ -1344,7 +1344,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Umfrage> getUmfragenByAnwender() throws IllegalArgumentException {
-		return this.umfrageMapper.findAllByAnwender(aktuellerAnwender.getAnwender());
+		return this.umfrageMapper.findAllByAnwender(this.anwender);
 	}
 
 	/**
