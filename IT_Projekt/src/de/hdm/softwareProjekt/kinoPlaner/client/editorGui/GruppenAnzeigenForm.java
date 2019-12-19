@@ -14,13 +14,45 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-public class GruppenAnzeigenForm extends FlowPanel {
+public class GruppenAnzeigenForm extends VerticalPanel {
+	BusinessObjektView bov = new BusinessObjektView();
+	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+	VerticalPanel p = new VerticalPanel();
+	
+	public void onLoad() {
+		p.setStyleName("");
+		bov.setTitel("Meine Gruppen");
+		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
+		this.add(p);
+		
+	}
+	
+	private class SucheGruppenByAnwenderCallback implements AsyncCallback<ArrayList<Gruppe>> {
 
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("Gruppen nicht abrufbar.");
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Gruppe> result) {
+			bov.setGruppen(result);
+			p.add(bov);
+		}
+		
+	}
+	
+	
+	
+	
+	/**
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
@@ -36,7 +68,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 
 	public void onLoad() {
-		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+		
 
 		this.addStyleName("detailscontainer");
 
@@ -53,7 +85,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		detailsoben.add(hb);
 		detailsoben.add(title);
 
-		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
+		
 
 	}
 	
@@ -86,16 +118,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 	}
 
-	private class SucheGruppenByAnwenderCallback implements AsyncCallback<ArrayList<Gruppe>> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Gruppen nicht abrufbar.");
-
-		}
-
-		@Override
-		public void onSuccess(ArrayList<Gruppe> result) {
+	
 			Window.alert("");
 			gruppen = result;
 			gruppe.setStyleName("detailsboxLabels");
@@ -129,5 +152,5 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		}
 
 	}
-
+	**/
 }
