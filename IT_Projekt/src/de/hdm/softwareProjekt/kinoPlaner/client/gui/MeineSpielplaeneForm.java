@@ -2,6 +2,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
@@ -36,7 +38,10 @@ public class MeineSpielplaeneForm extends FlowPanel {
 	private Kino kino;
 	private MeineSpielplaeneForm anzeigen;
 	private SpielplanErstellenForm erstellen;
-	;
+	private SpielplanErstellenForm bearbeiten;
+	
+	private static Boolean edit;
+	
 	private Label spielplanLabel = new Label ("Spielplan");
 	
 	private Grid felder = new Grid (3,1);
@@ -44,6 +49,7 @@ public class MeineSpielplaeneForm extends FlowPanel {
 	private Button loeschenButton = new Button(" Auswahl löschen");
 	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 	
+	/*Vergeben der Style-Namen*/
 	
 	
 	public void onLoad() {
@@ -56,20 +62,31 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		hbPanel.addStyleName("hbPanel");
 		detailsunten.addStyleName("detailsunten");
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
-
+		spielplanLabel.setStyleName("detailsboxLabels");
 		title.addStyleName("title");
+		loeschenButton.addStyleName("loeschenButton");
+		bearbeitenButton.addStyleName("bearbeitenButton");
+		untenPanel.addStyleName("untenPanel");
 		
-
+		/* Zusammenbauen der Widgets*/
+		
+		
+		
 		this.add(detailsoben);
 		hbPanel.add(hb);
 		this.add(hbPanel);
+		
+		
+		
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 
 		//TODO detailsoben.add(hb);
 		detailsoben.add(title);
 		
-		spielplanLabel.setStyleName("detailsboxLabels");
+		untenPanel.add(loeschenButton);
+		untenPanel.add(bearbeitenButton);
+		this.add(untenPanel);
 		
 		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
 		
@@ -98,10 +115,12 @@ public class MeineSpielplaeneForm extends FlowPanel {
 			felder.setWidget(2, 0, erstellenButton);
 		}
 		detailsboxInhalt.add(felder);
+		bearbeitenButton.addClickHandler(new SpielplanBearbeitenClickHandler());
+
 	}
 	
 	
-	
+	/***CLickHandler***/
 	
 	private class SpielplanAuswaehlenClickHandler implements DoubleClickHandler {
 		private Spielplan spielplan;
@@ -135,7 +154,24 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		}
 		
 		
+		
 	}
+	
+	
+	private class SpielplanBearbeitenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			KinoketteErstellenForm.setEdit(edit);
+			bearbeiten = new SpielplanErstellenForm();
+			RootPanel.get("details").add(bearbeiten);
+		}
+		
+	}
+	
+	/***Callbacks***/
 	
 	private class GetSpielplaeneByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Spielplan>> {
 
