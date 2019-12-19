@@ -27,9 +27,8 @@ import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+
 
 public class FilmBearbeiten extends FlowPanel {
 

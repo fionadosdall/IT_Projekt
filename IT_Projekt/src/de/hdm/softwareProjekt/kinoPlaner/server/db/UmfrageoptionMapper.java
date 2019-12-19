@@ -2,7 +2,6 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,8 +39,8 @@ public class UmfrageoptionMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein umfrageoptionMapper existiert, falls
-	 * nein, wird ein neuer instanziiert. Existiert bereits ein umfrageoptionMapper, wird
-	 * dieser zurückgegeben.
+	 * nein, wird ein neuer instanziiert. Existiert bereits ein umfrageoptionMapper,
+	 * wird dieser zurückgegeben.
 	 */
 
 	public static UmfrageoptionMapper umfrageoptionMapper() {
@@ -60,9 +59,9 @@ public class UmfrageoptionMapper {
 	 * Suche nach allen Umfrageoptionen über vorgegebenen Namen.
 	 * 
 	 * @param name den die gesuchten Umfrageoptionen tragen
-	 * @return Eine ArrayList, die alle gefundenen Umfrageoptionen enthält. Falls eine
-	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
-	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 * @return Eine ArrayList, die alle gefundenen Umfrageoptionen enthält. Falls
+	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
+	 *         leer oder nur teilweise befüllt zurück gegeben wird.
 	 */
 	public ArrayList<Umfrageoption> findAllByName(String name) {
 		Connection con = DBConnection.connection();
@@ -72,20 +71,21 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum " + "FROM umfrageoption"
-					+ "WHERE name = " + name + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
+							+ "FROM Umfrageoption" + " WHERE uoName = '" + name + "' ORDER BY uoName");
 
 			/**
-			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt
+			 * erstellt und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
-				uo.setId(resultset.getInt("id"));
-				uo.setName(resultset.getString("name"));
-				uo.setUmfrageId(resultset.getInt("umfrageId"));
-				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uo.setId(resultset.getInt("uoId"));
+				uo.setName(resultset.getString("uoName"));
+				uo.setUmfrageId(resultset.getInt("umfrageoption_umfrage_Id"));
+				uo.setVorstellungsId(resultset.getInt("umfrageoption_vorstellung_Id"));
 				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -97,7 +97,7 @@ public class UmfrageoptionMapper {
 		// ArrayList mit Ergebnis zurückgeben
 		return resultarray;
 	}
-	
+
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
@@ -115,7 +115,8 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM umfrageoption" + "WHERE name =" + name);
+			ResultSet resultset = stmt
+					.executeQuery("SELECT uoName FROM Umfrageoption" + " WHERE uoName = '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -141,17 +142,18 @@ public class UmfrageoptionMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Umfrageoptionen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM umfrageoption");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Umfrageoption");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				umfrageoption.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO umfrageoption (id, name, umfrageId, vorstellungsId, erstellDatum)"
-						+ "VALUES(" + umfrageoption.getId() + "','" + umfrageoption.getName() + "','"
-						+ umfrageoption.getUmfrageId() + "','" + umfrageoption.getVorstellungsId() + "','"
-						+ umfrageoption.getErstellDatum() + ")");
+				stmt.executeUpdate(
+						"INSERT INTO Umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum)"
+								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName() + "', "
+								+ umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ", "
+								+ umfrageoption.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -177,10 +179,10 @@ public class UmfrageoptionMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE umfrageoption SET " + "name=\"" + umfrageoption.getName() + "\", "
-					+ "erstellDatum=\"" + umfrageoption.getErstellDatum() + "\", " + "umfrageId=\""
-					+ umfrageoption.getUmfrageId() + "\", " + "vorstellungsId=\"" + umfrageoption.getVorstellungsId()
-					+ "\" " + "WHERE id=" + umfrageoption.getId());
+			stmt.executeUpdate("UPDATE Umfrageoption SET " + "uoName=\" '" + umfrageoption.getName() + "' "
+					+ "erstellDatum=\"" + umfrageoption.getErstellDatum() + "\", " + "umfrageoption_umfrage_Id=\""
+					+ umfrageoption.getUmfrageId() + "\", " + "umfrageoption_vorstellung_Id=\""
+					+ umfrageoption.getVorstellungsId() + "\"" + " WHERE uoId=" + umfrageoption.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -203,7 +205,7 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM umfrageoption " + "WHERE id=" + umfrageoption.getId());
+			stmt.executeUpdate("DELETE FROM Umfrageoption " + "WHERE uoId=" + umfrageoption.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -230,18 +232,20 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum "
-					+ "FROM umfrageoption" + "WHERE umfrageId=" + umfrage.getId() + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
+							+ "FROM Umfrageoption" + " WHERE umfrageoption_umfrage_Id=" + umfrage.getId()
+							+ " ORDER BY uoName");
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt
 			 * erstellt und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
-				uo.setId(resultset.getInt("id"));
-				uo.setName(resultset.getString("name"));
-				uo.setUmfrageId(resultset.getInt("umfrageId"));
-				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uo.setId(resultset.getInt("uoId"));
+				uo.setName(resultset.getString("uoName"));
+				uo.setUmfrageId(resultset.getInt("umfrageoption_umfrage_Id"));
+				uo.setVorstellungsId(resultset.getInt("umfrageoption_vorstellung_Id"));
 				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
@@ -267,16 +271,16 @@ public class UmfrageoptionMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum FROM umfrageoption"
-							+ "WHERE id=" + id + " ORDER BY vorstellungsId");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum FROM Umfrageoption"
+							+ " WHERE uoId=" + id + " ORDER BY umfrageoption_vorstellung_Id");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Umfrageoption uopt = new Umfrageoption();
-				uopt.setId(resultset.getInt("id"));
-				uopt.setName(resultset.getString("name"));
-				uopt.setUmfrageId(resultset.getInt("umfrageId"));
-				uopt.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uopt.setId(resultset.getInt("uoId"));
+				uopt.setName(resultset.getString("uoName"));
+				uopt.setUmfrageId(resultset.getInt("umfrageoption_umfrage_Id"));
+				uopt.setVorstellungsId(resultset.getInt("umfrageoption_vorstellung_Id"));
 				uopt.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return uopt;
 			}
@@ -288,15 +292,15 @@ public class UmfrageoptionMapper {
 
 	/**
 	 * Suche nach allen Umfrageoption-Objekten, die eine Beziehung mit einer
-	 * vorgegebenen Vorstellung haben. Liegt eine Beziehung zwischen Umfrageoption und
-	 * Vorstellung vor, ist in der Datenbank in der Umfrageoption-Tabelle die
-	 * entsprechende vorstellungsId hinterlegt. Diese vorstellungsId muss mit der Id der im
-	 * Methodenparamter übergebenen Vorstellung übereinstimmen.
+	 * vorgegebenen Vorstellung haben. Liegt eine Beziehung zwischen Umfrageoption
+	 * und Vorstellung vor, ist in der Datenbank in der Umfrageoption-Tabelle die
+	 * entsprechende vorstellungsId hinterlegt. Diese vorstellungsId muss mit der Id
+	 * der im Methodenparamter übergebenen Vorstellung übereinstimmen.
 	 * 
 	 * @param vorstellung Objekt, deren Id mit den vorstellungsIds in der
-	 *                Umfrageoption-Tabelle übereinstimmen soll.
-	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren vorstellungsId der
-	 *         übergebenen Vorstellung entsprechen.
+	 *                    Umfrageoption-Tabelle übereinstimmen soll.
+	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren vorstellungsId
+	 *         der übergebenen Vorstellung entsprechen.
 	 */
 	public ArrayList<Umfrageoption> findAllByVorstellung(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
@@ -306,15 +310,17 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, umfrageId, vorstellungsId, erstellDatum "
-					+ "FROM umfrageoption" + "WHERE vorstellungsId=" + vorstellung.getId() + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
+							+ "FROM Umfrageoption" + " WHERE umfrageoption_vorstellung_Id=" + vorstellung.getId()
+							+ "ORDER BY uoName");
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
-				uo.setId(resultset.getInt("id"));
-				uo.setName(resultset.getString("name"));
-				uo.setUmfrageId(resultset.getInt("umfrageId"));
-				uo.setVorstellungsId(resultset.getInt("vorstellungsId"));
+				uo.setId(resultset.getInt("uoId"));
+				uo.setName(resultset.getString("uoName"));
+				uo.setUmfrageId(resultset.getInt("umfrageoption_umfrage_Id"));
+				uo.setVorstellungsId(resultset.getInt("umfrageoption_vorstellung_Id"));
 				uo.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -323,7 +329,7 @@ public class UmfrageoptionMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//ArrayList mit Ergebnis zurückgeben.
+		// ArrayList mit Ergebnis zurückgeben.
 		return resultarray;
 	}
 }

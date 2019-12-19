@@ -58,8 +58,7 @@ public class UmfrageMapper {
 	/**
 	 * Suche nach allen Umfragen über vorgegebenen Namen.
 	 * 
-	 * @param name
-	 *            den die gesuchten Umfragen tragen
+	 * @param name den die gesuchten Umfragen tragen
 	 * @return Eine ArrayList, die alle gefundenen Umfragen enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -72,8 +71,9 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum "
-					+ "FROM umfrage" + "WHERE name = " + name + "ORDER BY name");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum "
+							+ "FROM Umfrage" + "WHERE uName = '" + name + "' ORDER BY uName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
@@ -82,10 +82,10 @@ public class UmfrageMapper {
 
 			while (resultset.next()) {
 				Umfrage u = new Umfrage();
-				u.setId(resultset.getInt("id"));
-				u.setName(resultset.getString("name"));
-				u.setGruppenId(resultset.getInt("gruppenId"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -105,8 +105,7 @@ public class UmfrageMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param name den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -117,7 +116,7 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM umfrage" + "WHERE name =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT uName FROM Umfrage" + " WHERE uName= '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -132,8 +131,7 @@ public class UmfrageMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Umfrage-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param umfrage
-	 *            als das zu speichernde Objekt
+	 * @param umfrage als das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Umfrage insert(Umfrage umfrage) {
@@ -144,16 +142,18 @@ public class UmfrageMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Umfragen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (id) AS maxId " + "FROM umfrage");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId" + " FROM Umfrage");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				umfrage.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO umfrage (id, name, besitzerId, gruppenId, erstellDatum)" + "VALUES("
-						+ umfrage.getId() + "','" + umfrage.getName() + "','" + umfrage.getBesitzerId() + "','"
-						+ umfrage.getGruppenId() + "','" + umfrage.getErstellDatum() + ")");
+				stmt.executeUpdate(
+						"INSERT INTO Umfrage (uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum)"
+								+ " VALUES(" + umfrage.getId() + ", '" + umfrage.getName() + "', "
+								+ umfrage.getBesitzerId() + ", " + umfrage.getGruppenId() + ", "
+								+ umfrage.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -168,8 +168,7 @@ public class UmfrageMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param umfrage
-	 *            als das Objekt, das verändert werden soll.
+	 * @param umfrage als das Objekt, das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Umfrage update(Umfrage umfrage) {
@@ -180,9 +179,10 @@ public class UmfrageMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE umfrage SET " + "besitzerId=\"" + umfrage.getBesitzerId() + "\", " + "name=\""
-					+ umfrage.getName() + "\", " + "erstellDatum=\"" + umfrage.getErstellDatum() + "\", "
-					+ "gruppenId=\"" + umfrage.getGruppenId() + "\" " + "WHERE id=" + umfrage.getId());
+			stmt.executeUpdate("UPDATE Umfrage SET " + "umfrage_anwender_Id=\"" + umfrage.getBesitzerId() + "\", "
+					+ "uName=\" '" + umfrage.getName() + "' \", " + "erstellDatum=\"" + umfrage.getErstellDatum()
+					+ "\", " + "umfrage_gruppen_Id=\"" + umfrage.getGruppenId() + "\"" + " WHERE uId="
+					+ umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -195,8 +195,7 @@ public class UmfrageMapper {
 	/**
 	 * Mit dieser Methode kann ein Umfrage-Objekt aus der Datenbank gelöscht werden.
 	 * 
-	 * @param umfrage
-	 *            Objekt, welches gelöscht werden soll.
+	 * @param umfrage Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Umfrage umfrage) {
 		Connection con = DBConnection.connection();
@@ -204,7 +203,7 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM umfrage " + "WHERE id=" + umfrage.getId());
+			stmt.executeUpdate("DELETE FROM Umfrage " + " WHERE uId=" + umfrage.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -214,9 +213,8 @@ public class UmfrageMapper {
 	/**
 	 * Suche nach einer Umfrage mit vorgegebener Umfrage-Id
 	 * 
-	 * @param id
-	 *            zugehörig zu einer Umfrage, nach welcher gesucht werden soll, also
-	 *            der Primärschlüssel in der Datenbank.
+	 * @param id zugehörig zu einer Umfrage, nach welcher gesucht werden soll, also
+	 *           der Primärschlüssel in der Datenbank.
 	 * @return Das Umfrage-Objekt, das mit seiner Umfrage-Id der übergebenen Id
 	 *         entspricht. Falls keine Umfrage zur übergebenen Id gefunden wurde,
 	 *         wird null zurückgegeben.
@@ -225,15 +223,16 @@ public class UmfrageMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage"
-					+ "WHERE id=" + id + " ORDER BY gruppenId");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum FROM Umfrage"
+							+ " WHERE uId=" + id + " ORDER BY umfrage_gruppen_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Umfrage u = new Umfrage();
-				u.setId(resultset.getInt("id"));
-				u.setName(resultset.getString("name"));
-				u.setGruppenId(resultset.getInt("gruppenId"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return u;
 			}
@@ -248,9 +247,8 @@ public class UmfrageMapper {
 	 * beteiligt ist. Nur wenn ein Anwender an einer Umfrage beteiligt ist, ist es
 	 * ihm erlaubt an der Umfrage teilzunehmen.
 	 * 
-	 * @param anwender
-	 *            Objekt, für das herausgefunden werden soll, an welchen Umfragen es
-	 *            teilnimmt.
+	 * @param anwender Objekt, für das herausgefunden werden soll, an welchen
+	 *                 Umfragen es teilnimmt.
 	 * @return Alle Umfrage-Objekte in Form einer ArrayList, an denen der
 	 *         vorgegebene Anwender teilnehmen darf.
 	 */
@@ -264,8 +262,7 @@ public class UmfrageMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
-							+ "FROM umfrage" + 
-							" WHERE umfrage_anwender_Id = " + anwender.getId() + " ORDER BY uName");
+							+ "FROM umfrage" + " WHERE umfrage_anwender_Id = " + anwender.getId() + " ORDER BY uName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
@@ -297,9 +294,8 @@ public class UmfrageMapper {
 	 * besondere Rechte in Bezug auf welche Umfragen hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
-	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Umfrage-Objekte
-	 *            übereinstimmen soll.
+	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
+	 *                 Umfrage-Objekte übereinstimmen soll.
 	 * @return Alle Umfrage-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */
@@ -311,15 +307,16 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT id, name, besitzerId, gruppenId, erstellDatum FROM umfrage"
-					+ "WHERE besitzerId = " + anwenderOwner.getId() + "ORDER BY name");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum FROM umfrage"
+							+ " WHERE umfrage_anwender_Id = " + anwenderOwner.getId() + " ORDER BY uName");
 
 			while (resultset.next()) {
 				Umfrage u = new Umfrage();
-				u.setId(resultset.getInt("id"));
-				u.setName(resultset.getString("name"));
-				u.setGruppenId(resultset.getInt("gruppenId"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);
@@ -337,8 +334,7 @@ public class UmfrageMapper {
 	 * dieser Methode kann man sich alle geschlossenen Umfragen ausgeben lassen, die
 	 * von einem vorgegebenen Anwender geschlossen worden sind.
 	 * 
-	 * @param anwender
-	 *            dessen geschlossene Umfragen zurückgegeben werden sollen.
+	 * @param anwender dessen geschlossene Umfragen zurückgegeben werden sollen.
 	 * @return Eine ArrayList mit allen Umfragen, die von dem vorgegebenen Anwender
 	 *         geschlossen worden sind.
 	 */
@@ -355,7 +351,8 @@ public class UmfrageMapper {
 							+ " isVotedFalse, isOffenTrue, isOpenFalse, gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
 							+ " FROM umfrage "
 							+ "INNER JOIN gruppenmitglieder ON gruppenmitglieder.gruppID = umfrage.umfrage_gruppen_Id "
-							+ " WHERE isOffenTrue = 1 AND gruppenmitglieder.anwendId = " + anwender.getId() + " ORDER BY uName");
+							+ " WHERE isOffenTrue = 1 AND gruppenmitglieder.anwendId = " + anwender.getId()
+							+ " ORDER BY uName");
 
 			while (resultset.next()) {
 				Umfrage u = new Umfrage();
@@ -382,9 +379,8 @@ public class UmfrageMapper {
 	 * gruppenId hinterlegt. Diese gruppenId muss mit der Id der im Methodenparamter
 	 * übergebenen Gruppe übereinstimmen.
 	 * 
-	 * @param gruppe
-	 *            Objekt, dessen Id mit den gruppenIds in der Umfrage-Tabelle
-	 *            übereinstimmen soll.
+	 * @param gruppe Objekt, dessen Id mit den gruppenIds in der Umfrage-Tabelle
+	 *               übereinstimmen soll.
 	 * @return Alle Umfrage-Objekte in einer ArrayList, deren gruppenId der
 	 *         übergebenen Kinokette entspricht.
 	 */
@@ -396,8 +392,9 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
-					+ "FROM umfrage " + "WHERE umfrage_gruppe_Id = " + gruppe.getId() + " ORDER BY name");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
+							+ "FROM umfrage " + "WHERE umfrage_gruppe_Id = " + gruppe.getId() + " ORDER BY name");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und
@@ -405,10 +402,10 @@ public class UmfrageMapper {
 			 */
 			while (resultset.next()) {
 				Umfrage u = new Umfrage();
-				u.setId(resultset.getInt("id"));
-				u.setName(resultset.getString("name"));
-				u.setGruppenId(resultset.getInt("gruppenId"));
-				u.setBesitzerId(resultset.getInt("besitzerId"));
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
@@ -428,11 +425,9 @@ public class UmfrageMapper {
 	 * Umfrage-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Veränderungen vornehmen.
 	 * 
-	 * @param anwender
-	 *            welcher als Besitzer der Umfrage in der Datenbank eingetragen
-	 *            werden soll.
-	 * @param umfrage
-	 *            Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender welcher als Besitzer der Umfrage in der Datenbank eingetragen
+	 *                 werden soll.
+	 * @param umfrage  Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Umfrage umfrage) {
 		Connection con = DBConnection.connection();
@@ -440,8 +435,8 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate(
-					"UPDATE umfrage SET " + "besitzerId=\"" + anwender.getId() + "\" " + "WHERE id=" + umfrage.getId());
+			stmt.executeUpdate("UPDATE Umfrage SET " + "umfrage_anwender_Id=\"" + anwender.getId() + "\""
+					+ " WHERE uId=" + umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -452,9 +447,8 @@ public class UmfrageMapper {
 	 * zugewiesen und soll nun gelöscht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gelöscht.
 	 * 
-	 * @param umfrage
-	 *            Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt
-	 *            werden soll.
+	 * @param umfrage Objekt bei welchem die BesitzerId in der Datenbank
+	 *                zurückgesetzt werden soll.
 	 */
 	public void deleteEigentumsstruktur(Umfrage umfrage) {
 		Connection con = DBConnection.connection();
@@ -462,7 +456,8 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE umfrage SET " + "besitzerId=\"" + "" + "\" " + "WHERE id=" + umfrage.getId());
+			stmt.executeUpdate(
+					"UPDATE Umfrage SET " + "umfrage_anwender_Id=\"" + "\" " + " WHERE uId=" + umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
