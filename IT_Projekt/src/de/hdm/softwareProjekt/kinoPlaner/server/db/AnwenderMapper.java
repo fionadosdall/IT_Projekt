@@ -70,7 +70,7 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM anwender"
-					+ "WHERE aName = " + name + "ORDER BY aName");
+					+ " WHERE aName = '" + name + "' ORDER BY aName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -112,7 +112,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + "WHERE aName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='" + name+"'");
 
 			if (resultset.next()) {
 				return false;
@@ -263,7 +263,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery
-					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aId=" + id + " ORDER BY aName");
+					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aId=" + id + " ORDER BY aName");
 			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();

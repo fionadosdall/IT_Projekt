@@ -303,10 +303,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		Gruppe gFertig = this.gruppeMapper.insert(g);
+		this.gruppenmitgliedHinzufuegen(anwender, gFertig);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
 		if (gruppenmitglieder != null) {
 			for (Anwender a : gruppenmitglieder) {
 				this.gruppenmitgliedHinzufuegen(a, gFertig);
+				
 			}
 			gruppenmitglieder = null;
 		}
@@ -1741,8 +1743,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender, Gruppe gruppe) throws IllegalArgumentException {
-		this.gruppeMapper.addGruppenmitgliedschaft(anwender, gruppe);
-		return anwender;
+		return this.gruppeMapper.addGruppenmitgliedschaft(anwender, gruppe);
+		
 	}
 
 	/**
@@ -1765,8 +1767,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException {
-		this.gruppenmitglieder.add(this.getAnwenderByName(anwenderName));
-		return anwender;
+		Anwender an = this.getAnwenderByName(anwenderName);
+		this.gruppenmitglieder.add(an);
+		return an;
 	}
 
 	/**

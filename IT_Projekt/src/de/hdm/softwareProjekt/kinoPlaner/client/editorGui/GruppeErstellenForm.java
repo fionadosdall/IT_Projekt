@@ -258,7 +258,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderHinzufuegenCallback());
+			kinoplaner.gruppenmitgliedHinzufuegen(mitgliedTB.getValue(), new AnwenderHinzufuegenCallback());
 			mitgliedTB.setText("");
 
 		}
@@ -297,11 +297,11 @@ public class GruppeErstellenForm extends FlowPanel {
 			} 
 			neuerAnwender = result;
 			// Updaten des DataProviders
+			Window.alert("Hinzugefügt");
 			dataProvider.getList().add(result);
 			dataProvider.refresh();
-
-			Window.alert("Gruppenmitglied wurde hinzugefügt");
-
+			
+			
 		}
 
 	}

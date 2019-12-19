@@ -282,7 +282,7 @@ public class GruppeMapper {
 	 * @param anwender welcher zu einer Gruppe hinzugefügt werden soll.
 	 * @param gruppe   zu welcher der vorgegebene Anwender hinzugefügt werden soll.
 	 */
-	public void addGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
+	public Anwender addGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -293,6 +293,8 @@ public class GruppeMapper {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+		
+		return anwender;
 
 	}
 
