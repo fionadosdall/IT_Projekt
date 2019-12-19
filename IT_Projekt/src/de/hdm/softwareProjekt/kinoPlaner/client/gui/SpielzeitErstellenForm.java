@@ -167,7 +167,13 @@ private Spielzeit spielzeit2 = null;
 		detailsUntenBox.add(detailsBoxUnten);
 		detailsBoxUnten.add(entfernenButton);
 
-		detailsunten.add(speichernBox);
+		if(edit == true) {
+			detailsunten.add(loeschenButton);
+			detailsunten.add(speichernButton);
+		} else {
+			clearForm();
+			detailsunten.add(speichernButton);
+		}
 		speichernBox.add(speichernButton);
 		
 		vorstellungCellTable.setEmptyTableWidget(new Label("Es wurde noch keine Vorstellung hinzugefügt "));

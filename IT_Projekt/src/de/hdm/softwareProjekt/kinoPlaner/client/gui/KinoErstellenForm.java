@@ -7,12 +7,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 public class KinoErstellenForm extends VerticalPanel {
 	
@@ -22,6 +24,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
 	private Label kinoFormLabel = new Label("Neues Kino");
+	private Label kinokBearbeitenFormLabel = new Label("Kino bearbeiten");
 	private Label nameLabel = new Label("Kinoname:");
 	private Label plzLabel = new Label("PLZ:");
 	private Label stadtLabel = new Label("Stadt:");
@@ -35,9 +38,12 @@ public class KinoErstellenForm extends VerticalPanel {
 	private TextBox hnrTextBox = new TextBox();
 	
 	private Button speichernButton = new Button("Speichern");
+	private Button loeschenButton = new Button("Löschen");
 	private Grid kinoGrid = new Grid(5, 2);
 	
 	private static Boolean edit;
+	private MeineKinosForm mkf;
+	private Kino kinoBearbeiten;
 	
 	
 	/**
@@ -48,6 +54,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		untenPanel.add(speichernButton);
+		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
 		
 		
 	}
@@ -57,6 +64,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		/*Vergeben der Style-Namen*/
 		
 		kinoFormLabel.addStyleName("formHeaderLabel");
+		kinokBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
 		strasseLabel.addStyleName("textLabel");
 		hnrLabel.addStyleName("textLabel");
@@ -76,8 +84,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		/*Zusammensetzen der Widgets */
 		
+		if(edit == true) {
+			obenPanel.add(kinokBearbeitenFormLabel);
+		} else {
+			obenPanel.add(kinoFormLabel);
+			clearForm();
+		}
 		
-		obenPanel.add(kinoFormLabel);
 		
 		this.add(obenPanel);
 		
@@ -94,8 +107,16 @@ public class KinoErstellenForm extends VerticalPanel {
 		kinoGrid.setWidget(4, 1, stadtTextBox);
 
 		this.add(kinoGrid);
-	
-		untenPanel.add(speichernButton);
+		
+		
+		if(edit == true) {
+			untenPanel.add(loeschenButton);
+			untenPanel.add(speichernButton);
+		} else {
+			clearForm();
+			untenPanel.add(speichernButton);
+		}
+		
 		this.add(untenPanel);
 		
 	}
@@ -113,6 +134,20 @@ public class KinoErstellenForm extends VerticalPanel {
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 
 					new KinoErstellenCallback());
 		}		
+		
+	}
+	
+	private class KinoLoeschenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+			// administration.kinoEntfernen(kinoBearbeiten.getId(), new KinoLoeschenCallback());
+			RootPanel.get("details").clear();
+			mkf = new MeineKinosForm();
+			RootPanel.get("details").add(mkf);
+		}
 		
 	}
 
@@ -136,8 +171,57 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 	
 	
+	private class KinoLoeschenCallback implements AsyncCallback<Kino> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kino konnte nicht gelöscht werden.");
+			
+		}
+
+		@Override
+		public void onSuccess(Kino result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kino wurde gelöscht.");
+			
+		}
+		
+	}
 	
 	
+/**Methoden***/
+	
+	public Boolean getEdit() {
+		return edit;
+	}
+
+	public static void setEdit(Boolean edit) {
+		KinoErstellenForm.edit = edit;
+	}
+
+	/* TODO
+	public static void setBearbeiten(Kino kino) {
+		
+		
+		
+			nameTextBox.setText(kino.getName());
+			plzTextBox.setText(kino.getPlz());
+			strasseTextBox.setText(kino.getStrasse());
+			hnrTextBox.setText(kino.getHausnummer());
+			stadtTextBox.setText(kino.getStadt());
+			
+		
+	} */
+	
+	public void clearForm() {
+		nameTextBox.setText("");
+		plzTextBox.setText("");
+		strasseTextBox.setText("");
+		hnrTextBox.setText("");
+		stadtTextBox.setText("");
+		
+	}
 	
 	
 }

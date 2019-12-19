@@ -2,6 +2,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
@@ -26,11 +28,14 @@ public class MeineKinosForm extends FlowPanel {
 	private HorizontalPanel hbPanel = new HorizontalPanel();
 	private FlowPanel detailsunten = new FlowPanel ();
 	private FlowPanel detailsboxInhalt = new FlowPanel ();
+	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
 	
 	private Label title = new Label ("Dashboard");
 	
 	private ArrayList<Kino> kinos;
+	private KinoErstellenForm bearbeiten;
+	private static Boolean edit;
 	
 	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
@@ -46,6 +51,9 @@ public class MeineKinosForm extends FlowPanel {
 	public void onLoad() {
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+		
+		/* Vergeben der Stylename*/
+		
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
@@ -53,12 +61,18 @@ public class MeineKinosForm extends FlowPanel {
 		hbPanel.addStyleName("hbPanel");
 		detailsunten.addStyleName("untenPanel");
 		detailsboxInhalt.addStyleName("dashboardPanel");
-		
+		loeschenButton.addStyleName("loeschenButton");
+		bearbeitenButton.addStyleName("bearbeitenButton");
+		untenPanel.addStyleName("untenPanel");
 		title.addStyleName("formHeaderLabel");
+		
+		/*Zusammen bauen der Widgets*/
 		
 		this.add(detailsoben);
 		hbPanel.add(hb);
 		this.add(hbPanel);
+		
+		
 		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 		
@@ -96,7 +110,18 @@ public class MeineKinosForm extends FlowPanel {
 		}
 		
 		detailsboxInhalt.add(felder);
+		
+		untenPanel.add(loeschenButton);
+		untenPanel.add(bearbeitenButton);
+		this.add(untenPanel);
+		
+		bearbeitenButton.addClickHandler(new KinoBearbeitenClickHandler());
+
 	}
+	
+	
+	/*CLickHandler*/
+	
 	
 	private class KinoAuswaehlenClickHandler implements DoubleClickHandler {
 		private Kino kino;
@@ -128,6 +153,24 @@ public class MeineKinosForm extends FlowPanel {
 		
 	}
 	
+	private class KinoBearbeitenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			RootPanel.get("details").clear();
+			//Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
+			
+			KinoErstellenForm.setEdit(edit);
+			bearbeiten = new KinoErstellenForm();
+			//KinokErstellenForm.setBearbeiten(ausgewaehltesKino);
+			RootPanel.get("details").add(bearbeiten);
+		}
+		
+	}
+	
+	/*Callbacks*/
+	
 	private class SucheKinosByAnwenderCallback  implements AsyncCallback <ArrayList<Kino>> {
 
 		@Override
@@ -158,7 +201,21 @@ public class MeineKinosForm extends FlowPanel {
 		
 	}
 	
-	
+	private class KinoLoeschenCallback implements AsyncCallback<Kinokette> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	
 	
 }
