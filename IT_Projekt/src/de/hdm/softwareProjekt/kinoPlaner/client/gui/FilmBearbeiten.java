@@ -3,8 +3,15 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -45,6 +52,7 @@ public class FilmBearbeiten extends FlowPanel {
 	private Label beschreibungLabel = new Label("Beschreibung:");
 	private Label bewertungLabel = new Label("Bewertung:");
 	private Label laengeLabel = new Label("Filmlänge");
+	private Label filme = new Label ("Alle Filme");
 
 	// private TextBox filmTB = new TextBox();
 	private TextBox beschreibungTextBox = new TextBox();
@@ -66,6 +74,8 @@ public class FilmBearbeiten extends FlowPanel {
 	private Film neuerFilm = null;
 	
 	private FilmAnzeigenForm filmAF; 
+	
+	private CellTable <Film> filmCellTable = new CellTable<Film>(); 
 
 	private ListDataProvider<Film> dataProvider = new ListDataProvider<Film>();
 	private List<Film> list = dataProvider.getList();
@@ -145,9 +155,17 @@ public class FilmBearbeiten extends FlowPanel {
 		detailsBoxMitteMitte.add(laengeTextBox);
 		detailsMitteBox.add(detailsBoxMitteUnten);
 		detailsBoxMitteUnten.add(hinzufuegenButton);
+		
+		detailsUntenBox.add(filme);
+		detailsUntenBox.add(detailsBoxUntenMitte);
+		detailsBoxUntenMitte.add(filmCellTable);
+		detailsUntenBox.add(detailsBoxUnten);
+		detailsBoxUnten.add(entfernenButton);
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
+		
+		filmCellTable.setEmptyTableWidget(new Label("Es wurde noch keinFilm hinzugefügt."));
 
 		/*
 		 * Click-Handler
@@ -168,7 +186,6 @@ public class FilmBearbeiten extends FlowPanel {
 
 			public void onSuccess(ArrayList<Film> result) {
 				for (Film u : result) {
-					alleFilme.add(u);
 					alleFilmeOracle.add(u.getName());
 				}
 
@@ -178,6 +195,69 @@ public class FilmBearbeiten extends FlowPanel {
 		/***********************************************************************
 		 * CELL TABLE to do!!!!!!!!!
 		 ***********************************************************************/
+	TextCell namenTextCell = new TextCell();
+	Column <Film, String> namenColumn = new Column <Film, String> (namenTextCell) {
+
+		@Override
+		public String getValue(Film film) {
+			// TODO Auto-generated method stub
+			return film.getName();
+		}
+	};
+	
+	Cell<String> loeschenCell = new ButtonCell();
+	Column <Film, String> loeschenColumn = new Column <Film,String> (loeschenCell) {
+
+		@Override
+		public String getValue(Film object) {
+			// TODO Auto-generated method stub
+			return "-";
+		}
+	};
+	
+	loeschenColumn.setFieldUpdater(new FieldUpdater<Film, String>() {
+
+		@Override
+		public void update(int index, Film film, String value) {
+			// TODO Auto-generated method stub
+			dataProvider.getList().remove(film); 
+			
+			AsyncCallback<Film> loeschenCallback = new AsyncCallback<Film>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(Film result) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			};
+		}
+		
+	});
+	
+	namenColumn.setFieldUpdater(new FieldUpdater<Film, String> () {
+
+		@Override
+		public void update(int index, Film film, String name) {
+			// TODO Auto-generated method stub
+			film.setName(name); 
+		}
+		
+	});
+	
+	filmCellTable.addColumn(namenColumn, "Film hinzufügen");
+	filmCellTable.addColumn(loeschenColumn, "Film entfernen");
+	filmCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
+	filmCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
+	
+	dataProvider.addDataDisplay(filmCellTable);
+	
 	}
 
 	/***********************************************************************
@@ -189,7 +269,7 @@ public class FilmBearbeiten extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			kinoplaner.getFilmeByAnwenderOwner(filmTB.getValue(), new FilmCallback());
+			//kinoplaner.getFilmeByAnwenderOwner(filmTB.getValue(), new FilmCallback());
 			filmTB.setText("");
 		}
 
@@ -200,7 +280,8 @@ public class FilmBearbeiten extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.speichern(film, new FilmSpeichernCallback());
+			//kinoplaner.speichern(film, new FilmSpeichernCallback());
+		
 		}
 
 	}
@@ -210,7 +291,7 @@ public class FilmBearbeiten extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.loeschen(film, new LoeschenFilmCallback());
+		//	kinoplaner.loeschen(film, new LoeschenFilmCallback());
 		}
 
 	}
@@ -260,10 +341,6 @@ public class FilmBearbeiten extends FlowPanel {
 				Systemmeldung.anzeigen("Es wurde kein Filmname eingegeben.");
 			} else {
 				RootPanel.get("details").clear();
-				/*
-				 * TO DO: Vermutlich eine FilmAnzeigenForm-Klasse zum Anzeigen des Films, den
-				 * man soeben gespeichert hat??
-				 */
 				filmAF = new FilmAnzeigenForm(result);
 				RootPanel.get("details").add(filmAF);
 			}
