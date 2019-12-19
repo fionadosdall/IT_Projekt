@@ -1580,4 +1580,75 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Loeschen einer Kinokette durch die ID.
+	 * </p>
+	 * 
+	 * @param id
+	 *            Kennung der Kinokette
+	 * @throws IllegalArgumentException
+	 */
+	public void loeschenKinoketteById(int id) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Kinoketten die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            Zu suchender Text
+	 * @return ArrayList der gefundenen Kinoketten
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Kinokette> volltextSucheKinoketten(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Kinos die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            Zu suchender Text
+	 * @return ArrayList der gefundenen Kinos
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Kino> volltextSucheKinos(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Spielplaenen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            Zu suchender Text
+	 * @return ArrayList der gefundenen Spielplaene
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Spielplan> volltextSucheSpielplaene(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            Zu suchender Text
+	 * @return ArrayList der gefundenen Spielzeiten
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Spielzeit> volltextSucheSpielzeit(String text) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 * 
+	 * @param text
+	 *            Zu suchender Text
+	 * @return ArrayList der gefundenen Filme
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Film> volltextSucheFilm(String text) throws IllegalArgumentException;
+
 }
