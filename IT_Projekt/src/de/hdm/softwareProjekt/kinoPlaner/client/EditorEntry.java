@@ -63,7 +63,7 @@ public class EditorEntry implements EntryPoint {
 
 		@Override
 		public void onSuccess(Void result) {
-			
+			Window.alert("Abgelegt");
 			
 		}
 		

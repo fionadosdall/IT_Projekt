@@ -258,7 +258,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderCallback());
+			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderHinzufuegenCallback());
 			mitgliedTB.setText("");
 
 		}
@@ -279,31 +279,6 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
-	private class AnwenderCallback implements AsyncCallback<Anwender> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("AnwenderCallback funktioniert nicht");
-
-		}
-
-		public void onSuccess(Anwender anwender) {
-			// TODO Auto-generated method stub
-
-			neuerAnwender = anwender;
-			anwender.getName();
-
-			kinoplaner.gruppenmitgliedHinzufuegen(neuerAnwender, new AnwenderHinzufuegenCallback());
-
-			// Updaten des DataProviders
-			dataProvider.getList().add(neuerAnwender);
-			dataProvider.refresh();
-
-		}
-
-	}
-
 	private class AnwenderHinzufuegenCallback implements AsyncCallback<Anwender> {
 
 		@Override
@@ -316,6 +291,15 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Anwender result) {
 			// TODO Auto-generated method stub
+			if(result == null ) {
+				Window.alert("Kein gültiger Anwender ausgewählt!");
+				return;
+			} 
+			neuerAnwender = result;
+			// Updaten des DataProviders
+			dataProvider.getList().add(result);
+			dataProvider.refresh();
+
 			Window.alert("Gruppenmitglied wurde hinzugefügt");
 
 		}

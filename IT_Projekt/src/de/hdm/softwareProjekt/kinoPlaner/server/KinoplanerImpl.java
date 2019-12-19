@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -1343,7 +1344,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Umfrage> getUmfragenByAnwender() throws IllegalArgumentException {
-		return this.umfrageMapper.findAllByAnwender(this.anwender);
+		return this.umfrageMapper.findAllByAnwender(aktuellerAnwender.getAnwender());
 	}
 
 	/**
@@ -1753,6 +1754,18 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException {
 		this.gruppenmitglieder.add(anwender);
+		return anwender;
+	}
+	
+	/**
+	 * <p>
+	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
+	 * erstellt ist.
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException {
+		this.gruppenmitglieder.add(this.getAnwenderByName(anwenderName));
 		return anwender;
 	}
 

@@ -138,16 +138,21 @@ public class GruppeMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (gId) AS maxId " + "FROM gruppe");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(gId) AS maxId " + "FROM gruppe");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				gruppe.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO gruppe (gId, gName, gruppe_anwender_Id, erstellDatum)" + "VALUES("
-						+ gruppe.getId() + "','" + gruppe.getName() + "','" + gruppe.getBesitzerId() + "','"
-						+ gruppe.getErstellDatum() + ")");
+				stmt.executeUpdate("INSERT INTO gruppe (gId, gName, gruppe_anwender_Id)" + "VALUES("
+						+ gruppe.getId() + ",'" + gruppe.getName() + "'," + gruppe.getBesitzerId()+ ")");
+				
+				ResultSet resultset2 = stmt.executeQuery("SELECT erstellDatum " + "FROM gruppe WHERE gID ="+gruppe.getId());
+				if (resultset2.next()) {
+					// Setzen des DB erzeugten Timestamp
+					gruppe.setErstellDatum(resultset2.getTimestamp("erstellDatum"));
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -283,8 +288,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppe_Id, anwender_Id)" + "VALUES(" + gruppe.getId()
-					+ "','" + anwender.getId() + ")");
+			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppId, anwendId)" + "VALUES(" + gruppe.getId()
+					+ "," + anwender.getId() + ")");
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -335,10 +340,10 @@ public class GruppeMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppenmitglieder.gruppe_Id, gruppenmitglieder.anwender_Id, gruppe.gruppe_anwender_Id, gruppe.gName, "
+					"SELECT gruppenmitglieder.gruppID, gruppenmitglieder.anwendID, gruppe.gruppe_anwender_Id, gruppe.gName, "
 							+ "gruppe.erstellDatum FROM gruppenmitglieder " + "INNER JOIN gruppe "
-							+ "ON gruppenmitglieder.gruppe_Id = gruppe.gruppe_Id " + "WHERE anwender_Id = " + anwender.getId()
-							+ "ORDER BY gruppe_Id");
+							+ "ON gruppenmitglieder.gruppID = gruppe.gId " + "WHERE anwendID = " + anwender.getId()
+							+ " ORDER BY gId");
 
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Gruppe-Objekt erstellt und
@@ -347,7 +352,7 @@ public class GruppeMapper {
 
 			while (resultset.next()) {
 				Gruppe g = new Gruppe();
-				g.setId(resultset.getInt("gId"));
+				g.setId(resultset.getInt("gruppId"));
 				g.setBesitzerId(resultset.getInt("gruppe_anwender_Id"));
 				g.setName(resultset.getString("gName"));
 				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));

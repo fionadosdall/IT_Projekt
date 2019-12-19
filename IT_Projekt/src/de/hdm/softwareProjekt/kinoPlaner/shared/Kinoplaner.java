@@ -1572,4 +1572,12 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Vorstellung umfrageoptionEntfernen(Vorstellung vorstellung) throws IllegalArgumentException;
 
+	/**
+	 * 
+	 * @param anwenderName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException;
+
 }

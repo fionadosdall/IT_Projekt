@@ -313,5 +313,8 @@ public interface KinoplanerAsync {
 
 	public void umfrageoptionEntfernen(Vorstellung vorstellung, AsyncCallback<Vorstellung> callback)
 			throws IllegalArgumentException;
+	
+	public void gruppenmitgliedHinzufuegen(String anwenderName,  AsyncCallback<Anwender> callback) throws IllegalArgumentException;
+
 
 }

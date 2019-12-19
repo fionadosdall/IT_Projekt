@@ -55,32 +55,6 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
 
-		gruppe.setStyleName("detailsboxLabels");
-		felder.setWidget(0, 0, gruppe);
-
-		if (gruppen != null) {
-			felder.resizeRows(gruppen.size() + 1);
-			int i = 1;
-			for (Gruppe gruppe : gruppen) {
-				Label gruppenname = new Label(gruppe.getName());
-				GruppeAuswaehlenClickHandler click = new GruppeAuswaehlenClickHandler();
-				click.setGruppe(gruppe);
-				gruppenname.addDoubleClickHandler(click);
-				felder.setWidget(i, 0, gruppenname);
-				i++;
-
-			}
-		} else {
-			felder.setWidget(1, 0, new Label("Keine Gruppen verfügbar."));
-			Button erstellenButton= new Button("Erstelle deine erste Gruppe!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
-			felder.setWidget(2, 0, erstellenButton);
-			
-		}
-
-		detailsboxInhalt.add(felder);
-
 	}
 	
 	private class GruppeErstellenClickHandler implements ClickHandler {
@@ -122,7 +96,35 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
+			Window.alert("");
 			gruppen = result;
+			gruppe.setStyleName("detailsboxLabels");
+			felder.setWidget(0, 0, gruppe);
+			
+			if (result != null) {
+				
+				felder.resizeRows(result.size() +2);
+				int i = 1;
+				for (Gruppe gruppe : result) {
+					Label gruppenname = new Label(gruppe.getName());
+					
+					GruppeAuswaehlenClickHandler click = new GruppeAuswaehlenClickHandler();
+					click.setGruppe(gruppe);
+					gruppenname.addDoubleClickHandler(click);
+					felder.setWidget(i, 0, gruppenname);
+					i++;
+
+				}
+			} else {
+				felder.setWidget(1, 0, new Label("Keine Gruppen verfügbar."));
+				Button erstellenButton= new Button("Erstelle deine erste Gruppe!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
+				felder.setWidget(2, 0, erstellenButton);
+				
+			}
+
+			detailsboxInhalt.add(felder);
 
 		}
 
