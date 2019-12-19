@@ -124,7 +124,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Eine neue Kino konnte leider nicht erstellt werden");
+			Systemmeldung.anzeigen("Ein neues Kino konnte leider nicht erstellt werden");
 		}
 
 		@Override
