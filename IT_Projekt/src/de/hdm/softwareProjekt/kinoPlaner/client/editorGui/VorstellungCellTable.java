@@ -27,7 +27,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class VorstellungCellTable extends VerticalPanel {
-	
+
 	public interface CellTableResources extends CellTable.Resources {
 
 		@Source({ CellTable.Style.DEFAULT_CSS, "CellTable.css" })
@@ -36,7 +36,7 @@ public class VorstellungCellTable extends VerticalPanel {
 		interface TableStyle extends CellTable.Style {
 		}
 	}
-	
+
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -46,7 +46,7 @@ public class VorstellungCellTable extends VerticalPanel {
 	// CellTable der Vorstellungen
 
 	private CellTable<Vorstellung> vorstellungenCellTable = new CellTable<Vorstellung>(10, tableRes, KEY_PROVIDER);
-	
+
 	private final MultiSelectionModel<Vorstellung> selectionModel = new MultiSelectionModel<Vorstellung>();
 	private ListDataProvider<Vorstellung> dataProvider = new ListDataProvider<Vorstellung>();
 	private List<Vorstellung> list = dataProvider.getList();
@@ -57,11 +57,11 @@ public class VorstellungCellTable extends VerticalPanel {
 		}
 	};
 
-	private Film film = null;
+	 Film film = null;
 	private Spielzeit spielzeit = null;
 	private Kino kino = null;
 	private Kinokette kinokette = null;
-	
+
 	private Vorstellung vorstellung = null;
 
 	// DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
@@ -77,9 +77,8 @@ public class VorstellungCellTable extends VerticalPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenCellTable);
-		
+
 		vorstellungenCellTable.setWidth("100%");
-	
 
 		/***********************************************************************
 		 * CELL TABLE
@@ -87,22 +86,6 @@ public class VorstellungCellTable extends VerticalPanel {
 
 		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
 		
-		Window.alert("Hier");
-		
-
-		if (vorstellungen != null) {
-
-			for (Vorstellung v : vorstellungen) {
-
-				Window.alert(v.getName());
-				list.add(v);
-
-			}
-
-		} else {
-
-			vorstellungenCellTable.setEmptyTableWidget(new Label("Es sind noch keine Vorstellungen vorhanden"));
-		}
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Vorstellung, String> buttonColumn = new Column<Vorstellung, String>(buttonCell) {
@@ -121,11 +104,11 @@ public class VorstellungCellTable extends VerticalPanel {
 				// TODO Auto-generated method stub
 
 				vorstellung = object;
-				
+
 				kinoplaner.umfrageoptionHinzufuegen(object, new UmfrageOptionHinzufuegenCallback());
 
-				dataProvider.getList().remove(object);
-				dataProvider.refresh();
+//				dataProvider.getList().remove(object);
+//				dataProvider.refresh();
 
 			}
 
@@ -139,8 +122,13 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
+				
+				vorstellung = object;
+				
 				kinoplaner.getFilmById(object.getFilmId(), new FilmByIdCallback());
+				
 				return film.getName();
+				
 			}
 
 		};
@@ -168,6 +156,7 @@ public class VorstellungCellTable extends VerticalPanel {
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
 				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
+
 				return kino.getName();
 			}
 
@@ -181,7 +170,6 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
-				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
 				return kinokette.getName();
 			}
 
@@ -208,7 +196,7 @@ public class VorstellungCellTable extends VerticalPanel {
 		dataProvider.addDataDisplay(vorstellungenCellTable);
 
 	}
-	
+
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
@@ -226,6 +214,21 @@ public class VorstellungCellTable extends VerticalPanel {
 		public void onSuccess(ArrayList<Vorstellung> result) {
 			// TODO Auto-generated method stub
 			vorstellungen = result;
+
+			if (vorstellungen != null) {
+
+				for (Vorstellung v : vorstellungen) {
+					
+					Window.alert(v.getName());
+
+					list.add(v);
+
+				}
+
+			} else {
+
+				vorstellungenCellTable.setEmptyTableWidget(new Label("Es sind noch keine Vorstellungen vorhanden"));
+			}
 		}
 
 	}
@@ -241,7 +244,8 @@ public class VorstellungCellTable extends VerticalPanel {
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-			film = result;
+			 film = result;
+			
 
 		}
 
@@ -294,9 +298,11 @@ public class VorstellungCellTable extends VerticalPanel {
 		public void onSuccess(Vorstellung result) {
 			// TODO Auto-generated method stub
 			Window.alert("Erstellen einer Umfrageoption war erfolgreich");
-			
+
 			vorstellung = result;
-			
+
+			dataProvider.getList().remove(result);
+			dataProvider.refresh();
 
 		}
 
