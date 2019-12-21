@@ -27,6 +27,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class VorstellungCellTable extends VerticalPanel {
+	
 
 	public interface CellTableResources extends CellTable.Resources {
 
@@ -47,7 +48,6 @@ public class VorstellungCellTable extends VerticalPanel {
 
 	private CellTable<Vorstellung> vorstellungenCellTable = new CellTable<Vorstellung>(10, tableRes, KEY_PROVIDER);
 
-	private final MultiSelectionModel<Vorstellung> selectionModel = new MultiSelectionModel<Vorstellung>();
 	private ListDataProvider<Vorstellung> dataProvider = new ListDataProvider<Vorstellung>();
 	private List<Vorstellung> list = dataProvider.getList();
 
@@ -57,14 +57,14 @@ public class VorstellungCellTable extends VerticalPanel {
 		}
 	};
 
-	 Film film = null;
+	private Film film = null;
 	private Spielzeit spielzeit = null;
 	private Kino kino = null;
 	private Kinokette kinokette = null;
 
 	private Vorstellung vorstellung = null;
 
-	// DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
+//	 DateFormaterSpielzeit date = new DateFormaterSpielzeit(spielzeit.getZeit());
 
 	public Vorstellung getVorstellung() {
 		return vorstellung;
@@ -73,19 +73,13 @@ public class VorstellungCellTable extends VerticalPanel {
 	public void setVorstellung(Vorstellung vorstellung) {
 		this.vorstellung = vorstellung;
 	}
-
-	public void onLoad() {
-
-		this.add(vorstellungenCellTable);
-
-		vorstellungenCellTable.setWidth("100%");
-
+	
+	public VorstellungCellTable() {
+		
 		/***********************************************************************
 		 * CELL TABLE
 		 ***********************************************************************/
 
-		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
-		
 
 		ButtonCell buttonCell = new ButtonCell();
 		Column<Vorstellung, String> buttonColumn = new Column<Vorstellung, String>(buttonCell) {
@@ -125,7 +119,7 @@ public class VorstellungCellTable extends VerticalPanel {
 				
 				vorstellung = object;
 				
-				kinoplaner.getFilmById(object.getFilmId(), new FilmByIdCallback());
+				kinoplaner.getFilmById(vorstellung.getFilmId(), new FilmByIdCallback());
 				
 				return film.getName();
 				
@@ -141,8 +135,8 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
-				return null;
-				// return date.toString();
+				
+				 return spielzeit.getZeit().toString();
 			}
 
 		};
@@ -155,6 +149,9 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
+				
+				vorstellung = object;
+				
 				kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
 
 				return kino.getName();
@@ -170,6 +167,10 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
+				
+				vorstellung = object;
+				
+				kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
 				return kinokette.getName();
 			}
 
@@ -183,15 +184,25 @@ public class VorstellungCellTable extends VerticalPanel {
 			@Override
 			public String getValue(Vorstellung object) {
 				// TODO Auto-generated method stub
+				
+				vorstellung = object;
+				
 				return kino.getStadt();
 			}
 
 		};
 
 		vorstellungenCellTable.addColumn(stadtCellColumn, "Ort");
+		
+	}
 
-		vorstellungenCellTable.setSelectionModel(selectionModel,
-				DefaultSelectionEventManager.<Vorstellung>createCheckboxManager());
+	public void onLoad() {
+
+		this.add(vorstellungenCellTable);
+		
+		kinoplaner.getAllVorstellungen(new VorstellungenCallback());
+
+		vorstellungenCellTable.setWidth("100%");
 
 		dataProvider.addDataDisplay(vorstellungenCellTable);
 
@@ -213,7 +224,9 @@ public class VorstellungCellTable extends VerticalPanel {
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
 			// TODO Auto-generated method stub
-			vorstellungen = result;
+		
+				
+				vorstellungen = result;
 
 			if (vorstellungen != null) {
 
@@ -222,6 +235,7 @@ public class VorstellungCellTable extends VerticalPanel {
 					Window.alert(v.getName());
 
 					list.add(v);
+					
 
 				}
 
@@ -238,13 +252,14 @@ public class VorstellungCellTable extends VerticalPanel {
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
+			Window.alert("Film wird nicht aufgerufen");
 
 		}
 
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-			 film = result;
+		 film = result;
 			
 
 		}

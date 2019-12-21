@@ -322,6 +322,34 @@
 	vertical-align: top;
 	cursor: pointer;
 }
+.abbrechenButton.gwt-Button {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #ff3860;
+	border-color: transparent;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;
+
+	
+
+	}
 
 .mailLabel {
 	margin-bottom: .5em;
