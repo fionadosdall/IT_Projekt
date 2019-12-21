@@ -207,14 +207,16 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 				}
 
+			} else {
+
+				gruppenListBox.addItem("Keine Gruppen verfügbar");
+				gruppenListBox.setEnabled(false);
+
 			}
-
-			gruppenListBox.addItem("Keine Gruppen verfügbar");
-			gruppenListBox.setEnabled(false);
-
 		}
 
 	}
+
 
 	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 
