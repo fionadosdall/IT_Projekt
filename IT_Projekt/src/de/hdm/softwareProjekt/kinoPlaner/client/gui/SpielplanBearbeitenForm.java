@@ -26,12 +26,10 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.GruppeLoeschenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.MitgliedHinzufuegenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeBearbeitenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
@@ -92,10 +90,15 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 	private Kino neuesKino = null;
 	
 	private Spielplan spielplan;
+	private Kinokette kinokette;
 	
 	MeineSpielplaeneForm sf = new MeineSpielplaeneForm ();
 	
 	private MeineSpielplaeneForm spielplaeneF;
+	
+	public SpielplanBearbeitenForm (Spielplan spielplan) {
+		this.spielplan = spielplan;
+	}
 	
 	public void onLoad() {
 		//Vergeben der Stylenamens
@@ -352,7 +355,7 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 			kino.getName();
 			
 		
-			kinoplaner.erstellenSpielplanKino(neuesKino, kinoId, new KinoHinzufuegenCallback());
+			//kinoplaner.erstellenSpielplanKino(neuesKino, kino.getId(), new KinoHinzufuegenCallback());
 			
 			//Updaten des DataProviders
 			

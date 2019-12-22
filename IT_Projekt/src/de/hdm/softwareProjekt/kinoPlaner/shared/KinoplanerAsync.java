@@ -332,4 +332,9 @@ public interface KinoplanerAsync {
 			throws IllegalArgumentException;
 
 	public void volltextSucheFilm(String text, AsyncCallback<ArrayList<Film>> callback) throws IllegalArgumentException;
+
+	public void getSpielzeitById(int spielzeitId, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
+
+	public void getKinoByVorstellung(Vorstellung vorstellung, AsyncCallback<Kino> callback)
+			throws IllegalArgumentException;
 }

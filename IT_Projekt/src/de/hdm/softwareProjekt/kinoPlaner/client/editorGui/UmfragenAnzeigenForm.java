@@ -1,29 +1,50 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-public class UmfragenAnzeigenForm extends FlowPanel {
-	private FlowPanel detailsoben = new FlowPanel();
+public class UmfragenAnzeigenForm extends VerticalPanel {
+		
+		BusinessObjektView bov = new BusinessObjektView();
+		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+		VerticalPanel p = new VerticalPanel();
+		
+		public void onLoad() {
+			p.setStyleName("");
+			bov.setTitel("Meine Umfragen");
+			p.add(bov);
+			this.add(p);
+			
+			kinoplaner.getUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
+			
+			
+		}
+		
+		private class SucheUmfragenByAnwenderCallback implements AsyncCallback<ArrayList<Umfrage>> {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Umfragen nicht abrufbar.");
+
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Umfrage> result) {
+				bov.setUmfragen(result);
+			}
+			
+		
+		
+		/**
+		 * 
+			private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 
@@ -38,9 +59,6 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 	private Grid felder = new Grid(3, 2);
 	private HomeBar hb = new HomeBar();
-
-	public void onLoad() {
-		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 		this.addStyleName("detailscontainer");
 
@@ -154,5 +172,6 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	**/
 
-}
+		}}

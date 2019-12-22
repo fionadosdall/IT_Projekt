@@ -150,10 +150,9 @@ public class UmfrageMapper {
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
-						"INSERT INTO Umfrage (uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum)"
+						"INSERT INTO Umfrage (uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id)"
 								+ " VALUES(" + umfrage.getId() + ", '" + umfrage.getName() + "', "
-								+ umfrage.getBesitzerId() + ", " + umfrage.getGruppenId() + ", "
-								+ umfrage.getErstellDatum() + ")");
+								+ umfrage.getBesitzerId() + ", " + umfrage.getGruppenId() +")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -273,7 +272,7 @@ public class UmfrageMapper {
 				Umfrage u = new Umfrage();
 				u.setId(resultset.getInt("uId"));
 				u.setName(resultset.getString("uName"));
-				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id,"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
@@ -394,7 +393,7 @@ public class UmfrageMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
-							+ "FROM umfrage " + "WHERE umfrage_gruppe_Id = " + gruppe.getId() + " ORDER BY name");
+							+ "FROM umfrage " + "WHERE umfrage_gruppen_Id = " + gruppe.getId() + " ORDER BY uName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrage-Objekt erstellt und

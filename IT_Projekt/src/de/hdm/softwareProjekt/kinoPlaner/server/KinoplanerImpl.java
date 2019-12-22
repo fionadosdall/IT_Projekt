@@ -1327,6 +1327,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
+	 * Rueckgabe einer Spielzeit mit einer bestimmten Id.
+	 * </p>
+	 */
+	@Override
+	public Spielzeit getSpielzeitById(int spielzeitId) throws IllegalArgumentException {
+		return this.spielzeitMapper.findById(spielzeitId);
+	}
+
+	/**
+	 * <p>
 	 * Alle Spielplaene ausgeben
 	 * </p>
 	 */
@@ -1417,6 +1427,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		return this.kinoMapper.findById(this.spielplanMapper
 				.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielplanId())
 				.getKinoId());
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Vorstellung
+	 * </p>
+	 */
+	@Override
+	public Kino getKinoByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException {
+		return this.kinoMapper.findById(this.spielplanMapper.findById(vorstellung.getSpielplanId()).getKinoId());
 	}
 
 	/**

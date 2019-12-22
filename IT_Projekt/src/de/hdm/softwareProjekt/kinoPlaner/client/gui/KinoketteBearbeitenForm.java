@@ -95,6 +95,10 @@ public class KinoketteBearbeitenForm extends FlowPanel{
 	
 	private MeineKinokettenForm kinokettenF;
 	
+	public KinoketteBearbeitenForm(Kinokette kinokette) {
+		this.kinokette = kinokette;
+	}
+	
 	public void onLoad() {
 		
 		// Vergeben der Stylenames

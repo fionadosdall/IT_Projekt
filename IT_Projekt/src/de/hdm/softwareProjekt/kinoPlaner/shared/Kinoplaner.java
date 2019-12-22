@@ -1651,4 +1651,24 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public ArrayList<Film> volltextSucheFilm(String text) throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Rueckgabe einer Spielzeit mit einer bestimmten Id.
+	 * </p>
+	 * @param spielzeitId Kennung der Spielzeit
+	 * @return Spuielzeitobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Spielzeit getSpielzeitById(int spielzeitId) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Vorstellung
+	 * </p>
+	 * @param vorstellung Verstellungsobjekt
+	 * @return Zugehoeriges Kinoobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Kino getKinoByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
+
 }
