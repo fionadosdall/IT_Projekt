@@ -41,7 +41,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private Button loeschenButton = new Button("Löschen");
 	private Grid kinoGrid = new Grid(5, 2);
 	
-	private static Boolean edit;
+	private static Boolean edit = false;
 	private MeineKinosForm mkf;
 	private Kino kinoBearbeiten;
 	
@@ -54,7 +54,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		untenPanel.add(speichernButton);
-		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		//loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
 		
 		
 	}

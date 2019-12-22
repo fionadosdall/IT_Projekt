@@ -572,3 +572,66 @@ body {
 	height: auto;
 	max-width: 100%;
 }
+
+/** Styling der DialogBox*/
+.Abfrage {
+	color: red;
+}
+/** Styling der DetailsForms*/
+.detailscontainer {
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+}
+
+.detailsoben {
+	background: #d6d1d1;
+	text-align: center;
+	color: white;
+	margin-bottom: 3px;
+	padding: 20px 0 20px 0;
+}
+
+.detailsunten {
+	text-align: center;
+	color: white;
+	background: #d6d1d1;
+}
+
+.detailsuntenBoxen {
+	display: flex;
+	flex-direction: column;
+	border-bottom: solid;
+	border-color: grey;
+	border-width: thin;
+	margin: 10px;
+}
+
+.speichernBox {
+	margin-top: 5%;
+}
+
+.detailsBoxMitte {
+	margin-left: 35%;
+	margin-bottom: 15px;
+	align-items: center;
+	width: 30%;
+}
+
+.detailsBoxUnten {
+	margin-bottom: 15px;
+}
+
+.detailsboxLabels {
+	font-size: 1.25rem;
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-weight: 700;
+}
+
+/* Systembenachrichtigungen */
+
+.sytemmeldungLabel{
+	text-align: center;
+}

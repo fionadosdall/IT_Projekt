@@ -1,7 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
-
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -145,12 +145,22 @@ public class KinoketteMapper {
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				kinokette.setId(resultset.getInt("maxId") + 1);
-				stmt = con.createStatement();
-
-				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO kinokette (kkId, kkName, kinokette_anwender_Id)" + " VALUES("
-						+ kinokette.getId() + ", '" + kinokette.getName() + "', " + kinokette.getBesitzerId() + ")");
+				
 			}
+			
+			PreparedStatement stmt2 = con.prepareStatement("INSERT INTO kinokette (kkId, sitz, kkName, website, erstellDatum,"
+					+ " kinokette_anwender_Id) VALUES(?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+					
+					stmt2.setInt(1, kinokette.getId());
+					stmt2.setString(2, kinokette.getSitz());
+					stmt2.setString(3, kinokette.getName());
+					stmt2.setString(4, kinokette.getWebsite());
+					stmt2.setTimestamp(5, kinokette.getErstellDatum());
+					stmt2.setInt(6, kinokette.getBesitzerId());
+					
+				
+					
+					stmt2.executeUpdate();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

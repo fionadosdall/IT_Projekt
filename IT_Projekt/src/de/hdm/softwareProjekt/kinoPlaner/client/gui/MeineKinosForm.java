@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -24,14 +25,15 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 public class MeineKinosForm extends FlowPanel {
 	
 	
-	private FlowPanel detailsoben = new FlowPanel ();
+	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel hbPanel = new HorizontalPanel();
-	private FlowPanel detailsunten = new FlowPanel ();
-	private FlowPanel detailsboxInhalt = new FlowPanel ();
+	private HorizontalPanel formHeaderPanel = new HorizontalPanel();
+	private VerticalPanel inhaltPanel = new VerticalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
+	private BusinessObjektView bov = new BusinessObjektView();
 	
-	private Label title = new Label ("Dashboard");
+	private Label title = new Label("Dashboard");
 	
 	private ArrayList<Kino> kinos;
 	private KinoErstellenForm bearbeiten;
@@ -40,7 +42,7 @@ public class MeineKinosForm extends FlowPanel {
 	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
-	private Label kino = new Label ("Kino");
+	private Label kinoLabel = new Label("Meine Kinos");
 	
 	
 	private Grid felder = new Grid(3,1);
@@ -57,33 +59,39 @@ public class MeineKinosForm extends FlowPanel {
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
-		detailsoben.addStyleName("obenPanel");
+		obenPanel.addStyleName("obenPanel");
 		hbPanel.addStyleName("hbPanel");
-		detailsunten.addStyleName("untenPanel");
-		detailsboxInhalt.addStyleName("dashboardPanel");
+		formHeaderPanel.addStyleName("h2Panel");
+		inhaltPanel.addStyleName("inhaltPanel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");
 		untenPanel.addStyleName("untenPanel");
 		title.addStyleName("formHeaderLabel");
+		kinoLabel.addStyleName("formHeaderLabel");
 		
 		/*Zusammen bauen der Widgets*/
 		
-		this.add(detailsoben);
+		obenPanel.add(title);
+		this.add(obenPanel);
 		hbPanel.add(hb);
 		this.add(hbPanel);
 		
+		formHeaderPanel.add(kinoLabel);
+		this.add(formHeaderPanel);
 		
-		this.add(detailsunten);
-		this.add(detailsboxInhalt);
+		inhaltPanel.add(bov);
+		this.add(inhaltPanel);
 		
-		//TODO detailsoben.add(hb);
-		detailsoben.add(title);
+		
+		
+		
+		
 		
 		
 		
 		kinoplaner.getKinosByAnwenderOwner(new SucheKinosByAnwenderCallback());
 		
-		kino.setStyleName("detailsboxLabel");
+	
 		
 		if (kinos != null) {
 			felder.resizeRows(kinos.size() +1 );
@@ -109,7 +117,7 @@ public class MeineKinosForm extends FlowPanel {
 			felder.setWidget(2, 0,  erstellenButton);
 		}
 		
-		detailsboxInhalt.add(felder);
+		//detailsboxInhalt.add(felder);
 		
 		untenPanel.add(loeschenButton);
 		untenPanel.add(bearbeitenButton);
@@ -159,7 +167,7 @@ public class MeineKinosForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			//Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
+
 			
 			KinoErstellenForm.setEdit(edit);
 			bearbeiten = new KinoErstellenForm();

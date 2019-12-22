@@ -34,7 +34,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	
 	
 
-	public static Boolean edit;
+	public static Boolean edit = false;
 
 	private int kinoId;
 
@@ -97,7 +97,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		
 		// Vergeben der Stylenamen
 		
-		this.addStyleName("center");
+		//this.addStyleName("center");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
@@ -452,7 +452,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	} 
 	
 	public void clearForm() {
-		
+		spielplannameTB.setText("");
 		
 	}
 	
