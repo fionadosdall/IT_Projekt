@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 
@@ -31,8 +32,8 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	private HorizontalPanel detailsoben = new HorizontalPanel();
 	private HorizontalPanel homebarPanel = new HorizontalPanel();
-	private FlowPanel detailsunten = new FlowPanel();
-	private HorizontalPanel hPanel = new HorizontalPanel();
+	private HorizontalPanel formHeaderPanel = new HorizontalPanel();
+	private VerticalPanel inhaltPanel = new VerticalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	private Boolean edit = true;
 	
@@ -45,6 +46,8 @@ public class MeineKinokettenForm extends VerticalPanel{
 	private KinoketteErstellenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
 	private KinoketteErstellenForm bearbeiten;
+	private BusinessObjektView bov = new BusinessObjektView();
+	
 	private Label kinokettenlabel = new Label("Meine Kinoketten");
 	
 	
@@ -75,9 +78,10 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		detailsoben.addStyleName("obenPanel");
 		homebarPanel.addStyleName("hbPanel");
+		inhaltPanel.addStyleName("inhaltPanel");
 		untenPanel.addStyleName("untenPanel");
 		kinokettenlabel.addStyleName("formHeaderLabel");
-		hPanel.addStyleName("h2Panel");
+		formHeaderPanel.addStyleName("h2Panel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");	
 		title.addStyleName("formHeaderLabel");
@@ -87,6 +91,8 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		/*Zusammensetzen der Widgets */
 		
+		bov.setTitel("Meine Kinoketten");
+		kinoplaner.getAllKinoketten(new SucheKinokettenByAnwenderCallback());
 		
 		
 		detailsoben.add(title);
@@ -95,44 +101,17 @@ public class MeineKinokettenForm extends VerticalPanel{
 		homebarPanel.add(homebar);
 		this.add(homebarPanel);
 		
-		hPanel.add(kinokettenlabel);
-		this.add(hPanel);
+		formHeaderPanel.add(kinokettenlabel);
+		this.add(formHeaderPanel);
+		
+		
+		this.add(inhaltPanel);
 		
 		
 		bearbeitenButton.addClickHandler(new KinoketteBearbeitenClickHandler());
 		
 	
-		kinoplaner.getKinokettenByAnwenderOwner(new SucheKinoKettenByAnwenderOwnerCallback());
 		
-		
-		//felder.setWidget(0, 0, kinokettenlabel);
-		
-		
-		
-		if (kinoketten != null) {
-			felder.resizeRows(kinoketten.size()+1);
-			int i=1;
-			
-			for ( Kinokette kinokette : kinoketten) {
-				Label kinokettename = new Label (kinokette.getName());
-				
-				KinoketteAuswaehlenClickHandler click = new KinoketteAuswaehlenClickHandler();
-				click.setKinokette(kinokette);
-				kinokettename.addDoubleClickHandler(click);
-				felder.setWidget(i, 0, kinokettename);
-				i++;
-				
-				}
-			
-			} else {
-					felder.setWidget(0, 0, new Label("Keine Kinoketten verfügbar"));
-					Button erstellenButton = new Button ("Erstelle deine erste Kinokette");
-					erstellenButton.setStyleName("navButton");
-					erstellenButton.addDoubleClickHandler(new KinoketteErstellenClickHandler());
-					felder.setWidget(1, 0, erstellenButton);
-		}
-		
-		this.add(felder);
 		
 		untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		untenPanel.add(loeschenButton);
@@ -212,36 +191,38 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	
 	/***Callbacks***/
 	
-	private class SucheKinoKettenByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Kinokette>> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Kinoketten nicht abrufbar");
-			
-		}
-
-		@Override
-		public void onSuccess(ArrayList<Kinokette> result) {
-			kinoketten = result;
-			
-		}
-
-		
-		
-			
-		}
+	
 	
 	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Systemmeldung.anzeigen("Die Kinokette konnte nicht gelöscht werden");
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
+			//administration.kinoketteEntfernen(kino, loeschenCallback);
+		}
+		
+	}
+	
+	
+	private class SucheKinokettenByAnwenderCallback implements AsyncCallback<ArrayList<Kinokette>>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kinoketten können nicht abgerufen werden");
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kinokette> result) {
+			// TODO Auto-generated method stub
+			bov.setKinoketten(result);
+			inhaltPanel.add(bov);
 			
 		}
 		

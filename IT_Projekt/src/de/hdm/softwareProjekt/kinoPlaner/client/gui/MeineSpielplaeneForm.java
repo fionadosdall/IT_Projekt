@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeAnzeigenForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.HomeBar;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -27,7 +28,6 @@ public class MeineSpielplaeneForm extends FlowPanel {
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private HorizontalPanel hbPanel = new HorizontalPanel();
-	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
@@ -39,6 +39,8 @@ public class MeineSpielplaeneForm extends FlowPanel {
 	private MeineSpielplaeneForm anzeigen;
 	private SpielplanErstellenForm erstellen;
 	private SpielplanErstellenForm bearbeiten;
+	private BusinessObjektView bov = new BusinessObjektView();
+
 	
 	private static Boolean edit;
 	
@@ -60,7 +62,6 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		
 		detailsoben.addStyleName("detailsoben");
 		hbPanel.addStyleName("hbPanel");
-		detailsunten.addStyleName("detailsunten");
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
 		spielplanLabel.setStyleName("detailsboxLabels");
 		title.addStyleName("title");
@@ -78,10 +79,8 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		
 		
 		
-		this.add(detailsunten);
 		this.add(detailsboxInhalt);
 
-		//TODO detailsoben.add(hb);
 		detailsoben.add(title);
 		
 		untenPanel.add(loeschenButton);

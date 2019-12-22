@@ -155,8 +155,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde angelegt");
-			//Kinokette neueKinokette = new Kinokette();
-			// administration.erstellenKinokette(name, sitz, website, callback);
+			
 		}
 		
 	}
