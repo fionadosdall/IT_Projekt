@@ -120,7 +120,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
-		detailsBoxUmfrage.add(uct);
+	//	detailsBoxUmfrage.add(uct);
 		detailsBoxUmfrage.add(vct);
 
 		detailsunten.add(detailsBoxFiltern);
