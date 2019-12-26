@@ -20,6 +20,7 @@ public class EditorEntry implements EntryPoint {
 	Header header = new Header();
 	Navigator navigator = new Navigator();
 	Footer footer = new Footer();
+	
 	private 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 

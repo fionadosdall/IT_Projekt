@@ -15,13 +15,13 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 public class ClientsideSettings extends CommonSettings {
 
 	/*
-	 * Remote Service Proxy zur Verbindung mit dem Server-Seitgen Dienst des Editors
+	 * Remote Service Proxy zur Verbindung mit dem Server-Seitigen Dienst des Editors
 	 */
 
 	private static KinoplanerAsync kinoplaner = null;
 
 	/*
-	 * Remote Service Proxy zur Verbindung mit dem Server-Seitgen Dienst des
+	 * Remote Service Proxy zur Verbindung mit dem Server-Seitigen Dienst des
 	 * Login
 	 */
 
@@ -44,7 +44,7 @@ public class ClientsideSettings extends CommonSettings {
 //	}
 //
 //	/*
-//	 * Die Methode ermöglicht das erstellen einer Instant der Klasse LoginService
+//	 * Die Methode ermöglicht das erstellen einer Instanz der Klasse LoginService
 //	 */
 //	public static LoginServiceAsync getLoginService() {
 //		if (loginService == null) {
