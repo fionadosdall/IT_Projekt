@@ -33,7 +33,7 @@ public class MeineKinosForm extends FlowPanel {
 	
 	private BusinessObjektView bov = new BusinessObjektView();
 	
-	private Label title = new Label("Dashboard");
+	
 	
 	private ArrayList<Kino> kinos;
 	private KinoErstellenForm bearbeiten;
@@ -42,7 +42,7 @@ public class MeineKinosForm extends FlowPanel {
 	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
-	private Label kinoLabel = new Label("Meine Kinos");
+	private Label formHeaderLabel = new Label("Dashboard");
 	
 	
 	private Grid felder = new Grid(3,1);
@@ -50,8 +50,10 @@ public class MeineKinosForm extends FlowPanel {
 	private Button loeschenButton = new Button(" Auswahl löschen");
 	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 	
+	
+	
 	public void onLoad() {
-		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+		KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
 		
 		/* Vergeben der Stylename*/
@@ -61,23 +63,23 @@ public class MeineKinosForm extends FlowPanel {
 		
 		obenPanel.addStyleName("obenPanel");
 		hbPanel.addStyleName("hbPanel");
-		formHeaderPanel.addStyleName("h2Panel");
 		inhaltPanel.addStyleName("inhaltPanel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");
 		untenPanel.addStyleName("untenPanel");
-		title.addStyleName("formHeaderLabel");
-		kinoLabel.addStyleName("formHeaderLabel");
+		formHeaderLabel.addStyleName("formHeaderLabel");
 		
 		/*Zusammen bauen der Widgets*/
 		
-		obenPanel.add(title);
+		
+		
+		obenPanel.add(formHeaderLabel);
 		this.add(obenPanel);
 		hbPanel.add(hb);
 		this.add(hbPanel);
 		
-		formHeaderPanel.add(kinoLabel);
-		this.add(formHeaderPanel);
+		bov.setTitel("Meine Kinos");
+		administration.getAllKinos(new SucheKinosByAnwenderCallback());
 		
 		inhaltPanel.add(bov);
 		this.add(inhaltPanel);
@@ -89,7 +91,7 @@ public class MeineKinosForm extends FlowPanel {
 		
 		
 		
-		kinoplaner.getKinosByAnwenderOwner(new SucheKinosByAnwenderCallback());
+		/*kinoplaner.getKinosByAnwenderOwner(new SucheKinosByAnwenderCallback());
 		
 	
 		
@@ -117,7 +119,7 @@ public class MeineKinosForm extends FlowPanel {
 			felder.setWidget(2, 0,  erstellenButton);
 		}
 		
-		//detailsboxInhalt.add(felder);
+		//detailsboxInhalt.add(felder);*/
 		
 		untenPanel.add(loeschenButton);
 		untenPanel.add(bearbeitenButton);
@@ -183,13 +185,14 @@ public class MeineKinosForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Kinos nicht abrufbar");
+			Systemmeldung.anzeigen("Kinos nicht abrufbar");
 			
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Kino> result) {
-			 kinos = result;
+			bov.setKinos(result);
+			inhaltPanel.add(bov);
 			
 		}
 		

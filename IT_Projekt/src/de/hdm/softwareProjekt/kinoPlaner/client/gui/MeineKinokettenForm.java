@@ -30,14 +30,20 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
-	private HorizontalPanel detailsoben = new HorizontalPanel();
+	
+	/* Erstellen der Widgets */
+	
+	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel homebarPanel = new HorizontalPanel();
 	private HorizontalPanel formHeaderPanel = new HorizontalPanel();
 	private VerticalPanel inhaltPanel = new VerticalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
-	private Boolean edit = true;
+	private BusinessObjektView bov = new BusinessObjektView();
+	private Grid felder = new Grid (2,1);
+	private HomeBarAdmin homebar = new HomeBarAdmin();
 	
-	private Label title = new Label("Dashboard");
+	
+	private Boolean edit = true;
 	
 	private ArrayList <Kinokette> kinoketten;
 	private Kinokette kinokette;
@@ -46,14 +52,13 @@ public class MeineKinokettenForm extends VerticalPanel{
 	private KinoketteErstellenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
 	private KinoketteErstellenForm bearbeiten;
-	private BusinessObjektView bov = new BusinessObjektView();
-	
-	private Label kinokettenlabel = new Label("Meine Kinoketten");
 	
 	
+	private Label formHeaderLabel = new Label("Dashboard");
 	
-	private Grid felder = new Grid (2,1);
-	private HomeBarAdmin homebar = new HomeBarAdmin();
+	
+	/* Erstellen der Buttons */
+	
 	private Button loeschenButton = new Button(" Auswahl löschen");
 	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 
@@ -62,7 +67,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		
 		
-		/***Anzeigetest***/
+		/*** voruebergehender Anzeigetest***/
 		
 		ausgewaehlteKinokette.setId(1);
 		ausgewaehlteKinokette.setName("UFA");
@@ -76,35 +81,36 @@ public class MeineKinokettenForm extends VerticalPanel{
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
-		detailsoben.addStyleName("obenPanel");
+		obenPanel.addStyleName("obenPanel");
 		homebarPanel.addStyleName("hbPanel");
 		inhaltPanel.addStyleName("inhaltPanel");
 		untenPanel.addStyleName("untenPanel");
-		kinokettenlabel.addStyleName("formHeaderLabel");
-		formHeaderPanel.addStyleName("h2Panel");
+		formHeaderLabel.addStyleName("formHeaderLabel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");	
-		title.addStyleName("formHeaderLabel");
+		
 		
 		
 		
 		
 		/*Zusammensetzen der Widgets */
 		
-		bov.setTitel("Meine Kinoketten");
-		kinoplaner.getAllKinoketten(new SucheKinokettenByAnwenderCallback());
+		administration.getAllKinoketten(new SucheKinokettenByAnwenderCallback());
 		
 		
-		detailsoben.add(title);
-		this.add(detailsoben);
+		
+		
+		
+		obenPanel.add(formHeaderLabel);
+		this.add(obenPanel);
 		
 		homebarPanel.add(homebar);
 		this.add(homebarPanel);
 		
-		formHeaderPanel.add(kinokettenlabel);
-		this.add(formHeaderPanel);
 		
-		
+		bov.setTitel("Meine Kinoketten");
+
+		inhaltPanel.add(bov);
 		this.add(inhaltPanel);
 		
 		
@@ -113,7 +119,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 		
 		
-		untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		untenPanel.add(loeschenButton);
 		untenPanel.add(bearbeitenButton);
 		this.add(untenPanel);

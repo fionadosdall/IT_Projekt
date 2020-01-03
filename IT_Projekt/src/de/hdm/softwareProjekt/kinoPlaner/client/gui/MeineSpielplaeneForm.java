@@ -26,28 +26,32 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
 public class MeineSpielplaeneForm extends FlowPanel {
 
-	private FlowPanel detailsoben = new FlowPanel();
+	
+	/* Erstellen der Widgets*/ 
+	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel hbPanel = new HorizontalPanel();
-	private FlowPanel detailsboxInhalt = new FlowPanel();
+	private VerticalPanel inhaltPanel = new VerticalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
+	private BusinessObjektView bov = new BusinessObjektView();
+	private Grid felder = new Grid (3,1);
+	private HomeBarAdmin hb = new HomeBarAdmin();
 	
-	
-	private Label title = new Label ("Deine Spielpläne");
+	private Label formHeaderLabel = new Label ("Dashboard");
 	
 	private ArrayList <Spielplan> spielplaene;
 	private Kino kino;
 	private MeineSpielplaeneForm anzeigen;
 	private SpielplanErstellenForm erstellen;
 	private SpielplanErstellenForm bearbeiten;
-	private BusinessObjektView bov = new BusinessObjektView();
+	
 
 	
 	private static Boolean edit;
 	
-	private Label spielplanLabel = new Label ("Spielplan");
 	
-	private Grid felder = new Grid (3,1);
-	private HomeBarAdmin hb = new HomeBarAdmin();
+	
+	/*Erstellen der Buttons*/
+	
 	private Button loeschenButton = new Button(" Auswahl löschen");
 	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
 	
@@ -60,11 +64,11 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
 		
-		detailsoben.addStyleName("detailsoben");
+		obenPanel.addStyleName("obenPanel");
 		hbPanel.addStyleName("hbPanel");
-		detailsboxInhalt.addStyleName("detailsboxInhalt");
-		spielplanLabel.setStyleName("detailsboxLabels");
-		title.addStyleName("title");
+		inhaltPanel.addStyleName("detailsboxInhalt");
+		
+		formHeaderLabel.addStyleName("formHeaderLabel");
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");
 		untenPanel.addStyleName("untenPanel");
@@ -72,16 +76,18 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		/* Zusammenbauen der Widgets*/
 		
 		
-		
-		this.add(detailsoben);
+		obenPanel.add(formHeaderLabel);
+		this.add(obenPanel);
 		hbPanel.add(hb);
 		this.add(hbPanel);
 		
+		bov.setTitel("Meine Spielpläne");
+		kinoplaner.getAllSpielplaene(new GetSpielplaeneByAnwenderOwnerCallback());
 		
-		
-		this.add(detailsboxInhalt);
+		inhaltPanel.add(bov);
+		this.add(inhaltPanel);
 
-		detailsoben.add(title);
+		
 		
 		untenPanel.add(loeschenButton);
 		untenPanel.add(bearbeitenButton);
@@ -90,7 +96,7 @@ public class MeineSpielplaeneForm extends FlowPanel {
 		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
 		
 		
-		if (spielplaene != null) {
+		/*if (spielplaene != null) {
 			felder.resizeRows(spielplaene.size()+1);
 			int i=1;
 			
@@ -114,7 +120,7 @@ public class MeineSpielplaeneForm extends FlowPanel {
 			felder.setWidget(2, 0, erstellenButton);
 		}
 		detailsboxInhalt.add(felder);
-		bearbeitenButton.addClickHandler(new SpielplanBearbeitenClickHandler());
+		bearbeitenButton.addClickHandler(new SpielplanBearbeitenClickHandler());*/
 
 	}
 	
@@ -176,12 +182,13 @@ public class MeineSpielplaeneForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Spielplaene nicht abrufbar");
+			Systemmeldung.anzeigen("Spielplaene nicht abrufbar");
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Spielplan> result) {
-			spielplaene = result;
+			bov.setSpielplaene(result);
+			inhaltPanel.add(bov);
 		}
 		
 	}
