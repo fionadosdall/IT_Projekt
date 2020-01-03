@@ -44,7 +44,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private Kinokette kinoketteBearbeiten;
 	
 	/**
-	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
+	 * Bei der Instanziierung  wird der ClickHandler dem Button hinzugefügt
 	 */	
 	
 	public KinoketteErstellenForm() {

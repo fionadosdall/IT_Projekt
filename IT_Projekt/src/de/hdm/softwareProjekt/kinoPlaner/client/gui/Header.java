@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.BurgerMenueAdmin;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UserForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.VolltextSucheForm;
 
@@ -38,6 +39,7 @@ public class Header extends FlowPanel{
 	private Anchor clientAnchor = new Anchor("Client");
 	private Button einstellungenButton = new Button("USER");
 	private Image suchenImage = new Image();
+	//private BurgerMenueAdmin burgerMenueAdmin = new BurgerMenueAdmin();
 	
 	private AdminDashboardForm home;
 	private VolltextSucheForm vsf;
@@ -96,6 +98,7 @@ public class Header extends FlowPanel{
 		headerRechtsElementHome.add(homeAnchor);
 		headerRechtsElementHome.add(clientAnchor);
 		headerRechtsElementUser.add(einstellungenButton);
+		//headerRechts.add(burgerMenueAdmin);
 		
 
 		// Click-Handler
