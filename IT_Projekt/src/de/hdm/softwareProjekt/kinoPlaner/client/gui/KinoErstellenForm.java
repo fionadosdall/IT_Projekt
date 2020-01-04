@@ -44,6 +44,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private static Boolean edit = false;
 	private MeineKinosForm mkf;
 	private Kino kinoBearbeiten;
+	private Kino k;
 	
 	
 	/**
@@ -59,6 +60,12 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 	}
 	
+	public KinoErstellenForm(Kino k) {
+		this.k = k;
+	}
+	
+	
+
 	public void onLoad() {
 		
 		/*Vergeben der Style-Namen*/

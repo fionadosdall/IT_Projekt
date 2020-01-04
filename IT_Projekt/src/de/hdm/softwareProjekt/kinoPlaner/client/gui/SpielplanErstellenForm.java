@@ -73,7 +73,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	private Button entfernenButton = new Button ("entfernen");
 	private Button speichernButton = new Button("Speichern");
 
-	
+	private Spielplan sp;
 	
 	private CellTable<Kino> kinoCellTable = new CellTable<Kino>(KEY_PROVIDER);
 	
@@ -93,6 +93,18 @@ public class SpielplanErstellenForm extends FlowPanel {
 	
 	private MeineSpielplaeneForm spielplaeneF;
 	
+	/** Konstruktor zur Übergabe des zu bearbeitenden eines Spielplans **/
+	
+	public SpielplanErstellenForm(Spielplan sp) {
+		this.sp = sp;
+	}
+	
+	/** Default-Konstruktor **/
+	
+	public SpielplanErstellenForm() {
+		
+	}
+
 	public void onLoad() {
 		
 		// Vergeben der Stylenamen
@@ -320,7 +332,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 			//Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
 			
 			KinoketteErstellenForm.setEdit(edit);
-			bearbeiten = new SpielplanErstellenForm();
+			bearbeiten = new SpielplanErstellenForm(sp);
 			//SpielplanErstellenForm.setBearbeiten();
 			RootPanel.get("details").add(bearbeiten);
 		}

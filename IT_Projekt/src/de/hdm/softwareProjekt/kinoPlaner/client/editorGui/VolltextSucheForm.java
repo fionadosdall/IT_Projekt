@@ -46,6 +46,8 @@ public class VolltextSucheForm extends FlowPanel {
 	private Grid gruppenGrid = new Grid(3, 2);
 	private Grid umfragenGrid = new Grid(3, 2);
 	private Grid ergebnisseGrid = new Grid(3, 2);
+	
+	private static Boolean edit;
 
 	public VolltextSucheForm(String text) {
 		this.suchText = text;

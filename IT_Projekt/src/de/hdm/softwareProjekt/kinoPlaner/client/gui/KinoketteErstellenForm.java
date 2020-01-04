@@ -42,6 +42,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private static Boolean edit = false;
 	private Kinokette kinoketteBearbeiten;
+	private Kinokette kk;
 	
 	/**
 	 * Bei der Instanziierung  wird der ClickHandler dem Button hinzugefügt
@@ -49,14 +50,18 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	public KinoketteErstellenForm() {
 		
-		speichernButton.addClickHandler(new SpeichernClickHandler());
-		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
+		
 		
 		
 		
 	}
 	
 	
+	public KinoketteErstellenForm(Kinokette kk) {
+		this.kk = kk;
+	}
+
+
 	public void onLoad() {
 		
 		/* Setzen der Style-Namen */
@@ -108,6 +113,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		
 		this.add(untenPanel);
+		
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
 	}
 		
 		
