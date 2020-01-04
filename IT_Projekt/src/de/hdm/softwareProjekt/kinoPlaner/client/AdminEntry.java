@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.AdminDashboardForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Footer;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Header;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Navigator;
@@ -22,6 +23,7 @@ public class AdminEntry implements EntryPoint {
 	Header header = new Header();
 	Navigator navigator = new Navigator();
 	Footer footer = new Footer();
+	AdminDashboardForm home = new AdminDashboardForm();
 	
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
@@ -31,6 +33,7 @@ public class AdminEntry implements EntryPoint {
 
 		RootPanel.get("header").add(header);
 		RootPanel.get("navigator").add(navigator);
+		RootPanel.get("details").add(home);
 		RootPanel.get("footer").add(footer);
 		
 		

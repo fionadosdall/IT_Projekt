@@ -22,7 +22,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
-public class MeineKinosForm extends FlowPanel {
+public class MeineKinosForm extends VerticalPanel {
 	
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();

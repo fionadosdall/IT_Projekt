@@ -24,7 +24,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
-public class MeineSpielplaeneForm extends FlowPanel {
+public class MeineSpielplaeneForm extends VerticalPanel {
 
 	
 	/* Erstellen der Widgets*/ 

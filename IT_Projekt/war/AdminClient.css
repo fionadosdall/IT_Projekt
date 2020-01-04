@@ -322,6 +322,21 @@ body {
 	padding-top: 5%;
 	
 }
+	
+.systemmeldungPanel {
+	width: 100%;
+	text-align: center;
+	align-items: center;
+	color: red;
+	border-color: white;
+	background: #d6d1d1;
+	border-top: solid;
+	border-width: thin;
+	margin-top: 5%;
+	padding-top: 5%;
+}	
+	
+
 
 .hbPanel {
 	border-top: solid;
