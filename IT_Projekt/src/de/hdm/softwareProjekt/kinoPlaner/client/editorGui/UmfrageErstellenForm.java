@@ -63,7 +63,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private ArrayList<Film> filme;
 
 	private UmfrageCellTable uct = new UmfrageCellTable();
-	private VorstellungCellTable vct = new VorstellungCellTable();
+//	private VorstellungCellTable vct = new VorstellungCellTable();
+	//private VorstellungenAnzeigenGrid vag = new VorstellungenAnzeigenGrid();
+	private NeueCellTable n = new NeueCellTable();
+	
 
 	/*
 	 * (non-Javadoc)
@@ -121,7 +124,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
 	//	detailsBoxUmfrage.add(uct);
-		detailsBoxUmfrage.add(vct);
+		detailsBoxUmfrage.add(n);
 
 		detailsunten.add(detailsBoxFiltern);
 		detailsBoxFiltern.add(filternLabel);
