@@ -111,10 +111,10 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 		detailsUntenBox.addStyleName("detailsUntenBoxen");
 
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
-		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
-		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxObenMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitteMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
+		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 
 		title.addStyleName("title");

@@ -337,7 +337,7 @@ public class UserForm extends FlowPanel {
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Window.alert("Dein Profil könnte  nicht gelöscht werden");
+			Window.alert("Dein Profil konnte nicht gelöscht werden");
 
 		}
 

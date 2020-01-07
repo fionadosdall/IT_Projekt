@@ -172,7 +172,7 @@ public class VotingsAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Keine Umfraeoptionen abrufbar.");
+			Window.alert("Keine Umfrageoptionen abrufbar.");
 
 		}
 
