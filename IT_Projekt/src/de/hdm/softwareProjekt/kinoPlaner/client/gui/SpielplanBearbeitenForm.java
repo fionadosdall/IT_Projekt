@@ -58,7 +58,7 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 	private Label spielplanname = new Label ("Spielplanname");
 	private Label kino = new Label ("Kino hinzufügen");
 	private Label kinos = new Label ("Kinos");
-	private Label spielzeitHinzufuegenLabel = new Label("Spielzeit  hinzuf&uuml;gen");
+	private Label spielzeitHinzufuegenLabel = new Label("Spielzeit  hinzufügen");
 	private Label spielzeitBearbeitenLabel = new Label("Spielzeit bearbeiten");
 	
 	
@@ -103,12 +103,12 @@ public class SpielplanBearbeitenForm extends FlowPanel {
 		
 		this.addStyleName("detailscontainer");
 
-		detailsoben.addStyleName("detailsoben");
-		detailsunten.addStyleName("detailsunten");
+		detailsoben.addStyleName("detailsOben");
+		detailsunten.addStyleName("detailsUnten");
 
-		detailsObenBox.addStyleName("detailsuntenBoxen");
-		detailsMitteBox.addStyleName("detailsuntenBoxen");
-		detailsUntenBox.addStyleName("detailsuntenBoxen");
+		detailsObenBox.addStyleName("detailsObenBoxen");
+		detailsMitteBox.addStyleName("detailsMitteBoxen");
+		detailsUntenBox.addStyleName("detailsUntenBoxen");
 
 		speichernBox.addStyleName("speichernBox");
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");

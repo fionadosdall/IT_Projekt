@@ -96,14 +96,14 @@ public class VorstellungErstellenForm extends FlowPanel {
 	
 	public void onLoad( ) {
 		
-		this.addStyleName("detailscontainer");
+		this.addStyleName("detailsContainer");
 
-		detailsoben.addStyleName("detailsoben");
-		detailsunten.addStyleName("detailsunten");
+		detailsoben.addStyleName("detailsOben");
+		detailsunten.addStyleName("detailsUnten");
 
-		detailsObenBox.addStyleName("detailsuntenBoxen");
-		detailsMitteBox.addStyleName("detailsuntenBoxen");
-		detailsUntenBox.addStyleName("detailsuntenBoxen");
+		detailsObenBox.addStyleName("detailsObenBoxen");
+		detailsMitteBox.addStyleName("detailsMitteBoxen");
+		detailsUntenBox.addStyleName("detailsUntenBoxen");
 		
 		
 		speichernBox.addStyleName("speichernBox");
@@ -114,9 +114,9 @@ public class VorstellungErstellenForm extends FlowPanel {
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 		
 		title.addStyleName("title");
-		vorstellungLabel.addStyleName("detailsboxLabels");
-		film.addStyleName("detailsboxLabels");
-		film.addStyleName("detailsboxLabels");
+		vorstellungLabel.addStyleName("detailsBoxLabels");
+		film.addStyleName("detailsBoxLabels");
+		film.addStyleName("detailsBoxLabels");
 		
 		
 		vorstellungsnameTB.getElement().setPropertyString("placeholder", "Vorstellung eingeben");

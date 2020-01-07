@@ -27,7 +27,7 @@ public class FilmErstellenForm extends VerticalPanel {
 	private Label nameLabel = new Label("Filmname:");
 	private Label beschreibungLabel = new Label("Beschreibung:");
 	private Label bewertungLabel = new Label("Bewertung:");
-	private Label laengeLabel = new Label("L&auml;nge:");
+	private Label laengeLabel = new Label("Länge:");
 	
 	private TextBox nameTextBox = new TextBox();
 	private TextBox beschreibungTextBox = new TextBox();
@@ -105,7 +105,7 @@ private class FilmErstellenCallback implements AsyncCallback<Film> {
 	@Override
 	public void onFailure(Throwable caught) {
 		// TODO Auto-generated method stub
-		Systemmeldung.anzeigen("Eine neuer Film konnte leider nicht erstellt werden");
+		Systemmeldung.anzeigen("Ein neuer Film konnte leider nicht erstellt werden");
 	}
 
 	@Override

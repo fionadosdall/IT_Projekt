@@ -79,8 +79,8 @@ public class FilmBearbeiten extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
-		detailsObenBox.addStyleName("detailsuntenBoxen");
-		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsObenBox.addStyleName("detailsObenBoxen");
+		detailsMitteBox.addStyleName("detailsMitteBoxen");
 		detailsUntenBox.addStyleName("detailsuntenBoxen");
 
 		speichernBox.addStyleName("speichernBox");
@@ -91,10 +91,10 @@ public class FilmBearbeiten extends FlowPanel {
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 
 		title.addStyleName("title");
-		filmname.addStyleName("detailsboxLabels");
-		beschreibungLabel.addStyleName("detailsboxLabels");
-		bewertungLabel.addStyleName("detailsboxLabels");
-		laengeLabel.addStyleName("detailsboxLabels");
+		filmname.addStyleName("detailsBoxLabels");
+		beschreibungLabel.addStyleName("detailsBoxLabels");
+		bewertungLabel.addStyleName("detailsBoxLabels");
+		laengeLabel.addStyleName("detailsBoxLabels");
 
 		filmTB.addStyleName("filmnameTB");
 		beschreibungTextBox.addStyleName("beschreibungTextBox");
