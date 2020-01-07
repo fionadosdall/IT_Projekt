@@ -74,8 +74,9 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
-					+ "FROM vorstellung" + "WHERE vName = " + name + "ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ " FROM Vorstellung" + " WHERE vName = '" + name + "' ORDER BY vName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Vorstellungs-Objekt erstellt
@@ -120,7 +121,7 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM vorstellung" + "WHERE vName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT vName FROM Vorstellung" + " WHERE vName = '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -146,17 +147,17 @@ public class VorstellungMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Vorstellungen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (vId) AS maxId " + "FROM vorstellung");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Vorstellung");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				vorstellung.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO vorstellung (vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum)"
-						+ "VALUES(" + vorstellung.getId() + "','" + vorstellung.getName() + "','"
-						+ vorstellung.getFilmId() + "','" + vorstellung.getSpielzeitId() + "','"
-						+ vorstellung.getSpielplanId() + "','" + vorstellung.getErstellDatum() + ")");
+				stmt.executeUpdate("INSERT INTO Vorstellung (vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id,"
+						+ "vorstellung_spielplan_Id, erstellDatum)" + " VALUES(" + vorstellung.getId() + ", '"
+						+ vorstellung.getName() + "', " + vorstellung.getFilmId() + ", " + vorstellung.getSpielzeitId()
+						+ ", " + vorstellung.getSpielplanId() + ", " + vorstellung.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -182,10 +183,11 @@ public class VorstellungMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE vorstellung SET " + "vName=\"" + vorstellung.getName() + "\", "
+			stmt.executeUpdate("UPDATE Vorstellung SET " + "vName=\" '" + vorstellung.getName() + "' \", "
 					+ "erstellDatum=\"" + vorstellung.getErstellDatum() + "\", " + "vorstellung_spielplan_Id=\""
-					+ vorstellung.getSpielzeitId() + "\", " + "vorstellung_spielzeit_Id=\"" + vorstellung.getSpielzeitId() + "\", "
-					+ "vorstellung_film_Id=\"" + vorstellung.getFilmId() + "\" " + "WHERE vId=" + vorstellung.getId());
+					+ vorstellung.getSpielzeitId() + "\", " + "vorstellung_spielzeit_Id=\""
+					+ vorstellung.getSpielzeitId() + "\", " + "vorstellung_film_Id=\"" + vorstellung.getFilmId() + "\" "
+					+ " WHERE vId=" + vorstellung.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -207,7 +209,7 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM vorstellung " + "WHERE vId=" + vorstellung.getId());
+			stmt.executeUpdate("DELETE FROM Vorstellung " + "WHERE vId=" + vorstellung.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -229,9 +231,9 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum FROM vorstellung"
-							+ "ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ " FROM Vorstellung" + " ORDER BY vName");
 
 			while (resultset.next()) {
 				Vorstellung v = new Vorstellung();
@@ -274,8 +276,10 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
-					+ "FROM vorstellung" + "WHERE vorstellung_spielplan_Id = " + spielplan.getId() + "ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ "FROM Vorstellung" + " WHERE vorstellung_spielplan_Id = " + spielplan.getId()
+							+ "ORDER BY vName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Vorstellungs-Objekt erstellt
@@ -314,9 +318,9 @@ public class VorstellungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum FROM vorstellung"
-							+ "WHERE vId=" + id + " ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ " FROM Vorstellung" + " WHERE vId=" + id + " ORDER BY vName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Vorstellung v = new Vorstellung();
@@ -354,9 +358,9 @@ public class VorstellungMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum FROM vorstellung"
-							+ "WHERE vorstellung_film_Id = " + film + "ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ " FROM Vorstellung" + " WHERE vorstellung_film_Id = " + film + " ORDER BY vName");
 			/**
 			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife
 			 * wird dann der Resultarray nach und nach aufgebaut und befüllt. Hierbei wird
@@ -404,9 +408,10 @@ public class VorstellungMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum FROM vorstellung"
-							+ "WHERE vorstellung_spielzeit_Id = " + spielzeit + "ORDER BY vName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
+							+ " FROM Vorstellung" + " WHERE vorstellung_spielzeit_Id = " + spielzeit
+							+ " ORDER BY vName");
 			/**
 			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife
 			 * wird dann der Resultarray nach und nach aufgebaut und befüllt. Hierbei wird
@@ -418,7 +423,7 @@ public class VorstellungMapper {
 				v.setName(resultset.getString("vName"));
 				v.setFilmId(resultset.getInt("vorstellung_film_Id"));
 				v.setSpielzeitId(resultset.getInt("vorstellung_spielzeit_Id"));
-				v.setSpielplanId(resultset.getInt("vorstellung_spielplanvorstellung_Id"));
+				v.setSpielplanId(resultset.getInt("vorstellung_spielplan_Id"));
 				v.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des Objekts zur ArrayList
 				resultarray.add(v);

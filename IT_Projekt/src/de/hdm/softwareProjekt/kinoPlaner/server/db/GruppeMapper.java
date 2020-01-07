@@ -338,7 +338,7 @@ public class GruppeMapper {
 					"SELECT gruppenmitglieder.gruppID, gruppenmitglieder.anwendID, gruppe.gruppe_anwender_Id, gruppe.gName, "
 							+ "gruppe.erstellDatum FROM gruppenmitglieder " + "INNER JOIN gruppe "
 							+ "ON gruppenmitglieder.gruppID = gruppe.gId " + "WHERE anwendID = " + anwender.getId()
-							+ "ORDER BY gruppID");
+							+ " ORDER BY gId");
 
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Gruppe-Objekt erstellt und

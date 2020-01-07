@@ -116,7 +116,7 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT spName FROM spielplan" + "WHERE spName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT spName FROM Spielplan" + " WHERE spName = '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -133,8 +133,9 @@ public class SpielplanMapper {
 		ArrayList<Spielplan> resultarray = new ArrayList<Spielplan>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum FROM spielplan"
-					+ "WHERE spName=" + name + " ORDER BY spielplan_kino_Id");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum FROM Spielplan"
+							+ " WHERE spName= '" + name + "' ORDER BY spielplan_kino_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();
@@ -167,7 +168,7 @@ public class SpielplanMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Spielpläne ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (spId) AS maxId " + "FROM spielplan");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Spielplan");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				spielplan.setId(resultset.getInt("maxId") + 1);
