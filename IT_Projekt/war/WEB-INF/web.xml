@@ -4,8 +4,13 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
+         
+     
 
   <!-- Servlets -->
+  
+  
+	
   <servlet>
     <servlet-name>KinoplanerAdministration</servlet-name>
     <servlet-class>de.hdm.softwareProjekt.kinoPlaner.server.KinoplanerImpl</servlet-class>
@@ -14,6 +19,16 @@
   <servlet-mapping>
     <servlet-name>KinoplanerAdministration</servlet-name>
     <url-pattern>/it_projekt/administration</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AdminClientAdministration</servlet-name>
+    <servlet-class>de.hdm.softwareProjekt.kinoPlaner.server.AdminClientImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>KinoplanerAdministration</servlet-name>
+    <url-pattern>/AdminClient/adminClient</url-pattern>
   </servlet-mapping>
   
    <!--  

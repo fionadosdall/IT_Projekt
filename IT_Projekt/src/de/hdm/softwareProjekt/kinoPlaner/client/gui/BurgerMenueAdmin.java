@@ -17,6 +17,8 @@ public class BurgerMenueAdmin extends FlowPanel{
 	VerticalPanel fl = new VerticalPanel();
 	FlowPanel detailsOben = new FlowPanel();
 	VerticalPanel dropdown = new  VerticalPanel();
+	
+	private Boolean edit = false;
 
 	@Override
 	protected void onLoad() {
@@ -48,8 +50,8 @@ public class BurgerMenueAdmin extends FlowPanel{
 				buttonErstellenKinokette.setStyleName("dropdownButton");
 				buttonErstellenKino.setStyleName("dropdownButton");
 				buttonErstellenSpielplan.setStyleName("dropdownButton");
-				buttonErstellenKinokette.addClickHandler(new KinoErstellenClickHandler());
-				buttonErstellenKino.addClickHandler(new KinoketteErstellenClickHandler());
+				buttonErstellenKinokette.addClickHandler(new KinoketteErstellenClickHandler());
+				buttonErstellenKino.addClickHandler(new KinoErstellenClickHandler());
 				buttonErstellenSpielplan.addClickHandler(new SpielplanErstellenClickHandler());
 				menueDropdown.add(buttonErstellenKinokette);
 				menueDropdown.add(buttonErstellenKino);
@@ -79,6 +81,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			KinoErstellenForm erstellen = new KinoErstellenForm();
+			KinoErstellenForm.setEdit(edit);
 			RootPanel.get("details").add(erstellen);
 
 		}
@@ -91,6 +94,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			KinoketteErstellenForm erstellen = new KinoketteErstellenForm();
+			KinoketteErstellenForm.setEdit(edit);
 			RootPanel.get("details").add(erstellen);
 
 		}
@@ -105,6 +109,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			SpielplanErstellenForm erstellen = new SpielplanErstellenForm();
+			SpielplanErstellenForm.setEdit(edit);
 			RootPanel.get("details").add(erstellen);
 		}
 		

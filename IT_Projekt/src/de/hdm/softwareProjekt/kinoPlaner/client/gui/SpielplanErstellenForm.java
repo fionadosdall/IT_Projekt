@@ -72,6 +72,8 @@ public class SpielplanErstellenForm extends FlowPanel {
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button ("entfernen");
 	private Button speichernButton = new Button("Speichern");
+	private Button filmErstellen = new Button("Film erstellen");
+	private Button spielzeitErstellen = new Button ("Spielzeit erstellen");
 
 	private Spielplan sp;
 	
