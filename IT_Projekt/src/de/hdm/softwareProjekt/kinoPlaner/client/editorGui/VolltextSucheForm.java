@@ -46,6 +46,8 @@ public class VolltextSucheForm extends FlowPanel {
 	private Grid gruppenGrid = new Grid(3, 2);
 	private Grid umfragenGrid = new Grid(3, 2);
 	private Grid ergebnisseGrid = new Grid(3, 2);
+	
+	private static Boolean edit;
 
 	public VolltextSucheForm(String text) {
 		this.suchText = text;
@@ -57,15 +59,15 @@ public class VolltextSucheForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
-		detailsObenBox.addStyleName("detailsObenBoxen");
-		detailsMitteBox.addStyleName("detailsMitteBoxen");
-		detailsUntenBox.addStyleName("detailsUntenBoxen");
+		detailsObenBox.addStyleName("detailsuntenBoxen");
+		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsUntenBox.addStyleName("detailsuntenBoxen");
 
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxObenMitte.addStyleName("detailsBoxObenMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitteMitte");
-		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
-		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
+		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 
 		title.addStyleName("title");

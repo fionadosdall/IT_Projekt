@@ -314,4 +314,27 @@ public interface KinoplanerAsync {
 	public void umfrageoptionEntfernen(Vorstellung vorstellung, AsyncCallback<Vorstellung> callback)
 			throws IllegalArgumentException;
 
+	public void gruppenmitgliedHinzufuegen(String anwenderName, AsyncCallback<Anwender> callback)
+			throws IllegalArgumentException;
+
+	public void loeschenKinoketteById(int id, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void volltextSucheKinoketten(String text, AsyncCallback<ArrayList<Kinokette>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheKinos(String text, AsyncCallback<ArrayList<Kino>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheSpielplaene(String text, AsyncCallback<ArrayList<Spielplan>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheSpielzeit(String text, AsyncCallback<ArrayList<Spielzeit>> callback)
+			throws IllegalArgumentException;
+
+	public void volltextSucheFilm(String text, AsyncCallback<ArrayList<Film>> callback) throws IllegalArgumentException;
+
+	public void getSpielzeitById(int spielzeitId, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
+
+	public void getKinoByVorstellung(Vorstellung vorstellung, AsyncCallback<Kino> callback)
+			throws IllegalArgumentException;
 }

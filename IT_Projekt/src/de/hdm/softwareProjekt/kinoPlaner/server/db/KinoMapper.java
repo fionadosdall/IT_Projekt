@@ -70,12 +70,13 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum" + "FROM Kino"
-					+ "WHERE kName = " + name + "ORDER BY kName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum"
+							+ " FROM Kino" + " WHERE kName = '" + name + "' ORDER BY kName");
 
 			/**
-			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und die
+			 * ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
@@ -98,7 +99,7 @@ public class KinoMapper {
 		// Rückgabe des Ergebnisses in Form der zuvor erstellten ArrayList
 		return resultarray;
 	}
-	
+
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
@@ -139,8 +140,8 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 			/**
-			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
-			 * Kinos ist.
+			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden Kinos
+			 * ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX(kId) AS maxId " + "FROM Kino");
 			if (resultset.next()) {
@@ -150,10 +151,10 @@ public class KinoMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO kino (kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum)"
-								+ "VALUES(" + kino.getId() + "','" + kino.getName() + "','" + kino.getBesitzerId()
-								+ "','" + kino.getPlz() + "','" + kino.getStadt() + "','" + kino.getStrasse() + "','"
-								+ kino.getHausnummer() + "','" + kino.getErstellDatum() + ")");
+						"INSERT INTO Kino (kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum)"
+								+ " VALUES(" + kino.getId() + ", '" + kino.getName() + "', " + kino.getBesitzerId()
+								+ ", " + kino.getPlz() + ", '" + kino.getStadt() + "', '" + kino.getStrasse() + "', "
+								+ kino.getHausnummer() + ", " + kino.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -203,7 +204,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM kino " + "WHERE kId=" + kino.getId());
+			stmt.executeUpdate("DELETE FROM Kino " + "WHERE kId=" + kino.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();

@@ -2,7 +2,6 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,8 +39,8 @@ public class UmfrageoptionMapper {
 	 * KONSTRUKTOR, sondern die folgende Methode. Sie ist statisch, dadurch stellt
 	 * sie sicher, dass nur eine einzige Instanz dieser Klasse existiert. Außerdem
 	 * wird zuerst überprüft, ob bereis ein umfrageoptionMapper existiert, falls
-	 * nein, wird ein neuer instanziiert. Existiert bereits ein umfrageoptionMapper, wird
-	 * dieser zurückgegeben.
+	 * nein, wird ein neuer instanziiert. Existiert bereits ein umfrageoptionMapper,
+	 * wird dieser zurückgegeben.
 	 */
 
 	public static UmfrageoptionMapper umfrageoptionMapper() {
@@ -60,9 +59,9 @@ public class UmfrageoptionMapper {
 	 * Suche nach allen Umfrageoptionen über vorgegebenen Namen.
 	 * 
 	 * @param name den die gesuchten Umfrageoptionen tragen
-	 * @return Eine ArrayList, die alle gefundenen Umfrageoptionen enthält. Falls eine
-	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
-	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 * @return Eine ArrayList, die alle gefundenen Umfrageoptionen enthält. Falls
+	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
+	 *         leer oder nur teilweise befüllt zurück gegeben wird.
 	 */
 	public ArrayList<Umfrageoption> findAllByName(String name) {
 		Connection con = DBConnection.connection();
@@ -77,8 +76,8 @@ public class UmfrageoptionMapper {
 							+ "FROM Umfrageoption" + " WHERE uoName = '" + name + "' ORDER BY uoName");
 
 			/**
-			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt erstellt und
-			 * die ArrayListe Stück für Stück aufgebaut/gefuellt.
+			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt
+			 * erstellt und die ArrayListe Stück für Stück aufgebaut/gefuellt.
 			 */
 
 			while (resultset.next()) {
@@ -98,7 +97,7 @@ public class UmfrageoptionMapper {
 		// ArrayList mit Ergebnis zurückgeben
 		return resultarray;
 	}
-	
+
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
@@ -293,15 +292,15 @@ public class UmfrageoptionMapper {
 
 	/**
 	 * Suche nach allen Umfrageoption-Objekten, die eine Beziehung mit einer
-	 * vorgegebenen Vorstellung haben. Liegt eine Beziehung zwischen Umfrageoption und
-	 * Vorstellung vor, ist in der Datenbank in der Umfrageoption-Tabelle die
-	 * entsprechende vorstellungsId hinterlegt. Diese vorstellungsId muss mit der Id der im
-	 * Methodenparamter übergebenen Vorstellung übereinstimmen.
+	 * vorgegebenen Vorstellung haben. Liegt eine Beziehung zwischen Umfrageoption
+	 * und Vorstellung vor, ist in der Datenbank in der Umfrageoption-Tabelle die
+	 * entsprechende vorstellungsId hinterlegt. Diese vorstellungsId muss mit der Id
+	 * der im Methodenparamter übergebenen Vorstellung übereinstimmen.
 	 * 
 	 * @param vorstellung Objekt, deren Id mit den vorstellungsIds in der
-	 *                Umfrageoption-Tabelle übereinstimmen soll.
-	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren vorstellungsId der
-	 *         übergebenen Vorstellung entsprechen.
+	 *                    Umfrageoption-Tabelle übereinstimmen soll.
+	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren vorstellungsId
+	 *         der übergebenen Vorstellung entsprechen.
 	 */
 	public ArrayList<Umfrageoption> findAllByVorstellung(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
@@ -330,7 +329,7 @@ public class UmfrageoptionMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//ArrayList mit Ergebnis zurückgeben.
+		// ArrayList mit Ergebnis zurückgeben.
 		return resultarray;
 	}
 }

@@ -82,6 +82,10 @@ public class KinoBearbeitenForm extends FlowPanel{
 	
 	private MeineKinosForm kinosF;
 	
+	public KinoBearbeitenForm(Kino kino) {
+		this.kino = kino;
+	}
+	
 	public void onLoad() {
 	
 	// Vergeben der Stylenames

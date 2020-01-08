@@ -70,7 +70,7 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum " + "FROM anwender"
-					+ "WHERE aName = " + name + "ORDER BY aName");
+					+ " WHERE aName = '" + name + "' ORDER BY aName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -112,7 +112,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + "WHERE aName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='" + name+"'");
 
 			if (resultset.next()) {
 				return false;
@@ -138,16 +138,21 @@ public class AnwenderMapper {
 			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (aId) AS maxId " + "FROM anwender");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(aId) AS maxId " + "FROM anwender");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				anwender.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO anweder (aId, gMail, aName, erstellDatum)" + "VALUES(" + anwender.getId()
-						+ "','" + anwender.getGmail() + "','" + anwender.getName() + "','" + anwender.getErstellDatum()
-						+ ")");
+				stmt.executeUpdate("INSERT INTO anwender(aId, aName, gMail)" + "VALUES(" + anwender.getId()
+						+ ",'" + anwender.getName() + "','" + anwender.getGmail() +"')");
+				
+				ResultSet resultset2 = stmt.executeQuery("SELECT erstellDatum " + "FROM anwender WHERE aID ="+anwender.getId());
+				if (resultset2.next()) {
+					// Setzen des DB erzeugten Timestamp
+					anwender.setErstellDatum(resultset2.getTimestamp("erstellDatum"));
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -173,8 +178,8 @@ public class AnwenderMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE anwender SET " + "aName=\"" + anwender.getName() + "\", " + "gMail=\""
-					+ anwender.getGmail() + "\", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
+			stmt.executeUpdate("UPDATE anwender SET " + "aName=\" ' " + anwender.getName() + "' \", " + "gMail=\" ' "
+					+ anwender.getGmail() + " ' \", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
 					+ "WHERE aId=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -218,7 +223,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM anwender"
+			ResultSet resultset = stmt.executeQuery("SELECT aId, aName, gMail, erstellDatum FROM anwender "
 			+ "ORDER BY aName");
 
 			/**
@@ -258,7 +263,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery
-					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aId=" + id + " ORDER BY aName");
+					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aId=" + id + " ORDER BY aName");
 			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
@@ -288,7 +293,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + "WHERE aName=" + name + "ORDER BY aName");
+					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aName='" + name + "' ORDER BY aName");
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("aId"));

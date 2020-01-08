@@ -73,7 +73,7 @@ public class AuswahlMapper {
 
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum " 
-					+ "FROM auswahl" + "WHERE awName = " + name + "ORDER BY awName");
+					+ "FROM auswahl" + " WHERE awName = '" + name + "' ORDER BY awName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Auswahl-Objekt erstellt und
@@ -117,7 +117,7 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT awName FROM auswahl" + "WHERE awName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT awName FROM auswahl" + " WHERE awName = '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -143,7 +143,7 @@ public class AuswahlMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Auswahl-Objekte ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (awId) AS maxId " + "FROM auswahl");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(awId) AS maxId " + "FROM auswahl");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				auswahl.setId(resultset.getInt("maxId") + 1);
@@ -151,8 +151,8 @@ public class AuswahlMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate("INSERT INTO auswahl (awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum)"
-						+ "VALUES(" + auswahl.getId() + "','" + auswahl.getName() + "','" + auswahl.getBesitzerId()
-						+ "','" + auswahl.getUmfrageoptionId() + "','" + auswahl.getVoting() + "','"
+						+ "VALUES(" + auswahl.getId() + ", '" + auswahl.getName() + "', " + auswahl.getBesitzerId() + ", "
+						+ auswahl.getUmfrageoptionId() + ", " + auswahl.getVoting() + ", "
 						+ auswahl.getErstellDatum() + ")");
 			}
 		} catch (SQLException e1) {
@@ -182,8 +182,8 @@ public class AuswahlMapper {
 			 */
 			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + auswahl.getBesitzerId() + "\", "
 					+ "auswahl_umfrageoption_Id=\"" + auswahl.getUmfrageoptionId() + "\", " + "voting=\"" + auswahl.getVoting()
-					+ "\", " + "awName=\"" + auswahl.getName() + "\", " + "erstellDatum=\"" + auswahl.getErstellDatum()
-					+ "\" " + "WHERE awId=" + auswahl.getId());
+					+ "\", " + "awName=\" '" + auswahl.getName() + "' \", " + "erstellDatum=\"" + auswahl.getErstellDatum()
+					+ "\" " + " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -225,14 +225,14 @@ public class AuswahlMapper {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ "WHERE awId=" + id + " ORDER BY auswahl_umfrageoption_Id");
+							+ " WHERE awId=" + id + " ORDER BY auswahl_umfrageoption_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Auswahl a = new Auswahl();
 				a.setId(resultset.getInt("awId"));
 				a.setName(resultset.getString("awName"));
 				a.setBesitzerId(resultset.getInt("auswahl_anwender_Id"));
-				a.setUmfrageoptionId(resultset.getInt("auswahl_umfrageoption_Id"));
+				a.setUmfrageoptionId(resultset.getInt("auswahl_umfrageoptionId"));
 				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return a;
@@ -264,7 +264,7 @@ public class AuswahlMapper {
 
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ "WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId() + "ORDER BY auswahl_anwender_Id");
+							+ " WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId() + "ORDER BY auswahl_anwender_Id");
 
 			/**
 			 * F�r jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit
@@ -308,7 +308,7 @@ public class AuswahlMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate(
-					"UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + anwender.getId() + "\" " + "WHERE awId=" + auswahl.getId());
+					"UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + anwender.getId() + "\"" + " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -329,7 +329,7 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + "" + "\" " + "WHERE awId=" + auswahl.getId());
+			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id= " + null + "\"" + " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -353,7 +353,7 @@ public class AuswahlMapper {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ "WHERE auswahl_anwender_Id=" + anwender.getId() + "AND auswahl_umfrageoption_Id=" + umfrageoption.getId());
+							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " AND auswahl_umfrageoption_Id=" + umfrageoption.getId());
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Auswahl a = new Auswahl();
@@ -393,7 +393,7 @@ public class AuswahlMapper {
 
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ "WHERE auswahl_anwender_Id=" + anwender.getId() + "ORDER BY awId");
+							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " ORDER BY awId");
 			while (resultset.next()) {
 				Auswahl a = new Auswahl();
 				a.setId(resultset.getInt("awId"));

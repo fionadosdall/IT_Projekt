@@ -47,23 +47,25 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private Label kinoLabel = new Label("Kino");
 	private Label SpiezeitLabel = new Label("Spielzeit");
 	private Label filmLabel = new Label("Filme");
-	
+
 	private TextBox umfrageTextBox = new TextBox();
-	
+
 	private ListBox gruppenListBox = new ListBox();
 	private ListBox kinoListBox = new ListBox();
 	private ListBox spielzeitListBox = new ListBox();
 	private ListBox filmListBox = new ListBox();
- 
+
 	private Button erstellenButton = new Button("Umfrage starten");
 
 	private ArrayList<Gruppe> gruppen;
 	private ArrayList<Kino> kinos;
 	private ArrayList<Spielzeit> spielzeiten;
 	private ArrayList<Film> filme;
-	
+
 	private UmfrageCellTable uct = new UmfrageCellTable();
-	private VorstellungCellTable vct = new VorstellungCellTable();
+//	private VorstellungCellTable vct = new VorstellungCellTable();
+	//private VorstellungenAnzeigenGrid vag = new VorstellungenAnzeigenGrid();
+	private NeueCellTable n = new NeueCellTable();
 	
 
 	/*
@@ -93,7 +95,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
-		
+
 		filternBox.addStyleName("filternBox");
 
 		erstellenButton.addStyleName("speichernButton");
@@ -121,8 +123,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
-		detailsBoxUmfrage.add(uct);
-		detailsBoxUmfrage.add(vct);
+	//	detailsBoxUmfrage.add(uct);
+		detailsBoxUmfrage.add(n);
 
 		detailsunten.add(detailsBoxFiltern);
 		detailsBoxFiltern.add(filternLabel);
@@ -139,7 +141,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxSpeichern);
 		detailsBoxSpeichern.add(erstellenButton);
-		
+
 		kinoListBox.setSize("180px", "25px");
 		spielzeitListBox.setSize("180px", "25px");
 		filmListBox.setSize("180px", "25px");
@@ -147,72 +149,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		kinoplaner.getGruppenByAnwender(new GruppenCallback());
 
-		if (gruppen == null) {
-			gruppenListBox.addItem("Keine Gruppen verfügbar");
-			gruppenListBox.setEnabled(false);
-
-		} else {
-
-			for (Gruppe g : gruppen) {
-
-				gruppenListBox.addItem(g.getName());
-
-			}
-		}
-		
 		kinoplaner.getAllKinos(new KinoCallback());
-		
-		if (kinos == null) {
-			kinoListBox.addItem("Keine Kinos verfügbar");
-			kinoListBox.setEnabled(false);
 
-		} else {
-
-			for (Kino k : kinos) {
-
-				kinoListBox.addItem(k.getName());
-
-			}
-		}
-
-		
 		kinoplaner.getAllSpielzeiten(new SpielzeitCallback());
-		
-		
-		if (spielzeiten == null) {
-			spielzeitListBox.addItem("Keine Spielzeit verfügbar");
-			spielzeitListBox.setEnabled(false);
 
-		} else {
-
-			for (Spielzeit s : spielzeiten) {
-				
-				DateFormaterSpielzeit date = new DateFormaterSpielzeit(s.getZeit());
-
-				spielzeitListBox.addItem(date.toString());
-
-			}
-		}
-		
-		
 		kinoplaner.getAllFilme(new FilmeCalllback());
-		
-		if (filme == null) {
-			filmListBox.addItem("Keine Filme verfügbar");
-			filmListBox.setEnabled(false);
 
-		} else {
-
-			for (Film f : filme) {
-
-				filmListBox.addItem(f.getName());
-
-			}
-		}
-		
 		// ClickHandler
 		erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
-		
 
 	}
 
@@ -257,64 +201,131 @@ public class UmfrageErstellenForm extends FlowPanel {
 		public void onSuccess(ArrayList<Gruppe> result) {
 			// TODO Auto-generated method stub
 			gruppen = result;
+
+			if (result != null) {
+
+				for (Gruppe g : result) {
+
+					gruppenListBox.addItem(g.getName());
+
+				}
+
+			} else {
+
+				gruppenListBox.addItem("Keine Gruppen verfügbar");
+				gruppenListBox.setEnabled(false);
+
+			}
 		}
 
 	}
-	
-	private class KinoCallback implements AsyncCallback<ArrayList<Kino>>  {
+
+
+	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Window.alert("Kinos konnten nicht geladen werden");
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Kino> result) {
 			// TODO Auto-generated method stub
 			kinos = result;
-			
+
+			if (result != null) {
+
+				for (Kino k : result) {
+
+					kinoListBox.addItem(k.getName());
+
+				}
+
+			} else {
+
+				kinoListBox.addItem("Keine Gruppen verfügbar");
+				kinoListBox.setEnabled(false);
+
+			}
 		}
-		
+
 	}
-	
+
 	private class SpielzeitCallback implements AsyncCallback<ArrayList<Spielzeit>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Window.alert("Spielzeiten konnten nicht geladen werden");
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Spielzeit> result) {
 			// TODO Auto-generated method stub
 			spielzeiten = result;
+
+			if (result != null) {
+
+				for (Spielzeit s : result) {
+
+//					DateFormaterSpielzeit date = new DateFormaterSpielzeit(s.getZeit());
+//
+//					spielzeitListBox.addItem(date.toString());
+
+					spielzeitListBox.addItem(s.getZeit().toGMTString());
+
+				}
+
+			} else {
+
+				spielzeitListBox.addItem("Keine Spielzeit verfügbar");
+				spielzeitListBox.setEnabled(false);
+
+			}
+
 		}
-		
+
 	}
-	
+
 	private class FilmeCalllback implements AsyncCallback<ArrayList<Film>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Window.alert("Filme konnten nicht geladen werden");
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Film> result) {
 			// TODO Auto-generated method stub
 			filme = result;
-			
+
+			if (result != null) {
+
+				for (Film f : result) {
+
+					filmListBox.addItem(f.getName());
+
+				}
+
+			} else {
+
+				filmListBox.addItem("Keine Filme verfügbar");
+				filmListBox.setEnabled(false);
+
+			}
 		}
-		
+
 	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
-		
+
 		private Umfrage umfrage;
-		
+
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
@@ -326,11 +337,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			umfrage = result;
 			RootPanel.get("details").clear();
-			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(umfrage);
+			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 			RootPanel.get("details").add(uaf);
 
 		}
-		
+
 		public void setUmfrage(Umfrage umfrage) {
 			this.umfrage = umfrage;
 		}

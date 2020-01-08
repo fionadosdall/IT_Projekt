@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -97,7 +98,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * hinzugefuegt werden.
 	 * </p>
 	 */
-	private ArrayList<Anwender> gruppenmitglieder = null;
+	private ArrayList<Anwender> gruppenmitglieder = new ArrayList<Anwender>();
 
 	/**
 	 * <p>
@@ -302,10 +303,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		Gruppe gFertig = this.gruppeMapper.insert(g);
+		this.gruppenmitgliedHinzufuegen(anwender, gFertig);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
 		if (gruppenmitglieder != null) {
 			for (Anwender a : gruppenmitglieder) {
 				this.gruppenmitgliedHinzufuegen(a, gFertig);
+
 			}
 			gruppenmitglieder = null;
 		}
@@ -1073,6 +1076,33 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
+	 * Loeschen einer Kinokette durch die ID.
+	 * </p>
+	 */
+	@Override
+	public void loeschenKinoketteById(int id) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Spielplaene
+		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKinokette(this.kinoketteMapper.findById(id));
+		if (spielplaene != null) {
+			for (Spielplan s : spielplaene) {
+				this.loeschen(s);
+			}
+		}
+
+		// Loeschen aller zugehoerigen Kinoketten
+		ArrayList<Kino> kinos = this.getKinosByKinoketteId(this.kinoketteMapper.findById(id));
+		if (kinos != null) {
+			for (Kino k : kinos) {
+				this.kinoMapper.deleteKinokette(k);
+			}
+		}
+
+		// Loeschen der Kinokette
+		this.kinoketteMapper.delete(this.kinoketteMapper.findById(id));
+	}
+
+	/**
+	 * <p>
 	 * Rueckgabe ob der Name des Anwenders verfuegbar ist (true)
 	 * </p>
 	 */
@@ -1297,6 +1327,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
+	 * Rueckgabe einer Spielzeit mit einer bestimmten Id.
+	 * </p>
+	 */
+	@Override
+	public Spielzeit getSpielzeitById(int spielzeitId) throws IllegalArgumentException {
+		return this.spielzeitMapper.findById(spielzeitId);
+	}
+
+	/**
+	 * <p>
 	 * Alle Spielplaene ausgeben
 	 * </p>
 	 */
@@ -1387,6 +1427,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		return this.kinoMapper.findById(this.spielplanMapper
 				.findById(this.vorstellungMapper.findById(umfrageoption.getVorstellungsId()).getSpielplanId())
 				.getKinoId());
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Vorstellung
+	 * </p>
+	 */
+	@Override
+	public Kino getKinoByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException {
+		return this.kinoMapper.findById(this.spielplanMapper.findById(vorstellung.getSpielplanId()).getKinoId());
 	}
 
 	/**
@@ -1725,9 +1775,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				break;
 			}
 			i++;
-			
 
-			
 		}
 		return vorstellung;
 
@@ -1740,8 +1788,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender, Gruppe gruppe) throws IllegalArgumentException {
-		this.gruppeMapper.addGruppenmitgliedschaft(anwender, gruppe);
-		return anwender;
+		return this.gruppeMapper.addGruppenmitgliedschaft(anwender, gruppe);
+
 	}
 
 	/**
@@ -1751,9 +1799,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException {
-		this.gruppenmitglieder.add(anwender);
-		return anwender;
+	public Anwender gruppenmitgliedHinzufuegen(Anwender an) throws IllegalArgumentException {
+		this.gruppenmitglieder.add(an);
+		return an;
+	}
+
+	/**
+	 * <p>
+	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
+	 * erstellt ist.
+	 * </p>
+	 */
+	@Override
+	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException {
+		Anwender an = this.getAnwenderByName(anwenderName);
+		this.gruppenmitglieder.add(an);
+		return an;
 	}
 
 	/**
@@ -2376,6 +2437,160 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	}
 
+	/**
+	 * <p>
+	 * Volltextsuche nach Kinoketten die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Kinokette> volltextSucheKinoketten(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Kinokette> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Kinoketten abrufen
+		ArrayList<Kinokette> mglKinoketten = this.getKinokettenByAnwenderOwner();
+
+		// Nach Kinoketten suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (mglKinoketten != null) {
+			for (Kinokette k : mglKinoketten) {
+				String name = k.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(k);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Kinos die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Kino> volltextSucheKinos(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Kino> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner();
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (kinos != null) {
+			for (Kino k : kinos) {
+				String name = k.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(k);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Spielplaenen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Spielplan> volltextSucheSpielplaene(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Spielplan> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner();
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (spielplaene != null) {
+			for (Spielplan s : spielplaene) {
+				String name = s.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(s);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Spielzeit> volltextSucheSpielzeit(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Spielzeit> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner();
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (spielzeiten != null) {
+			for (Spielzeit s : spielzeiten) {
+				String name = s.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(s);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
+
+	/**
+	 * <p>
+	 * Volltextsuche nach Ergebnissen die den Text im Namen tragen.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Film> volltextSucheFilm(String text) throws IllegalArgumentException {
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Film> ergebnisse = null;
+
+		// Text in Kleinbuchstaben umwandeln
+		String textLowerCase = text.toLowerCase();
+
+		// Mögliche Ergebnisse abrufen
+		ArrayList<Film> filme = this.getFilmeByAnwenderOwner();
+
+		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
+		// Ergebnissarray hinzufügen
+		if (filme != null) {
+			for (Film f : filme) {
+				String name = f.getName().toLowerCase();
+				if (name.contains(textLowerCase)) {
+					ergebnisse.add(f);
+				}
+			}
+		}
+
+		return ergebnisse;
+
+	}
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: Methoden

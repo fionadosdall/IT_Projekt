@@ -47,7 +47,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			existA.setLogoutUrl(anwenderService.creatLogoutURL(requestUri));
 			
 			
-			return existA;
+			retur existA;
 		}
 		
 		/**

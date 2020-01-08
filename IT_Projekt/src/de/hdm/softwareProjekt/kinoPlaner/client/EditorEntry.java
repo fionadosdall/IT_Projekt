@@ -20,17 +20,11 @@ public class EditorEntry implements EntryPoint {
 	Header header = new Header();
 	Navigator navigator = new Navigator();
 	Footer footer = new Footer();
-	
 	private 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 
 	
 	public void onModuleLoad() {
-		
-		RootPanel.get("header").add(header);
-		RootPanel.get("navigator").add(navigator);
-		RootPanel.get("footer").add(footer);
-		
 	
 		kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 		
@@ -48,6 +42,7 @@ public class EditorEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Anwender result) {
 			kinoplaner.setAnwender(result, new SetAnwenderCallback());
+			aktuellerAnwender.setAnwender(result);
 			
 		}
 		
@@ -63,7 +58,9 @@ public class EditorEntry implements EntryPoint {
 
 		@Override
 		public void onSuccess(Void result) {
-			Window.alert("Anwender im Backend abgelegt.");
+			RootPanel.get("header").add(header);
+			RootPanel.get("navigator").add(navigator);
+			RootPanel.get("footer").add(footer);
 			
 		}
 		

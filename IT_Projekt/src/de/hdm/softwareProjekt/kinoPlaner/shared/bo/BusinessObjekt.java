@@ -42,7 +42,7 @@ public abstract class BusinessObjekt implements Serializable {
 	
 	
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 /** 

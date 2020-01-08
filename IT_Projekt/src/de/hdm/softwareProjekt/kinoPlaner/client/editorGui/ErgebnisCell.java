@@ -14,30 +14,33 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-public class UmfrageCell extends AbstractCell<Umfrage> {
-
-	private Gruppe gruppe;
-	private Umfrage umfrage;
-	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+public class ErgebnisCell extends AbstractCell<Umfrage> {
+	
+	SafeHtmlBuilder shb;
 
 	@Override
 	public void render(Context context, Umfrage value, SafeHtmlBuilder sb) {
 		if (value == null) {
 			return;
 		}
+		
+		shb = sb;
+		
+		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
-		umfrage = value;
-		sb.appendHtmlConstant("<div>");
-		sb.appendHtmlConstant("Umfrage: ");
-		sb.appendEscaped(value.getName());
-		sb.appendHtmlConstant(" Gruppe: ");
-		kinoplaner.getGruppeById(umfrage.getGruppenId(), new AsyncCallback<Gruppe>() {
+		shb.appendHtmlConstant("<div>");
+		shb.appendHtmlConstant("Umfrage: ");
+		shb.appendEscaped(value.getName());
+		
+		kinoplaner.getGruppeById(value.getGruppenId(), new AsyncCallback<Gruppe>() {
 
 			@Override
 			public void onSuccess(Gruppe result) {
-
-				gruppe = result;
-
+				shb.appendHtmlConstant(" Gruppe: ");
+				shb.appendEscaped(result.getName());
+				shb.appendHtmlConstant("</div>");
+				
+				
 			}
 
 			@Override
@@ -46,17 +49,12 @@ public class UmfrageCell extends AbstractCell<Umfrage> {
 
 			}
 		});
-		
-		sb.appendEscaped(gruppe.getName());
-		sb.appendHtmlConstant("</div>");
 
 	}
 
-	public UmfrageCell() {
+	public ErgebnisCell() {
 
 		super("click");
-
-
 	}
 
 	@Override
@@ -74,7 +72,7 @@ public class UmfrageCell extends AbstractCell<Umfrage> {
 
 	private void doAction(Umfrage value, ValueUpdater<Umfrage> valueUpdater) {
 		RootPanel.get("details").clear();
-		UmfrageAnzeigenForm anzeigen = new UmfrageAnzeigenForm(value);
+		ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(value);
 		RootPanel.get("details").add(anzeigen);
 	}
 }

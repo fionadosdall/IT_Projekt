@@ -95,19 +95,19 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 		
 		this.addStyleName("detailscontainer");
 
-		detailsoben.addStyleName("detailsOben");
-		detailsunten.addStyleName("detailsUnten");
+		detailsoben.addStyleName("detailsoben");
+		detailsunten.addStyleName("detailsunten");
 
-		detailsObenBox.addStyleName("detailsObenBoxen");
-		detailsMitteBox.addStyleName("detailsMitteBoxen");
-		detailsUntenBox.addStyleName("detailsUntenBoxen");
+		detailsObenBox.addStyleName("detailsuntenBoxen");
+		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsUntenBox.addStyleName("detailsuntenBoxen");
 		
 		
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxObenMitte.addStyleName("detailsBoxObenMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitteMitte");
-		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
-		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
+		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 		
 		title.addStyleName("title");

@@ -57,7 +57,7 @@ public class GruppeMapper {
 	/**
 	 * Suche nach allen Gruppen über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Gruppen tragen 
+	 * @param name den die gesuchten Gruppen tragen
 	 * @return Eine ArrayList, die alle gefundenen Gruppen enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -70,8 +70,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum" + "FROM gruppe"
-					+ "WHERE gName = " + name + "ORDER BY gName");
+			ResultSet resultset = stmt.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum"
+					+ " FROM gruppe" + " WHERE gName = '" + name + "' ORDER BY gName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Gruppen-Objekt erstellt und
@@ -94,7 +94,7 @@ public class GruppeMapper {
 		// ArrayList mit Ergebnis zurückgeben
 		return resultarray;
 	}
-	
+
 	/**
 	 * Bei der Erstellung eines neuen Objektes soll zunächst geprüft werden, ob der
 	 * gewünschte Name für das Objekt nicht bereits in der entsprechenden Tabelle
@@ -112,7 +112,7 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT gName FROM gruppe" + "WHERE gName =" + name);
+			ResultSet resultset = stmt.executeQuery("SELECT gName FROM gruppe" + " WHERE gName= '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -138,16 +138,22 @@ public class GruppeMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Anwender ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX (gId) AS maxId " + "FROM gruppe");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(gId) AS maxId " + "FROM gruppe");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				gruppe.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO gruppe (gId, gName, gruppe_anwender_Id, erstellDatum)" + "VALUES("
-						+ gruppe.getId() + "','" + gruppe.getName() + "','" + gruppe.getBesitzerId() + "','"
-						+ gruppe.getErstellDatum() + ")");
+				stmt.executeUpdate("INSERT INTO gruppe (gId, gName, gruppe_anwender_Id)" + " VALUES(" + gruppe.getId()
+						+ ",'" + gruppe.getName() + "'," + gruppe.getBesitzerId() + ")");
+
+				ResultSet resultset2 = stmt
+						.executeQuery("SELECT erstellDatum " + "FROM gruppe WHERE gID= " + gruppe.getId());
+				if (resultset2.next()) {
+					// Setzen des DB erzeugten Timestamp
+					gruppe.setErstellDatum(resultset2.getTimestamp("erstellDatum"));
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -173,9 +179,9 @@ public class GruppeMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + gruppe.getBesitzerId() + "\", " + "gName=\""
-					+ gruppe.getName() + "\", " + "erstellDatum=\"" + gruppe.getErstellDatum() + "\" " + "WHERE gId="
-					+ gruppe.getId());
+			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + gruppe.getBesitzerId() + "\", "
+					+ "gName=\" '" + gruppe.getName() + "' \", " + "erstellDatum=\"" + gruppe.getErstellDatum() + "\""
+					+ " WHERE gId=" + gruppe.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -218,8 +224,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum FROM gruppe" + "ORDER BY gName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT gId, gName, gruppe_anwender_Id, erstellDatum FROM gruppe" + " ORDER BY gName");
 
 			while (resultset.next()) {
 				Gruppe g = new Gruppe();
@@ -252,7 +258,7 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum FROM gruppe"
-					+ "WHERE gId=" + id + " ORDER BY gruppe_anwender_Id");
+					+ " WHERE gId=" + id + " ORDER BY gruppe_anwender_Id");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Gruppe g = new Gruppe();
@@ -277,17 +283,22 @@ public class GruppeMapper {
 	 * @param anwender welcher zu einer Gruppe hinzugefügt werden soll.
 	 * @param gruppe   zu welcher der vorgegebene Anwender hinzugefügt werden soll.
 	 */
-	public void addGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
+	public Anwender addGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppe_Id, anwender_Id)" + "VALUES(" + gruppe.getId()
-					+ "','" + anwender.getId() + ")");
+			/*
+			 * MySQL Fehlermeldung: Error Code 1452. Cannot add or update a child row: 
+			 * a foreign key constraint fails
+			 */
+			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppID, anwendID)" + " VALUES(" + gruppe.getId() + ", "
+					+ anwender.getId() + ")");
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+
+		return anwender;
 
 	}
 
@@ -309,8 +320,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppe_Id =" + gruppe.getId()
-					+ "AND anwender_Id=" + anwender.getId());
+			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppID =" + gruppe.getId()
+					+ " AND anwendID=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -347,7 +358,7 @@ public class GruppeMapper {
 
 			while (resultset.next()) {
 				Gruppe g = new Gruppe();
-				g.setId(resultset.getInt("gId"));
+				g.setId(resultset.getInt("gruppId"));
 				g.setBesitzerId(resultset.getInt("gruppe_anwender_Id"));
 				g.setName(resultset.getString("gName"));
 				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
@@ -383,7 +394,7 @@ public class GruppeMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum FROM gruppe"
-					+ "WHERE gruppe_anwender_Id = " + anwenderOwner.getId() + "ORDER BY gName");
+					+ " WHERE gruppe_anwender_Id = " + anwenderOwner.getId() + " ORDER BY gName");
 
 			while (resultset.next()) {
 				Gruppe g = new Gruppe();
@@ -419,8 +430,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate(
-					"UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + anwender.getId() + "\" " + "WHERE gId=" + gruppe.getId());
+			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + anwender.getId() + "\"" + " WHERE gId="
+					+ gruppe.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -440,7 +451,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + "" + "\" " + "WHERE gId=" + gruppe.getId());
+			stmt.executeUpdate(
+					"UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + "" + "\"" + " WHERE gId=" + gruppe.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

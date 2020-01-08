@@ -96,27 +96,27 @@ public class VorstellungErstellenForm extends FlowPanel {
 	
 	public void onLoad( ) {
 		
-		this.addStyleName("detailsContainer");
+		this.addStyleName("detailscontainer");
 
-		detailsoben.addStyleName("detailsOben");
-		detailsunten.addStyleName("detailsUnten");
+		detailsoben.addStyleName("detailsoben");
+		detailsunten.addStyleName("detailsunten");
 
-		detailsObenBox.addStyleName("detailsObenBoxen");
-		detailsMitteBox.addStyleName("detailsMitteBoxen");
-		detailsUntenBox.addStyleName("detailsUntenBoxen");
+		detailsObenBox.addStyleName("detailsuntenBoxen");
+		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsUntenBox.addStyleName("detailsuntenBoxen");
 		
 		
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxObenMitte.addStyleName("detailsBoxObenMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitteMitte");
-		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
-		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
+		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 		
 		title.addStyleName("title");
-		vorstellungLabel.addStyleName("detailsBoxLabels");
-		film.addStyleName("detailsBoxLabels");
-		film.addStyleName("detailsBoxLabels");
+		vorstellungLabel.addStyleName("detailsboxLabels");
+		film.addStyleName("detailsboxLabels");
+		film.addStyleName("detailsboxLabels");
 		
 		
 		vorstellungsnameTB.getElement().setPropertyString("placeholder", "Vorstellung eingeben");
@@ -249,7 +249,7 @@ public class VorstellungErstellenForm extends FlowPanel {
 					
 				};
 				
-				kinoplaner.loeschen(film, loeschenCallback);
+		//		kinoplaner.loeschen(film, loeschenCallback);
 				
 			}
 			

@@ -154,8 +154,8 @@ public class SpielzeitMapper {
 			e1.printStackTrace();
 		}
 		/**
-		 * Rückgabe des Spielzeit-Objekts. Durch die Methode wurde das Objekt ggf. angepasst (z.B.
-		 * angepasste Id)
+		 * Rückgabe des Spielzeit-Objekts. Durch die Methode wurde das Objekt ggf.
+		 * angepasst (z.B. angepasste Id)
 		 */
 		return spielzeit;
 	}

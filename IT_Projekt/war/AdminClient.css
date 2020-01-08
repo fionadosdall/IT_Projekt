@@ -153,6 +153,69 @@ body {
 .headerAnchor{
 	margin: 5px;
 }
+/**BurgerMenue**/
+
+#dropdown {
+	grid-column-start: 4;
+	grid-column-end: 5;
+	grid-row-start: 2;
+	grid-row-end: 3;
+	background: transparent;
+	z-index: 40;
+	margin-top: 5px;
+	margin-left: 60px;
+	margin-right: 5px;
+}
+
+.dropdownGesamt{
+	background-color: transparent;
+	min-height: 3.25rem;
+	align-items: right;
+	display: flex;
+	position: relative;
+	justify-content: flex-end;
+	z-index: 40;
+	box-sizing: inherit;
+}
+
+.dropdownButton {
+	background: withe;
+	width: 160px;
+	border-color: #363636;
+	color: #363636;
+	border-width: 1px;
+	cursor: pointer;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: .75em;
+	padding-right: .75em;
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border-radius: 4px;
+	box-shadow: none;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	position: relative;
+	vertical-align: top;
+	border: 1px solid;
+	margin-top: 1px;
+
+}
+
+.menueBar {
+	position: absolut;
+	background: white;
+	bottom: 200px;
+	right: 200px;
+	z-index: 40;
+	align-items: right;
+	
+}
+
 
 /** Styling des Navigators*/
 .navcontainer {
@@ -203,6 +266,14 @@ body {
 	word-break: break-word;
 }
 
+.titel {
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 600;
+	line-height: 1.125;
+	word-break: break-word;
+}
+
 .obenPanel {
 	width: 100%;
 	background: #d6d1d1;
@@ -210,7 +281,7 @@ body {
 	color: white;
 	padding: 20px 0 20px 0;
 	align-items: center;
-	margin: 3px
+	padding: 10px;
 }
 
 .dashboardPanel{
@@ -247,14 +318,34 @@ body {
 	background: #d6d1d1;
 	border-top: solid;
 	border-width: thin;
-	margin-top: 10%;
+	margin-top: 5%;
+	padding-top: 5%;
 	
 }
+	
+.systemmeldungPanel {
+	width: 100%;
+	text-align: center;
+	align-items: center;
+	color: red;
+	border-color: white;
+	background: #d6d1d1;
+	border-top: solid;
+	border-width: thin;
+	margin-top: 5%;
+	padding-top: 5%;
+}	
+	
+
 
 .hbPanel {
 	border-top: solid;
 	border-bottom: solid;
 	border-width: thin;
+	text-align: center;
+	align-items: center;
+	margin-top: 5%;
+	margin-bottom: 5%;
 }
 
 .formHeaderLabel {
@@ -444,10 +535,24 @@ body {
 	margin-right: 30%;
 }
 
-.detailsboxInahlt {
+.h2Panel {
 	margin-bottom: .75rem;
 	box-sizing: inherit;
 	display: block;
+	color: #363636;
+	font-size: 2rem;
+	font-weight: 400;
+	line-height: 1.125;
+	word-break: break-word;	
+	text-align: center;
+	align-items: center;
+	border-bottom: solid;
+	border-width: thin;
+	width: 100%;
+	background: #d6d1d1;
+	color: white;
+	padding: 20px 0 20px 0;
+	padding: 10px;
 }
 
 .detailsboxspeichern {
@@ -553,3 +658,70 @@ body {
 	height: auto;
 	max-width: 100%;
 }
+
+/** Styling der DialogBox*/
+.Abfrage {
+	color: red;
+}
+/** Styling der DetailsForms*/
+.detailscontainer {
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+}
+
+.detailsoben {
+	background: #d6d1d1;
+	text-align: center;
+	color: white;
+	margin-bottom: 3px;
+	padding: 20px 0 20px 0;
+}
+
+.detailsunten {
+	text-align: center;
+	color: white;
+	background: #d6d1d1;
+}
+
+.detailsuntenBoxen {
+	display: flex;
+	flex-direction: column;
+	border-bottom: solid;
+	border-color: grey;
+	border-width: thin;
+	margin: 10px;
+}
+
+.speichernBox {
+	margin-top: 5%;
+}
+
+.detailsBoxMitte {
+	margin-left: 35%;
+	margin-bottom: 15px;
+	align-items: center;
+	width: 30%;
+}
+
+.detailsBoxUnten {
+	margin-bottom: 15px;
+}
+
+.detailsboxLabels {
+	font-size: 1.25rem;
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-weight: 700;
+}
+
+/* Systembenachrichtigungen */
+
+.sytemmeldungLabel{
+	text-align: center;
+}
+
+/* Volltextsuche */
+
+

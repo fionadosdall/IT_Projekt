@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -23,43 +24,56 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
+	private MeineKinokettenForm mkkf;
+	
 	private Label kinoketteFormLabel = new Label("Neue Kinokette");
+	private Label kinoketteBearbeitenFormLabel = new Label("Kinokette bearbeiten");
 	private Label nameLabel = new Label("Kinokettenname:");
 	private Label sitzLabel = new Label("Sitz:");
 	private Label websiteLabel = new Label("Website:");
 	
-	private TextBox nameTextBox = new TextBox();
-	private TextBox sitzTextBox = new TextBox();
-	private TextBox websiteTextBox = new TextBox();
+	private static TextBox nameTextBox = new TextBox();
+	private static TextBox sitzTextBox = new TextBox();
+	private static TextBox websiteTextBox = new TextBox();
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
+	private Button loeschenButton = new Button("Löschen");
 	
-	
+	private static Boolean edit = false;
+	private Kinokette kinoketteBearbeiten;
+	private Kinokette kk;
 	
 	/**
-	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
+	 * Bei der Instanziierung  wird der ClickHandler dem Button hinzugefügt
 	 */	
 	
 	public KinoketteErstellenForm() {
 		
-		speichernButton.addClickHandler(new SpeichernClickHandler());
+		
 		
 		
 		
 	}
 	
 	
+	public KinoketteErstellenForm(Kinokette kk) {
+		this.kk = kk;
+	}
+
+
 	public void onLoad() {
 		
 		/* Setzen der Style-Namen */
 		this.addStyleName("center");
 		
 		kinoketteFormLabel.addStyleName("formHeaderLabel");
+		kinoketteBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
 		sitzLabel.addStyleName("textLabel");;
 		websiteLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
 		nameTextBox.addStyleName("formularTextBox");
@@ -68,7 +82,15 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		/*Zusammensetzen der Widgets */
 		
-		obenPanel.add(kinoketteFormLabel);
+		if(edit == true) {
+			
+			obenPanel.add(kinoketteBearbeitenFormLabel);
+		}else {
+			obenPanel.add(kinoketteFormLabel);
+			clearForm();
+		}
+		
+		
 		this.add(obenPanel);
 		
 		kinoketteGrid.setWidget(0, 0, nameLabel);
@@ -80,8 +102,20 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		this.add(kinoketteGrid);
 	
-		untenPanel.add(speichernButton);
+		
+		if(edit == true) {
+			untenPanel.add(loeschenButton);
+			untenPanel.add(speichernButton);
+		} else {
+			clearForm();
+			untenPanel.add(speichernButton);
+		}
+		
+		
 		this.add(untenPanel);
+		
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
 	}
 		
 		
@@ -90,10 +124,27 @@ public class KinoketteErstellenForm extends VerticalPanel{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+			
 			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(),
 					websiteTextBox.getText(), new KinoketteErstellenCallback());
+			
+			clearForm();
+			
 		}		
+		
+	}
+	
+	private class KinoketteLoeschenClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+			// TODO administration.kinoketteEntfernen(kinoketteBearbeiten.getId(), new KinoketteLoeschenCallback());
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
+		}
 		
 	}
 
@@ -105,16 +156,57 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Eine neue Kinokette konnte leider nicht erstellt werden");
+			Systemmeldung.anzeigen("Eine neue Kinokette konnte leider nicht erstellt werden.");
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde angelegt");
+			
 		}
 		
 	}
 	
+	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
 
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("<Kinokette konnte nicht gelöscht werden.");
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Kinokette wurde gelöscht.");
+		}
+	}
+	
+	/**Methoden***/
+	
+	public Boolean getEdit() {
+		return edit;
+	}
+
+	public static void setEdit(Boolean edit) {
+		KinoketteErstellenForm.edit = edit;
+	}
+
+	
+	public static void setBearbeiten(Kinokette kinokette) {
+		
+		
+			nameTextBox.setText(kinokette.getName());
+			sitzTextBox.setText(kinokette.getSitz());
+			websiteTextBox.setText(kinokette.getWebsite());
+		
+	}
+	
+	public void clearForm() {
+		nameTextBox.setText("");
+		sitzTextBox.setText("");
+		websiteTextBox.setText("");
+	}
 }

@@ -225,7 +225,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Auswahl nicht auffindbar!");
+			Window.alert("Auswahl nicht findbar!");
 
 		}
 
@@ -241,7 +241,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Keine Umfrageoptionen abrufbar.");
+			Window.alert("Keine Umfraeoptionen abrufbar.");
 
 		}
 

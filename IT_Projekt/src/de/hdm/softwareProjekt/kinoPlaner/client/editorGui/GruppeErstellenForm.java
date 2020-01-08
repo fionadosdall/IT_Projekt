@@ -92,15 +92,15 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
-		detailsObenBox.addStyleName("detailsObenBoxen");
-		detailsMitteBox.addStyleName("detailsMitteBoxen");
-		detailsUntenBox.addStyleName("detailsUntenBoxen");
+		detailsObenBox.addStyleName("detailsuntenBoxen");
+		detailsMitteBox.addStyleName("detailsuntenBoxen");
+		detailsUntenBox.addStyleName("detailsuntenBoxen");
 
 		speichernBox.addStyleName("speichernBox");
-		detailsBoxObenMitte.addStyleName("detailsBoxObenMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitteMitte");
-		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
-		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
+		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteUnten.addStyleName("detailsBoxMitte");
+		detailsBoxUntenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
 
 		title.addStyleName("title");
@@ -147,7 +147,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
-		
+
 		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hinzugefügt"));
 
 		// Click-Handler
@@ -184,7 +184,7 @@ public class GruppeErstellenForm extends FlowPanel {
 			public String getValue(Anwender anwender) {
 				// TODO Auto-generated method stub
 
-					return anwender.getName();
+				return anwender.getName();
 
 			}
 
@@ -258,7 +258,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderCallback());
+			kinoplaner.getAnwenderByName(mitgliedTB.getValue(), new AnwenderByNameCallback());
 			mitgliedTB.setText("");
 
 		}
@@ -279,25 +279,25 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
-	private class AnwenderCallback implements AsyncCallback<Anwender> {
+	private class AnwenderByNameCallback implements AsyncCallback<Anwender> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("AnwenderCallback funktioniert nicht");
+			Window.alert("AnwenderSuchenCallback funktioniert nicht");
 
 		}
 
-		public void onSuccess(Anwender anwender) {
-			// TODO Auto-generated method stub
-
-			neuerAnwender = anwender;
-			anwender.getName();
-
-			kinoplaner.gruppenmitgliedHinzufuegen(neuerAnwender, new AnwenderHinzufuegenCallback());
-
+		@Override
+		public void onSuccess(Anwender result) {
+			if (result == null) {
+				Window.alert("Kein gültiger Anwender ausgewählt!");
+				return;
+			}
+			neuerAnwender = result;
+			kinoplaner.gruppenmitgliedHinzufuegen(result, new AnwenderHinzufuegenCallback());
+			
 			// Updaten des DataProviders
-			dataProvider.getList().add(neuerAnwender);
+			dataProvider.getList().add(result);
 			dataProvider.refresh();
 
 		}
@@ -308,35 +308,34 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
 			Window.alert("AnwenderHinzufügenCallback funktioniert nicht");
 
 		}
 
 		@Override
 		public void onSuccess(Anwender result) {
-			// TODO Auto-generated method stub
-			Window.alert("Gruppenmitglied wurde hinzugefügt");
+
+			Window.alert("Hinzugefügt");
 
 		}
 
 	}
 
-//	private class MitgliedEntfernenCallback implements AsyncCallback<Anwender> {
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onSuccess(Anwender result) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//	}
+	// private class MitgliedEntfernenCallback implements AsyncCallback<Anwender> {
+	//
+	// @Override
+	// public void onFailure(Throwable caught) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void onSuccess(Anwender result) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// }
 
 	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
 

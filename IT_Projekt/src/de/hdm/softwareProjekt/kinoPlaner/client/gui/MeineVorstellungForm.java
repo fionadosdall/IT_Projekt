@@ -24,6 +24,16 @@ public class MeineVorstellungForm extends FlowPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 	
+	private Vorstellung vorstellung;
+	
+	public Vorstellung getVorstellung() {
+		return vorstellung;
+	}
+	
+	public void setVorstellung (Vorstellung vorstellung) {
+		this.vorstellung = vorstellung;
+	}
+	
 	
 	private Label title = new Label ("Deine Vorstellungen");
 	
