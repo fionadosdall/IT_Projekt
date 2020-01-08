@@ -12,4 +12,7 @@ public interface AdminClient extends RemoteService{
 	
 	public Anwender erstellenAnwender(String name, String gmail) throws IllegalArgumentException;
 
+	public Anwender getAnwender() throws IllegalArgumentException;
+	public void setAnwender(Anwender anwender) throws IllegalArgumentException;
+
 }

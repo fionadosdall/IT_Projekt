@@ -10,5 +10,10 @@ public interface AdminClientAsync {
 	
 	public void erstellenAnwender(String name, String gmail, AsyncCallback<Anwender> callback)
 			throws IllegalArgumentException;
+	
+	public void getAnwender(AsyncCallback<Anwender> callback) throws IllegalArgumentException;
+
+	public void setAnwender(Anwender anwender, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
 
 }

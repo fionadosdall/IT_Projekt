@@ -23,6 +23,8 @@ public class AdminClientImpl extends RemoteServiceServlet implements AdminClient
 
 	private AnwenderMapper anwenderMapper = null;
 	
+	private Anwender anwender = null;
+	
 	public AdminClientImpl() throws IllegalArgumentException {
 
 	}
@@ -34,6 +36,17 @@ public class AdminClientImpl extends RemoteServiceServlet implements AdminClient
 
 
 	}
+	
+	@Override
+	public Anwender getAnwender() throws IllegalArgumentException {
+		return this.anwender;
+	}
+
+	@Override
+	public void setAnwender(Anwender anwender) throws IllegalArgumentException {
+		this.anwender = anwender;
+	}
+
 	
 	@Override
 	public Anwender erstellenAnwender(String name, String gmail) throws IllegalArgumentException {
