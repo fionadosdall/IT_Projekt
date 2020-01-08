@@ -1441,6 +1441,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
+	 * Rueckgabe des Kinos einer Vorstellung
+	 * </p>
+	 */
+	@Override
+	public Kinokette getKinoketteByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException {
+		return this.kinoketteMapper
+				.findById(this.spielplanMapper.findById(vorstellung.getSpielplanId()).getKinokettenId());
+	}
+
+	/**
+	 * <p>
 	 * Rueckgabe der Kinokette einer Umfrageoption
 	 * </p>
 	 */

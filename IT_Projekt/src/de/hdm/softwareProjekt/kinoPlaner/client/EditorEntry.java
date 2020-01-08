@@ -22,12 +22,35 @@ public class EditorEntry implements EntryPoint {
 	Footer footer = new Footer();
 	private 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	
 
 	
 	public void onModuleLoad() {
+		kinoplaner.getAnwenderById(1, new GetAnwenderByIdCallback());
 	
-		kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 		
+		
+		
+		
+	}
+	private class GetAnwenderByIdCallback implements AsyncCallback<Anwender> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
+			
+		}
+
+		@Override
+		public void onSuccess(Anwender result) {
+			if (result.getId() == 1) {
+				kinoplaner.setAnwender(result, new SetAnwenderCallback());
+				aktuellerAnwender.setAnwender(result);
+			}else {
+				kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
+			}
+			
+		}
 		
 	}
 	

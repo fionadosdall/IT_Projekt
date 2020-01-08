@@ -337,4 +337,7 @@ public interface KinoplanerAsync {
 
 	public void getKinoByVorstellung(Vorstellung vorstellung, AsyncCallback<Kino> callback)
 			throws IllegalArgumentException;
+
+	public void getKinoketteByVorstellung(Vorstellung vorstellung, AsyncCallback<Kinokette> callback)
+			throws IllegalArgumentException;
 }

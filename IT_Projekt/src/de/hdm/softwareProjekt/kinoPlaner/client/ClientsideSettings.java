@@ -4,6 +4,8 @@ package de.hdm.softwareProjekt.kinoPlaner.client;
 
 import com.google.gwt.core.client.GWT;
 
+import de.hdm.softwareProjekt.kinoPlaner.shared.AdminClient;
+import de.hdm.softwareProjekt.kinoPlaner.shared.AdminClientAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.CommonSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -19,6 +21,8 @@ public class ClientsideSettings extends CommonSettings {
 	 */
 
 	private static KinoplanerAsync kinoplaner = null;
+	
+	private static AdminClientAsync adminClient = null;
 
 	/*
 	 * Remote Service Proxy zur Verbindung mit dem Server-Seitgen Dienst des
@@ -52,6 +56,13 @@ public class ClientsideSettings extends CommonSettings {
 //		}
 //		return loginService;
 //	}
+	
+	public static AdminClientAsync getAdminClient() {
+		if (adminClient == null) {
+			adminClient = GWT.create(AdminClient.class);
+		}
+		return adminClient;
+	}
 	
 	
 

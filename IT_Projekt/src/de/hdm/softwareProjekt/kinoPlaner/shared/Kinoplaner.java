@@ -1655,7 +1655,9 @@ public interface Kinoplaner extends RemoteService {
 	 * <p>
 	 * Rueckgabe einer Spielzeit mit einer bestimmten Id.
 	 * </p>
-	 * @param spielzeitId Kennung der Spielzeit
+	 * 
+	 * @param spielzeitId
+	 *            Kennung der Spielzeit
 	 * @return Spuielzeitobjekt
 	 * @throws IllegalArgumentException
 	 */
@@ -1665,10 +1667,24 @@ public interface Kinoplaner extends RemoteService {
 	 * <p>
 	 * Rueckgabe des Kinos einer Vorstellung
 	 * </p>
-	 * @param vorstellung Verstellungsobjekt
+	 * 
+	 * @param vorstellung
+	 *            Verstellungsobjekt
 	 * @return Zugehoeriges Kinoobjekt
 	 * @throws IllegalArgumentException
 	 */
 	public Kino getKinoByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Rueckgabe des Kinos einer Vorstellung
+	 * </p>
+	 * 
+	 * @param vorstellung
+	 *            Vorstellungsobkjekt
+	 * @return Zugehoeriges Kinokettenobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Kinokette getKinoketteByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
 
 }
