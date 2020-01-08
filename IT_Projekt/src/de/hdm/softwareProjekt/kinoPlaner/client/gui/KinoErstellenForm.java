@@ -86,6 +86,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		plzTextBox.addStyleName("formularTextBox");
 		stadtTextBox.addStyleName("formularTextBox");
 		this.addStyleName("center");
+		this.addStyleName("detailscontainer");
 		
 		
 		

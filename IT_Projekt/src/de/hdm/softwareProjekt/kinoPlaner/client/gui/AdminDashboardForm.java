@@ -30,6 +30,7 @@ public class AdminDashboardForm extends VerticalPanel {
 		/* Vergeben der Stylename*/
 		
 		this.addStyleName("center");
+		this.addStyleName("detailscontainer");
 		
 		dashboardFormLabel.addStyleName("formHeaderLabel");
 		hbPanel.addStyleName("hbPanel");

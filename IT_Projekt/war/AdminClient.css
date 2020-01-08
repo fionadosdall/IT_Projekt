@@ -665,7 +665,7 @@ body {
 }
 /** Styling der DetailsForms*/
 .detailscontainer {
-	background-color: white;
+	background-color: #d6d1d1;
 	display: flex;
 	flex-direction: column;
 }

@@ -66,6 +66,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		/* Setzen der Style-Namen */
 		this.addStyleName("center");
+		this.addStyleName("detailscontainer");
 		
 		kinoketteFormLabel.addStyleName("formHeaderLabel");
 		kinoketteBearbeitenFormLabel.addStyleName("formHeaderLabel");
