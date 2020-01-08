@@ -42,7 +42,7 @@ public class Header extends FlowPanel{
 	private BurgerMenueAdmin burgerMenueAdmin = new BurgerMenueAdmin();
 	
 	private AdminDashboardForm home;
-	private VolltextSucheForm vsf;
+	private VolltextSucheAdminForm vsf;
 	private UserForm uf;
 	
 	public Header() {
@@ -142,7 +142,7 @@ public class Header extends FlowPanel{
 		@Override
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
-			vsf = new VolltextSucheForm(suchenTextBox.getText());
+			vsf = new VolltextSucheAdminForm(suchenTextBox.getText());
 			RootPanel.get("details").add(vsf);
 
 		}

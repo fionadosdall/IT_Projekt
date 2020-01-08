@@ -32,7 +32,7 @@ public class AdminEntry implements EntryPoint {
 		//kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 
 		RootPanel.get("header").add(header);
-		RootPanel.get("navigator").add(navigator);
+		//RootPanel.get("navigator").add(navigator);
 		RootPanel.get("details").add(home);
 		RootPanel.get("footer").add(footer);
 		
