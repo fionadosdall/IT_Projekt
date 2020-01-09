@@ -8,7 +8,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -16,36 +15,56 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class NeueCellTable extends VerticalPanel {
+	
+	private int i = 0;
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+	
+	private class VorstellungInfo {
+		
+		Vorstellung v;
+		
+		String filmName;
+		String kinoName;
 
-	private CellTable<Vorstellung> vorstellungenCellTable = new CellTable<Vorstellung>();
-	private ListDataProvider<Vorstellung> dataProvider = new ListDataProvider<Vorstellung>();
-	private List<Vorstellung> list = dataProvider.getList();
+		public Vorstellung getV() {
+			return v;
+		}
+
+		public void setV(Vorstellung v) {
+			this.v = v;
+		}
+
+		public String getFilmName() {
+			return filmName;
+		}
+
+		public void setFilmName(String filmName) {
+			this.filmName = filmName;
+		}
+		
+		public String getKinoName() {
+			return kinoName;
+		}
+
+		
+	}
+
+	private CellTable<VorstellungInfo> vorstellungenCellTable = new CellTable<VorstellungInfo>();
+	
+	private ListDataProvider<VorstellungInfo> dataProvider = new ListDataProvider<VorstellungInfo>();
+	private List<VorstellungInfo> list = dataProvider.getList();
 
 	private ArrayList<Vorstellung> vorstellungen = null;
 
-//	private Column<Vorstellung, String> buttonColumn;
-
-//	private Column<Vorstellung, String> kinokettenCellColumn;
-//	private Column<Vorstellung, String> stadtCellColumn;
-
-	// private ButtonCell buttonCell = new ButtonCell();
 	private TextCell filmCell = new TextCell();
-	private TextCell spielzeitCell = new TextCell();;
-	private TextCell kinoCell = new TextCell();;
-//	private TextCell kinokettenCell = new TextCell();;
-//	private TextCell stadtCell = new TextCell();;
+	private TextCell kinoCell = new TextCell();
 
-	private Film film = null;
-	private Spielzeit spielzeit = null;
-	private Kino kino = null;
-//	private Kinokette kinokette = null;
+	private VorstellungInfo vI;
+
 
 	public void onLoad() {
 
@@ -53,7 +72,10 @@ public class NeueCellTable extends VerticalPanel {
 
 		kinoplaner.getAllVorstellungen(new VorstellungCallback());
 
+		dataProvider.addDataDisplay(vorstellungenCellTable);
+
 	}
+	
 
 	private class VorstellungCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
@@ -67,23 +89,33 @@ public class NeueCellTable extends VerticalPanel {
 		public void onSuccess(ArrayList<Vorstellung> result) {
 			// TODO Auto-generated method stub
 			vorstellungen = result;
-
+		
+		
 			for (Vorstellung v : vorstellungen) {
-
-				list.add(v);
-
-				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback());
-				kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback());
-				kinoplaner.getKinoByVorstellung(v, new KinoCallback());
+				
+				vI = new VorstellungInfo();
+				
+				vI.setV(v);
+				
+				list.add(vI);
+				
+				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
+				kinoplaner.getKinoByVorstellung(v, new KinoCallback(vI));
 
 			}
 
-			dataProvider.addDataDisplay(vorstellungenCellTable);
+
 		}
 
 	}
 
 	private class FilmByIdCallback implements AsyncCallback<Film> {
+		
+		VorstellungInfo info = null;
+		
+		FilmByIdCallback(VorstellungInfo info){
+			this.info=info;
+		}
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -94,85 +126,70 @@ public class NeueCellTable extends VerticalPanel {
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-			film = result;
+			
+			info.filmName=result.getName();
 
-			Column<Vorstellung, String> filmColumn = new Column<Vorstellung, String>(filmCell) {
+
+			Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
 				@Override
-				public String getValue(Vorstellung object) {
+				public String getValue(VorstellungInfo object) {
 					// TODO Auto-generated method stub
+					
+					info = object;
 
-					return film.getName();
+					return info.getFilmName();
 
 				}
 			};
 			Window.alert("1");
+			
 			vorstellungenCellTable.addColumn(filmColumn, "Film");
-
+			
+			
 		}
 
 	}
-
-	private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onSuccess(Spielzeit result) {
-			// TODO Auto-generated method stub
-			spielzeit = result;
-
-			Column<Vorstellung, String> spielzeitColumn = new Column<Vorstellung, String>(spielzeitCell) {
-
-				@Override
-				public String getValue(Vorstellung object) {
-					// TODO Auto-generated method stub
-
-					return spielzeit.getZeit().toString();
-
-				}
-
-			};
-			Window.alert("2");
-			vorstellungenCellTable.addColumn(spielzeitColumn, "Spielzeit");
-
-		}
-
-	}
-
+	
 	private class KinoCallback implements AsyncCallback<Kino> {
+		
+		VorstellungInfo info = null;
+		
+		KinoCallback(VorstellungInfo info){
+			this.info=info;
+		}
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void onSuccess(Kino result) {
 			// TODO Auto-generated method stub
-			kino = result;
-
-			Column<Vorstellung, String> kinoColumn = new Column<Vorstellung, String>(kinoCell) {
+			
+			info.kinoName=result.getName();
+			
+			Column<VorstellungInfo, String> kinoColumn = new Column<VorstellungInfo, String>(kinoCell) {
 
 				@Override
-				public String getValue(Vorstellung object) {
+				public String getValue(VorstellungInfo object) {
 					// TODO Auto-generated method stub
+					
+					info = object;
 
-					return kino.getName();
+					return info.getKinoName();
+
 				}
-
 			};
-			Window.alert("3");
 			vorstellungenCellTable.addColumn(kinoColumn, "Kino");
 
+							
 		}
-
+		
 	}
 
 }
+
 

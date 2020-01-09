@@ -19,6 +19,7 @@
   <servlet-mapping>
     <servlet-name>KinoplanerAdministration</servlet-name>
     <url-pattern>/it_projekt/administration</url-pattern>
+       <url-pattern>/Admin/administration</url-pattern>
   </servlet-mapping>
   
   <servlet>
