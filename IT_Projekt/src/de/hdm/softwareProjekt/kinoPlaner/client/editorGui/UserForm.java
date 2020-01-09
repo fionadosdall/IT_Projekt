@@ -22,7 +22,7 @@ public class UserForm extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
-	Anwender anwender = aktuellerAnwender.getAnwender();
+	Anwender anwender = null;
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
@@ -49,6 +49,10 @@ public class UserForm extends FlowPanel {
 	private Image papierkorb = new Image();
 
 	String logoutUrl;
+	
+	public UserForm(Anwender anwender) {
+		this.anwender=anwender;
+	}
 
 	public void onLoad() {
 		

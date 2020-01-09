@@ -4,7 +4,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.AdminDashboardForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Footer;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Header;
@@ -29,17 +28,33 @@ public class AdminEntry implements EntryPoint {
 	
 	public void onModuleLoad() {
 		
-		kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
-
-		RootPanel.get("header").add(header);
-		//RootPanel.get("navigator").add(navigator);
-		RootPanel.get("details").add(home);
-		RootPanel.get("footer").add(footer);
+		kinoplaner.getAnwenderById(1, new GetAnwenderByIdCallback());
 		
 		
 	}
 	
 	/**Callbacks**/
+	
+	private class GetAnwenderByIdCallback implements AsyncCallback<Anwender> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
+			
+		}
+
+		@Override
+		public void onSuccess(Anwender result) {
+			if (result.getId() == 1) {
+				kinoplaner.setAnwender(result, new SetAnwenderCallback());
+				aktuellerAnwender.setAnwender(result);
+			}else {
+				kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
+			}
+			
+		}
+		
+	}
 	
 	private class AnwenderErstellenCallback implements AsyncCallback<Anwender> {
 
@@ -70,7 +85,7 @@ public class AdminEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("header").add(header);
-			//RootPanel.get("navigator").add(navigator);
+			RootPanel.get("details").add(home);
 			RootPanel.get("footer").add(footer);
 			
 		}

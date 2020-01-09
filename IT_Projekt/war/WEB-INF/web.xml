@@ -22,15 +22,6 @@
        <url-pattern>/Admin/administration</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>AdminClientAdministration</servlet-name>
-    <servlet-class>de.hdm.softwareProjekt.kinoPlaner.server.AdminClientImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>KinoplanerAdministration</servlet-name>
-    <url-pattern>/AdminClient/adminClient</url-pattern>
-  </servlet-mapping>
   
    <!--  
   <servlet>

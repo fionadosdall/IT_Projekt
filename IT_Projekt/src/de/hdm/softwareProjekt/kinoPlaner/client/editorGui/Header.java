@@ -148,7 +148,7 @@ public class Header extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			uf = new UserForm();
+			uf = new UserForm(aktuellerAnwender.getAnwender());
 			RootPanel.get("details").add(uf);
 
 		}
