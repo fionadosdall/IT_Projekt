@@ -4,8 +4,6 @@ package de.hdm.softwareProjekt.kinoPlaner.client;
 
 import com.google.gwt.core.client.GWT;
 
-import de.hdm.softwareProjekt.kinoPlaner.shared.AdminClient;
-import de.hdm.softwareProjekt.kinoPlaner.shared.AdminClientAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.CommonSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -21,50 +19,38 @@ public class ClientsideSettings extends CommonSettings {
 	 */
 
 	private static KinoplanerAsync kinoplaner = null;
-	
-	private static AdminClientAsync adminClient = null;
 
 	/*
-	 * Remote Service Proxy zur Verbindung mit dem Server-Seitgen Dienst des
-	 * Login
+	 * Remote Service Proxy zur Verbindung mit dem Server-Seitgen Dienst des Login
 	 */
 
-//	private static LoginServiceAsync loginService = null:
-//		
-//	//Client-Seitig
-//		
-//	private static final String LOGGER_NAME = "Kinoplaner Web Client";
-//	
-//	//Client-Seitig
-//	
-//	private static final Logger log = Logger.getLogger(LOGGER_NAME);
-//	
-//	/*
-//	 * Auslesen des zentralen eingeloggten Anwenders
-//	 */
-//	
-//	public static Logger getLogger() {
-//		return log;
-//	}
-//
-//	/*
-//	 * Die Methode ermöglicht das erstellen einer Instant der Klasse LoginService
-//	 */
-//	public static LoginServiceAsync getLoginService() {
-//		if (loginService == null) {
-//			loginService = GWT.create(LoginService.class);
-//		}
-//		return loginService;
-//	}
-	
-	public static AdminClientAsync getAdminClient() {
-		if (adminClient == null) {
-			adminClient = GWT.create(AdminClient.class);
-		}
-		return adminClient;
-	}
-	
-	
+	// private static LoginServiceAsync loginService = null:
+	//
+	// //Client-Seitig
+	//
+	// private static final String LOGGER_NAME = "Kinoplaner Web Client";
+	//
+	// //Client-Seitig
+	//
+	// private static final Logger log = Logger.getLogger(LOGGER_NAME);
+	//
+	// /*
+	// * Auslesen des zentralen eingeloggten Anwenders
+	// */
+	//
+	// public static Logger getLogger() {
+	// return log;
+	// }
+	//
+	// /*
+	// * Die Methode ermöglicht das erstellen einer Instant der Klasse LoginService
+	// */
+	// public static LoginServiceAsync getLoginService() {
+	// if (loginService == null) {
+	// loginService = GWT.create(LoginService.class);
+	// }
+	// return loginService;
+	// }
 
 	public static KinoplanerAsync getKinoplaner() {
 

@@ -1,6 +1,10 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
+import de.hdm.softwareProjekt.kinoPlaner.shared.LoginServiceAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
 /** 
@@ -20,7 +24,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	private static final long serialVersionUID = 1L;
 	
 	public Anwender login(String requestUri) {
-		
+	/**
 		AnwenderService anwenderService = AnwenderServiceFactory.getAnwenderService();
 		com.google.appengine.api.users.Users googleUser = AnwenderService.getCurrentAnwender();
 		
@@ -31,7 +35,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		 * Wenn der <code>User</code> mit seinem Gooogle Account eingeloggt ist, wird überprüft,
 		 * ob dieser unserem System bekannt ist
 		 */
-	
+	/**
 		if (googleUser != null) {
 			
 			Anwender existA = AnwenderMapper.anwenderMapper().findByGmail(googleUser.getEmail());
@@ -40,21 +44,21 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		/**
 		 * Falls der User dem System bekannt ist, wird dieser eingeloggt
 		 */
-		
+		/**
 		if (existA != null) {
 			
 			existA.setIstEingeloggt(true);
 			existA.setLogoutUrl(anwenderService.creatLogoutURL(requestUri));
 			
 			
-			retur existA;
+			return existA;
 		}
 		
 		/**
 		 * Falls der <code>User</code> sich zum ersten Mal im System anmeldet
 		 * wird ein neuer Datensatz in dei Datenbank geschrieben
 		 */
-		
+		/**
 		anwender.setIstEingeloggt(true);
 		anwender.setLogoutUrl(anwenderService.createLogoutURL(requestUri));
 		anwender.setGmail(googleUser.getEmail());
@@ -64,5 +68,13 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	anwender.setLoginUrl(anwenderService.createLoginURL(requestUri));
 	
 	return anwender;
+	**/
+		return null;
+	}
+
+	@Override
+	public void login(String requestUri, AsyncCallback<Anwender> asyncCallback) {
+		// TODO Auto-generated method stub
+		
 	}
 }
