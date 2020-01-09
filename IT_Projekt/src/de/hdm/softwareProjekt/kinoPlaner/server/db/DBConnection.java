@@ -22,14 +22,18 @@ import java.sql.DriverManager;
 	 * ansprechen können.
 	 */
 	
-//	private static String googleURL = null;
+//	private static String googleURL = "jdbc:google:mysql://34.89.183.164:3306/itpropjekt?user=projekt_19&password=";
 	private static String localURL = "jdbc:mysql://localhost:3306/itprojekt?user=root&password=H1lfig3r!";
 	
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
 	 * <code>DBConnection.connection()</code>. Diese Methode ist Grund für die
-	 * eingangs erwähnte Singleton-Eigenschaft. Sie stellt sicher, dass immer nur
+	 * anfangs erwähnte Singleton-Eigenschaft. Sie stellt sicher, dass immer nur
 	 * eine einzige Instanz dieser DBConnection-Klasse exisitiert.
+	 * 
+	 * Merke: DBConnection sollte nicht mittels <code>new</code>
+     * instantiiert werden, sondern stets durch Aufruf dieser statischen
+     * Methode.
 	 * 
 	 * @return Die Verbindung wird zurückgebeben
 	 */
@@ -37,20 +41,29 @@ import java.sql.DriverManager;
 		public static Connection connection() {
 		// Wenn bisher noch keine Verbindung zur DB aufgebaut wurde:
 		if (con != null) {
-				String url = null;
-				
+			String url = null;
 			try {
+	/**			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+                    // Load the class that provides the new
+                    // "jdbc:google:mysql://" prefix.
+                    Class.forName("com.mysql.jdbc.GoogleDriver");
+                   url = googleURL;
+				} else {
+	*/		
 					// Local MySQL instance to use during development.
 				Class.forName("com.mysql.jdbc.Driver");
 					con = DriverManager.getConnection(localURL);
-						url = localURL;               	
+						url = localURL;   
+						
+				
 		/**
 		 * Jetzt kann der DriverManager die Verbindung mit Hilfe der beiden angegebenen 
-		 * URLs aufbauen.
+		 * URLs aufbauen.Die Verbindung wird in Zukunft dann in der statischen Variable 
+		 * con abgespeichert und verwendet. 
 		 */
-						con = DriverManager.getConnection(url);
 						
-             } catch (Exception e) {
+				con = DriverManager.getConnection(url);
+			} catch (Exception e) {
                   con = null;
                   	e.printStackTrace();
                   		throw new RuntimeException(e.getMessage());
