@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.BurgerMenueAdmin;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UserForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.VolltextSucheForm;
 
@@ -131,7 +132,7 @@ public class Header extends FlowPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			uf = new UserForm();
+			uf = new UserForm(aktuellerAnwender.getAnwender());
 			RootPanel.get("details").add(uf);
 		}
 		
