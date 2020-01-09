@@ -29,7 +29,7 @@ public class AdminEntry implements EntryPoint {
 	
 	public void onModuleLoad() {
 		
-		//kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
+		kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 
 		RootPanel.get("header").add(header);
 		//RootPanel.get("navigator").add(navigator);
@@ -45,12 +45,13 @@ public class AdminEntry implements EntryPoint {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Initilanwender konnte nicht erstellt werden");
+			Window.alert("Initilanwender konnte nicht erstellt werden" + caught.getMessage());
 			
 		}
 
 		@Override
 		public void onSuccess(Anwender result) {
+			Window.alert(result.getName());
 			kinoplaner.setAnwender(result, new SetAnwenderCallback());
 			aktuellerAnwender.setAnwender(result);
 			
@@ -69,7 +70,7 @@ public class AdminEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("header").add(header);
-			RootPanel.get("navigator").add(navigator);
+			//RootPanel.get("navigator").add(navigator);
 			RootPanel.get("footer").add(footer);
 			
 		}

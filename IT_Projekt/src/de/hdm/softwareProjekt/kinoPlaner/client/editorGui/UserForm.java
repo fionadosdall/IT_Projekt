@@ -135,7 +135,7 @@ public class UserForm extends FlowPanel {
 			nameTextBox.getElement().setPropertyString("placeholder", anwender.getName());
 		}
 				
-		Window.alert(""+aktuellerAnwender.getAnwender().getId());
+	//	Window.alert(""+aktuellerAnwender.getAnwender().getId());
 	}
 
 	private class BenutzerLoeschenClickHandler implements ClickHandler {
