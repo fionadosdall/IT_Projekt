@@ -22,8 +22,8 @@ import java.sql.DriverManager;
 	 * ansprechen können.
 	 */
 	
-		//	private static String googleURL = "jdbc:google:mysql://34.89.183.164:3306/itpropjekt?user=projekt_19&password=";
-		private static String localURL = "jdbc:mysql://127.0.0.1:3307/itprojekt?user=root&password=MyNewPass";
+		//	private static String googleURL = "jdbc:google:mysql://34.89.183.164:3306/itprojekt?user=projekt_19&password=";
+		private static String localURL = "jdbc:mysql://localhost:3306/itprojekt?user=root&password=H1lfig3r!";
 	
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
@@ -51,9 +51,8 @@ import java.sql.DriverManager;
 				} else {
 	*/		
 					// Local MySQL instance to use during development.
-				Class.forName("com.mysql.jdbc.Driver");
-					
-					url = localURL; 
+						Class.forName("com.mysql.jdbc.Driver");
+						url = localURL; 
 					
 						
 				
