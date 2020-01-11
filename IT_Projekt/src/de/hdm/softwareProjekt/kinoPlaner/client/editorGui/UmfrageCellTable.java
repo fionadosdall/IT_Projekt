@@ -226,7 +226,7 @@ public class UmfrageCellTable extends VerticalPanel{
 				kinoplaner.getKinoByUmfrageoption(u, new GetKinoByUmfrageoptionCallback(uI));
 				kinoplaner.getSpielzeitByUmfrageoption(u, new GetSpielzeitByUmfrageoptionCallback(uI));
 				
-				kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
+	//			kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
 			
 
 			}
