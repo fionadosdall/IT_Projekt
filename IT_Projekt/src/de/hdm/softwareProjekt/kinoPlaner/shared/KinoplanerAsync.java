@@ -116,6 +116,8 @@ public interface KinoplanerAsync {
 	public void getAnwenderById(int anwenderId, AsyncCallback<Anwender> callback) throws IllegalArgumentException;
 
 	public void getSpielplanById(int spielplanId, AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
+	
+	public void getVorstellungById(int vorstellungId, AsyncCallback<Vorstellung> callback)throws IllegalArgumentException;
 
 	public void getKinoById(int kinoId, AsyncCallback<Kino> asyncCallback) throws IllegalArgumentException;
 

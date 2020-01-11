@@ -2608,4 +2608,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * **************************************************************************
 	 */
 
+	@Override
+	public Vorstellung getVorstellungById(int vorstellungId) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return this.vorstellungMapper.findById(vorstellungId);
+	}
+
 }

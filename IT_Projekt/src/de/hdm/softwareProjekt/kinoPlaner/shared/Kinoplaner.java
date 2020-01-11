@@ -611,6 +611,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return gefundenes Kinoobjekt
 	 * @throws IllegalArgumentException
 	 */
+
 	public Kino getKinoById(int kinoId) throws IllegalArgumentException;
 
 	/**
@@ -1686,5 +1687,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public Kinokette getKinoketteByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
+
+	public Vorstellung getVorstellungById(int vorstellungId)throws IllegalArgumentException;
 
 }
