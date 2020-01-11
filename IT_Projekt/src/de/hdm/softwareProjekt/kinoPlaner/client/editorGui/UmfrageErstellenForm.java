@@ -20,6 +20,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class UmfrageErstellenForm extends FlowPanel {
 
@@ -61,10 +62,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private ArrayList<Kino> kinos;
 	private ArrayList<Spielzeit> spielzeiten;
 	private ArrayList<Film> filme;
+	
+	private Vorstellung v;
 
-	private UmfrageCellTable uct = new UmfrageCellTable();
-//	private VorstellungCellTable vct = new VorstellungCellTable();
-	//private VorstellungenAnzeigenGrid vag = new VorstellungenAnzeigenGrid();
+	private UmfrageCellTable uct = new UmfrageCellTable(v);
 	private NeueCellTable n = new NeueCellTable();
 	
 
@@ -123,7 +124,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
-	//	detailsBoxUmfrage.add(uct);
+		
+		detailsBoxUmfrage.add(uct);
 		detailsBoxUmfrage.add(n);
 
 		detailsunten.add(detailsBoxFiltern);

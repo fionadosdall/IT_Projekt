@@ -11,18 +11,14 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.ProvidesKey;
+
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
@@ -41,249 +37,310 @@ public class UmfrageCellTable extends VerticalPanel{
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
 	
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
-	
-	private ArrayList<Umfrageoption> umfrageoptionen = null;
-	
-	// CellTable der Umfrageoptionen
 
-		private CellTable<Umfrageoption> umfrageCellTable = new CellTable<Umfrageoption>(10, tableRes, KEY_PROVIDER);
-		private final MultiSelectionModel<Umfrageoption> selectionModel = new MultiSelectionModel<Umfrageoption>();
-		private ListDataProvider<Umfrageoption> dataProvider = new ListDataProvider<Umfrageoption>();
-		private List<Umfrageoption> list = dataProvider.getList();
+	private class UmfrageInfo {
 
-		private static final ProvidesKey<Umfrageoption> KEY_PROVIDER = new ProvidesKey<Umfrageoption>() {
-			public Object getKey(Umfrageoption u) {
-				return u.getId();
+		Umfrageoption u;
+
+		String filmName;
+		String kinoName;
+		String spielzeit;
+		String stadt;
+
+		public String getStadt() {
+			return stadt;
+		}
+
+		public void setStadt(String stadt) {
+			this.stadt = stadt;
+		}
+
+		public Umfrageoption getU() {
+			return u;
+		}
+
+		public void setU(Umfrageoption u) {
+			this.u = u;
+		}
+
+		public String getFilmName() {
+			return filmName;
+		}
+
+		public void setFilmName(String filmName) {
+			this.filmName = filmName;
+		}
+
+		public String getKinoName() {
+			return kinoName;
+		}
+
+		public String getSpielzeit() {
+			return spielzeit;
+		}
+
+		public void setSpielzeit(String spielzeit) {
+			this.spielzeit = spielzeit;
+		}
+
+	}
+
+	private CellTable<UmfrageInfo> umfrageCellTable = new CellTable<UmfrageInfo>(100, tableRes);
+
+	private ListDataProvider<UmfrageInfo> dataProvider = new ListDataProvider<UmfrageInfo>();
+	private List<UmfrageInfo> list = dataProvider.getList();
+
+	private ArrayList<Umfrageoption> umfragen = null;
+
+	private ButtonCell buttonCell = new ButtonCell();
+	private TextCell filmCell = new TextCell();
+	private TextCell kinoCell = new TextCell();
+	private TextCell spielzeitCell = new TextCell();
+	private TextCell stadtCell = new TextCell();
+
+	private UmfrageInfo uI;
+	private Umfrageoption umfrageoption;
+	private Vorstellung vorstellung;
+
+	public Vorstellung getVorstellung() {
+		return vorstellung;
+	}
+
+	public void setVorstellung(Vorstellung vorstellung) {
+		this.vorstellung = vorstellung;
+	}
+
+	public void onLoad() {
+
+		this.add(umfrageCellTable);
+		
+		Column<UmfrageInfo, String> buttonColumn = new Column<UmfrageInfo, String>(buttonCell) {
+
+			@Override
+			public String getValue(UmfrageInfo object) {
+				// TODO Auto-generated method stub
+				return "-";
 			}
+			
 		};
 		
-		private Film film = null;
-		private Spielzeit spielzeit = null;
-		private Kino kino = null;
-		private Kinokette kinokette = null;
+		umfrageCellTable.addColumn(buttonColumn, "Entfernen");
 		
-		private VorstellungCellTable vct = new VorstellungCellTable();
-		
-		public void onLoad() {
-			
-			this.add(umfrageCellTable);
-			
-			umfrageCellTable.setWidth("100%");
-			
-			/***********************************************************************
-			 * CELL TABLE
-			 ***********************************************************************/
-			
-			// Methode muss noch geändert werden auf getVorstellungenFuerNeueUmfrage()
-			
-			kinoplaner.getUmfrageoptionenByVorstellung(vct.getVorstellung(), new UmfrageoptionenCallback());
-			
-			if (umfrageoptionen != null) {
-				
-				for (Umfrageoption u : umfrageoptionen) {
-					list.add(u);
-				}
+		buttonColumn.setFieldUpdater(new FieldUpdater<UmfrageInfo, String>() {
 
-			} else {
-
-				umfrageCellTable.setEmptyTableWidget(new Label("Es sind noch keine Optionen vorhanden"));
+			@Override
+			public void update(int index, UmfrageInfo object, String value) {
+				// TODO Auto-generated method stub
+			
 			}
+		});
 		
-			
-			ButtonCell buttonCell = new ButtonCell();
-			Column<Umfrageoption, String> buttonColumn = new Column<Umfrageoption, String>(buttonCell) {
 
-				public String getValue(Umfrageoption object) {
+		Column<UmfrageInfo, String> filmColumn = new Column<UmfrageInfo, String>(filmCell) {
 
-					return "-";
+			@Override
+			public String getValue(UmfrageInfo object) {
+				// TODO Auto-generated method stub
 
-				}
-			};
+				return object.getFilmName();
 
-			buttonColumn.setFieldUpdater(new FieldUpdater<Umfrageoption, String>() {
+			}
+		};
 
-				@Override
-				public void update(int index, Umfrageoption object, String value) {
-					// TODO Auto-generated method stub
-				
-					AsyncCallback<Vorstellung> entfernenCallback = new AsyncCallback<Vorstellung>() {
+		umfrageCellTable.addColumn(filmColumn, "Film");
 
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							Window.alert("Umfrageoption entfernen war NICHT erfolgreich");
-							
-						}
+		Column<UmfrageInfo, String> kinoColumn = new Column<UmfrageInfo, String>(kinoCell) {
 
-						@Override
-						public void onSuccess(Vorstellung result) {
-							// TODO Auto-generated method stub
-							Window.alert("Umfrageoption entfernen war erfolgreich");
-							
-						}
-						
-					};
+			@Override
+			public String getValue(UmfrageInfo object) {
+				// TODO Auto-generated method stub
 
-					kinoplaner.umfrageoptionEntfernen(vct.getVorstellung(), entfernenCallback);
+				return object.getKinoName();
 
-					dataProvider.getList().remove(object);
-					dataProvider.refresh();
+			}
+		};
 
-				}
+		umfrageCellTable.addColumn(kinoColumn, "Kino");
 
-			});
+		Column<UmfrageInfo, String> speilzeitColumn = new Column<UmfrageInfo, String>(spielzeitCell) {
 
-			umfrageCellTable.addColumn(buttonColumn, "Entfernen");
-
-			TextCell filmCell = new TextCell();
-			Column<Umfrageoption, String> filmColumn = new Column<Umfrageoption, String>(filmCell) {
-
-				@Override
-				public String getValue(Umfrageoption object) {
-					// TODO Auto-generated method stub
-					kinoplaner.getFilmById(object.getId(), new FilmByIdCallback());
-					return film.getName();
+			@Override
+			public String getValue(UmfrageInfo object) {
+				// TODO Auto-generated method stub
 	
-				}
+				return object.getSpielzeit();
 
-			};
+			}
+		};
 
-			umfrageCellTable.addColumn(filmColumn, "Film");
+		umfrageCellTable.addColumn(speilzeitColumn, "Spielzeit");
 
-			TextCell spielzeitCell = new TextCell();
-			Column<Umfrageoption, String> spielzeitColumn = new Column<Umfrageoption, String>(spielzeitCell) {
+		Column<UmfrageInfo, String> stadtColumn = new Column<UmfrageInfo, String>(stadtCell) {
 
-				@Override
-				public String getValue(Umfrageoption object) {
-					// TODO Auto-generated method stub
-					return null;
-					// return date.toString();
-				}
+			@Override
+			public String getValue(UmfrageInfo object) {
+				// TODO Auto-generated method stub
 
-			};
+				return object.getStadt();
 
-			umfrageCellTable.addColumn(spielzeitColumn, "Spielzeit");
+			}
+		};
 
-			TextCell kinoCell = new TextCell();
-			Column<Umfrageoption, String> kinoColumn = new Column<Umfrageoption, String>(kinoCell) {
-
-				@Override
-				public String getValue(Umfrageoption object) {
-					// TODO Auto-generated method stub
-					kinoplaner.getKinoById(kino.getId(), new KinoByIdCallback());
-					return kino.getName();
-				
-				}
-
-			};
-
-			umfrageCellTable.addColumn(kinoColumn, "Kino");
-
-			TextCell kinokettenCell = new TextCell();
-			Column<Umfrageoption, String> kinokettenCellColumn = new Column<Umfrageoption, String>(kinokettenCell) {
-
-				@Override
-				public String getValue(Umfrageoption object) {
-					// TODO Auto-generated method stub
-					kinoplaner.getKinoketteById(kino.getKinokettenId(), new KinoketteByIdCallback());
-					return kinokette.getName();
-			
-				}
-
-			};
-
-			umfrageCellTable.addColumn(kinokettenCellColumn, "Kinokette");
-
-			TextCell stadtCell = new TextCell();
-			Column<Umfrageoption, String> stadtCellColumn = new Column<Umfrageoption, String>(stadtCell) {
-
-				@Override
-				public String getValue(Umfrageoption object) {
-					// TODO Auto-generated method stub
-//					return kino.getStadt();
-					return null;
-				}
-
-			};
-
-			umfrageCellTable.addColumn(stadtCellColumn, "Ort");
-
-			umfrageCellTable.setSelectionModel(selectionModel,
-					DefaultSelectionEventManager.<Umfrageoption>createCheckboxManager());
-
-			dataProvider.addDataDisplay(umfrageCellTable);
-			
-		}
+		umfrageCellTable.addColumn(stadtColumn, "Ort");
 		
-		/***********************************************************************
-		 * CALLBACKS
-		 ***********************************************************************/
-		
-		private class UmfrageoptionenCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+		kinoplaner.getUmfrageoptionenByVorstellung(vorstellung, new UmfrageCallback());
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
+		dataProvider.addDataDisplay(umfrageCellTable);
 
-			@Override
-			public void onSuccess(ArrayList<Umfrageoption> result) {
-				// TODO Auto-generated method stub
-				umfrageoptionen = result;
-				
-			}
-			
+	}
+	
+	public UmfrageCellTable(Vorstellung vorstellung) {
+		this.vorstellung = vorstellung;
+	}
+
+	private class UmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Window.alert("onFailure UmfrageCallback");
+
 		}
-		
-		private class FilmByIdCallback implements AsyncCallback<Film> {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
+		@Override
+		public void onSuccess(ArrayList<Umfrageoption> result) {
+			// TODO Auto-generated method stub
+			umfragen = result;
 
-			@Override
-			public void onSuccess(Film result) {
-				// TODO Auto-generated method stub
-				film = result;
+			for (Umfrageoption u : umfragen) {
+
+				uI = new UmfrageInfo();
+
+				uI.setU(u);
+
+				list.add(uI);
 				
-			}
+				Window.alert(u.getName());
+				
+				kinoplaner.getFilmByUmfrageoption(u, new GetFilmByUmfrageoptionCallback(uI));
+				kinoplaner.getKinoByUmfrageoption(u, new GetKinoByUmfrageoptionCallback(uI));
+				kinoplaner.getSpielzeitByUmfrageoption(u, new GetSpielzeitByUmfrageoptionCallback(uI));
+				
+				kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
 			
+
+			}
+
 		}
-		
-		private class KinoByIdCallback implements AsyncCallback<Kino> {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
+	}
 
-			@Override
-			public void onSuccess(Kino result) {
-				// TODO Auto-generated method stub
-				kino = result;
-				
-			}
-			
+	private class GetFilmByUmfrageoptionCallback implements AsyncCallback<Film> {
+
+		UmfrageInfo info = null;
+
+		GetFilmByUmfrageoptionCallback(UmfrageInfo info) {
+			this.info = info;
 		}
-		
-		private class KinoketteByIdCallback implements AsyncCallback<Kinokette> {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
 
-			@Override
-			public void onSuccess(Kinokette result) {
-				// TODO Auto-generated method stub
-				kinokette = result;
-				
-			}
-			
 		}
+
+		@Override
+		public void onSuccess(Film result) {
+			// TODO Auto-generated method stub
+
+			info.filmName = result.getName();
+
+			dataProvider.refresh();
+
+		}
+
+	}
+
+	private class GetKinoByUmfrageoptionCallback implements AsyncCallback<Kino> {
+
+		UmfrageInfo info = null;
+
+		GetKinoByUmfrageoptionCallback(UmfrageInfo info) {
+			this.info = info;
+		}
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onSuccess(Kino result) {
+			// TODO Auto-generated method stub
+
+			info.kinoName = result.getName();
+
+			info.stadt = result.getStadt();
+
+			dataProvider.refresh();
+
+		}
+
+	}
+
+	private class GetSpielzeitByUmfrageoptionCallback implements AsyncCallback<Spielzeit> {
+
+		UmfrageInfo info = null;
+
+		GetSpielzeitByUmfrageoptionCallback(UmfrageInfo info) {
+			this.info = info;
+		}
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onSuccess(Spielzeit result) {
+			// TODO Auto-generated method stub
+			info.spielzeit = result.getZeit().toString();
+
+			dataProvider.refresh();
+
+		}
+
+	}
+	
+//	private class UmfrageByIdCallback implements AsyncCallback<Umfrageoption> {
+//		
+//		UmfrageInfo info = null;
+//
+//		UmfrageByIdCallback(UmfrageInfo info) {
+//			this.info = info;
+//		}
+//
+//	
+//
+//		@Override
+//		public void onFailure(Throwable caught) {
+//			// TODO Auto-generated method stub
+//			Window.alert(caught.getMessage());
+//			
+//		}
+//
+//		@Override
+//		public void onSuccess(Umfrageoption result) {
+//			// TODO Auto-generated method stub
+//			
+//			info.u = result;
+//			
+//			
+//		}
+//		
+//	}
+	
+
 }
