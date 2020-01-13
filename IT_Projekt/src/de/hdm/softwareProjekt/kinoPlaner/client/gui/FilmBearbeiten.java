@@ -28,6 +28,8 @@ import com.google.gwt.view.client.ListDataProvider;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
 
 public class FilmBearbeiten extends FlowPanel {
@@ -71,6 +73,9 @@ public class FilmBearbeiten extends FlowPanel {
 
 	private Film film;
 	private Film neuerFilm = null;
+	private Spielzeit spielzeit;
+	private Kino kino;
+	
 	
 	private FilmAnzeigenForm filmAF; 
 	
