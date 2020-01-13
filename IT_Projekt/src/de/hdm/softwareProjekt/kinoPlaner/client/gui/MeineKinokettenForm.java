@@ -47,7 +47,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	private ArrayList <Kinokette> kinoketten;
 	private Kinokette kinokette;
-	private Kinokette ausgewaehlteKinokette = new Kinokette();
+	
 	private Kino kino;
 	private KinoketteErstellenForm anzeigen;
 	private KinoketteErstellenForm erstellen;
@@ -67,12 +67,6 @@ public class MeineKinokettenForm extends VerticalPanel{
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		
 		
-		/*** voruebergehender Anzeigetest***/
-		
-		ausgewaehlteKinokette.setId(1);
-		ausgewaehlteKinokette.setName("UFA");
-		ausgewaehlteKinokette.setSitz("Stuttgart");
-		ausgewaehlteKinokette.setWebsite("www.ufa.de");
 		
 		
 		
@@ -95,7 +89,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		/*Zusammensetzen der Widgets */
 		
-		administration.getAllKinoketten(new SucheKinokettenByAnwenderCallback());
+		
 		
 		
 		
@@ -109,7 +103,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		
 		bov.setTitel("Meine Kinoketten");
-
+		administration.getKinokettenByAnwenderOwner(new SucheKinokettenByAnwenderCallback());
 		inhaltPanel.add(bov);
 		this.add(inhaltPanel);
 		
@@ -175,7 +169,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 			
 			KinoketteErstellenForm.setEdit(edit);
 			bearbeiten = new KinoketteErstellenForm();
-			KinoketteErstellenForm.setBearbeiten(ausgewaehlteKinokette);
+			//	KinoketteErstellenForm.setBearbeiten(ausgewaehlteKinokette);
 			RootPanel.get("details").add(bearbeiten);
 		}
 		

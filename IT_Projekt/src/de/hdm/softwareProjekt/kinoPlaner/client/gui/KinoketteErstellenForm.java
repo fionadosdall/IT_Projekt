@@ -141,7 +141,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			// TODO administration.kinoketteEntfernen(kinoketteBearbeiten.getId(), new KinoketteLoeschenCallback());
+			//TODO administration.kinoketteEntfernen(kinoketteBearbeiten, new KinoketteLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkkf = new MeineKinokettenForm();
 			RootPanel.get("details").add(mkkf);
