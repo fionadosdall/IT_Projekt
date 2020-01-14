@@ -40,7 +40,7 @@
 	grid-column-end: 5;
 	grid-row-start: 3;
 	grid-row-end: 4;
-	background: black;
+	background: #363636;
 }
 
 #dropdown {
@@ -67,7 +67,7 @@
 }
 
 .dropdownButton {
-	background: withe;
+	background: white;
 	width: 160px;
 	border-color: #363636;
 	color: #363636;
@@ -82,7 +82,7 @@
 	white-space: nowrap;
 	-webkit-appearance: none;
 	align-items: center;
-	border-radius: 4px;
+	border-radius: 2px;
 	box-shadow: none;
 	display: inline-flex;
 	font-size: 1rem;
@@ -96,17 +96,17 @@
 
 .menueBar {
 	position: absolut;
-	background: white;
+	background: black;
 	bottom: 200px;
 	right: 200px;
 	z-index: 40;
 	align-items: right;
 	
 }
-/** Styling des Heders*/
+/** Styling des Headers*/
 .headerGesamt {
 	background-color: #363636;
-	color: #F5F5D8;
+	color: #fff;
 	min-height: 3.25rem;
 	align-items: stretch;
 	display: flex;
@@ -192,7 +192,7 @@
 	white-space: nowrap;
 	-webkit-appearance: none;
 	align-items: center;
-	border-radius: 4px;
+	border-radius: 16px;
 	box-shadow: none;
 	display: inline-flex;
 	font-size: 1rem;
@@ -227,7 +227,7 @@
 	white-space: nowrap;
 	-webkit-appearance: none;
 	align-items: center;
-	border-radius: 4px;
+	border-radius: 16px;
 	box-shadow: none;
 	display: inline-flex;
 	font-size: 1rem;
@@ -282,7 +282,7 @@
 	border: 1px solid transparent;
 	display: inline-flex;
 	font-size: 1rem;
-	height: 2.25em;
+	height: 2.50em;
 	justify-content: flex-start;
 	line-height: 1.5;
 	padding-bottom: calc(.375em - 1px);
@@ -393,14 +393,14 @@
 .detailsoben {
 	background: #d6d1d1;
 	text-align: center;
-	color: white;
+	color: black;
 	margin-bottom: 3px;
 	padding: 20px 0 20px 0;
 }
 
 .detailsunten {
 	text-align: center;
-	color: white;
+	color: black;
 	background: #d6d1d1;
 }
 
@@ -414,7 +414,7 @@
 }
 
 .speichernBox {
-	margin-top: 5%;
+	margin-top: 3%;
 }
 
 .detailsBoxMitte {
@@ -431,7 +431,7 @@
 .detailsboxLabels {
 	font-size: 1.25rem;
 	margin-bottom: .5em;
-	color: #363636;
+	color:#363636;
 	display: block;
 	font-weight: 700;
 }
@@ -445,7 +445,7 @@
 	-webkit-appearance: none;
 	align-items: center;
 	border: 1px solid transparent;
-	border-radius: 4px;
+	border-radius: 18px;
 	display: inline-flex;
 	font-size: 1rem;
 	height: 2.25em;
@@ -460,10 +460,10 @@
 }
 
 .hinzufuegenButton.gwt-Button {
-	background: transparent;
+	background: #23d160;
 	border-color: #23d160;
-	color: #23d160;
-	border-radius: 2px;
+	color: #fff;
+	border-radius: 4px;
 	font-size: .75rem;
 	border-width: 1px;
 	cursor: pointer;
@@ -480,7 +480,7 @@
 	background: transparent;
 	border-color: #ff3860;
 	color: #ff3860;
-	border-radius: 2px;
+	border-radius: 4px;
 	font-size: .75rem;
 	border-width: 1px;
 	cursor: pointer;
