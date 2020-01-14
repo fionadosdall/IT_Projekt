@@ -33,6 +33,7 @@
 	margin-top: 5px;
 	margin-left: 5px;
 	margin-right: 5px;
+	margin-bottom: 5px;
 }
 
 #footer {
@@ -67,10 +68,10 @@
 }
 
 .dropdownButton {
-	background: white;
+	background: transparent;
 	width: 160px;
 	border-color: #363636;
-	color: #363636;
+	color: white;
 	border-width: 1px;
 	cursor: pointer;
 	justify-content: center;
@@ -82,11 +83,11 @@
 	white-space: nowrap;
 	-webkit-appearance: none;
 	align-items: center;
-	border-radius: 2px;
+	border-radius: 4px;
 	box-shadow: none;
 	display: inline-flex;
 	font-size: 1rem;
-	height: 2.25em;
+	height: 2.6em;
 	position: relative;
 	vertical-align: top;
 	border: 1px solid;
@@ -96,7 +97,7 @@
 
 .menueBar {
 	position: absolut;
-	background: black;
+	background: #363636;
 	bottom: 200px;
 	right: 200px;
 	z-index: 40;
@@ -107,7 +108,7 @@
 .headerGesamt {
 	background-color: #363636;
 	color: #fff;
-	min-height: 3.25rem;
+	min-height: 3.5rem;
 	align-items: stretch;
 	display: flex;
 	position: relative;
@@ -127,7 +128,7 @@
 	align-items: stretch;
 	display: flex;
 	flex-shrink: 0;
-	min-height: 3.25rem;
+	min-height: 3.5rem;
 	box-sizing: inherit;
 }
 
@@ -261,6 +262,7 @@
 	border-width: thin;
 	margin-bottom: 5%;
 	padding: 10px;
+	
 }
 
 .detailsboxlöschen {
@@ -395,7 +397,7 @@
 	text-align: center;
 	color: black;
 	margin-bottom: 3px;
-	padding: 20px 0 20px 0;
+	padding: 25px 0 25px 0;
 }
 
 .detailsunten {
@@ -408,7 +410,7 @@
 	display: flex;
 	flex-direction: column;
 	border-bottom: solid;
-	border-color: grey;
+	border-color: #363636;
 	border-width: thin;
 	margin: 10px;
 }
