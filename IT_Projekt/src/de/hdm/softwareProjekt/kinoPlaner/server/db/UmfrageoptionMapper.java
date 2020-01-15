@@ -142,7 +142,7 @@ public class UmfrageoptionMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Umfrageoptionen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Umfrageoption");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(uoId) AS maxId " + "FROM Umfrageoption");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				umfrageoption.setId(resultset.getInt("maxId") + 1);
@@ -150,10 +150,10 @@ public class UmfrageoptionMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO Umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum)"
-								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName() + "', "
-								+ umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ", "
-								+ umfrageoption.getErstellDatum() + ")");
+						"INSERT INTO Umfrageoption (uoId, uoName, erstellDatum, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id)"
+								+ " VALUES(" + umfrageoption.getId() + ", " + umfrageoption.getName() + ", " 
+								+ umfrageoption.getErstellDatum() + ", " + umfrageoption.getUmfrageId() + ", " 
+								+ umfrageoption.getVorstellungsId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

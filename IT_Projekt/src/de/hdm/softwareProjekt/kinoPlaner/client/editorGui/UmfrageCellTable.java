@@ -149,6 +149,9 @@ public class UmfrageCellTable extends VerticalPanel {
 			@Override
 			public void update(int index, VorstellungInfo object, String value) {
 				// TODO Auto-generated method stub
+				
+				dataProviderUmfrage.getList().remove(object);
+				dataProviderUmfrage.refresh();
 
 			}
 		});
@@ -209,29 +212,6 @@ public class UmfrageCellTable extends VerticalPanel {
 
 		this.addUmfrageoption(neueUmfrageoptionen);
 
-//		neueUmfrageoptionen = nct.getUmfrageOptionen();
-//		
-//		if (neueUmfrageoptionen != null) {
-//
-//		for (Vorstellung v : neueUmfrageoptionen) {
-//
-//			Window.alert(v.getName());
-//			
-//			uI = new VorstellungInfo();
-//			
-//			uI.setU(v);
-//			
-//			Window.alert(v.getName());
-//			
-//			umfrageList.add(uI);
-//			
-//			kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(uI));
-//			kinoplaner.getKinoByVorstellung(v, new KinoCallback(uI));
-//			kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(uI));
-//		}
-//		} else {
-//			umfrageCellTable.setEmptyTableWidget(new Label("leer"));
-//		}
 
 	}
 
@@ -263,46 +243,6 @@ public class UmfrageCellTable extends VerticalPanel {
 
 	}
 
-//	public UmfrageCellTable(Vorstellung vorstellung) {
-//		this.vorstellung = vorstellung;
-//	}
-
-//	private class UmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			// TODO Auto-generated method stub
-//			Window.alert("onFailure UmfrageCallback");
-//
-//		}
-//
-//		@Override
-//		public void onSuccess(ArrayList<Umfrageoption> result) {
-//			// TODO Auto-generated method stub
-//			umfragen = result;
-//
-//			for (Umfrageoption u : umfragen) {
-//
-//				uI = new UmfrageInfo();
-//
-//				uI.setU(u);
-//
-//				list.add(uI);
-//				
-//				Window.alert(u.getName());
-//				
-//				kinoplaner.getFilmByUmfrageoption(u, new GetFilmByUmfrageoptionCallback(uI));
-//				kinoplaner.getKinoByUmfrageoption(u, new GetKinoByUmfrageoptionCallback(uI));
-//				kinoplaner.getSpielzeitByUmfrageoption(u, new GetSpielzeitByUmfrageoptionCallback(uI));
-//				
-//	//			kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
-//			
-//
-//			}
-//
-//		}
-//
-//	}
 
 	private class FilmByIdCallback implements AsyncCallback<Film> {
 

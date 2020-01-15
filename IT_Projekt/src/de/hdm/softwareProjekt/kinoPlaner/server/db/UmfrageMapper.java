@@ -142,7 +142,7 @@ public class UmfrageMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Umfragen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId" + " FROM Umfrage");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(uId) AS maxId" + " FROM Umfrage");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				umfrage.setId(resultset.getInt("maxId") + 1);
@@ -151,7 +151,7 @@ public class UmfrageMapper {
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
 						"INSERT INTO Umfrage (uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id)"
-								+ " VALUES(" + umfrage.getId() + ", '" + umfrage.getName() + "', "
+								+ " VALUES(" + umfrage.getId() + ", " + umfrage.getName() + ", "
 								+ umfrage.getBesitzerId() + ", " + umfrage.getGruppenId() +")");
 			}
 		} catch (SQLException e1) {

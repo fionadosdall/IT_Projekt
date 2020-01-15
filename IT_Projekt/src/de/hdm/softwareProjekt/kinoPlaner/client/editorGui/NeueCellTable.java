@@ -158,27 +158,6 @@ public class NeueCellTable extends VerticalPanel {
 					Window.alert("for Schliefe " + v.getName());
 				}
 
-////				Window.alert("object: " + object.v.getName());
-//				Window.alert("object: " + object.getV().getName());
-//				
-//				AsyncCallback<Vorstellung> callbackU = new AsyncCallback<Vorstellung>() {
-//
-//					public void onFailure(Throwable caught) {
-////						Window.alert("onFailure " + vorstellung.getName() + caught.getMessage());
-//						caught.printStackTrace();
-//					}
-//
-//					public void onSuccess(Vorstellung result) {
-//					Window.alert("Umfrageoption wurde hinzugefügt");
-//					
-//					//vorstellung = result;
-//					
-//						
-//					}
-//
-//				};
-
-				Window.alert("Hier " + object.getV().getName());
 
 			}
 		});
