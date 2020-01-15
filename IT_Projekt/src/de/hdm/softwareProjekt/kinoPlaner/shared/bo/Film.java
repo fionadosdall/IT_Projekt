@@ -55,7 +55,7 @@ public class Film extends BesitzerBusinessObjekt{
  * Setzen der Bewertung
  * @param bewertung
  */
-	public void setBewertung(int bewertung) {
+	public void setBewertung(String bewertung) {
 		this.bewertung = bewertung;
 	}
 	

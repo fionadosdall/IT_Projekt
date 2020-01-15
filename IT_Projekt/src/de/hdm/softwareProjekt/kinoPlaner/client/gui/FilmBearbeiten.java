@@ -318,8 +318,8 @@ public class FilmBearbeiten extends FlowPanel {
 			neuerFilm = result;
 			result.getName();
 
-			kinoplaner.erstellenFilm(neuerFilm.getName(), neuerFilm.getBeschreibung(), neuerFilm.getBewertung(),
-					new FilmCallback());
+			//kinoplaner.erstellenFilm(neuerFilm.getName(), neuerFilm.getBeschreibung(), neuerFilm.getBewertung(),
+					//new FilmCallback());
 			Systemmeldung.anzeigen("Der Film wurde erfolgreich hinzugefügt.");
 
 			// Dataprovider updaten (Methode in einem Testfall)
