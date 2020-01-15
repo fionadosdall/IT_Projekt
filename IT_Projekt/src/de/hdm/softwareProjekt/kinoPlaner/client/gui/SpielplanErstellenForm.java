@@ -308,10 +308,10 @@ public class SpielplanErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
-			SpielplaneintragForm spielplaneintrag = new SpielplaneintragForm();
+			//RootPanel.get("details").clear();
+			SpielplaneintragForm neuerSpielplaneintrag = new SpielplaneintragForm();
 			
-			RootPanel.get("details").add(spielplaneintrag);
+			RootPanel.get("details").add(neuerSpielplaneintrag);
 			
 			
 		}
