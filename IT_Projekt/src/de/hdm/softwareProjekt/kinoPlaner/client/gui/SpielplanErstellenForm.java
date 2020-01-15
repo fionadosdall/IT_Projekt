@@ -53,6 +53,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	private FlowPanel detailsUntenBox = new FlowPanel();
 	
 	
+	
 	private Label spielplanformLabel = new Label("Neuen Spielplan erstellen");
 	private Label spielplanBearbeitenFormLabel = new Label("Spielplan bearbeiten");
 	private Label spielplanname = new Label ("Spielplanname");
@@ -62,6 +63,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	private TextBox spielplannameTB = new TextBox();
 	
 	private SpielplanErstellenForm bearbeiten;
+	private SpielplaneintragForm spielplaneintrag;
 	
 	private MultiWordSuggestOracle alleKinosOracle = new MultiWordSuggestOracle ();
 	private SuggestBox vorstellungTB = new SuggestBox(alleKinosOracle);
@@ -184,7 +186,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		
 		//Click Handler
 		
-		hinzufuegenButton.addClickHandler(new KinoHinzufuegenClickHandler());
+		hinzufuegenButton.addClickHandler(new SpielplaneintragHinzufuegenClickHandler());
 		//entfernenButton.addClickHandler(new KinoEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		
@@ -301,13 +303,16 @@ public class SpielplanErstellenForm extends FlowPanel {
 	 */
 	
 	
-	private class KinoHinzufuegenClickHandler implements ClickHandler {
+	private class SpielplaneintragHinzufuegenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			//TODO kinoplaner.getVorstellungenBySpielplan(vorstellungTB.getValue(), new KinoCallback());
-			vorstellungTB.setText("");
+			RootPanel.get("details").clear();
+			SpielplaneintragForm spielplaneintrag = new SpielplaneintragForm();
+			
+			RootPanel.get("details").add(spielplaneintrag);
+			
 			
 		}
 		
@@ -376,7 +381,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	}
 	
 	
-	private class KinoHinzufuegenCallback implements AsyncCallback<Kino> {
+	private class SpielplaneintragHinzufuegenCallback implements AsyncCallback<Kino> {
 
 		@Override
 		public void onFailure(Throwable caught) {

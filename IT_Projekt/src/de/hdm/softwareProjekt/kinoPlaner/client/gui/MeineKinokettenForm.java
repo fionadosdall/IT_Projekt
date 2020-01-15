@@ -109,6 +109,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		
 		bearbeitenButton.addClickHandler(new KinoketteBearbeitenClickHandler());
+		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
 		
 	
 		
@@ -180,9 +181,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
 			
-			//TODO administration.kinoketteEntfernen(kinokette.getId(), new KinoketteLoeschenCallback());
+			
+			administration.loeschenKinoketteById(kinokette.getId(), new KinoketteLoeschenCallback());
 			
 		}
 		
@@ -193,7 +194,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	
 	
 	
-	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
+	private class KinoketteLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -202,9 +203,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		}
 
 		@Override
-		public void onSuccess(Kinokette result) {
+		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
-			//administration.kinoketteEntfernen(kino, loeschenCallback);
+			Systemmeldung.anzeigen("Die Kinokette "+kinokette.getName()+" wurde gelöscht.");
 		}
 		
 	}

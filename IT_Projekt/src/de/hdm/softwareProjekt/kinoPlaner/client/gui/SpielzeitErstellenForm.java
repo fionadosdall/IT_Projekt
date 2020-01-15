@@ -66,7 +66,7 @@ public class SpielzeitErstellenForm extends FlowPanel {
 	private TextBox spielzeitTB = new TextBox();
 	private DateBox dateBox = new DateBox();
 	
-	
+	public static Boolean edit = false;
 
 	private MultiWordSuggestOracle alleVorstellungenOracle = new MultiWordSuggestOracle();
 	private SuggestBox vorstellungTB = new SuggestBox(alleVorstellungenOracle);
@@ -168,10 +168,10 @@ private Spielzeit spielzeit2 = null;
 		detailsBoxUnten.add(entfernenButton);
 
 		if(edit == true) {
-			detailsunten.add(loeschenButton);
+			//detailsunten.add(loeschenButton);
 			detailsunten.add(speichernButton);
 		} else {
-			clearForm();
+			//clearForm();
 			detailsunten.add(speichernButton);
 		}
 		speichernBox.add(speichernButton);
