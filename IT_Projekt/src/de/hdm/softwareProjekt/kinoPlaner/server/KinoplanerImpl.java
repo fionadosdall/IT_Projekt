@@ -28,6 +28,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.sql.Date;
 
@@ -91,22 +92,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	private Anwender anwender = null;
-
-	/**
-	 * <p>
-	 * Hier werden Anwender gespeichert, die nach erstellen der Gruppe dieser
-	 * hinzugefuegt werden.
-	 * </p>
-	 */
-	private ArrayList<Anwender> gruppenmitglieder = new ArrayList<Anwender>();
-
-	/**
-	 * <p>
-	 * Hier werden Anwender gespeichert, die nach erstellen der Gruppe dieser
-	 * hinzugefuegt werden.
-	 * </p>
-	 */
-	private ArrayList<Vorstellung> vorstellungen = null;
 
 	/**
 	 * <p>
@@ -292,7 +277,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Gruppe erstellenGruppe(String name) throws IllegalArgumentException {
+	public Gruppe erstellenGruppe(String name, ArrayList<Anwender> list) throws IllegalArgumentException {
+		
+		if (gruppeMapper.findByName(name) == null) {
 		// Ein neues Gruppe Objekt wird erstellt.
 		Gruppe g = new Gruppe();
 
@@ -305,16 +292,18 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Gruppe gFertig = this.gruppeMapper.insert(g);
 		this.gruppenmitgliedHinzufuegen(anwender, gFertig);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
-		if (gruppenmitglieder != null) {
-			for (Anwender a : gruppenmitglieder) {
+		if (list != null) {
+			for (Anwender a : list) {
 				this.gruppenmitgliedHinzufuegen(a, gFertig);
 
 			}
-			gruppenmitglieder = null;
+			
 		}
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return gFertig;
+		}
+		return null;
 	}
 
 	/**
@@ -450,12 +439,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Vorstellung erstellenVorstellung(String name, int spielplanId, int spielzeitId, int filmId)
+	public Vorstellung erstellenVorstellung(int spielplanId, int spielzeitId, int filmId)
 			throws IllegalArgumentException {
 		// Ein neues Vorstellung Objekt wird erstellt.
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
+		String name = (getSpielplanById(spielplanId).getName()+getSpielzeitById(spielzeitId).getName()+getFilmById(filmId).getName());
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -473,7 +463,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(String name, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenUmfrage(String name, List<Vorstellung> list, int gruppenId) throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
 
@@ -485,15 +475,37 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		Umfrage uFertig = this.umfrageMapper.insert(u);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
-		if (vorstellungen != null) {
-			for (Vorstellung v : vorstellungen) {
+		if (list != null) {
+			for (Vorstellung v : list) {
 				this.umfrageoptionHinzufuegen(v, uFertig);
 			}
-			vorstellungen = null;
+			
 		}
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return uFertig;
+
+	}
+	
+	/**
+	 * <p>
+	 * Eine neue Stichwahl wird angelegt und anschließend in der Datenbank
+	 * gespeichert.
+	 * </p>
+	 */
+	@Override
+	public Umfrage erstellenStichwahl(String name, int gruppenId) throws IllegalArgumentException {
+		// Ein neues Umfrage Objekt wird erstellt.
+		Umfrage u = new Umfrage();
+
+		// Die Attribute des Objekts werden mit Werten befuellt.
+		u.setName(name);
+		u.setBesitzerId(this.anwender.getId());
+		u.setGruppenId(gruppenId);
+		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+
+		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+		return u;
 
 	}
 
@@ -525,7 +537,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Film erstellenFilm(String name, String beschreibung, int bewertung) throws IllegalArgumentException {
+	public Film erstellenFilm(String name, String beschreibung, String bewertung) throws IllegalArgumentException {
 		// Ein neues Film Objekt wird erstellt.
 		Film f = new Film();
 
@@ -1304,6 +1316,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Gruppe getGruppeById(int gruppeId) throws IllegalArgumentException {
 		return this.gruppeMapper.findById(gruppeId);
 	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Gruppe mit einem bestimmten Namen
+	 * </p>
+	 */
+	@Override
+	public Gruppe getGruppeByName(String name) throws IllegalArgumentException {
+		return this.gruppeMapper.findByName(name);
+	}
+	
 
 	/**
 	 * <p>
@@ -1749,18 +1772,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Hinzufuegen einer Umfrageoption zu einer Gruppe die noch nicht fertig ist
-	 * </p>
-	 */
-	@Override
-	public Vorstellung umfrageoptionHinzufuegen(Vorstellung vorstellung) throws IllegalArgumentException {
-		this.vorstellungen.add(vorstellung);
-		return vorstellung;
-
-	}
-
-	/**
-	 * <p>
 	 * Entfernen einer Umfrageoption von einer Gruppe
 	 * </p>
 	 */
@@ -1769,26 +1780,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			throws IllegalArgumentException {
 		this.loeschen(umfrageoption);
 		return this.vorstellungMapper.findById(umfrageoption.getVorstellungsId());
-
-	}
-
-	/**
-	 * <p>
-	 * Entfernen einer Umfrageoption von einer Gruppe die noch nicht fertig ist
-	 * </p>
-	 */
-	@Override
-	public Vorstellung umfrageoptionEntfernen(Vorstellung vorstellung) throws IllegalArgumentException {
-		int i = 0;
-		for (Vorstellung v : vorstellungen) {
-			if (v.getId() == vorstellung.getId()) {
-				vorstellungen.remove(i);
-				break;
-			}
-			i++;
-
-		}
-		return vorstellung;
 
 	}
 
@@ -1805,49 +1796,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
-	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
-	 * erstellt ist.
-	 * </p>
-	 */
-	@Override
-	public Anwender gruppenmitgliedHinzufuegen(Anwender an) throws IllegalArgumentException {
-		this.gruppenmitglieder.add(an);
-		return an;
-	}
-
-	/**
-	 * <p>
-	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
-	 * erstellt ist.
-	 * </p>
-	 */
-	@Override
-	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException {
-		Anwender an = this.getAnwenderByName(anwenderName);
-		this.gruppenmitglieder.add(an);
-		return an;
-	}
-
-	/**
-	 * <p>
 	 * Entfernen eines Gruppenmitglieds aus einer Gruppe.
 	 * </p>
 	 */
 	@Override
 	public Anwender gruppenmitgliedEntfernen(Anwender anwender, Gruppe gruppe) throws IllegalArgumentException {
 		this.gruppeMapper.deleteGruppenmitgliedschaft(anwender, gruppe);
-		return anwender;
-	}
-
-	/**
-	 * <p>
-	 * Entfernen eines Gruppenmitglieds aus einer Gruppe die noch nicht fertig
-	 * erstellt ist.
-	 * </p>
-	 */
-	@Override
-	public Anwender gruppenmitgliedEntfernen(Anwender anwender) throws IllegalArgumentException {
-		this.gruppenmitglieder.remove(anwender);
 		return anwender;
 	}
 
@@ -2198,14 +2152,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String name = "Stichwahl " + umfrage.getName();
 
 		// Umfrage für die Stichwahl erstellen
-		Umfrage u = this.erstellenUmfrage(name, umfrage.getGruppenId());
+		Umfrage u = this.erstellenStichwahl(name, umfrage.getGruppenId());
 		u.setBesitzerId(umfrage.getBesitzerId());
 		this.speichern(u);
 
 		// Stichwahlumfrageoptionen suchen
 		ArrayList<Umfrageoption> umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
 
-		// Stichwahlumfrageoptionen erstellen
+		// Stichwahlvorstellungen suchen
 		if (umfrageoptionen != null) {
 			for (Umfrageoption umfr : umfrageoptionen) {
 				String nameUmfrageoption = "Stichwahl " + umfr.getName();

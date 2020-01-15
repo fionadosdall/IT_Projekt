@@ -272,6 +272,36 @@ public class GruppeMapper {
 		}
 		return null;
 	}
+	
+	/**
+	 * Suche nach einer Gruppe mit vorgegebener Gruppen-Id
+	 * 
+	 * @param id zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
+	 *           der Primärschlüssel in der Datenbank.
+	 * @return Das Gruppen-Objekt, das mit seiner Gruppen-Id der übergebenen Id
+	 *         entspricht. Falls keine Gruppe zur übergebenen Id gefunden wurde,
+	 *         wird null zurückgegeben.
+	 */
+	public Gruppe findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery("SELECT gId, gName, gruppe_anwender_Id, erstellDatum FROM gruppe"
+					+ " WHERE gName='" + name + "' ORDER BY gruppe_anwender_Id");
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Gruppe g = new Gruppe();
+				g.setId(resultset.getInt("gId"));
+				g.setBesitzerId(resultset.getInt("gruppe_anwender_Id"));
+				g.setName(resultset.getString("gName"));
+				g.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return g;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * Anwender-Objekte können zu einer bestimmten Gruppe hinzugefügt werden.
