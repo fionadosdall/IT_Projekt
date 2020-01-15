@@ -31,7 +31,7 @@ body {
 	grid-column-end: 5;
 	grid-row-start: 3;
 	grid-row-end: 4;
-	background: #d6d1d1;
+	background: transparent;
 }
 
 #navigator {
@@ -57,7 +57,7 @@ body {
 
 .headerGesamt {
 	background-color: #363636;
-	color: #F5F5D8;
+	color: #fff;
 	min-height: 3.25rem;
 	align-items: stretch;
 	display: flex;
