@@ -24,7 +24,13 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class NeueCellTable extends VerticalPanel {
-	
+
+	private UmfrageCellTable uct = null;
+
+	public void setUmfrageCellTable(UmfrageCellTable uct) {
+		this.uct = uct;
+	}
+
 	public interface CellTableResources extends CellTable.Resources {
 
 		@Source({ CellTable.Style.DEFAULT_CSS, "CellTable.css" })
@@ -33,7 +39,7 @@ public class NeueCellTable extends VerticalPanel {
 		interface TableStyle extends CellTable.Style {
 		}
 	}
-	
+
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
 
 	private int i = 0;
@@ -91,9 +97,13 @@ public class NeueCellTable extends VerticalPanel {
 
 	private ListDataProvider<VorstellungInfo> dataProvider = new ListDataProvider<VorstellungInfo>();
 	private List<VorstellungInfo> list = dataProvider.getList();
-	
 
 	private ArrayList<Vorstellung> vorstellungen = null;
+	private ArrayList<Vorstellung> umfrageOptionen = null;
+
+	public ArrayList<Vorstellung> getUmfrageOptionen() {
+		return umfrageOptionen;
+	}
 
 	private ButtonCell buttonCell = new ButtonCell();
 	private TextCell filmCell = new TextCell();
@@ -113,12 +123,12 @@ public class NeueCellTable extends VerticalPanel {
 	}
 
 	public void onLoad() {
-		
+
 		this.add(vorstellungenCellTable);
-		
-		   ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(list);
-		   vorstellungenCellTable.addColumnSortHandler(sortHandler);
-		
+
+		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(list);
+		vorstellungenCellTable.addColumnSortHandler(sortHandler);
+
 		Column<VorstellungInfo, String> buttonColumn = new Column<VorstellungInfo, String>(buttonCell) {
 
 			@Override
@@ -126,49 +136,52 @@ public class NeueCellTable extends VerticalPanel {
 				// TODO Auto-generated method stub
 				return "+";
 			}
-			
+
 		};
-		
-		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
-		
+
 		buttonColumn.setFieldUpdater(new FieldUpdater<VorstellungInfo, String>() {
 
 			@Override
 			public void update(int index, VorstellungInfo object, String value) {
 				// TODO Auto-generated method stub
-				
 				dataProvider.getList().remove(object);
-				
+
+				umfrageOptionen = new ArrayList<Vorstellung>();
+
 				vorstellung = object.getV();
-				
-				Window.alert("object: " + object.getV().getName());
-				Window.alert("vorstellung: " + vorstellung.getName());
-				
-				AsyncCallback<Vorstellung> callbackU = new AsyncCallback<Vorstellung>() {
 
-					public void onFailure(Throwable caught) {
-						Window.alert("onFailure " + vorstellung.getName() + caught.getMessage());
+				umfrageOptionen.add(vorstellung);
 
-					}
+				uct.addUmfrageoption(umfrageOptionen);
 
-					public void onSuccess(Vorstellung result) {
-					Window.alert("Umfrageoption wurde hinzugefügt");
-					
-					vorstellung = result;
-					
-					UmfrageCellTable uct = new UmfrageCellTable(result);
-					uct.setVorstellung(result);
-						
-					}
+				for (Vorstellung v : umfrageOptionen) {
+					Window.alert("for Schliefe " + v.getName());
+				}
 
-				};
+////				Window.alert("object: " + object.v.getName());
+//				Window.alert("object: " + object.getV().getName());
+//				
+//				AsyncCallback<Vorstellung> callbackU = new AsyncCallback<Vorstellung>() {
+//
+//					public void onFailure(Throwable caught) {
+////						Window.alert("onFailure " + vorstellung.getName() + caught.getMessage());
+//						caught.printStackTrace();
+//					}
+//
+//					public void onSuccess(Vorstellung result) {
+//					Window.alert("Umfrageoption wurde hinzugefügt");
+//					
+//					//vorstellung = result;
+//					
+//						
+//					}
+//
+//				};
 
-				Window.alert("Hier " + vorstellung.getName());
-				kinoplaner.umfrageoptionHinzufuegen(vorstellung, callbackU);
+				Window.alert("Hier " + object.getV().getName());
 
 			}
 		});
-		
 
 		Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
@@ -181,15 +194,13 @@ public class NeueCellTable extends VerticalPanel {
 			}
 		};
 
-		vorstellungenCellTable.addColumn(filmColumn, "Film");
-		
 		filmColumn.setSortable(true);
-		
-		 sortHandler.setComparator(filmColumn, new Comparator<VorstellungInfo>() {
-		      public int compare(VorstellungInfo o1, VorstellungInfo o2) {
-		        return o1.getFilmName().compareTo(o2.getFilmName());
-		      }
-		    });
+
+		sortHandler.setComparator(filmColumn, new Comparator<VorstellungInfo>() {
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getFilmName().compareTo(o2.getFilmName());
+			}
+		});
 
 		Column<VorstellungInfo, String> kinoColumn = new Column<VorstellungInfo, String>(kinoCell) {
 
@@ -202,28 +213,24 @@ public class NeueCellTable extends VerticalPanel {
 			}
 		};
 
-		vorstellungenCellTable.addColumn(kinoColumn, "Kino");
-		
 		kinoColumn.setSortable(true);
-		
+
 		sortHandler.setComparator(kinoColumn, new Comparator<VorstellungInfo>() {
-		      public int compare(VorstellungInfo o1, VorstellungInfo o2) {
-		        return o1.getKinoName().compareTo(o2.getKinoName());
-		      }
-		    });
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getKinoName().compareTo(o2.getKinoName());
+			}
+		});
 
 		Column<VorstellungInfo, String> speilzeitColumn = new Column<VorstellungInfo, String>(spielzeitCell) {
 
 			@Override
 			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
-	
+
 				return object.getSpielzeit();
 
 			}
 		};
-
-		vorstellungenCellTable.addColumn(speilzeitColumn, "Spielzeit");
 
 		Column<VorstellungInfo, String> stadtColumn = new Column<VorstellungInfo, String>(stadtCell) {
 
@@ -236,17 +243,21 @@ public class NeueCellTable extends VerticalPanel {
 			}
 		};
 
-		vorstellungenCellTable.addColumn(stadtColumn, "Ort");
-		
 		stadtColumn.setSortable(true);
-		
+
 		sortHandler.setComparator(stadtColumn, new Comparator<VorstellungInfo>() {
-		      public int compare(VorstellungInfo o1, VorstellungInfo o2) {
-		        return o1.getStadt().compareTo(o2.getStadt());
-		      }
-		    });
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		kinoplaner.getAllVorstellungen(new VorstellungCallback());
+
+		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
+		vorstellungenCellTable.addColumn(filmColumn, "Film");
+		vorstellungenCellTable.addColumn(kinoColumn, "Kino");
+		vorstellungenCellTable.addColumn(speilzeitColumn, "Spielzeit");
+		vorstellungenCellTable.addColumn(stadtColumn, "Ort");
 
 		dataProvider.addDataDisplay(vorstellungenCellTable);
 
@@ -276,9 +287,8 @@ public class NeueCellTable extends VerticalPanel {
 				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
 				kinoplaner.getKinoByVorstellung(v, new KinoCallback(vI));
 				kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(vI));
-				
+
 				kinoplaner.getVorstellungById(v.getId(), new VorstellungByIdCallback(vI));
-			
 
 			}
 
@@ -364,35 +374,31 @@ public class NeueCellTable extends VerticalPanel {
 		}
 
 	}
-	
+
 	private class VorstellungByIdCallback implements AsyncCallback<Vorstellung> {
-		
+
 		VorstellungInfo info = null;
 
 		VorstellungByIdCallback(VorstellungInfo info) {
 			this.info = info;
 		}
 
-	
-
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Window.alert(caught.getMessage());
-			
+
 		}
 
 		@Override
 		public void onSuccess(Vorstellung result) {
 			// TODO Auto-generated method stub
-			
+
 			info.v = result;
 			Window.alert(info.v.getName());
 
-			
 		}
-		
+
 	}
-	
 
 }
