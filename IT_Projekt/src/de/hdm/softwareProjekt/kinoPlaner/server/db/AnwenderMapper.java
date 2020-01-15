@@ -14,7 +14,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
  * Das hier ist eine Mapper-Klasse, die Anwender-Objekte auf eine relationale DB
  * abbildet.
  * 
- * @author annaf
  *
  */
 

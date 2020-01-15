@@ -14,7 +14,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
  * Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB
  * abbildet.
  * 
- * @author annaf
  *
  */
 

@@ -15,7 +15,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
  * Das hier ist eine Mapper-Klasse, die Auswahl-Objekte auf eine relationale DB
  * abbildet.
  * 
- * @author annaf
  *
  */
 

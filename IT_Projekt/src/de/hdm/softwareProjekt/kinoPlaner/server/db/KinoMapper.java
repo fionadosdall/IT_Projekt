@@ -15,7 +15,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
  * Das hier ist eine Mapper-Klasse, die Kino-Objekte auf eine relationale DB
  * abbildet.
  * 
- * @author annaf
  *
  */
 

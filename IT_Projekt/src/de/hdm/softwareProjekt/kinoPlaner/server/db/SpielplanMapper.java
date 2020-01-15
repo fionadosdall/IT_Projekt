@@ -16,7 +16,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
  * Das hier ist eine Mapper-Klasse, die Spielplan-Objekte auf eine relationale
  * DB abbildet.
  * 
- * @author annaf
  *
  */
 
