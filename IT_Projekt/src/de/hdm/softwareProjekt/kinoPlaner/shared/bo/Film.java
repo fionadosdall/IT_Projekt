@@ -8,7 +8,7 @@ public class Film extends BesitzerBusinessObjekt{
 	
 	private Time Filmlaenge;
 	private String beschreibung;
-	private int bewertung;
+	private String bewertung;
 	
 	public Film() {
 		super();
@@ -47,7 +47,7 @@ public class Film extends BesitzerBusinessObjekt{
 /**
  * Auslesen der Bewertung
  */
-	public int getBewertung() {
+	public String getBewertung() {
 		return bewertung;
 	}
 
@@ -68,7 +68,7 @@ public class Film extends BesitzerBusinessObjekt{
 
 /** 
  * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
- * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ * Dies kann selbstverstï¿½ndlich in Subklassen ueberschrieben werden
  */
 	@Override
 	public String toString() {
