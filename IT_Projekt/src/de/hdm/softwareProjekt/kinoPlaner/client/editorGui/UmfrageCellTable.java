@@ -11,9 +11,9 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
-
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -23,8 +23,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-public class UmfrageCellTable extends VerticalPanel{
-	
+public class UmfrageCellTable extends VerticalPanel {
+
 	public interface CellTableResources extends CellTable.Resources {
 
 		@Source({ CellTable.Style.DEFAULT_CSS, "CellTable.css" })
@@ -33,14 +33,14 @@ public class UmfrageCellTable extends VerticalPanel{
 		interface TableStyle extends CellTable.Style {
 		}
 	}
-	
+
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
-	
+
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
-	private class UmfrageInfo {
+	private class VorstellungInfo {
 
-		Umfrageoption u;
+		Vorstellung u;
 
 		String filmName;
 		String kinoName;
@@ -55,11 +55,11 @@ public class UmfrageCellTable extends VerticalPanel{
 			this.stadt = stadt;
 		}
 
-		public Umfrageoption getU() {
+		public Vorstellung getU() {
 			return u;
 		}
 
-		public void setU(Umfrageoption u) {
+		public void setU(Vorstellung u) {
 			this.u = u;
 		}
 
@@ -85,10 +85,23 @@ public class UmfrageCellTable extends VerticalPanel{
 
 	}
 
-	private CellTable<UmfrageInfo> umfrageCellTable = new CellTable<UmfrageInfo>(100, tableRes);
+	private CellTable<VorstellungInfo> umfrageCellTable = new CellTable<VorstellungInfo>(100, tableRes);
 
-	private ListDataProvider<UmfrageInfo> dataProvider = new ListDataProvider<UmfrageInfo>();
-	private List<UmfrageInfo> list = dataProvider.getList();
+	private ListDataProvider<VorstellungInfo> dataProviderUmfrage = new ListDataProvider<VorstellungInfo>();
+
+	public ListDataProvider<VorstellungInfo> getDataProviderUmfrage() {
+		return dataProviderUmfrage;
+	}
+
+	private List<VorstellungInfo> umfrageList = dataProviderUmfrage.getList();
+
+	public List<VorstellungInfo> getUmfrageList() {
+		return umfrageList;
+	}
+
+	public void setUmfrageList(List<VorstellungInfo> umfrageList) {
+		this.umfrageList = umfrageList;
+	}
 
 	private ArrayList<Umfrageoption> umfragen = null;
 
@@ -98,48 +111,52 @@ public class UmfrageCellTable extends VerticalPanel{
 	private TextCell spielzeitCell = new TextCell();
 	private TextCell stadtCell = new TextCell();
 
-	private UmfrageInfo uI;
+	private VorstellungInfo uI;
 	private Umfrageoption umfrageoption;
 	private Vorstellung vorstellung;
 
-	public Vorstellung getVorstellung() {
-		return vorstellung;
+	private ArrayList<Vorstellung> neueUmfrageoptionen = null;
+
+	private NeueCellTable nct = null;
+
+	public UmfrageCellTable(NeueCellTable nct) {
+		this.nct = nct;
+		nct.setUmfrageCellTable(this);
 	}
 
-	public void setVorstellung(Vorstellung vorstellung) {
-		this.vorstellung = vorstellung;
+	public Vorstellung getVortellung() {
+		return vorstellung;
 	}
 
 	public void onLoad() {
 
 		this.add(umfrageCellTable);
-		
-		Column<UmfrageInfo, String> buttonColumn = new Column<UmfrageInfo, String>(buttonCell) {
+
+		Column<VorstellungInfo, String> buttonColumn = new Column<VorstellungInfo, String>(buttonCell) {
 
 			@Override
-			public String getValue(UmfrageInfo object) {
+			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
 				return "-";
 			}
-			
+
 		};
-		
+
 		umfrageCellTable.addColumn(buttonColumn, "Entfernen");
-		
-		buttonColumn.setFieldUpdater(new FieldUpdater<UmfrageInfo, String>() {
+
+		buttonColumn.setFieldUpdater(new FieldUpdater<VorstellungInfo, String>() {
 
 			@Override
-			public void update(int index, UmfrageInfo object, String value) {
+			public void update(int index, VorstellungInfo object, String value) {
 				// TODO Auto-generated method stub
-			
+
 			}
 		});
-		
 
-		Column<UmfrageInfo, String> filmColumn = new Column<UmfrageInfo, String>(filmCell) {
+		Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
 			@Override
-			public String getValue(UmfrageInfo object) {
+			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
 
 				return object.getFilmName();
@@ -149,10 +166,10 @@ public class UmfrageCellTable extends VerticalPanel{
 
 		umfrageCellTable.addColumn(filmColumn, "Film");
 
-		Column<UmfrageInfo, String> kinoColumn = new Column<UmfrageInfo, String>(kinoCell) {
+		Column<VorstellungInfo, String> kinoColumn = new Column<VorstellungInfo, String>(kinoCell) {
 
 			@Override
-			public String getValue(UmfrageInfo object) {
+			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
 
 				return object.getKinoName();
@@ -162,12 +179,12 @@ public class UmfrageCellTable extends VerticalPanel{
 
 		umfrageCellTable.addColumn(kinoColumn, "Kino");
 
-		Column<UmfrageInfo, String> speilzeitColumn = new Column<UmfrageInfo, String>(spielzeitCell) {
+		Column<VorstellungInfo, String> speilzeitColumn = new Column<VorstellungInfo, String>(spielzeitCell) {
 
 			@Override
-			public String getValue(UmfrageInfo object) {
+			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
-	
+
 				return object.getSpielzeit();
 
 			}
@@ -175,10 +192,10 @@ public class UmfrageCellTable extends VerticalPanel{
 
 		umfrageCellTable.addColumn(speilzeitColumn, "Spielzeit");
 
-		Column<UmfrageInfo, String> stadtColumn = new Column<UmfrageInfo, String>(stadtCell) {
+		Column<VorstellungInfo, String> stadtColumn = new Column<VorstellungInfo, String>(stadtCell) {
 
 			@Override
-			public String getValue(UmfrageInfo object) {
+			public String getValue(VorstellungInfo object) {
 				// TODO Auto-generated method stub
 
 				return object.getStadt();
@@ -187,59 +204,111 @@ public class UmfrageCellTable extends VerticalPanel{
 		};
 
 		umfrageCellTable.addColumn(stadtColumn, "Ort");
-		
-		kinoplaner.getUmfrageoptionenByVorstellung(vorstellung, new UmfrageCallback());
 
-		dataProvider.addDataDisplay(umfrageCellTable);
+		dataProviderUmfrage.addDataDisplay(umfrageCellTable);
+
+		this.addUmfrageoption(neueUmfrageoptionen);
+
+//		neueUmfrageoptionen = nct.getUmfrageOptionen();
+//		
+//		if (neueUmfrageoptionen != null) {
+//
+//		for (Vorstellung v : neueUmfrageoptionen) {
+//
+//			Window.alert(v.getName());
+//			
+//			uI = new VorstellungInfo();
+//			
+//			uI.setU(v);
+//			
+//			Window.alert(v.getName());
+//			
+//			umfrageList.add(uI);
+//			
+//			kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(uI));
+//			kinoplaner.getKinoByVorstellung(v, new KinoCallback(uI));
+//			kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(uI));
+//		}
+//		} else {
+//			umfrageCellTable.setEmptyTableWidget(new Label("leer"));
+//		}
 
 	}
-	
-	public UmfrageCellTable(Vorstellung vorstellung) {
-		this.vorstellung = vorstellung;
-	}
 
-	private class UmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+	public void addUmfrageoption(ArrayList<Vorstellung> neueUmfrageoptionen) {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("onFailure UmfrageCallback");
+		neueUmfrageoptionen = nct.getUmfrageOptionen();
 
-		}
+		if (neueUmfrageoptionen != null) {
 
-		@Override
-		public void onSuccess(ArrayList<Umfrageoption> result) {
-			// TODO Auto-generated method stub
-			umfragen = result;
+			for (Vorstellung v : neueUmfrageoptionen) {
 
-			for (Umfrageoption u : umfragen) {
+				Window.alert(v.getName());
 
-				uI = new UmfrageInfo();
+				uI = new VorstellungInfo();
 
-				uI.setU(u);
+				uI.setU(v);
 
-				list.add(uI);
-				
-				Window.alert(u.getName());
-				
-				kinoplaner.getFilmByUmfrageoption(u, new GetFilmByUmfrageoptionCallback(uI));
-				kinoplaner.getKinoByUmfrageoption(u, new GetKinoByUmfrageoptionCallback(uI));
-				kinoplaner.getSpielzeitByUmfrageoption(u, new GetSpielzeitByUmfrageoptionCallback(uI));
-				
-	//			kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
-			
+				Window.alert(v.getName());
 
+				umfrageList.add(uI);
+
+				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(uI));
+				kinoplaner.getKinoByVorstellung(v, new KinoCallback(uI));
+				kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(uI));
 			}
-
+		} else {
+			umfrageCellTable.setEmptyTableWidget(new Label("leer"));
 		}
 
 	}
 
-	private class GetFilmByUmfrageoptionCallback implements AsyncCallback<Film> {
+//	public UmfrageCellTable(Vorstellung vorstellung) {
+//		this.vorstellung = vorstellung;
+//	}
 
-		UmfrageInfo info = null;
+//	private class UmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+//
+//		@Override
+//		public void onFailure(Throwable caught) {
+//			// TODO Auto-generated method stub
+//			Window.alert("onFailure UmfrageCallback");
+//
+//		}
+//
+//		@Override
+//		public void onSuccess(ArrayList<Umfrageoption> result) {
+//			// TODO Auto-generated method stub
+//			umfragen = result;
+//
+//			for (Umfrageoption u : umfragen) {
+//
+//				uI = new UmfrageInfo();
+//
+//				uI.setU(u);
+//
+//				list.add(uI);
+//				
+//				Window.alert(u.getName());
+//				
+//				kinoplaner.getFilmByUmfrageoption(u, new GetFilmByUmfrageoptionCallback(uI));
+//				kinoplaner.getKinoByUmfrageoption(u, new GetKinoByUmfrageoptionCallback(uI));
+//				kinoplaner.getSpielzeitByUmfrageoption(u, new GetSpielzeitByUmfrageoptionCallback(uI));
+//				
+//	//			kinoplaner.getUmfrageById(u.getId(), new UmfrageByIdCallback(uI));
+//			
+//
+//			}
+//
+//		}
+//
+//	}
 
-		GetFilmByUmfrageoptionCallback(UmfrageInfo info) {
+	private class FilmByIdCallback implements AsyncCallback<Film> {
+
+		VorstellungInfo info = null;
+
+		FilmByIdCallback(VorstellungInfo info) {
 			this.info = info;
 		}
 
@@ -255,17 +324,17 @@ public class UmfrageCellTable extends VerticalPanel{
 
 			info.filmName = result.getName();
 
-			dataProvider.refresh();
+			dataProviderUmfrage.refresh();
 
 		}
 
 	}
 
-	private class GetKinoByUmfrageoptionCallback implements AsyncCallback<Kino> {
+	private class KinoCallback implements AsyncCallback<Kino> {
 
-		UmfrageInfo info = null;
+		VorstellungInfo info = null;
 
-		GetKinoByUmfrageoptionCallback(UmfrageInfo info) {
+		KinoCallback(VorstellungInfo info) {
 			this.info = info;
 		}
 
@@ -283,17 +352,17 @@ public class UmfrageCellTable extends VerticalPanel{
 
 			info.stadt = result.getStadt();
 
-			dataProvider.refresh();
+			dataProviderUmfrage.refresh();
 
 		}
 
 	}
 
-	private class GetSpielzeitByUmfrageoptionCallback implements AsyncCallback<Spielzeit> {
+	private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 
-		UmfrageInfo info = null;
+		VorstellungInfo info = null;
 
-		GetSpielzeitByUmfrageoptionCallback(UmfrageInfo info) {
+		SpielzeitCallback(VorstellungInfo info) {
 			this.info = info;
 		}
 
@@ -308,12 +377,12 @@ public class UmfrageCellTable extends VerticalPanel{
 			// TODO Auto-generated method stub
 			info.spielzeit = result.getZeit().toString();
 
-			dataProvider.refresh();
+			dataProviderUmfrage.refresh();
 
 		}
 
 	}
-	
+
 //	private class UmfrageByIdCallback implements AsyncCallback<Umfrageoption> {
 //		
 //		UmfrageInfo info = null;
@@ -341,6 +410,5 @@ public class UmfrageCellTable extends VerticalPanel{
 //		}
 //		
 //	}
-	
 
 }

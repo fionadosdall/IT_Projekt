@@ -64,10 +64,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private ArrayList<Film> filme;
 	
 	private Vorstellung v;
-
-	private UmfrageCellTable uct = new UmfrageCellTable(v);
-	private NeueCellTable n = new NeueCellTable();
 	
+	private NeueCellTable n = new NeueCellTable();
+	private UmfrageCellTable uct = new UmfrageCellTable(n);
+
 
 	/*
 	 * (non-Javadoc)
