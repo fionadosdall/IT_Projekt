@@ -55,6 +55,19 @@
 	margin-left: 60px;
 	margin-right: 5px;
 }
+.detailsrechts {
+	width: 50%;
+	margin-top: 5%;
+	margin-left: 30%;
+	margin-right: 5%;
+}
+
+.detailslinks {
+	width: 50%;
+	margin-top: 5%;
+	margin-left: 5%;
+	margin-right: 30%;
+}
 
 .dropdownGesamt{
 	background-color: transparent;

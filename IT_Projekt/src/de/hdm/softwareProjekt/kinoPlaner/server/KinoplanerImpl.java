@@ -278,30 +278,30 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Gruppe erstellenGruppe(String name, ArrayList<Anwender> list) throws IllegalArgumentException {
-		
+
 		if (gruppeMapper.findByName(name) == null) {
-		// Ein neues Gruppe Objekt wird erstellt.
-		Gruppe g = new Gruppe();
+			// Ein neues Gruppe Objekt wird erstellt.
+			Gruppe g = new Gruppe();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
+			// Die Attribute des Objekts werden mit Werten befuellt.
 
-		g.setName(name);
-		g.setBesitzerId(this.anwender.getId());
-		g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			g.setName(name);
+			g.setBesitzerId(this.anwender.getId());
+			g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
-		Gruppe gFertig = this.gruppeMapper.insert(g);
-		this.gruppenmitgliedHinzufuegen(anwender, gFertig);
-		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
-		if (list != null) {
-			for (Anwender a : list) {
-				this.gruppenmitgliedHinzufuegen(a, gFertig);
+			Gruppe gFertig = this.gruppeMapper.insert(g);
+			this.gruppenmitgliedHinzufuegen(anwender, gFertig);
+			// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
+			if (list != null) {
+				for (Anwender a : list) {
+					this.gruppenmitgliedHinzufuegen(a, gFertig);
+
+				}
 
 			}
-			
-		}
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return gFertig;
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return gFertig;
 		}
 		return null;
 	}
@@ -445,7 +445,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		String name = (getSpielplanById(spielplanId).getName()+getSpielzeitById(spielzeitId).getName()+getFilmById(filmId).getName());
+		String name = (getSpielplanById(spielplanId).getName() + getSpielzeitById(spielzeitId).getName()
+				+ getFilmById(filmId).getName());
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -463,7 +464,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId)
+			throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
 
@@ -479,14 +481,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Vorstellung v : list) {
 				this.umfrageoptionHinzufuegen(v, uFertig);
 			}
-			
+
 		}
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return uFertig;
 
 	}
-	
+
 	/**
 	 * <p>
 	 * Eine neue Stichwahl wird angelegt und anschließend in der Datenbank
@@ -1316,7 +1318,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Gruppe getGruppeById(int gruppeId) throws IllegalArgumentException {
 		return this.gruppeMapper.findById(gruppeId);
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Gruppe mit einem bestimmten Namen
@@ -1326,7 +1328,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Gruppe getGruppeByName(String name) throws IllegalArgumentException {
 		return this.gruppeMapper.findByName(name);
 	}
-	
 
 	/**
 	 * <p>
@@ -1780,6 +1781,46 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			throws IllegalArgumentException {
 		this.loeschen(umfrageoption);
 		return this.vorstellungMapper.findById(umfrageoption.getVorstellungsId());
+
+	}
+
+	/**
+	 * <p>
+	 * Updaten einer Umfrage mitsamt der Veränderungen der Gruppenmitglieder
+	 * </p>
+	 */
+	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
+		if (gruppeMapper.findByName(gruppe.getName()) == null) {
+		speichern(gruppe);
+		ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
+
+		for (Anwender a : alteGruppenmitglieder) {
+			for (Anwender aNeu : gruppenmitglieder) {
+				if (a.equals(aNeu)) {
+					break;
+				}
+				if (aNeu.equals(gruppenmitglieder.get(gruppenmitglieder.size() - 1))) {
+					gruppenmitgliedEntfernen(a, gruppe);
+					alteGruppenmitglieder.remove(a);
+				}
+			}
+
+		}
+
+		for (Anwender aNeu : gruppenmitglieder) {
+			for (Anwender a : alteGruppenmitglieder) {
+				if (aNeu.equals(a)) {
+					break;
+				}
+				if (aNeu.equals(alteGruppenmitglieder.get(alteGruppenmitglieder.size() - 1))) {
+					gruppenmitgliedHinzufuegen(a, gruppe);
+				}
+			}
+
+		}
+		return gruppe;
+		
+		} return null;
 
 	}
 
@@ -2556,6 +2597,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		return ergebnisse;
 
 	}
+
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: Methoden

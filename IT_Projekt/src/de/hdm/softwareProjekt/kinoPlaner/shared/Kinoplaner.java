@@ -219,7 +219,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Vorstellung Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Vorstellung erstellenVorstellung( int spielplanId, int spielzeitId, int filmId)
+	public Vorstellung erstellenVorstellung(int spielplanId, int spielzeitId, int filmId)
 			throws IllegalArgumentException;
 
 	/**
@@ -239,7 +239,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Umfrage Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list,  int gruppenId) throws IllegalArgumentException;
+	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1631,29 +1632,46 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Kinokette getKinoketteByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
 
-	public Vorstellung getVorstellungById(int vorstellungId)throws IllegalArgumentException;
-	
+	public Vorstellung getVorstellungById(int vorstellungId) throws IllegalArgumentException;
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Gruppe mit einem bestimmten Namen
 	 * </p>
-	 * @param name Name der gesuchten Gruppe
+	 * 
+	 * @param name
+	 *            Name der gesuchten Gruppe
 	 * @return Gruppenobjekt
 	 * @throws IllegalArgumentException
 	 */
 	public Gruppe getGruppeByName(String name) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Eine neue Stichwahl wird angelegt und anschließend in der Datenbank
 	 * gespeichert.
 	 * </p>
-	 * @param name Name der Umfrage
-	 * @param gruppenId 
+	 * 
+	 * @param name
+	 *            Name der Umfrage
+	 * @param gruppenId
 	 * @return
 	 * @throws IllegalArgumentException
-	 */ 
-	
+	 */
+
 	public Umfrage erstellenStichwahl(String name, int gruppenId) throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Updaten einer Umfrage mitsamt der Veraenderungen der Gruppenmitglieder
+	 * </p>
+	 * 
+	 * @param gruppe
+	 *            Gruppe die Geaendert wird
+	 * @param gruppenmitglieder
+	 *            Aktuelle Gruppenmitglieder
+	 * @throws IllegalArgumentException
+	 */
+	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException;
 
 }

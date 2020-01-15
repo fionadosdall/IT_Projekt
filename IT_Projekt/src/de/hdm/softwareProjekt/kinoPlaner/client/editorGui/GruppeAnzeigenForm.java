@@ -2,17 +2,26 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.safecss.shared.SafeStyles;
+import com.google.gwt.safecss.shared.SafeStylesUtils;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -23,11 +32,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 public class GruppeAnzeigenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
-	// private Anwender anwender = CurrentAnwender.getAnwender();
-	// private Anwender newAnwender= null;
 
 	private Gruppe gruppe;
-	
+
 	public Gruppe getGruppe() {
 		return gruppe;
 	}
@@ -36,20 +43,12 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		this.gruppe = gruppe;
 	}
 
-	private ArrayList<Anwender> mitglieder;
-
-	// private TextBox addAnwenderTextBox = new TextBox ();
-	// private Button speicherGruppenButton = new Button ("Speichern");
-	// private FlexTable mitgliedFlexTable = new FlexTable();
-	//
-
 	HomeBar hb = new HomeBar();
 
-	private ArrayList<Umfrage> umfragen;
-
 	private FlowPanel detailsoben = new FlowPanel();
+	private FlowPanel detailsrechts = new FlowPanel();
+	private FlowPanel detailslinks = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
-	private FlowPanel detailsboxInhalt = new FlowPanel();
 	private FlowPanel detailsboxlöschen = new FlowPanel();
 	private FlowPanel löschenImage = new FlowPanel();
 
@@ -57,79 +56,100 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	private Label mitgliederLabel = new Label("Gruppenmitglieder");
 	private Label umfrageLabel = new Label("Umfragen");
 
-	private Grid felder = new Grid(2, 4);
-	
 	private Image papierkorb = new Image();
+
+	private Button bearbeiten = new Button("Bearbeiten");
+	private Button umfrageErstellen = new Button("Umfrage erstellen");
+
+	private AnwenderCell gruppenmitgliederCell = new AnwenderCell();
+	private CellList<Anwender> gruppenmitgliederCellList;
+	private ListDataProvider<Anwender> dataProviderAnwender = new ListDataProvider<Anwender>();
+
+	static class AnwenderCell extends AbstractCell<Anwender> {
+
+		/**
+		 * Das HTML templates rendert die Cell
+		 */
+		interface Templates extends SafeHtmlTemplates {
+
+			@SafeHtmlTemplates.Template("<div style=\"{0}\">{1}</div>")
+			SafeHtml cell(SafeStyles styles, SafeHtml value);
+		}
+
+		/**
+		 * Erstellen einer einzelnen Instanz des Templates, das genutzt wird um die Cell
+		 * zu rendern
+		 * 
+		 */
+		private static Templates templates = GWT.create(Templates.class);
+
+		@Override
+		public void render(Context context, Anwender value, SafeHtmlBuilder sb) {
+
+			if (value == null) {
+				return;
+			}
+
+			SafeHtml safeValue = SafeHtmlUtils.fromString(value.getName());
+			SafeStyles styles = SafeStylesUtils.forTrustedColor(safeValue.asString());
+			SafeHtml rendered = templates.cell(styles, safeValue);
+			sb.append(rendered);
+		}
+	}
+
+	private UmfrageCell umfragenCell = new UmfrageCell();
+	private CellList<Umfrage> umfragenCellList;
+	private ListDataProvider<Umfrage> dataProviderUmfrage = new ListDataProvider<Umfrage>();
+
+	public GruppeAnzeigenForm(Gruppe gruppe) {
+		this.gruppe = gruppe;
+	}
 
 	public void onLoad() {
 
 		this.addStyleName("detailscontainer");
 		detailsboxlöschen.addStyleName("detailsboxlöschen");
 		detailsoben.addStyleName("detailsoben");
+		detailslinks.addStyleName("detailslinks");
+		detailsrechts.addStyleName("detailsrechts");
 		detailsunten.addStyleName("detailsunten");
 
 		title.addStyleName("title");
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
+		detailsunten.add(bearbeiten);
+		bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
 		löschenImage.add(papierkorb);
 		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
 		detailsboxlöschen.add(löschenImage);
 
 		this.add(detailsoben);
-		this.add(detailsunten);
 		this.add(detailsboxlöschen);
-		this.add(detailsboxInhalt);
+		this.add(detailslinks);
+		this.add(detailsrechts);
+		this.add(detailsunten);
+		
 
 		detailsoben.add(hb);
 		detailsoben.add(title);
-		
-		detailsboxInhalt.add(umfrageLabel);
-
+		title.setText(gruppe.getName());
 		kinoplaner.getUmfragenByGruppe(gruppe, new SucheUmfrageByGruppeCallback());
-
-		if (umfragen != null) {
-			felder.resizeRows(umfragen.size());
-			int i = 0;
-			for (Umfrage umfrage : umfragen) {
-				Label umfragename = new Label(umfrage.getName());
-				UmfrageAuswaehlenClickHandler click = new UmfrageAuswaehlenClickHandler();
-				click.setUmfrage(umfrage);
-				umfragename.addDoubleClickHandler(click);
-				felder.setWidget(i, 0, umfragename);
-				i++;
-				gruppe = null;
-			}
-		} else {
-			felder.setWidget(0, 0, new Label("Keine Umfragen verfügbar."));
-			Button erstellenButton = new Button("Erstelle deine erste Umfrage!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
-
-			felder.setWidget(2, 0, erstellenButton);
-		}
-		detailsboxInhalt.add(felder);
-		detailsboxInhalt.add(mitgliederLabel);
-		
+		detailslinks.add(mitgliederLabel);
+		gruppenmitgliederCellList = new CellList<Anwender>(gruppenmitgliederCell);
+		gruppenmitgliederCellList.setStyleName("");
+		gruppenmitgliederCellList.setPageSize(30);
+		dataProviderAnwender.addDataDisplay(gruppenmitgliederCellList);
+		detailslinks.add(gruppenmitgliederCellList);
 		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
-		if (mitglieder != null) {
-			felder.resizeRows(mitglieder.size());
-			int i = 0;
-			for (Anwender a : mitglieder) {
-				felder.setWidget(i, 0, new Label(a.getName()));
-				i++;
-		
-			}
-		} else {
-			felder.setWidget(0, 0, new Label("Keine Gruppenmitglieder verfügbar."));
 
-		}
-		detailsboxInhalt.add(felder);
+		detailsrechts.add(umfrageLabel);
+		umfragenCellList = new CellList<Umfrage>(umfragenCell);
+		umfragenCellList.setStyleName("");
+		umfragenCellList.setPageSize(30);
+		dataProviderUmfrage.addDataDisplay(umfragenCellList);
+		detailsrechts.add(umfragenCellList);
 
-	}
-
-	public GruppeAnzeigenForm(Gruppe gruppe) {
-		this.gruppe = gruppe;
 	}
 
 	private class GruppeLoeschenClickHandler implements ClickHandler {
@@ -137,26 +157,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
-			
-		}
-		
-	}
-	
-	private class UmfrageAuswaehlenClickHandler implements DoubleClickHandler {
-		private Umfrage umfrage;
-
-		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
-			RootPanel.get("details").clear();
-			UmfrageAnzeigenForm anzeigen = new UmfrageAnzeigenForm(umfrage);
-			RootPanel.get("details").add(anzeigen);
 
 		}
 
-		public void setUmfrage(Umfrage umfrage) {
-			this.umfrage = umfrage;
-
-		}
 	}
 
 	private class UmfrageErstellenClickHandler implements ClickHandler {
@@ -168,15 +171,27 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			RootPanel.get("details").add(erstellen);
 
 		}
-		
+
 	}
 	
+	private class UmfrageBearbeitenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			RootPanel.get("details").clear();
+			GruppeErstellenForm erstellen = new GruppeErstellenForm(gruppe);
+			RootPanel.get("details").add(erstellen);
+
+		}
+
+	}
+
 	private class GruppeLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
@@ -184,38 +199,55 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			RootPanel.get("details").clear();
 			GruppenAnzeigenForm anzeigen = new GruppenAnzeigenForm();
 			RootPanel.get("details").add(anzeigen);
-			
+
 		}
-		
+
 	}
-	
+
 	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
+			caught.printStackTrace();
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Anwender> result) {
-			mitglieder = result;
-			
+			for (Anwender a : result) {
+				dataProviderAnwender.getList().add(a);
+			}
+			dataProviderAnwender.refresh();
+
 		}
-		
+
 	}
 
 	private class SucheUmfrageByGruppeCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
-			umfragen = result;
+			if (result.size() == 0) {
+				VerticalPanel vp = new VerticalPanel();
+				vp.add(new Label("Keine Umfrage verfügbar!"));
+				umfrageErstellen.addClickHandler(new UmfrageErstellenClickHandler());
+				vp.add(umfrageErstellen);
+				umfragenCellList.setEmptyListWidget(vp);
+
+			} else {
+				for (Umfrage u : result) {
+					dataProviderUmfrage.getList().add(u);
+				}
+				dataProviderUmfrage.refresh();
+
+			}
 
 		}
 

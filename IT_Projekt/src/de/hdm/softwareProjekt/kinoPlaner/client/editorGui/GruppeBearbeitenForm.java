@@ -88,6 +88,10 @@ public class GruppeBearbeitenForm extends FlowPanel {
 
 	private GruppenAnzeigenForm gruppenAF;
 
+	public GruppeBearbeitenForm(Gruppe gruppe) {
+		this.gruppe = gruppe;
+	}
+
 	public void onLoad() {
 
 		// Vergeben der Stylenames
@@ -259,7 +263,7 @@ public class GruppeBearbeitenForm extends FlowPanel {
 
 				};
 
-				kinoplaner.gruppenmitgliedEntfernen(anwender, loeschenCallback);
+				//kinoplaner.gruppenmitgliedEntfernen(anwender, loeschenCallback);
 			}
 
 		});
@@ -339,7 +343,7 @@ public class GruppeBearbeitenForm extends FlowPanel {
 			neuerAnwender = anwender;
 			anwender.getName();
 
-			kinoplaner.gruppenmitgliedHinzufuegen(neuerAnwender, new AnwenderHinzufuegenCallback());
+			//kinoplaner.gruppenmitgliedHinzufuegen(neuerAnwender, new AnwenderHinzufuegenCallback());
 
 			// Updaten des DataProviders
 			dataProvider.getList().add(neuerAnwender);

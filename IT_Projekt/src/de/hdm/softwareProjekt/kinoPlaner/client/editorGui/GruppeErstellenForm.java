@@ -79,6 +79,24 @@ public class GruppeErstellenForm extends FlowPanel {
 	};
 
 	private GruppenAnzeigenForm gruppenAF;
+	
+	public GruppeErstellenForm () {
+		
+	}
+	
+	public GruppeErstellenForm (Gruppe gruppe) {
+		this.gruppe=gruppe;
+	}
+	
+	private Gruppe gruppe=null;
+
+	public Gruppe getGruppe() {
+		return gruppe;
+	}
+
+	public void setGruppe(Gruppe gruppe) {
+		this.gruppe = gruppe;
+	}
 
 	public void onLoad() {
 
@@ -111,8 +129,14 @@ public class GruppeErstellenForm extends FlowPanel {
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
-
-		gruppenameTB.getElement().setPropertyString("placeholder", "Gruppenname eingeben");
+		
+		if(gruppe==null) {
+			gruppenameTB.getElement().setPropertyString("placeholder", "Gruppenname eingeben");
+			
+		}else {
+			gruppenameTB.setText(gruppe.getName());
+			title.setText("Gruppe bearbeiten");
+		}
 		mitgliedTB.getElement().setPropertyString("placeholder", "User suchen");
 
 		// Zusammenbauen der Widgets
@@ -168,6 +192,8 @@ public class GruppeErstellenForm extends FlowPanel {
 
 			}
 		});
+		
+		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
 
 		/***********************************************************************
 		 * CELL TABLE
@@ -259,16 +285,68 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-
-			kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, new GruppeErstellenCallback());
-
+			if (gruppenameTB.getValue() == "") {
+				Window.alert("Es wurde kein Gruppenname eingegeben");
+				return;
+			}
+			 
+			if (gruppe ==null) {
+				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, new GruppeErstellenCallback());
+			}
+			else {
+				gruppe.setName(gruppenameTB.getValue());
+				kinoplaner.updateGruppe(gruppe, anwenderListe, new UpdateGruppeCallback());
+			}
+				
 		}
 	}
 
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
+	private class UpdateGruppeCallback implements AsyncCallback<Gruppe> {
 
+		@Override
+		public void onFailure(Throwable caught) {
+			caught.printStackTrace();
+			
+		}
+
+		@Override
+		public void onSuccess(Gruppe result) {
+			 if (result != null){
+				RootPanel.get("details").clear();
+				gruppenAF = new GruppenAnzeigenForm();
+				RootPanel.get("details").add(gruppenAF);
+
+			} else {
+				Window.alert("Gruppenname bereits vergeben!");
+			}
+			
+		}
+		
+	}
+	
+	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Anwender> result) {
+			for (Anwender a : result) {
+				dataProvider.getList().add(a);
+				anwenderListe.add(a);
+			}
+			dataProvider.refresh();
+
+		}
+
+	}
+	
 	private class AnwenderByNameCallback implements AsyncCallback<Anwender> {
 
 		@Override
@@ -309,9 +387,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Gruppe result) {
 
-			if (gruppenameTB.getValue() == "") {
-				Window.alert("Es wurde kein Gruppenname eingegeben");
-			} else if (result != null){
+			 if (result != null){
 				RootPanel.get("details").clear();
 				gruppenAF = new GruppenAnzeigenForm();
 				RootPanel.get("details").add(gruppenAF);
