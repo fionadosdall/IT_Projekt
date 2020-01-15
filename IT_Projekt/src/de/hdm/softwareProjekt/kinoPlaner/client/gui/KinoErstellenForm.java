@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,6 +27,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private Label kinoFormLabel = new Label("Neues Kino");
 	private Label kinokBearbeitenFormLabel = new Label("Kino bearbeiten");
 	private Label nameLabel = new Label("Kinoname:");
+	private Label kinokettenLabel= new Label("Kinokette:");
 	private Label plzLabel = new Label("PLZ:");
 	private Label stadtLabel = new Label("Stadt:");
 	private Label strasseLabel = new Label("Straße:");
@@ -36,10 +38,11 @@ public class KinoErstellenForm extends VerticalPanel {
 	private TextBox stadtTextBox = new TextBox();
 	private TextBox strasseTextBox = new TextBox();
 	private TextBox hnrTextBox = new TextBox();
+	private ListBox kinokettenListBox = new ListBox();
 	
 	private Button speichernButton = new Button("Speichern");
 	private Button loeschenButton = new Button("Löschen");
-	private Grid kinoGrid = new Grid(5, 2);
+	private Grid kinoGrid = new Grid(6, 2);
 	
 	private static Boolean edit = false;
 	private MeineKinosForm mkf;
@@ -73,6 +76,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		kinoFormLabel.addStyleName("formHeaderLabel");
 		kinokBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
+		kinokettenLabel.addStyleName("textLabel");
 		strasseLabel.addStyleName("textLabel");
 		hnrLabel.addStyleName("textLabel");
 		plzLabel.addStyleName("textLabel");
@@ -85,6 +89,9 @@ public class KinoErstellenForm extends VerticalPanel {
 		hnrTextBox.addStyleName("formularTextBox");
 		plzTextBox.addStyleName("formularTextBox");
 		stadtTextBox.addStyleName("formularTextBox");
+
+		kinokettenListBox.setSize("180px", "25px");
+		
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
 		
@@ -105,14 +112,16 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		kinoGrid.setWidget(0, 0, nameLabel);
 		kinoGrid.setWidget(0, 1, nameTextBox);
-		kinoGrid.setWidget(1, 0, strasseLabel);
-		kinoGrid.setWidget(1, 1, strasseTextBox);
-		kinoGrid.setWidget(2, 0, hnrLabel);
-		kinoGrid.setWidget(2, 1, hnrTextBox);
-		kinoGrid.setWidget(3, 0, plzLabel);
-		kinoGrid.setWidget(3, 1, plzTextBox);
-		kinoGrid.setWidget(4, 0, stadtLabel);
-		kinoGrid.setWidget(4, 1, stadtTextBox);
+		kinoGrid.setWidget(1, 0, kinokettenLabel);
+		kinoGrid.setWidget(1, 1, kinokettenListBox);
+		kinoGrid.setWidget(2, 0, strasseLabel);
+		kinoGrid.setWidget(2, 1, strasseTextBox);
+		kinoGrid.setWidget(3, 0, hnrLabel);
+		kinoGrid.setWidget(3, 1, hnrTextBox);
+		kinoGrid.setWidget(4, 0, plzLabel);
+		kinoGrid.setWidget(4, 1, plzTextBox);
+		kinoGrid.setWidget(5, 0, stadtLabel);
+		kinoGrid.setWidget(5, 1, stadtTextBox);
 
 		this.add(kinoGrid);
 		
