@@ -10,15 +10,19 @@ import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinoCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinokettenCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanCell;
+import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -36,6 +40,7 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Kino> listKino;
 	private CellList<Kinokette> listKinokette;
 	private CellList<Spielplan> listSpielplan;
+	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	public void onLoad() {
 		head.setStyleName("");
@@ -53,16 +58,7 @@ public class BusinessObjektView extends VerticalPanel {
 
 	public void setGruppen(ArrayList<Gruppe> gruppen) {
 		GruppeCell cell = new GruppeCell();
-		ValueUpdater<Gruppe> vU = new ValueUpdater<Gruppe>() {
-
-			@Override
-			public void update(Gruppe value) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
 		listGruppe = new CellList<Gruppe>(cell);
-		listGruppe.setValueUpdater(vU);
 		listGruppe.setStyleName("");
 		listGruppe.setPageSize(30);
 		listGruppe.setRowData(gruppen);
@@ -70,18 +66,11 @@ public class BusinessObjektView extends VerticalPanel {
 		this.add(listGruppe);
 	}
 
+
+	
 	public void setUmfragen(ArrayList<Umfrage> umfragen) {
 		UmfrageCell cell = new UmfrageCell();
-		ValueUpdater<Umfrage> vU = new ValueUpdater<Umfrage>() {
-
-			@Override
-			public void update(Umfrage value) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
 		listUmfrage = new CellList<Umfrage>(cell);
-		listUmfrage.setValueUpdater(vU);
 		listUmfrage.setStyleName("");
 		listUmfrage.setPageSize(30);
 		listUmfrage.setRowData(umfragen);
@@ -129,5 +118,7 @@ public class BusinessObjektView extends VerticalPanel {
 		image.addClickHandler(clickHandler);
 		actions.add(image);
 	}
+	
+	
 	
 }

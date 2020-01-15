@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -103,7 +104,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Gruppe Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Gruppe erstellenGruppe(String name) throws IllegalArgumentException;
+	public Gruppe erstellenGruppe(String name, ArrayList<Anwender> list) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -218,7 +219,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Vorstellung Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Vorstellung erstellenVorstellung(String name, int spielplanId, int spielzeitId, int filmId)
+	public Vorstellung erstellenVorstellung( int spielplanId, int spielzeitId, int filmId)
 			throws IllegalArgumentException;
 
 	/**
@@ -238,7 +239,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Umfrage Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrage erstellenUmfrage(String name, int gruppenId) throws IllegalArgumentException;
+	public Umfrage erstellenUmfrage(String name, List<Vorstellung> list,  int gruppenId) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -278,7 +279,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Film Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Film erstellenFilm(String name, String beschreibung, int bewertung) throws IllegalArgumentException;
+	public Film erstellenFilm(String name, String beschreibung, String bewertung) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1292,19 +1293,6 @@ public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
-	 * Entfernen eines Gruppenmitglieds aus einer Gruppe die noch nicht fertig
-	 * erstellt ist.
-	 * </p>
-	 * 
-	 * @param anwender
-	 *            Gruppenmitglied
-	 * @return Anwenderobjekt das jetzt kein Gruppenmitglied mehr ist
-	 * @throws IllegalArgumentException
-	 */
-	public Anwender gruppenmitgliedEntfernen(Anwender anwender) throws IllegalArgumentException;
-
-	/**
-	 * <p>
 	 * Kinokette zu einem Kino hinzufuegen.
 	 * </p>
 	 * 
@@ -1328,19 +1316,6 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public Kino kinoketteEntfernen(Kino kino) throws IllegalArgumentException;
-
-	/**
-	 * <p>
-	 * Hinzufuegen eines Gruppenmitglieds zu einer Gruppe die noch nicht fertig
-	 * erstellt ist.
-	 * </p>
-	 * 
-	 * @param anwender
-	 *            Anwenderobjekt das Gruppenmitglied werden soll
-	 * @return Gruppenmitglied
-	 * @throws IllegalArgumentException
-	 */
-	public Anwender gruppenmitgliedHinzufuegen(Anwender anwender) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1536,18 +1511,6 @@ public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
-	 * Hinzufuegen einer Umfrageoption zu einer Gruppe die noch nicht fertig ist
-	 * </p>
-	 * 
-	 * @param vorstellung
-	 *            Vorstellung der Umfrageoption
-	 * @return Vorstellung die eine Umfrageoption werden soll
-	 * @throws IllegalArgumentException
-	 */
-	public Vorstellung umfrageoptionHinzufuegen(Vorstellung vorstellung) throws IllegalArgumentException;
-
-	/**
-	 * <p>
 	 * Entfernen einer Umfrageoption von einer Gruppe
 	 * </p>
 	 * 
@@ -1560,26 +1523,6 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Vorstellung umfrageoptionEntfernen(Umfrageoption umfrageoption, Umfrage umfrageFertig)
 			throws IllegalArgumentException;
-
-	/**
-	 * <p>
-	 * Entfernen einer Umfrageoption von einer Gruppe die noch nicht fertig ist
-	 * </p>
-	 * 
-	 * @param vorstellung
-	 *            Vorstellung die keine Umfrageoption werden soll
-	 * @return Vorstellung die keine Umfrageoption wird
-	 * @throws IllegalArgumentException
-	 */
-	public Vorstellung umfrageoptionEntfernen(Vorstellung vorstellung) throws IllegalArgumentException;
-
-	/**
-	 * 
-	 * @param anwenderName
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public Anwender gruppenmitgliedHinzufuegen(String anwenderName) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1689,5 +1632,28 @@ public interface Kinoplaner extends RemoteService {
 	public Kinokette getKinoketteByVorstellung(Vorstellung vorstellung) throws IllegalArgumentException;
 
 	public Vorstellung getVorstellungById(int vorstellungId)throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Gruppe mit einem bestimmten Namen
+	 * </p>
+	 * @param name Name der gesuchten Gruppe
+	 * @return Gruppenobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Gruppe getGruppeByName(String name) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Eine neue Stichwahl wird angelegt und anschließend in der Datenbank
+	 * gespeichert.
+	 * </p>
+	 * @param name Name der Umfrage
+	 * @param gruppenId 
+	 * @return
+	 * @throws IllegalArgumentException
+	 */ 
+	
+	public Umfrage erstellenStichwahl(String name, int gruppenId) throws IllegalArgumentException;
 
 }

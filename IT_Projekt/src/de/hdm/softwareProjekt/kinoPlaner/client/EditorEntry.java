@@ -59,6 +59,7 @@ public class EditorEntry implements EntryPoint {
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Initilanwender konnte nicht erstellt werden");
+			Window.alert(caught.getMessage());
 			
 		}
 

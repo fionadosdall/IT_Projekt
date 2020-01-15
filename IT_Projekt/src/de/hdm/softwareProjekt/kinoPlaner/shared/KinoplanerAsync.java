@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -35,7 +36,7 @@ public interface KinoplanerAsync {
 	public void erstellenAnwender(String name, String gmail, AsyncCallback<Anwender> callback)
 			throws IllegalArgumentException;
 
-	public void erstellenGruppe(String name, AsyncCallback<Gruppe> callback) throws IllegalArgumentException;
+	public void erstellenGruppe(String name, ArrayList<Anwender> list, AsyncCallback<Gruppe> callback) throws IllegalArgumentException;
 
 	public void erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId,
 			AsyncCallback<Kino> callback) throws IllegalArgumentException;
@@ -49,16 +50,16 @@ public interface KinoplanerAsync {
 	public void erstellenSpielplanKino(String name, int kinoId, AsyncCallback<Spielplan> callback)
 			throws IllegalArgumentException;
 
-	public void erstellenVorstellung(String name, int spielplanId, int spielzeitId, int filmId,
+	public void erstellenVorstellung( int spielplanId, int spielzeitId, int filmId,
 			AsyncCallback<Vorstellung> callback) throws IllegalArgumentException;
 
-	public void erstellenUmfrage(String name, int gruppenId, AsyncCallback<Umfrage> callback)
+	public void erstellenUmfrage(String name, List<Vorstellung> list, int gruppenId, AsyncCallback<Umfrage> callback)
 			throws IllegalArgumentException;
 
 	public void erstellenUmfrageoption(String name, int umfrageId, int vorstellungId,
 			AsyncCallback<Umfrageoption> callback) throws IllegalArgumentException;
 
-	public void erstellenFilm(String name, String beschreibung, int bewertung, AsyncCallback<Film> callback)
+	public void erstellenFilm(String name, String beschreibung, String bewertung, AsyncCallback<Film> callback)
 			throws IllegalArgumentException;
 
 	public void erstellenSpielzeit(String name, Date zeit, AsyncCallback<Spielzeit> callback)
@@ -254,16 +255,11 @@ public interface KinoplanerAsync {
 
 	public void nameVerfuegbarAuswahl(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void gruppenmitgliedEntfernen(Anwender anwender, AsyncCallback<Anwender> callback)
-			throws IllegalArgumentException;
-
 	public void kinoDerKinoketteHinzufuegen(Kino kino, Kinokette kinokette, AsyncCallback<Kino> callback)
 			throws IllegalArgumentException;
 
 	public void kinoketteEntfernen(Kino kino, AsyncCallback<Kino> loeschenCallback) throws IllegalArgumentException;
 
-	public void gruppenmitgliedHinzufuegen(Anwender anwender, AsyncCallback<Anwender> callback)
-			throws IllegalArgumentException;
 
 	public void getSpielplaeneByKinokette(Kinokette kinokette, AsyncCallback<ArrayList<Spielplan>> callback)
 			throws IllegalArgumentException;
@@ -307,17 +303,8 @@ public interface KinoplanerAsync {
 	public void umfrageoptionHinzufuegen(Vorstellung vorstellung, Umfrage umfrageFertig,
 			AsyncCallback<Umfrageoption> callback) throws IllegalArgumentException;
 
-	public void umfrageoptionHinzufuegen(Vorstellung vorstellung, AsyncCallback<Vorstellung> callback)
-			throws IllegalArgumentException;
-
 	public void umfrageoptionEntfernen(Umfrageoption umfrageoption, Umfrage umfrageFertig,
 			AsyncCallback<Vorstellung> callback) throws IllegalArgumentException;
-
-	public void umfrageoptionEntfernen(Vorstellung vorstellung, AsyncCallback<Vorstellung> callback)
-			throws IllegalArgumentException;
-
-	public void gruppenmitgliedHinzufuegen(String anwenderName, AsyncCallback<Anwender> callback)
-			throws IllegalArgumentException;
 
 	public void loeschenKinoketteById(int id, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -342,4 +329,8 @@ public interface KinoplanerAsync {
 
 	public void getKinoketteByVorstellung(Vorstellung vorstellung, AsyncCallback<Kinokette> callback)
 			throws IllegalArgumentException;
+	
+	public void getGruppeByName(String name, AsyncCallback<Gruppe> callback) throws IllegalArgumentException;
+	
+	public void erstellenStichwahl(String name, int gruppenId , AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
 }
