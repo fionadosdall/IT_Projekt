@@ -223,7 +223,7 @@ public class FilmErstellenForm extends VerticalPanel {
 				Systemmeldung.anzeigen("Film wurde gelöscht");
 			}}
 			
-		}
+		
 		
 		
 /*********
