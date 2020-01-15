@@ -65,10 +65,28 @@ public class UmfrageErstellenForm extends FlowPanel {
 	
 	private Vorstellung v;
 	
+	private UmfrageInfo uI;
+	
 	private NeueCellTable n = new NeueCellTable();
 	private UmfrageCellTable uct = new UmfrageCellTable(n);
+	
+	
 
+	private class UmfrageInfo {
+		
+		private Gruppe g;
 
+		public Gruppe getG() {
+			return g;
+		}
+
+		public void setG(Gruppe g) {
+			this.g = g;
+		}
+		
+		
+		
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -170,18 +188,27 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			
 			String gruppenname = gruppenListBox.getSelectedValue();
-			Gruppe g = null;
+			
 
 			if (gruppenname != "") {
-				// g = kinoplaner.getGruppeByName(gruppenname);
-
+				
+				kinoplaner.getGruppeByName(gruppenname, new GruppeByNameCallback(uI));
+			
 			} else {
 				Window.alert("Bitte zuerst eine Gruppe auswählen");
 				return;
 			}
 			// TODO Auto-generated method stub
-			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), g.getId(), new UmfrageErstellenCallback());
+			
+			for (Vorstellung v : n.getUmfrageOptionen()) {
+				Window.alert(v.getName());
+				Window.alert(String.valueOf(uI.getG().getId()));
+			
+			}
+			
+			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), uI.getG().getId(), new UmfrageErstellenCallback());
 
 		}
 
@@ -209,6 +236,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 				for (Gruppe g : result) {
 
 					gruppenListBox.addItem(g.getName());
+					
+					uI = new UmfrageInfo();
+
+					uI.setG(g);
 
 				}
 
@@ -323,10 +354,32 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	private class GruppeByNameCallback implements AsyncCallback<Gruppe>{
+		
+		UmfrageInfo info = null;
+		
+		GruppeByNameCallback(UmfrageInfo info) {
+			this.info = info;
+		}
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Gruppe result) {
+			// TODO Auto-generated method stub
+			info.g = result;
+			
+			
+		}
+		
+	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
-
-		private Umfrage umfrage;
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -337,16 +390,18 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Umfrage result) {
 			// TODO Auto-generated method stub
-			umfrage = result;
+			Window.alert("Umfrage wurde erstellt" + result.getName());
+//			this.umfrage = result;
 			RootPanel.get("details").clear();
 			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
+	
 			RootPanel.get("details").add(uaf);
 
 		}
 
-		public void setUmfrage(Umfrage umfrage) {
-			this.umfrage = umfrage;
-		}
+//		public void setUmfrage(Umfrage ) {
+//			this.umfrage = umfrage;
+//		}
 
 	}
 
