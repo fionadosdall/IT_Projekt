@@ -48,7 +48,6 @@ public class SpielplaneintragForm extends PopupPanel {
 	public SpielplaneintragForm() {
 		
 		super(true);
-       // setWidget(new Label("Zum schließen außerhalb des Fensters klicken."));
 
 		
 	}
@@ -59,20 +58,22 @@ public class SpielplaneintragForm extends PopupPanel {
 		
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
-		this.addStyleName("spielplanEintragPopup");
+		this.addStyleName("popupPanel");
 		
 		spielplaneintragFormLabel.addStyleName("formHeaderLabel");
 		spielplaneintragBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		filmLabel.addStyleName("textLabel");
 		spielzeitLabel.addStyleName("textLabel");
-		obenPanel.addStyleName("obenPanel");
-		untenPanel.addStyleName("untenPanel");
+		obenPanel.addStyleName("popupObenPanel");
+		untenPanel.addStyleName("popupUntenPanel");
+		speichernButton.addStyleName("speichernButton");
 
 		spielzeitListBox.setSize("180px", "25px");
 		filmListBox.setSize("180px", "25px");
 		
 		
 		/*** Zusammensetzen der Widgets ***/
+		
 		
 		
 		if(edit == true) {
@@ -108,9 +109,10 @@ public class SpielplaneintragForm extends PopupPanel {
 		filmErstellenButton.addClickHandler(new NeuerFilmClickHandler());
 		spielzeitErstellenButton.addClickHandler(new NeueSpielzeitClickHandler());
 		
-		this.setPopupPosition(50, 50);
-		this.add(popupPanel);
 		//this.center();
+		//this.setPopupPosition(30, 50);
+		this.add(popupPanel);
+		
 		
 	}
 	
@@ -133,9 +135,9 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
+			
 			FilmErstellenForm film = new FilmErstellenForm();
-			RootPanel.get("details").add(film);
+			film.show();
 			
 		}
 		

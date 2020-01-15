@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -36,11 +37,12 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
 
-public class FilmErstellenForm extends VerticalPanel {
+public class FilmErstellenForm extends PopupPanel {
 	
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	private VerticalPanel popupPanel = new VerticalPanel();
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 
@@ -76,12 +78,14 @@ public class FilmErstellenForm extends VerticalPanel {
 
 	public FilmErstellenForm() {
 		
-		
+		super(true);
 		
 	}
 	
 	public FilmErstellenForm (Film film) {
+		super(true);
 		this.film = film;
+		
 	}
 	
 	
@@ -92,6 +96,8 @@ public class FilmErstellenForm extends VerticalPanel {
 	 */
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
+		this.addStyleName("popupPanel");
+
 
 		filmFormLabel.addStyleName("formHeaderLabel");
 		filmBearbeitenFormLabel.addStyleName("formHeaderLabel");
@@ -99,15 +105,14 @@ public class FilmErstellenForm extends VerticalPanel {
 		beschreibungLabel.addStyleName("textLabel");
 		bewertungLabel.addStyleName("textLabel");
 		laengeLabel.addStyleName("textLabel");
-		speichernButton.addStyleName("speicherButton");
+		speichernButton.addStyleName("speichernButton");
 		loeschenButton.addStyleName("loeschenButton");
-		obenPanel.addStyleName("obenPanel");
-		untenPanel.addStyleName("untenPanel");
+		obenPanel.addStyleName("popupObenPanel");
+		untenPanel.addStyleName("popupUntenPanel");
 		nameTextBox.addStyleName("formularTextBox");
 		beschreibungTextBox.addStyleName("formularTextBox");
 		bewertungTextBox.addStyleName("formularTextBox");
 		laengeTextBox.addStyleName("formularTextBox");
-		
 		
 		
 		/******
@@ -123,7 +128,7 @@ public class FilmErstellenForm extends VerticalPanel {
 			clearForm();
 		}
 		
-		this.add(obenPanel);
+		popupPanel.add(obenPanel);
 		
 		
 		filmGrid.setWidget(0, 0, nameLabel);
@@ -136,7 +141,7 @@ public class FilmErstellenForm extends VerticalPanel {
 		filmGrid.setWidget(3, 1, laengeTextBox);
 		
 		
-		this.add(filmGrid);
+		popupPanel.add(filmGrid);
 		
 		
 		
@@ -150,11 +155,12 @@ public class FilmErstellenForm extends VerticalPanel {
 		}
 		
 		
-		this.add(untenPanel);
+		popupPanel.add(untenPanel);
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
 		
+		this.add(popupPanel);
 	}
 		//CLICKHANDLER 
 		
@@ -171,6 +177,8 @@ public class FilmErstellenForm extends VerticalPanel {
 				
 				
 				clearForm();
+				FilmErstellenForm.this.hide();
+
 			}
 		
 	}

@@ -724,12 +724,37 @@ body {
 
 /* Popups */
 
-.spielplanEintragPopup{
+.popupPanel{
 	margin: 20%;
-	height: 50%;
-	width:	50%;
+	padding: 10%;
 	
+}
 	
+.popupObenPanel{
+	width: 100%;
+	background: #ffffff;
+	text-align: center;
+	color: white;
+	padding: 20px 0 20px 0;
+	align-items: center;
+	padding: 10px;
+}
+}	
+
+.popupUntenPanel{
+	width: 100%;
+	text-align: center;
+	align-items: center;
+	color: white;
+	background: #ffffff;
+	border-top: solid;
+	border-color: grey;
+	border-width: thin;
+	margin-top: 5%;
+	padding-top: 5%;
+}	
+
+
 }
 
 
