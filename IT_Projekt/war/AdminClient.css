@@ -722,6 +722,14 @@ body {
 	text-align: center;
 }
 
-/* Volltextsuche */
+/* Popups */
+
+.spielplanEintragPopup{
+	margin: 20%;
+	height: 50%;
+	width:	50%;
+	
+	
+}
 
 
