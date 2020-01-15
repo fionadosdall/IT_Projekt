@@ -603,6 +603,11 @@ body {
 	margin-top: .25rem;
 }
 
+textLabel.gwt-Label{
+	text-color: black;
+	color: #363636;
+}
+
 .speichernButton.gwt-Button {
 	border-radius: 290486px;
 	padding-left: 1em;
@@ -673,7 +678,7 @@ body {
 .detailsoben {
 	background: #d6d1d1;
 	text-align: center;
-	color: white;
+	color: #363636;
 	margin-bottom: 3px;
 	padding: 20px 0 20px 0;
 }
@@ -754,6 +759,11 @@ body {
 	padding-top: 5%;
 }	
 
+/* Checkbox */
+
+.checkBox{
+	margin-top: 5px;
+}
 
 }
 

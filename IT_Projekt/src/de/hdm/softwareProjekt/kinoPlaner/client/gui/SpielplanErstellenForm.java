@@ -14,9 +14,12 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -30,7 +33,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
-public class SpielplanErstellenForm extends FlowPanel {
+public class SpielplanErstellenForm extends VerticalPanel {
 	
 	
 
@@ -40,8 +43,14 @@ public class SpielplanErstellenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
-	private FlowPanel detailsoben = new FlowPanel();
-	private FlowPanel detailsunten = new FlowPanel();
+	private HorizontalPanel detailsoben = new HorizontalPanel();
+	private HorizontalPanel detailsunten = new HorizontalPanel();
+	private VerticalPanel inhaltObenPanel = new VerticalPanel();
+	private HorizontalPanel inhaltUntenPanel = new HorizontalPanel();
+	private VerticalPanel inhaltUntenLinksPanel = new VerticalPanel();
+	private VerticalPanel inhaltUntenRechtsPanel = new VerticalPanel();
+
+	
 	private FlowPanel speichernBox = new FlowPanel();
 	private FlowPanel detailsBoxObenMitte = new FlowPanel();
 	private FlowPanel detailsBoxMitteMitte = new FlowPanel();
@@ -56,26 +65,28 @@ public class SpielplanErstellenForm extends FlowPanel {
 	
 	private Label spielplanformLabel = new Label("Neuen Spielplan erstellen");
 	private Label spielplanBearbeitenFormLabel = new Label("Spielplan bearbeiten");
-	private Label spielplanname = new Label ("Spielplanname");
+	private Label spielplanNameLabel = new Label ("Spielplanname");
 	private Label vorstellung = new Label ("Vorstellung hinzufügen");
 	private Label vorstellungen = new Label ("Spielplan-Vorstellungen");
+	private Label kinoLabel = new Label("Kino:");
 	
-	private TextBox spielplannameTB = new TextBox();
+	private TextBox spielplannameTextBox = new TextBox();
+	private ListBox kinoListBox = new ListBox();
+	private CheckBox kinokettenCheckBox = new CheckBox("Für alle Kinos der Kinokette verwenden.");
 	
 	private SpielplanErstellenForm bearbeiten;
 	private SpielplaneintragForm spielplaneintrag;
 	
-	private MultiWordSuggestOracle alleKinosOracle = new MultiWordSuggestOracle ();
-	private SuggestBox vorstellungTB = new SuggestBox(alleKinosOracle);
+	
 	
 	private ArrayList<Kino> kinoTB = new ArrayList<Kino>();
 	
+	private Grid spielplanGrid = new Grid(3, 2);
 	
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button ("entfernen");
 	private Button speichernButton = new Button("Speichern");
-	private Button filmErstellen = new Button("Film erstellen");
-	private Button spielzeitErstellen = new Button ("Spielzeit erstellen");
+	
 
 	private Spielplan sp;
 	
@@ -118,8 +129,14 @@ public class SpielplanErstellenForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
-		spielplannameTB.addStyleName("formularTextBox");
-		vorstellungTB.addStyleName("formularSearchTextBox");
+		spielplannameTextBox.addStyleName("formularTextBox");
+		kinokettenCheckBox.addStyleName("checkBox");
+		
+		inhaltObenPanel.addStyleName("detailsoben");
+		inhaltUntenPanel.addStyleName("detailsoben");
+		//inhaltUntenLinksPanel.addStyleName("detailsoben");
+		//inhaltUntenRechtsPanel.addStyleName("detailsoben");
+		
 		
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
@@ -138,12 +155,14 @@ public class SpielplanErstellenForm extends FlowPanel {
 		
 		spielplanformLabel.addStyleName("formHeaderLabel");
 		spielplanBearbeitenFormLabel.addStyleName("formHeaderLabel");
-		spielplanname.addStyleName("detailsboxLabels");
+		spielplanNameLabel.addStyleName("textLabel");
+		kinoLabel.addStyleName("textLabel");
 		vorstellung.addStyleName("detailsboxLabels");
 		vorstellungen.addStyleName("detailsboxLabels");
 		
-		spielplannameTB.getElement().setPropertyString("placeholder", "Spielplanname eingeben");
-		vorstellungTB.getElement().setPropertyString("placeholder",  "Vorstellung suchen");
+		spielplannameTextBox.getElement().setPropertyString("placeholder", "Spielplanname eingeben");
+		
+		kinoListBox.setSize("180px", "25px");
 		
 		
 		// Zusammenbauen der Widgets
@@ -157,11 +176,32 @@ public class SpielplanErstellenForm extends FlowPanel {
 		}
 		
 		this.add(detailsoben);
-		this.add(detailsunten);
-
 		
 
-		detailsunten.add(detailsObenBox);
+		spielplanGrid.setWidget(0, 0, spielplanNameLabel);
+		spielplanGrid.setWidget(0, 1, spielplannameTextBox);
+		
+		spielplanGrid.setWidget(1, 0, kinoLabel);
+		spielplanGrid.setWidget(1, 1, kinoListBox);
+		
+		
+		inhaltObenPanel.add(spielplanGrid);
+		inhaltObenPanel.add(kinokettenCheckBox);
+		this.add(inhaltObenPanel);
+		
+		//inhaltUntenLinksPanel.add();
+		inhaltUntenRechtsPanel.add(hinzufuegenButton);
+		inhaltUntenRechtsPanel.add(entfernenButton);
+		
+		inhaltUntenPanel.add(inhaltUntenLinksPanel);
+		inhaltUntenPanel.add(inhaltUntenRechtsPanel);
+		this.add(inhaltUntenPanel);
+		
+
+		detailsunten.add(speichernButton);
+		this.add(detailsunten);
+		
+		/*detailsunten.add(detailsObenBox);
 		detailsunten.add(detailsMitteBox);
 		detailsunten.add(detailsUntenBox);
 		
@@ -184,13 +224,13 @@ public class SpielplanErstellenForm extends FlowPanel {
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
 		
-		//Click Handler
+		//Click Handler */
 		
 		hinzufuegenButton.addClickHandler(new SpielplaneintragHinzufuegenClickHandler());
 		//entfernenButton.addClickHandler(new KinoEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		
-		
+		/*
 		
 		// Alle Kinos die im System vorhanden sind werden geladen
 		
@@ -219,7 +259,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		 * CELL TABLE
 		 */
 		
-		
+		/*
 		TextCell namenTextCell = new TextCell();
 		
 		Column<Kino, String> namenColumn = new Column<Kino, String>(namenTextCell) {
@@ -294,8 +334,8 @@ public class SpielplanErstellenForm extends FlowPanel {
 		kinoCellTable.setColumnWidth(namenColumn, 20, Unit.PC);
 		kinoCellTable.setColumnWidth(loeschenColumn, 20, Unit.PC);
 		
-		dataProvider.addDataDisplay(kinoCellTable);
-	}
+		dataProvider.addDataDisplay(kinoCellTable);*/
+	} 
 	
 	
 	/**************************
@@ -324,7 +364,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			kinoplaner.erstellenSpielplanKino(spielplannameTB.getValue(), kinoId, new SpielplanErstellenCallback());
+			//kinoplaner.erstellenSpielplanKino(spielplannameTB.getValue(), kinoId, new SpielplanErstellenCallback());
 			
 			
 		}
@@ -440,13 +480,13 @@ public class SpielplanErstellenForm extends FlowPanel {
 		public void onSuccess(Spielplan result) {
 			// TODO Auto-generated method stub
 			
-			if (spielplannameTB.getValue() == "" ) {
+			/*if (spielplannameTB.getValue() == "" ) {
 				Systemmeldung.anzeigen("Es wurde kein Spielplanname eingegebnen");
 			} else {
 				RootPanel.get("details").clear();
 				spielplaeneF =new MeineSpielplaeneForm();
 				RootPanel.get("details").add(spielplaeneF);
-			}
+			}*/
 			
 		}
 		
@@ -472,7 +512,7 @@ public class SpielplanErstellenForm extends FlowPanel {
 	} 
 	
 	public void clearForm() {
-		spielplannameTB.setText("");
+		//spielplannameTB.setText("");
 		
 	}
 	
