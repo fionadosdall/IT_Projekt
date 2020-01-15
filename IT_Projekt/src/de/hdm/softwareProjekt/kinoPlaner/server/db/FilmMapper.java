@@ -84,7 +84,7 @@ public class FilmMapper {
 				f.setName(resultset.getString("fName"));
 				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
 				f.setBeschreibung(resultset.getString("fBeschreibung"));
-				f.setBewertung(resultset.getInt("bewertung"));
+				f.setBewertung(resultset.getString("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				resultarray.add(f);
@@ -229,7 +229,7 @@ public class FilmMapper {
 				f.setName(resultset.getString("fName"));
 				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
 				f.setBeschreibung(resultset.getString("fBeschreibung"));
-				f.setBewertung(resultset.getInt("bewertung"));
+				f.setBewertung(resultset.getString("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return f;
 			}
@@ -262,7 +262,7 @@ public class FilmMapper {
 				f.setName(resultset.getString("fName"));
 				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
 				f.setBeschreibung(resultset.getString("fBeschreibung"));
-				f.setBewertung(resultset.getInt("bewertung"));
+				f.setBewertung(resultset.getString("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				resultarray.add(f);
@@ -302,7 +302,7 @@ public class FilmMapper {
 				f.setName(resultset.getString("fName"));
 				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
 				f.setBeschreibung(resultset.getString("fBeschreibung"));
-				f.setBewertung(resultset.getInt("bewertung"));
+				f.setBewertung(resultset.getString("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 
 				resultarray.add(f);
