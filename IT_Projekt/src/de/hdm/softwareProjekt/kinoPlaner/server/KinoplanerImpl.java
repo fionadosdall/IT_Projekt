@@ -463,7 +463,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(String name, List<Vorstellung> list, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId) throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
 

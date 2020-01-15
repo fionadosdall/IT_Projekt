@@ -5,23 +5,39 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-public class GruppenAnzeigenForm extends VerticalPanel {
+public class GruppenAnzeigenForm extends FlowPanel {
 	BusinessObjektView bov = new BusinessObjektView();
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	VerticalPanel p = new VerticalPanel();
+	private HomeBar hb = new HomeBar();
+	private FlowPanel detailsoben = new FlowPanel();
+	private FlowPanel detailsunten = new FlowPanel();
 
 	public void onLoad() {
+		this.addStyleName("detailscontainer");
+		
+		detailsoben.addStyleName("detailsoben");
+		detailsunten.addStyleName("detailsunten");
+		
+		
+		// Zusammenbauen der Widgets
+		this.add(detailsoben);
+		this.add(detailsunten);
+		
+		
+		detailsoben.add(hb);
+		
 		p.setStyleName("");
 		bov.setTitel("Meine Gruppen");
 		p.add(bov);
-		this.add(p);
+		detailsunten.add(p);
 
 		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
 

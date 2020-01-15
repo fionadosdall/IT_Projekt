@@ -239,7 +239,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Umfrage Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrage erstellenUmfrage(String name, List<Vorstellung> list,  int gruppenId) throws IllegalArgumentException;
+	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list,  int gruppenId) throws IllegalArgumentException;
 
 	/**
 	 * <p>

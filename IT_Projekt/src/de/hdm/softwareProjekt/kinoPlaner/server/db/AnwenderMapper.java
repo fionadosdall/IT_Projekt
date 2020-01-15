@@ -360,11 +360,9 @@ public class AnwenderMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppe.gId, gruppe.gruppe_anwender_Id, anwender.gMail, anwender.aName, "
-							+ "anwender.erstellDatum FROM gruppe " + "INNER JOIN anwender "
-							+ "ON gruppe.gruppe_anwender_Id = anwender.aId " + "WHERE gId = " + gruppe.getId()
-							+ "ORDER BY aId");
-
+					"SELECT gruppID, anwendID, anwender.gMail, anwender.aName, anwender.erstellDatum "+
+							"FROM gruppenmitglieder INNER JOIN anwender ON anwendID = anwender.aId WHERE gruppID =  "+
+							gruppe.getId()+" ORDER BY aId");
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
 			 * damit wird die ArrayListe Durchlauf für Durchlauf der Schleife
@@ -373,7 +371,7 @@ public class AnwenderMapper {
 
 			while (resultset.next()) {
 				Anwender a = new Anwender();
-				a.setId(resultset.getInt("aId"));
+				a.setId(resultset.getInt("anwendId"));
 				a.setGmail(resultset.getString("gMail"));
 				a.setName(resultset.getString("aName"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));

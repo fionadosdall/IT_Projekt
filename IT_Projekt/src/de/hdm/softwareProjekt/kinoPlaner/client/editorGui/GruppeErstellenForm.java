@@ -64,7 +64,6 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private CellTable<Anwender> anwenderCellTable = new CellTable<Anwender>(KEY_PROVIDER);
 
-	@Serialization
 	private ListDataProvider<Anwender> dataProvider = new ListDataProvider<Anwender>();
 	private ArrayList<Anwender> anwenderListe = new ArrayList<Anwender>();
 

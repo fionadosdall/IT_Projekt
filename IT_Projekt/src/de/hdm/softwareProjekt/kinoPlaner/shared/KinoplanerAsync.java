@@ -53,7 +53,7 @@ public interface KinoplanerAsync {
 	public void erstellenVorstellung( int spielplanId, int spielzeitId, int filmId,
 			AsyncCallback<Vorstellung> callback) throws IllegalArgumentException;
 
-	public void erstellenUmfrage(String name, List<Vorstellung> list, int gruppenId, AsyncCallback<Umfrage> callback)
+	public void erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId, AsyncCallback<Umfrage> callback)
 			throws IllegalArgumentException;
 
 	public void erstellenUmfrageoption(String name, int umfrageId, int vorstellungId,
