@@ -50,7 +50,8 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Umfragen nicht abrufbar.");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
@@ -58,13 +59,15 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		public void onSuccess(ArrayList<Umfrage> result) {
 			if (result != null) {
 				bov.setUmfragen(result);
+			} else {
+				Label labelT = new Label();
+				labelT.setText("Keine Umfragen verfügbar!");
+				detailsunten.add(labelT);
 			}
-			Label labelT = new Label();
-			labelT.setText("Keine Umfragen verfügbar!");
-			Button erstellenButton = new Button("Erstelle deine erste Umfrage!");
-			erstellenButton.setStyleName("navButton");
+			Button erstellenButton = new Button("Umfrage erstellen!");
+			erstellenButton.setStyleName("speichernButton.gwt-Button");
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
-			detailsunten.add(labelT);
+			detailsunten.add(erstellenButton);
 
 		}
 
@@ -79,39 +82,6 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 			}
 
 		}
-
-		/**
-		 * 
-		 * private FlowPanel detailsoben = new FlowPanel(); private FlowPanel
-		 * detailsunten = new FlowPanel(); private FlowPanel detailsboxInhalt = new
-		 * FlowPanel();
-		 * 
-		 * private Label title = new Label("Deine Umfragen");
-		 * 
-		 * private ArrayList<Umfrage> umfragen; private Gruppe gruppe; private
-		 * UmfrageAnzeigenForm anzeigen; private UmfrageErstellenForm erstellen; private
-		 * Label umfrageLabel = new Label("Umfragen"); private Label gruppeLabel = new
-		 * Label("Gruppen");
-		 * 
-		 * private Grid felder = new Grid(3, 2);
-		 * 
-		 * 
-		 * this.addStyleName("detailscontainer");
-		 * 
-		 * detailsoben.addStyleName("detailsoben");
-		 * detailsunten.addStyleName("detailsunten");
-		 * detailsboxInhalt.addStyleName("detailsboxInhalt");
-		 * 
-		 * title.addStyleName("title");
-		 * 
-		 * this.add(detailsoben); this.add(detailsunten); this.add(detailsboxInhalt);
-		 * 
-		 * detailsoben.add(hb); detailsoben.add(title);
-		 * 
-		 * gruppeLabel.setStyleName("detailsboxLabels");
-		 * umfrageLabel.setStyleName("detailsboxLabels");
-		 * 
-		 **/
 
 	}
 }

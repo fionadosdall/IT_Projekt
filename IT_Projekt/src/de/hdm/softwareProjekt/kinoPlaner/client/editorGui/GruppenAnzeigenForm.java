@@ -3,9 +3,14 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -19,12 +24,16 @@ public class GruppenAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	private Button gruppeErstellen = new Button("Gruppe erstellen");
+	
 
 	public void onLoad() {
 		this.addStyleName("detailscontainer");
 		
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		gruppeErstellen.addStyleName(".speichernButton.gwt-Button");
+		
 		
 		
 		// Zusammenbauen der Widgets
@@ -38,8 +47,21 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		bov.setTitel("Meine Gruppen");
 		p.add(bov);
 		detailsunten.add(p);
+		
 
 		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
+
+	}
+	
+	private class GruppeErstellenHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			RootPanel.get("details").clear();
+			GruppeErstellenForm erstellen = new GruppeErstellenForm();
+			RootPanel.get("details").add(erstellen);
+
+		}
 
 	}
 
@@ -53,80 +75,17 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
-			bov.setGruppen(result);
+			if (result != null) {
+				bov.setGruppen(result);
+			}else {
+			Label labelT = new Label();
+			labelT.setText("Keine Umfragen verfügbar!");
+			detailsunten.add(labelT);
+			}
+			gruppeErstellen.addClickHandler(new GruppeErstellenHandler());
+			detailsunten.add(gruppeErstellen);
 
 		}
 
-		/**
-		 * private FlowPanel detailsoben = new FlowPanel(); private FlowPanel
-		 * detailsunten = new FlowPanel(); private FlowPanel detailsboxInhalt = new
-		 * FlowPanel();
-		 * 
-		 * private Label title = new Label("Deine Gruppen");
-		 * 
-		 * private ArrayList<Gruppe> gruppen; private GruppeAnzeigenForm anzeigen;
-		 * private GruppeErstellenForm erstellen; private Label gruppe = new
-		 * Label("Gruppen");
-		 * 
-		 * private Grid felder = new Grid(3, 1); private HomeBar hb = new HomeBar();
-		 * 
-		 * public void onLoad() {
-		 * 
-		 * 
-		 * this.addStyleName("detailscontainer");
-		 * 
-		 * detailsoben.addStyleName("detailsoben");
-		 * detailsunten.addStyleName("detailsunten");
-		 * detailsboxInhalt.addStyleName("detailsboxInhalt");
-		 * 
-		 * title.addStyleName("title");
-		 * 
-		 * this.add(detailsoben); this.add(detailsunten); this.add(detailsboxInhalt);
-		 * 
-		 * detailsoben.add(hb); detailsoben.add(title);
-		 * 
-		 * 
-		 * 
-		 * }
-		 * 
-		 * private class GruppeErstellenClickHandler implements ClickHandler {
-		 * 
-		 * @Override public void onClick(ClickEvent event) {
-		 *           RootPanel.get("details").clear(); erstellen = new
-		 *           GruppeErstellenForm(); RootPanel.get("details").add(erstellen);
-		 * 
-		 *           }
-		 * 
-		 *           }
-		 * 
-		 * 
-		 *           Window.alert(""); gruppen = result;
-		 *           gruppe.setStyleName("detailsboxLabels"); felder.setWidget(0, 0,
-		 *           gruppe);
-		 * 
-		 *           if (result != null) {
-		 * 
-		 *           felder.resizeRows(result.size() +2); int i = 1; for (Gruppe gruppe
-		 *           : result) { Label gruppenname = new Label(gruppe.getName());
-		 * 
-		 *           GruppeAuswaehlenClickHandler click = new
-		 *           GruppeAuswaehlenClickHandler(); click.setGruppe(gruppe);
-		 *           gruppenname.addDoubleClickHandler(click); felder.setWidget(i, 0,
-		 *           gruppenname); i++;
-		 * 
-		 *           } } else { felder.setWidget(1, 0, new Label("Keine Gruppen
-		 *           verfügbar.")); Button erstellenButton= new Button("Erstelle deine
-		 *           erste Gruppe!"); erstellenButton.setStyleName("navButton");
-		 *           erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
-		 *           felder.setWidget(2, 0, erstellenButton);
-		 * 
-		 *           }
-		 * 
-		 *           detailsboxInhalt.add(felder);
-		 * 
-		 *           }
-		 * 
-		 *           }
-		 **/
 	}
 }

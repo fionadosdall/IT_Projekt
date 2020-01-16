@@ -45,7 +45,7 @@ public class BusinessObjektView extends VerticalPanel {
 	public void onLoad() {
 		head.setStyleName("");
 		actions.setStyleName("");
-		titel.setStyleName("titel");
+		titel.setStyleName("detailsboxLabels");
 		head.add(titel);
 		head.add(actions);
 		this.add(head);
