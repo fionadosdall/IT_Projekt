@@ -150,9 +150,9 @@ public class UmfrageMapper {
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
-						"INSERT INTO Umfrage (uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id)"
-								+ " VALUES(" + umfrage.getId() + ", " + umfrage.getName() + ", "
-								+ umfrage.getBesitzerId() + ", " + umfrage.getGruppenId() +")");
+						"INSERT INTO umfrage (uId, uName, umfrage_gruppen_Id, umfrage_anwender_Id)"
+								+ " VALUES(" + umfrage.getId() + ", '" + umfrage.getName()  
+								+ "', " + umfrage.getGruppenId() + ", " + umfrage.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

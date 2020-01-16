@@ -203,8 +203,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 			// TODO Auto-generated method stub
 			
 			for (Vorstellung v : n.getUmfrageOptionen()) {
-				Window.alert(v.getName());
-				Window.alert(String.valueOf(uI.getG().getId()));
+				
+				Window.alert("Umfrageneme" + umfrageTextBox.getValue());
+				Window.alert("Vorstellung" + v.getName());
+				Window.alert("GruppenID" + String.valueOf(uI.getG().getId()));
 			
 			}
 			

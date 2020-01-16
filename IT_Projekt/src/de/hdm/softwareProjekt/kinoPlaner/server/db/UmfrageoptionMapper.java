@@ -150,10 +150,9 @@ public class UmfrageoptionMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO Umfrageoption (uoId, uoName, erstellDatum, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id)"
-								+ " VALUES(" + umfrageoption.getId() + ", " + umfrageoption.getName() + ", " 
-								+ umfrageoption.getErstellDatum() + ", " + umfrageoption.getUmfrageId() + ", " 
-								+ umfrageoption.getVorstellungsId() + ")");
+						"INSERT INTO Umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id)"
+								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName()  
+								+ "', " + umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
