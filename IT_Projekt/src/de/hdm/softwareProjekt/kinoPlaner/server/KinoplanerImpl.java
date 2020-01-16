@@ -526,6 +526,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		u.setName(name);
 		u.setUmfrageId(umfrageId);
 		u.setVorstellungsId(vorstellungId);
+		u.setVoteErgebnis(0);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben

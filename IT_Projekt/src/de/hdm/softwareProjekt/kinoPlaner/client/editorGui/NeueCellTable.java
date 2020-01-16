@@ -98,8 +98,8 @@ public class NeueCellTable extends VerticalPanel {
 	private ListDataProvider<VorstellungInfo> dataProvider = new ListDataProvider<VorstellungInfo>();
 	private List<VorstellungInfo> list = dataProvider.getList();
 
-	private ArrayList<Vorstellung> vorstellungen = null;
-	private ArrayList<Vorstellung> umfrageOptionen = null;
+	private ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
+	private ArrayList<Vorstellung> umfrageOptionen = new ArrayList<Vorstellung>();
 
 	public ArrayList<Vorstellung> getUmfrageOptionen() {
 		return umfrageOptionen;
@@ -145,8 +145,6 @@ public class NeueCellTable extends VerticalPanel {
 			public void update(int index, VorstellungInfo object, String value) {
 				// TODO Auto-generated method stub
 				dataProvider.getList().remove(object);
-
-				umfrageOptionen = new ArrayList<Vorstellung>();
 
 				vorstellung = object.getV();
 

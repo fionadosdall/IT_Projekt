@@ -220,6 +220,8 @@ public class UmfrageCellTable extends VerticalPanel {
 		neueUmfrageoptionen = nct.getUmfrageOptionen();
 
 		if (neueUmfrageoptionen != null) {
+			
+			umfrageList.clear();
 
 			for (Vorstellung v : neueUmfrageoptionen) {
 
