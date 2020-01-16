@@ -30,6 +30,12 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
+
+/*****
+ * Formular für das Anlegen einer neuen Gruppe im Datenstamm
+ * @author 
+ *
+ */
 public class GruppeErstellenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -53,7 +59,10 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private TextBox gruppenameTB = new TextBox();
 
+	// Hier werden alle Anwendernamen die im System vorhanden gespeichert
 	private MultiWordSuggestOracle alleAnwenderOracle = new MultiWordSuggestOracle();
+	
+	
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwenderOracle);
 
 	private ArrayList<Anwender> anwenderTB = new ArrayList<Anwender>();
@@ -80,6 +89,9 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private GruppenAnzeigenForm gruppenAF;
 
+	/*********
+	 * Konstruktor
+	 */
 	public GruppeErstellenForm() {
 
 	}
@@ -97,6 +109,10 @@ public class GruppeErstellenForm extends FlowPanel {
 	public void setGruppe(Gruppe gruppe) {
 		this.gruppe = gruppe;
 	}
+	
+/**************************************
+ * onLoad Methode
+ ****************************************/
 
 	public void onLoad() {
 
@@ -271,6 +287,12 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * CLICKHANDLER
 	 ***********************************************************************/
 
+	/*****************************
+	 * Hier wird der Gruppe ein neues Mitglied hinzugefügt
+	 * 
+	 *
+	 */
+	
 	private class MitgliedHinzufuegenClickHandler implements ClickHandler {
 
 		@Override
@@ -281,6 +303,13 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*******
+	 * Sobald das Textfeld ausgefpllt ist, wird eine neue Gruppe  nach dem Klicken des 
+	 * addButton erstellt
+	 * 
+	 *
+	 */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -326,6 +355,14 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*******************************************************
+	 * 
+	 *  Hier wird ein Gruppenmitglied anhand seiner Gruppe gesucht,
+	 *  wird nur gemacht wenn die Gruppe bearbeitet wird, nicht wenn sie 
+	 *  erstellt wird
+	 *
+	 **********************************************************/
 
 	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
 
@@ -350,6 +387,13 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/********
+	 * Der String des Namens wird aus der SuggestBox rausgeholt und mit dem Callback gesucht
+	 * damit wird der passende Anwender zu dem Name zurückggeben um ihn der Gruppe hinzuzufügen
+	 * @author fiona
+	 *
+	 */
 
 	private class AnwenderByNameCallback implements AsyncCallback<Anwender> {
 
@@ -378,6 +422,12 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/******
+	 * Callback wird benötigt um eine Gruppe zu erstellen
+	 * 
+	 *
+	 */
 
 	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
 
