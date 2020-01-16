@@ -396,6 +396,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 //			this.umfrage = result;
 			RootPanel.get("details").clear();
 			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
+			
+			for (Vorstellung v : n.getUmfrageOptionen()) {
+				
+				Window.alert("Vorstellung" + v.getName());
+				
+			}
 	
 			RootPanel.get("details").add(uaf);
 
