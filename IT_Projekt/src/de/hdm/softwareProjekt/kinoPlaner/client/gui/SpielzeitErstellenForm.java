@@ -382,9 +382,6 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		vorstellungTB.setText("");
 		
 			}
-
-	
-		
 	}
 	
 	
