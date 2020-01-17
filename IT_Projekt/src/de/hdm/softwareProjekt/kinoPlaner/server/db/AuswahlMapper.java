@@ -149,10 +149,9 @@ public class AuswahlMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO auswahl (awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum)"
+				stmt.executeUpdate("INSERT INTO auswahl (awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting)"
 						+ "VALUES(" + auswahl.getId() + ", '" + auswahl.getName() + "', " + auswahl.getBesitzerId() + ", "
-						+ auswahl.getUmfrageoptionId() + ", " + auswahl.getVoting() + ", "
-						+ auswahl.getErstellDatum() + ")");
+						+ auswahl.getUmfrageoptionId() + ", " + auswahl.getVoting() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -179,10 +178,10 @@ public class AuswahlMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen
 			 */
-			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + auswahl.getBesitzerId() + "\", "
-					+ "auswahl_umfrageoption_Id=\"" + auswahl.getUmfrageoptionId() + "\", " + "voting=\"" + auswahl.getVoting()
-					+ "\", " + "awName=\" '" + auswahl.getName() + "' \", " + "erstellDatum=\"" + auswahl.getErstellDatum()
-					+ "\" " + " WHERE awId=" + auswahl.getId());
+			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id='" + auswahl.getBesitzerId() + "', "
+					+ "auswahl_umfrageoption_Id='" + auswahl.getUmfrageoptionId() + "', " + "voting='" + auswahl.getVoting()
+					+ "', " + "awName= '" + auswahl.getName() + "' WHERE awId=" + auswahl.getId());
+			
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -263,7 +262,7 @@ public class AuswahlMapper {
 
 			ResultSet resultset = stmt
 					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ " WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId() + "ORDER BY auswahl_anwender_Id");
+							+ " WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId() + " ORDER BY auswahl_anwender_Id");
 
 			/**
 			 * F�r jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit

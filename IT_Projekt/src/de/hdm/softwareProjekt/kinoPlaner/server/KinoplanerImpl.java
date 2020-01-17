@@ -596,7 +596,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.isVoted(a);
 
 		// Die Umfrage gegebenfalls schließen
-		this.isClosedSetzen(a);
+		//this.isClosedSetzen(a);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.auswahlMapper.insert(a);
@@ -1081,7 +1081,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
 		// Die Umfrage ggegebenfalls oeffnen
-		this.isClosedEntfernen(auswahl);
+		//this.isClosedEntfernen(auswahl);
 
 		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
@@ -2619,5 +2619,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// TODO Auto-generated method stub
 		return this.vorstellungMapper.findById(vorstellungId);
 	}
+	
+	@Override
+	public void sinnloserCallback() throws IllegalArgumentException {
+		this.anwenderMapper.findAll();
+	}
+	
+	
 
 }
