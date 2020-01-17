@@ -1731,6 +1731,17 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public Spielzeit getSpielzeitByName(String name) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Updaten einer Umfrage mitsamt der Veränderungen der Umfrageoptionen
+	 * </p>
+	 * @param umfrage Umfrageobjekt
+	 * @param umfrageoptionen Zu erstellende Umfrageobjete
+	 * @return gespeichertes Umfrageobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen) throws IllegalArgumentException;
 
 
 }

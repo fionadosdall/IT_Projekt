@@ -70,8 +70,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	private UmfrageInfo uI;
 
-	private NeueCellTable n = new NeueCellTable();
-	private UmfrageCellTable uct = new UmfrageCellTable(n);
+	private Umfrage umfrage;
+
+	public void setUmfrage(Umfrage umfrage) {
+		this.umfrage = umfrage;
+	}
+
+	private NeueCellTable n;
+	private UmfrageCellTable uct;
 
 	private class UmfrageInfo {
 
@@ -143,6 +149,17 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
 
+		if (umfrage != null) {
+			title.setText("Umfrage bearbeiten");
+			n = new NeueCellTable(umfrage);
+			umfrageTextBox.setText(umfrage.getName());
+			erstellenButton.setText("Umfrage aktualisieren");
+		} else {
+			n = new NeueCellTable();
+		}
+
+		uct = new UmfrageCellTable(n);
+
 		detailsBoxUmfrage.add(uct);
 		detailsBoxUmfrage.add(n);
 
@@ -189,14 +206,19 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			ArrayList<Vorstellung> results = n.getVorFilterVorstellungen();
+			for (Vorstellung v : results) {
+				Window.alert(v.getName());
+			}
 
 			if (filmListBox.getSelectedValue().equals("Keine Auswahl")) {
-				kinoplaner.filterResultVorstellungenByFilm(n.getVorFilterVorstellungen(), null, new FilterResultVorstellungenByFilm());
-				
+				kinoplaner.filterResultVorstellungenByFilm(n.getVorFilterVorstellungen(), null,
+						new FilterResultVorstellungenByFilm());
+
 			} else {
 				kinoplaner.getFilmByName(filmListBox.getSelectedValue(), new GetFilmByNameCallback());
 			}
-			
+
 		}
 
 	}
@@ -218,17 +240,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 			}
 			// TODO Auto-generated method stub
 
-			for (Vorstellung v : n.getUmfrageOptionen()) {
-
-				Window.alert("Umfrageneme" + umfrageTextBox.getValue());
-				Window.alert("Vorstellung" + v.getName());
-				Window.alert("GruppenID" + String.valueOf(uI.getG().getId()));
-
-			}
-
-			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), uI.getG().getId(),
-					new UmfrageErstellenCallback());
-
 		}
 
 	}
@@ -236,47 +247,49 @@ public class UmfrageErstellenForm extends FlowPanel {
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
-	
+
 	private class GetFilmByNameCallback implements AsyncCallback<Film> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(Film result) {
-			
-			kinoplaner.filterResultVorstellungenByFilm(n.getVorFilterVorstellungen(), result, new FilterResultVorstellungenByFilm());
-			
+
+			kinoplaner.filterResultVorstellungenByFilm(n.getVorFilterVorstellungen(), result,
+					new FilterResultVorstellungenByFilm());
+
 		}
-		
+
 	}
-	
+
 	private class FilterResultVorstellungenByFilm implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			
+
 			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")) {
 				kinoplaner.filterResultVorstellungenByKino(result, null, new FilterResultVorstellungenByKinoCallback());
 			} else {
-				resultSet=result;
+				resultSet = result;
 				kinoplaner.getKinoByName(kinoListBox.getSelectedValue(), new GetKinoByName());
-			}		
-			
+			}
+
 		}
-		
+
 	}
+
 	private class GetKinoByName implements AsyncCallback<Kino> {
 
 		@Override
@@ -287,109 +300,109 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Kino result) {
-			kinoplaner.filterResultVorstellungenByKino(resultSet, result, new FilterResultVorstellungenByKinoCallback());
+			kinoplaner.filterResultVorstellungenByKino(resultSet, result,
+					new FilterResultVorstellungenByKinoCallback());
 		}
-		
+
 	}
-	
+
 	private class FilterResultVorstellungenByKinoCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
 			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")) {
-				kinoplaner.filterResultVorstellungenByKinokette(result, null, new FilterResultVorstellungenByKinoketteCallback());
+				kinoplaner.filterResultVorstellungenByKinokette(result, null,
+						new FilterResultVorstellungenByKinoketteCallback());
 			} else {
-				resultSet=result;
+				resultSet = result;
 				kinoplaner.getKinoketteByName(kinoListBox.getSelectedValue(), new GetKinoketteByNameCallback());
 			}
-		
+
 		}
-		
+
 	}
-	
+
 	private class FilterResultVorstellungenByKinoketteCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
 			if (spielzeitListBox.getSelectedValue().equals("Keine Auswahl")) {
-				kinoplaner.filterResultVorstellungenBySpielzeit(result, null, new FilterResultVorstellungenBySpielzeitCallback());
+				kinoplaner.filterResultVorstellungenBySpielzeit(result, null,
+						new FilterResultVorstellungenBySpielzeitCallback());
 			} else {
-				resultSet=result;
+				resultSet = result;
 				kinoplaner.getSpielzeitByName(spielzeitListBox.getSelectedValue(), new GetSpielzeitByNameCallback());
 			}
 		}
-		
+
 	}
-	
+
 	private class GetKinoketteByNameCallback implements AsyncCallback<Kinokette> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
-			kinoplaner.filterResultVorstellungenByKinokette(resultSet, result, new FilterResultVorstellungenByKinoketteCallback());
-			
-			
+			kinoplaner.filterResultVorstellungenByKinokette(resultSet, result,
+					new FilterResultVorstellungenByKinoketteCallback());
+
 		}
-		
+
 	}
-	
+
 	private class FilterResultVorstellungenBySpielzeitCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			
-				
-					n.filterResultUpdaten(result);
-				
-			
-			
-			
+
+			n.filterResultUpdaten(result);
+
 		}
-		
+
 	}
-	
+
 	private class GetSpielzeitByNameCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			kinoplaner.filterResultVorstellungenBySpielzeit(resultSet, result, new FilterResultVorstellungenBySpielzeitCallback());
-			
+			kinoplaner.filterResultVorstellungenBySpielzeit(resultSet, result,
+					new FilterResultVorstellungenBySpielzeitCallback());
+
 		}
-		
+
 	}
 
 	private class GruppenCallback implements AsyncCallback<ArrayList<Gruppe>> {
@@ -402,8 +415,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
-			// TODO Auto-generated method stub
+
 			gruppen = result;
+			int indexSelected = 0;
+			int counter = 0;
 
 			if (result != null) {
 
@@ -415,7 +430,19 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 					uI.setG(g);
 
+					if (umfrage != null) {
+
+						if (g.getId() == umfrage.getGruppenId()) {
+
+							indexSelected = counter;
+						} else {
+							counter++;
+						}
+					}
+
 				}
+				if (umfrage != null)
+					gruppenListBox.setSelectedIndex(indexSelected);
 
 			} else {
 
@@ -550,10 +577,44 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Gruppe result) {
 			// TODO Auto-generated method stub
-			info.g = result;
+			if(umfrage!=null) {
+				umfrage.setName(umfrageTextBox.getValue());
+				umfrage.setGruppenId(result.getId());
+				kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), new updateUmfrageCallback());
+				
+			}else {
+				
+			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(),
+					new UmfrageErstellenCallback());
+			}
 
 		}
 
+	}
+	
+	private class updateUmfrageCallback implements AsyncCallback<Umfrage> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Umfrage result) {
+			
+			if(result!=null) {
+			RootPanel.get("details").clear();
+			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
+
+
+
+			RootPanel.get("details").add(uaf);
+			}else {
+				Window.alert("Name bereits vergeben");
+			}
+		}
+		
 	}
 
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
@@ -566,17 +627,15 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Umfrage result) {
+
+			
 			// TODO Auto-generated method stub
-			Window.alert("Umfrage wurde erstellt" + result.getName());
+			//Window.alert("Umfrage wurde erstellt" + result.getName());
 			// this.umfrage = result;
+			
 			RootPanel.get("details").clear();
 			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 
-			for (Vorstellung v : n.getUmfrageOptionen()) {
-
-				Window.alert("Vorstellung" + v.getName());
-
-			}
 
 			RootPanel.get("details").add(uaf);
 

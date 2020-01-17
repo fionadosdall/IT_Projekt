@@ -476,4 +476,29 @@ public class UmfrageMapper {
 		}
 	}
 
+	public Umfrage findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen FROM Umfrage"
+							+ " WHERE uName='" + name + "' ORDER BY umfrage_gruppen_Id");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Umfrage u = new Umfrage();
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
+				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
+				return u;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
 }

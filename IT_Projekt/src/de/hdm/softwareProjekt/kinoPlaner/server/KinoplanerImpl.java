@@ -1828,6 +1828,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * Updaten einer Umfrage mitsamt der Veränderungen der Gruppenmitglieder
 	 * </p>
 	 */
+	@Override
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
 		if (gruppeMapper.findByName(gruppe.getName()) == null) {
 			speichern(gruppe);
@@ -1867,6 +1868,55 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				}
 			}
 			return gruppe;
+
+		}
+		return null;
+
+	}
+	
+	/**
+	 * <p>
+	 * Updaten einer Umfrage mitsamt der Veränderungen der Umfrageoptionen
+	 * </p>
+	 */
+	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen) throws IllegalArgumentException {
+		if (umfrageMapper.findByName(umfrage.getName()) == null) {
+			speichern(umfrage);
+			ArrayList<Umfrageoption> alteUmfrageoptionen = getUmfrageoptionenByUmfrage(umfrage);
+
+			ArrayList<Umfrageoption> fertigeUmfrageoptionen = new ArrayList<Umfrageoption>();
+
+			for (Umfrageoption u : alteUmfrageoptionen) {
+				int counter = 0;
+				for (Vorstellung uNeu : umfrageoptionen) {
+					if (u.getVorstellungsId()==uNeu.getId()) {
+						fertigeUmfrageoptionen.add(u);
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == umfrageoptionen.size()) {
+						loeschen(u);
+						counter = 0;
+					}
+				}
+			}
+
+			for (Vorstellung uNeu : umfrageoptionen) {
+				int counter = 0;
+				for (Umfrageoption uFertig : fertigeUmfrageoptionen) {
+					if (uNeu.getId()==uFertig.getVorstellungsId()) {
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == fertigeUmfrageoptionen.size()) {
+						erstellenUmfrageoption(umfrage.getName(), umfrage.getId(), uNeu.getId());
+						counter = 0;
+					}
+				}
+			}
+			return umfrage;
 
 		}
 		return null;

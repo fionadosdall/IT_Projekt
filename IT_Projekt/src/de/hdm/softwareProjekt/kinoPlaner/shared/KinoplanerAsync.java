@@ -351,5 +351,7 @@ public interface KinoplanerAsync {
 	public void getKinoketteByName(String name, AsyncCallback<Kinokette> callback) throws IllegalArgumentException;
 
 	public void getSpielzeitByName(String name, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
+	
+	public void updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
 
 }
