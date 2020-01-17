@@ -338,7 +338,10 @@ public interface KinoplanerAsync {
 
 	public void updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder, AsyncCallback<Gruppe> callback)
 			throws IllegalArgumentException;
-	
+
 	public void sinnloserCallback(AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
+			AsyncCallback<Void> callback) throws IllegalArgumentException;
 
 }

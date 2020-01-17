@@ -1676,4 +1676,19 @@ public interface Kinoplaner extends RemoteService {
 
 	public void sinnloserCallback() throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Erstellen von Auswahlen aus einem Array, mit vergleich, löschung und update
+	 * bestehnder Auswahlen
+	 * </p>
+	 * 
+	 * @param zuErstellendeAuswahlen
+	 *            ArrayList der zu erstellenden Auswahlen
+	 * @param alteAuswahlen
+	 *            ArrayList der zu bisherigen Auswahlen
+	 * @throws IllegalArgumentException
+	 */
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
+			throws IllegalArgumentException;
+
 }

@@ -72,7 +72,7 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum "
+					.executeQuery("SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen "
 							+ "FROM Umfrage" + "WHERE uName = '" + name + "' ORDER BY uName");
 
 			/**
@@ -87,6 +87,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);
@@ -146,13 +148,15 @@ public class UmfrageMapper {
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				umfrage.setId(resultset.getInt("maxId") + 1);
+				
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
-						"INSERT INTO umfrage (uId, uName, umfrage_gruppen_Id, umfrage_anwender_Id)"
+						"INSERT INTO umfrage (uId, uName, umfrage_gruppen_Id, umfrage_anwender_Id, isGewählt, isOffen)"
 								+ " VALUES(" + umfrage.getId() + ", '" + umfrage.getName()  
-								+ "', " + umfrage.getGruppenId() + ", " + umfrage.getBesitzerId() + ")");
+								+ "', " + umfrage.getGruppenId() + ", " + umfrage.getBesitzerId() + ", " 
+								+ umfrage.isVotedToTinyint()+ ", " + umfrage.isOpenToTinyint() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -178,9 +182,10 @@ public class UmfrageMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Umfrage SET " + "umfrage_anwender_Id=\"" + umfrage.getBesitzerId() + "\", "
-					+ "uName=\" '" + umfrage.getName() + "' \", " + "erstellDatum=\"" + umfrage.getErstellDatum()
-					+ "\", " + "umfrage_gruppen_Id=\"" + umfrage.getGruppenId() + "\"" + " WHERE uId="
+			stmt.executeUpdate("UPDATE Umfrage SET " + "umfrage_anwender_Id='" + umfrage.getBesitzerId() + "', "
+					+ "uName= '" + umfrage.getName() + "' , " + "erstellDatum='" + umfrage.getErstellDatum()
+					+ "', " + "umfrage_gruppen_Id='" + umfrage.getGruppenId() + "', " +"isGewählt='"+umfrage.isVotedToTinyint()
+					+"', " + "isOffen='" + umfrage.isOpenToTinyint() + "' WHERE uId="
 					+ umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -223,7 +228,7 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum FROM Umfrage"
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen FROM Umfrage"
 							+ " WHERE uId=" + id + " ORDER BY umfrage_gruppen_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -233,6 +238,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 				return u;
 			}
 		} catch (SQLException e1) {
@@ -260,7 +267,7 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen "
 							+ "FROM umfrage" + " WHERE umfrage_anwender_Id = " + anwender.getId() + " ORDER BY uName");
 
 			/**
@@ -275,6 +282,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);
@@ -307,7 +316,7 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum FROM umfrage"
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen FROM umfrage"
 							+ " WHERE umfrage_anwender_Id = " + anwenderOwner.getId() + " ORDER BY uName");
 
 			while (resultset.next()) {
@@ -317,6 +326,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);
 			}
@@ -346,11 +357,10 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, umfrage.erstellDatum, isGewähltTrue,"
-							+ " isVotedFalse, isOffenTrue, isOpenFalse, gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, umfrage.erstellDatum, , isGewählt, isOffen , gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
 							+ " FROM umfrage "
 							+ "INNER JOIN gruppenmitglieder ON gruppenmitglieder.gruppID = umfrage.umfrage_gruppen_Id "
-							+ " WHERE isOffenTrue = 1 AND gruppenmitglieder.anwendId = " + anwender.getId()
+							+ " WHERE isOffen = 'false' AND gruppenmitglieder.anwendId = " + anwender.getId()
 							+ " ORDER BY uName");
 
 			while (resultset.next()) {
@@ -360,6 +370,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("umfrage.erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);
@@ -392,7 +404,7 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewähltTrue, isVotedFalse, isOffenTrue, isOpenFalse "
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, erstellDatum, isGewählt, isOffen "
 							+ "FROM umfrage " + "WHERE umfrage_gruppen_Id = " + gruppe.getId() + " ORDER BY uName");
 
 			/**
@@ -406,6 +418,8 @@ public class UmfrageMapper {
 				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
 				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
 				u.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(u);

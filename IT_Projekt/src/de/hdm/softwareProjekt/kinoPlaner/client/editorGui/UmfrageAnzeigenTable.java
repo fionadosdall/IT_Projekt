@@ -258,63 +258,38 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	public void speichern() {
 		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
-		ArrayList<UmfrageoptionInfo> umfraoptionAuswahlenArray = new ArrayList<UmfrageoptionInfo>();
+		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>();
 
 		for (UmfrageoptionInfo ui : umfraoptionArray) {
 			if (ui.isVoteTeilnahme() != null) {
-				umfraoptionAuswahlenArray.add(ui);
-			}
-		}
+				Auswahl auswahl = new Auswahl();
+				if (ui.isVoteTeilnahme == true) {
+					
+					auswahl.setName(ui.getV().getName());
+					auswahl.setVoting(1);
+					auswahl.setUmfrageoptionId(ui.getV().getId());
 
-		for (Auswahl a : alteAuswahlen) {
-			int counter = 0;
-			for (UmfrageoptionInfo uiGesamt : umfraoptionAuswahlenArray) {
-				if (a.getUmfrageoptionId() == uiGesamt.getV().getId()) {
-					fertigeAuswahlen.add(a);
-					if (uiGesamt.isVoteTeilnahme == true) {
-						a.setVoting(1);
-					} else {
-						a.setVoting(-1);
-					}
-					kinoplaner.speichern(a, new AuswahlSpeichernCallback());
-					break;
 				} else {
-					counter++;
+					
+					auswahl.setName(ui.getV().getName());
+					auswahl.setVoting(-1);
+					auswahl.setUmfrageoptionId(ui.getV().getId());
+
 				}
-				if (counter == umfraoptionAuswahlenArray.size()) {
-					kinoplaner.loeschen(a, new AuswahlLoeschenCallback());
-					counter = 0;
-				}
+				
+				umfrageoptionAuswahlArray.add(auswahl);
 			}
 		}
-
-		for (UmfrageoptionInfo uiGesamt : umfraoptionAuswahlenArray) {
-			int counter = 0;
-			for (Auswahl aFertig : fertigeAuswahlen) {
-				if (uiGesamt.getV().getId()== aFertig.getUmfrageoptionId()) {
-					break;
-				} else {
-					counter++;
-				}
-				if (counter == fertigeAuswahlen.size()) {
-					if (uiGesamt.isVoteTeilnahme == true) {
-						kinoplaner.erstellenAuswahl(uiGesamt.getV().getName(), 1, uiGesamt.getV().getId(), new AuswahlErstellenCallback());
-
-					} else {
-						kinoplaner.erstellenAuswahl(uiGesamt.getV().getName(), -1, uiGesamt.getV().getId(), new AuswahlErstellenCallback());
-
-					}
-					counter = 0;
-				}
-			}
-		}
+		
+		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen, new AuswahlErstellenCallback());
+		
 		kinoplaner.sinnloserCallback(new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert(caught.getMessage());
 				caught.printStackTrace();
-				
+
 			}
 
 			@Override
@@ -322,7 +297,7 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 				RootPanel.get("details").clear();
 				VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(umfrage);
 				RootPanel.get("details").add(anzeigen);
-				
+
 			}
 		});
 
@@ -478,7 +453,8 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
-	private class AuswahlSpeichernCallback implements AsyncCallback<Void> {
+
+	private class AuswahlErstellenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -494,39 +470,7 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 		}
 
 	}
-	
-	private class AuswahlLoeschenCallback implements AsyncCallback<Void> {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert(caught.getMessage());
-			caught.printStackTrace();
 
-		}
-
-		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-	
-	private class AuswahlErstellenCallback implements AsyncCallback<Auswahl> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert(caught.getMessage());
-			caught.printStackTrace();
-
-		}
-
-		@Override
-		public void onSuccess(Auswahl result) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
 
 }

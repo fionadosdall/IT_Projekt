@@ -1,6 +1,5 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -14,7 +13,6 @@ import de.hdm.softwareProjekt.kinoPlaner.server.db.UmfrageoptionMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.VorstellungMapper;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -28,12 +26,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.sql.Date;
 
-import com.google.gwt.dev.util.collect.HashSet;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -473,6 +467,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		u.setName(name);
 		u.setBesitzerId(this.anwender.getId());
 		u.setGruppenId(gruppenId);
+		u.setOpen(true);
+		u.setVoted(false);
 
 		Umfrage uFertig = this.umfrageMapper.insert(u);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
@@ -504,6 +500,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		u.setBesitzerId(this.anwender.getId());
 		u.setGruppenId(gruppenId);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+		u.setOpen(true);
+		u.setVoted(false);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return u;
@@ -596,7 +594,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.isVoted(a);
 
 		// Die Umfrage gegebenfalls schließen
-		//this.isClosedSetzen(a);
+		// this.isClosedSetzen(a);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.auswahlMapper.insert(a);
@@ -1081,7 +1079,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
 		// Die Umfrage ggegebenfalls oeffnen
-		//this.isClosedEntfernen(auswahl);
+		// this.isClosedEntfernen(auswahl);
 
 		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
@@ -1357,6 +1355,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Spielzeit getSpielzeitById(int spielzeitId) throws IllegalArgumentException {
 		return this.spielzeitMapper.findById(spielzeitId);
+	}
+
+	/**
+	 * <p>
+	 * Rueckgabe einer Vorstellung mit einer bestimmten Id.
+	 * </p>
+	 */
+	@Override
+	public Vorstellung getVorstellungById(int vorstellungId) throws IllegalArgumentException {
+
+		return this.vorstellungMapper.findById(vorstellungId);
 	}
 
 	/**
@@ -1791,46 +1800,46 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
 		if (gruppeMapper.findByName(gruppe.getName()) == null) {
-		speichern(gruppe);
-		ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
-		alteGruppenmitglieder.remove(this.anwender);
-		
-		ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
-		
+			speichern(gruppe);
+			ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
+			alteGruppenmitglieder.remove(this.anwender);
 
-		for (Anwender a : alteGruppenmitglieder) {
-			int counter = 0;
+			ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
+
+			for (Anwender a : alteGruppenmitglieder) {
+				int counter = 0;
+				for (Anwender aNeu : gruppenmitglieder) {
+					if (a.equals(aNeu)) {
+						fertigeGruppenmitglieder.add(a);
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == gruppenmitglieder.size()) {
+						gruppenmitgliedEntfernen(a, gruppe);
+						counter = 0;
+					}
+				}
+			}
+
 			for (Anwender aNeu : gruppenmitglieder) {
-				if (a.equals(aNeu)) {
-					fertigeGruppenmitglieder.add(a);
-					break;
-				}else {
-					counter++;
-				}
-				if (counter == gruppenmitglieder.size()) {
-					gruppenmitgliedEntfernen(a, gruppe);
-					counter = 0;
+				int counter = 0;
+				for (Anwender aFertig : fertigeGruppenmitglieder) {
+					if (aNeu.equals(aFertig)) {
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == fertigeGruppenmitglieder.size()) {
+						gruppenmitgliedHinzufuegen(aNeu, gruppe);
+						counter = 0;
+					}
 				}
 			}
-		}
+			return gruppe;
 
-		for (Anwender aNeu : gruppenmitglieder) {
-			int counter = 0;
-			for (Anwender aFertig : fertigeGruppenmitglieder) {
-				if (aNeu.equals(aFertig)) {
-					break;
-				}else {
-					counter++;
-				}
-				if (counter == fertigeGruppenmitglieder.size()) {
-					gruppenmitgliedHinzufuegen(aNeu, gruppe);
-					counter = 0;
-				}
-			}
 		}
-		return gruppe;
-		
-		} return null;
+		return null;
 
 	}
 
@@ -2270,6 +2279,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Wenn alle Anwender gevotet haben so ist die Umfrage geschlossen
 		umfrage.setOpen(false);
+		umfrageMapper.update(umfrage);
 
 		// Dann wird geprüft ob eine Stichwahl oder ein Ergebnis vorliegt
 		if (ergebnisGefunden(umfrage) == false) {
@@ -2323,6 +2333,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Wenn der Anwender nur einen Vote erstellt hat, so ist sie wieder geoeffnet
 		// nach dem löschen
 		umfrage.setOpen(true);
+		umfrageMapper.update(umfrage);
 
 		// Dann wird geprüft ob eine Stichwahl gestartet wurde
 		ArrayList<Umfrage> stichwahlen = this.volltextSucheUmfragen("Stichwahl " + umfrage.getName());
@@ -2609,22 +2620,63 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	}
 
 	/**
+	 * <p>
+	 * Erstellen von Auswahlen aus einem Array, mit vergleich, löschung und update
+	 * bestehnder Auswahlen
+	 * </p>
+	 */
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
+			throws IllegalArgumentException {
+		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
+		ArrayList<Auswahl> umfraoptionAuswahlenArray = new ArrayList<Auswahl>();
+
+		for (Auswahl a : alteAuswahlen) {
+			int counter = 0;
+			for (Auswahl aGesamt : zuErstellendeAuswahlen) {
+				if (a.getUmfrageoptionId() == aGesamt.getUmfrageoptionId()) {
+					a.setVoting(aGesamt.getVoting());
+					fertigeAuswahlen.add(a);
+					speichern(a);
+					break;
+				} else {
+					counter++;
+				}
+				if (counter == zuErstellendeAuswahlen.size()) {
+					loeschen(a);
+					counter = 0;
+				}
+			}
+		}
+
+		for (Auswahl aGesamt : zuErstellendeAuswahlen) {
+			int counter = 0;
+			if (fertigeAuswahlen.size() != 0) {
+				for (Auswahl aFertig : fertigeAuswahlen) {
+					if (aGesamt.getUmfrageoptionId() == aFertig.getUmfrageoptionId()) {
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == fertigeAuswahlen.size()) {
+						erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+						counter = 0;
+					}
+				}
+			} else {
+				erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+			}
+		}
+	}
+
+	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: Methoden
 	 * **************************************************************************
 	 */
 
 	@Override
-	public Vorstellung getVorstellungById(int vorstellungId) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return this.vorstellungMapper.findById(vorstellungId);
-	}
-	
-	@Override
 	public void sinnloserCallback() throws IllegalArgumentException {
 		this.anwenderMapper.findAll();
 	}
-	
-	
 
 }
