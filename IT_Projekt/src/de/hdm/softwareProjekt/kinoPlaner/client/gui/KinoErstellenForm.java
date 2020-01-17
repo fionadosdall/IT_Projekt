@@ -33,12 +33,12 @@ public class KinoErstellenForm extends VerticalPanel {
 	private Label strasseLabel = new Label("Straße:");
 	private Label hnrLabel = new Label("Hausnummer:");
 	
-	private TextBox nameTextBox = new TextBox();
-	private TextBox plzTextBox = new TextBox();
-	private TextBox stadtTextBox = new TextBox();
-	private TextBox strasseTextBox = new TextBox();
-	private TextBox hnrTextBox = new TextBox();
-	private ListBox kinokettenListBox = new ListBox();
+	private static TextBox nameTextBox = new TextBox();
+	private static TextBox plzTextBox = new TextBox();
+	private static TextBox stadtTextBox = new TextBox();
+	private static TextBox strasseTextBox = new TextBox();
+	private static TextBox hnrTextBox = new TextBox();
+	private static ListBox kinokettenListBox = new ListBox();
 	
 	private Button speichernButton = new Button("Speichern");
 	private Button loeschenButton = new Button("Löschen");
@@ -64,7 +64,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 	
 	public KinoErstellenForm(Kino k) {
-		this.k = k;
+		setBearbeiten(k);
 	}
 	
 	
@@ -82,6 +82,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		plzLabel.addStyleName("textLabel");
 		stadtLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
 		nameTextBox.addStyleName("formularTextBox");
@@ -217,19 +218,19 @@ public class KinoErstellenForm extends VerticalPanel {
 		KinoErstellenForm.edit = edit;
 	}
 
-	/* TODO
+	
 	public static void setBearbeiten(Kino kino) {
 		
 		
 		
 			nameTextBox.setText(kino.getName());
-			plzTextBox.setText(kino.getPlz());
+			plzTextBox.setText(plzTextBox.getText().toString());
 			strasseTextBox.setText(kino.getStrasse());
 			hnrTextBox.setText(kino.getHausnummer());
 			stadtTextBox.setText(kino.getStadt());
 			
 		
-	} */
+	} 
 	
 	public void clearForm() {
 		nameTextBox.setText("");

@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielplaneintragForm extends PopupPanel {
 	
@@ -39,6 +40,8 @@ public class SpielplaneintragForm extends PopupPanel {
 	private Button spielzeitErstellenButton = new Button("Neue Spielzeit erstellen");
 	private Button filmBearbeitenButton = new Button("Film bearbeiten");
 	private Button spielzeitBearbeitenButton = new Button("Spielzeit bearbeiten");
+
+	private Vorstellung vorstellung;
 	
 	private static ListBox filmListBox = new ListBox();
 	private static ListBox spielzeitListBox = new ListBox();
@@ -50,6 +53,11 @@ public class SpielplaneintragForm extends PopupPanel {
 		super(true);
 
 		
+	}
+	
+	public SpielplaneintragForm(Vorstellung vorstellung) {
+		super(true);
+		this.vorstellung = vorstellung;
 	}
 	
 	public void onLoad() {

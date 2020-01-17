@@ -14,6 +14,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 public class KinoCell extends AbstractCell<Kino>{
+	
+	private static Boolean edit = true;
+
 
 	@Override
 	public void render(Context context, Kino value, SafeHtmlBuilder sb) {
@@ -48,8 +51,9 @@ public class KinoCell extends AbstractCell<Kino>{
 	      
 	      private void doAction(Kino value, ValueUpdater<Kino> valueUpdater) {
 				RootPanel.get("details").clear();
-				KinoBearbeitenForm anzeigen = new KinoBearbeitenForm(value);
-				RootPanel.get("details").add(anzeigen);
+	    	  	KinoketteErstellenForm.setEdit(edit);
+				KinoErstellenForm bearbeiten = new KinoErstellenForm(value);
+				RootPanel.get("details").add(bearbeiten);
 	      }
 	
 	

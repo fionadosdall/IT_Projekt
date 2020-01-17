@@ -290,6 +290,16 @@ body {
 	text-align: center;
 }
 
+.splitPanel{
+	width: 50%;
+	background: #d6d1d1;
+	text-align: center;
+	color: white;
+	padding: 20px 0 20px 0;
+	align-items: center;
+	padding: 10px;
+}
+
 }
 .homeBar {
 	display: flex;
@@ -603,11 +613,6 @@ body {
 	margin-top: .25rem;
 }
 
-textLabel.gwt-Label{
-	text-color: black;
-	color: #363636;
-}
-
 .speichernButton.gwt-Button {
 	border-radius: 290486px;
 	padding-left: 1em;
@@ -678,7 +683,7 @@ textLabel.gwt-Label{
 .detailsoben {
 	background: #d6d1d1;
 	text-align: center;
-	color: #363636;
+	color: white;
 	margin-bottom: 3px;
 	padding: 20px 0 20px 0;
 }
@@ -757,13 +762,21 @@ textLabel.gwt-Label{
 	border-width: thin;
 	margin-top: 5%;
 	padding-top: 5%;
+}
+
+/* Styling der Spielplan erstellen Form */
+.inhaltSpielplanPanel{
+	background: #d6d1d1;
+	text-align: center;
+	color: #363636;
+	margin-bottom: 3px;
+	padding: 20px 0 20px 0;
+	border-bottom: solid;
+	border-color: grey;
+	border-width: thin;
+	width: 100%;
 }	
 
-/* Checkbox */
-
-.checkBox{
-	margin-top: 5px;
-}
 
 }
 

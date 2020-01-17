@@ -13,6 +13,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 public class KinokettenCell extends AbstractCell<Kinokette>{
+	
+	private static Boolean edit = true;
+
 
 	@Override
 	public void render(Context context, Kinokette value, SafeHtmlBuilder sb) {
@@ -47,8 +50,13 @@ public class KinokettenCell extends AbstractCell<Kinokette>{
 	      
 	      private void doAction(Kinokette value, ValueUpdater<Kinokette> valueUpdater) {
 				RootPanel.get("details").clear();
-				KinoketteBearbeitenForm anzeigen = new KinoketteBearbeitenForm(value);
-				RootPanel.get("details").add(anzeigen);
+				/*KinoketteErstellenForm anzeigen = new KinoketteErstellenForm(value);
+				RootPanel.get("details").add(anzeigen);*/
+	    	  
+	    	  	KinoketteErstellenForm.setEdit(edit);
+	    	  	KinoketteErstellenForm bearbeiten = new KinoketteErstellenForm(value);
+				//KinoketteErstellenForm.setBearbeiten(value);
+				RootPanel.get("details").add(bearbeiten);
 	      }
 	
 	
