@@ -473,7 +473,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		u.setName(name);
 		u.setBesitzerId(this.anwender.getId());
 		u.setGruppenId(gruppenId);
-		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		Umfrage uFertig = this.umfrageMapper.insert(u);
 		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
@@ -527,6 +526,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		u.setName(name);
 		u.setUmfrageId(umfrageId);
 		u.setVorstellungsId(vorstellungId);
+		u.setVoteErgebnis(0);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
@@ -596,7 +596,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.isVoted(a);
 
 		// Die Umfrage gegebenfalls schließen
-		this.isClosedSetzen(a);
+		//this.isClosedSetzen(a);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.auswahlMapper.insert(a);
@@ -1081,7 +1081,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
 		// Die Umfrage ggegebenfalls oeffnen
-		this.isClosedEntfernen(auswahl);
+		//this.isClosedEntfernen(auswahl);
 
 		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
@@ -1793,30 +1793,40 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		if (gruppeMapper.findByName(gruppe.getName()) == null) {
 		speichern(gruppe);
 		ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
+		alteGruppenmitglieder.remove(this.anwender);
+		
+		ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
+		
 
 		for (Anwender a : alteGruppenmitglieder) {
+			int counter = 0;
 			for (Anwender aNeu : gruppenmitglieder) {
 				if (a.equals(aNeu)) {
+					fertigeGruppenmitglieder.add(a);
 					break;
+				}else {
+					counter++;
 				}
-				if (aNeu.equals(gruppenmitglieder.get(gruppenmitglieder.size() - 1))) {
+				if (counter == gruppenmitglieder.size()) {
 					gruppenmitgliedEntfernen(a, gruppe);
-					alteGruppenmitglieder.remove(a);
+					counter = 0;
 				}
 			}
-
 		}
 
 		for (Anwender aNeu : gruppenmitglieder) {
-			for (Anwender a : alteGruppenmitglieder) {
-				if (aNeu.equals(a)) {
+			int counter = 0;
+			for (Anwender aFertig : fertigeGruppenmitglieder) {
+				if (aNeu.equals(aFertig)) {
 					break;
+				}else {
+					counter++;
 				}
-				if (aNeu.equals(alteGruppenmitglieder.get(alteGruppenmitglieder.size() - 1))) {
-					gruppenmitgliedHinzufuegen(a, gruppe);
+				if (counter == fertigeGruppenmitglieder.size()) {
+					gruppenmitgliedHinzufuegen(aNeu, gruppe);
+					counter = 0;
 				}
 			}
-
 		}
 		return gruppe;
 		
@@ -2609,5 +2619,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// TODO Auto-generated method stub
 		return this.vorstellungMapper.findById(vorstellungId);
 	}
+	
+	@Override
+	public void sinnloserCallback() throws IllegalArgumentException {
+		this.anwenderMapper.findAll();
+	}
+	
+	
 
 }

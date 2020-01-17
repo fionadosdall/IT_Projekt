@@ -22,12 +22,14 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinoCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinokettenCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanCell;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanEintragCell;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class BusinessObjektView extends VerticalPanel {
 
@@ -40,12 +42,13 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Kino> listKino;
 	private CellList<Kinokette> listKinokette;
 	private CellList<Spielplan> listSpielplan;
+	private CellList<Vorstellung> listVorstellung;
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	public void onLoad() {
 		head.setStyleName("");
 		actions.setStyleName("");
-		titel.setStyleName("titel");
+		titel.setStyleName("detailsboxLabels");
 		head.add(titel);
 		head.add(actions);
 		this.add(head);
@@ -111,6 +114,15 @@ public class BusinessObjektView extends VerticalPanel {
 		listSpielplan.setPageSize(30);
 		listSpielplan.setRowData(spielplaene);
 		this.add(listUmfrage);
+	}
+	
+	public void setVorstellungen(ArrayList<Vorstellung> vorstellungen) {
+		SpielplanEintragCell cell = new SpielplanEintragCell();
+		listVorstellung = new CellList<Vorstellung>(cell);
+		listVorstellung.setStyleName("");
+		listVorstellung.setPageSize(30);
+		listVorstellung.setRowData(vorstellungen);
+		this.add(listVorstellung);
 	}
 
 	public void addAction(Image image, ClickHandler clickHandler) {

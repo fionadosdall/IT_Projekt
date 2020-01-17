@@ -29,9 +29,11 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielplanErstellenForm extends VerticalPanel {
 	
@@ -76,15 +78,15 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	
 	private SpielplanErstellenForm bearbeiten;
 	private SpielplaneintragForm spielplaneintrag;
-	
+	private BusinessObjektView bov;
 	
 	
 	private ArrayList<Kino> kinoTB = new ArrayList<Kino>();
 	
 	private Grid spielplanGrid = new Grid(3, 2);
 	
-	private Button hinzufuegenButton = new Button("Hinzufügen");
-	private Button entfernenButton = new Button ("entfernen");
+	private Button hinzufuegenButton = new Button("Vorstellung Hinzufügen");
+	private Button entfernenButton = new Button ("Vorstellung entfernen");
 	private Button speichernButton = new Button("Speichern");
 	
 
@@ -104,7 +106,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	
 	
 	private Kino neuesKino = null;
-	private Spielplan spielplan = null;
+	private Spielplan spielplan;
 	
 	private MeineSpielplaeneForm spielplaeneF;
 	
@@ -132,10 +134,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		spielplannameTextBox.addStyleName("formularTextBox");
 		kinokettenCheckBox.addStyleName("checkBox");
 		
-		inhaltObenPanel.addStyleName("detailsoben");
-		inhaltUntenPanel.addStyleName("detailsoben");
-		//inhaltUntenLinksPanel.addStyleName("detailsoben");
-		//inhaltUntenRechtsPanel.addStyleName("detailsoben");
+		inhaltObenPanel.addStyleName("inhaltSpielplanPanel");
+		inhaltUntenPanel.addStyleName("inhaltSpielplanPanel");
+		inhaltUntenLinksPanel.addStyleName("splitPanel");
+		inhaltUntenRechtsPanel.addStyleName("splitPanel");
 		
 		
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
@@ -162,7 +164,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		
 		spielplannameTextBox.getElement().setPropertyString("placeholder", "Spielplanname eingeben");
 		
-		kinoListBox.setSize("180px", "25px");
+		kinoListBox.setSize("185px", "25px");
 		
 		
 		// Zusammenbauen der Widgets
@@ -189,7 +191,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		inhaltObenPanel.add(kinokettenCheckBox);
 		this.add(inhaltObenPanel);
 		
-		//inhaltUntenLinksPanel.add();
+		//bov.setTitel("Vorstellungen");
+		//TODO kinoplaner.getVorstellungenBySpielplan(spielplan, new SucheVorstellungenBySpielplanCallback());
+		//inhaltUntenLinksPanel.add(bov);
+		
 		inhaltUntenRechtsPanel.add(hinzufuegenButton);
 		inhaltUntenRechtsPanel.add(entfernenButton);
 		
@@ -491,6 +496,24 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 		
 	}
+	
+	private class SucheVorstellungenBySpielplanCallback implements AsyncCallback<Vorstellung>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Vorstellung result) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	
 	
 	/**Methoden***/
 	

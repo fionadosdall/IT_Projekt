@@ -23,13 +23,19 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
-import com.sun.xml.internal.ws.developer.Serialization;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
+
+/*****
+ * Formular für das Anlegen einer neuen Gruppe im Datenstamm
+ * @author 
+ *
+ */
 public class GruppeErstellenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -53,7 +59,10 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private TextBox gruppenameTB = new TextBox();
 
+	// Hier werden alle Anwendernamen die im System vorhanden gespeichert
 	private MultiWordSuggestOracle alleAnwenderOracle = new MultiWordSuggestOracle();
+	
+	
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwenderOracle);
 
 	private ArrayList<Anwender> anwenderTB = new ArrayList<Anwender>();
@@ -79,16 +88,19 @@ public class GruppeErstellenForm extends FlowPanel {
 	};
 
 	private GruppenAnzeigenForm gruppenAF;
-	
-	public GruppeErstellenForm () {
-		
+
+	/*********
+	 * Konstruktor
+	 */
+	public GruppeErstellenForm() {
+
 	}
-	
-	public GruppeErstellenForm (Gruppe gruppe) {
-		this.gruppe=gruppe;
+
+	public GruppeErstellenForm(Gruppe gruppe) {
+		this.gruppe = gruppe;
 	}
-	
-	private Gruppe gruppe=null;
+
+	private Gruppe gruppe = null;
 
 	public Gruppe getGruppe() {
 		return gruppe;
@@ -97,6 +109,10 @@ public class GruppeErstellenForm extends FlowPanel {
 	public void setGruppe(Gruppe gruppe) {
 		this.gruppe = gruppe;
 	}
+	
+/**************************************
+ * onLoad Methode
+ ****************************************/
 
 	public void onLoad() {
 
@@ -129,11 +145,11 @@ public class GruppeErstellenForm extends FlowPanel {
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
-		
-		if(gruppe==null) {
+
+		if (gruppe == null) {
 			gruppenameTB.getElement().setPropertyString("placeholder", "Gruppenname eingeben");
-			
-		}else {
+
+		} else {
 			gruppenameTB.setText(gruppe.getName());
 			title.setText("Gruppe bearbeiten");
 		}
@@ -192,8 +208,9 @@ public class GruppeErstellenForm extends FlowPanel {
 
 			}
 		});
-		
-		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
+
+		if (gruppe != null)
+			kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
 
 		/***********************************************************************
 		 * CELL TABLE
@@ -270,6 +287,12 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * CLICKHANDLER
 	 ***********************************************************************/
 
+	/*****************************
+	 * Hier wird der Gruppe ein neues Mitglied hinzugefügt
+	 * 
+	 *
+	 */
+	
 	private class MitgliedHinzufuegenClickHandler implements ClickHandler {
 
 		@Override
@@ -280,6 +303,13 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*******
+	 * Sobald das Textfeld ausgefpllt ist, wird eine neue Gruppe  nach dem Klicken des 
+	 * addButton erstellt
+	 * 
+	 *
+	 */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -289,15 +319,14 @@ public class GruppeErstellenForm extends FlowPanel {
 				Window.alert("Es wurde kein Gruppenname eingegeben");
 				return;
 			}
-			 
-			if (gruppe ==null) {
+
+			if (gruppe == null) {
 				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, new GruppeErstellenCallback());
-			}
-			else {
+			} else {
 				gruppe.setName(gruppenameTB.getValue());
 				kinoplaner.updateGruppe(gruppe, anwenderListe, new UpdateGruppeCallback());
 			}
-				
+
 		}
 	}
 
@@ -309,12 +338,12 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onFailure(Throwable caught) {
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
 		public void onSuccess(Gruppe result) {
-			 if (result != null){
+			if (result != null) {
 				RootPanel.get("details").clear();
 				gruppenAF = new GruppenAnzeigenForm();
 				RootPanel.get("details").add(gruppenAF);
@@ -322,11 +351,19 @@ public class GruppeErstellenForm extends FlowPanel {
 			} else {
 				Window.alert("Gruppenname bereits vergeben!");
 			}
-			
+
 		}
-		
+
 	}
 	
+	/*******************************************************
+	 * 
+	 *  Hier wird ein Gruppenmitglied anhand seiner Gruppe gesucht,
+	 *  wird nur gemacht wenn die Gruppe bearbeitet wird, nicht wenn sie 
+	 *  erstellt wird
+	 *
+	 **********************************************************/
+
 	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
 
 		@Override
@@ -338,15 +375,26 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Anwender> result) {
 			for (Anwender a : result) {
-				dataProvider.getList().add(a);
-				anwenderListe.add(a);
-			}
-			dataProvider.refresh();
+				if (a.equals(aktuellerAnwender.getAnwender())) {
+				
+				} else {
+					dataProvider.getList().add(a);
+					anwenderListe.add(a);
+				}
+				dataProvider.refresh();
 
+			}
 		}
 
 	}
 	
+	/********
+	 * Der String des Namens wird aus der SuggestBox rausgeholt und mit dem Callback gesucht
+	 * damit wird der passende Anwender zu dem Name zurückggeben um ihn der Gruppe hinzuzufügen
+	 * @author fiona
+	 *
+	 */
+
 	private class AnwenderByNameCallback implements AsyncCallback<Anwender> {
 
 		@Override
@@ -374,6 +422,12 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/******
+	 * Callback wird benötigt um eine Gruppe zu erstellen
+	 * 
+	 *
+	 */
 
 	private class GruppeErstellenCallback implements AsyncCallback<Gruppe> {
 
@@ -387,7 +441,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Gruppe result) {
 
-			 if (result != null){
+			if (result != null) {
 				RootPanel.get("details").clear();
 				gruppenAF = new GruppenAnzeigenForm();
 				RootPanel.get("details").add(gruppenAF);

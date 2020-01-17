@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
@@ -118,12 +119,13 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
+		if (aktuellerAnwender.getAnwender().getId()==gruppe.getBesitzerId()) {
 		detailsunten.add(bearbeiten);
 		bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
 		löschenImage.add(papierkorb);
 		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
 		detailsboxlöschen.add(löschenImage);
-
+		}
 		this.add(detailsoben);
 		this.add(detailsboxlöschen);
 		this.add(detailslinks);
@@ -210,7 +212,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		public void onFailure(Throwable caught) {
 			caught.printStackTrace();
 
-		}
+		} 
 
 		@Override
 		public void onSuccess(ArrayList<Anwender> result) {

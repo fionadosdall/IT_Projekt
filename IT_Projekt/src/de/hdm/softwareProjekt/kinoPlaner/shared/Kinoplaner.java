@@ -1674,4 +1674,6 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException;
 
+	public void sinnloserCallback() throws IllegalArgumentException;
+
 }

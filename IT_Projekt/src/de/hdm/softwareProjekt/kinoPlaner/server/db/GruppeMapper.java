@@ -56,7 +56,8 @@ public class GruppeMapper {
 	/**
 	 * Suche nach allen Gruppen über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Gruppen tragen
+	 * @param name
+	 *            den die gesuchten Gruppen tragen
 	 * @return Eine ArrayList, die alle gefundenen Gruppen enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -100,7 +101,8 @@ public class GruppeMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -126,7 +128,8 @@ public class GruppeMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Gruppen-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param gruppe bzw. das zu speichernde Objekt
+	 * @param gruppe
+	 *            bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Gruppe insert(Gruppe gruppe) {
@@ -167,7 +170,8 @@ public class GruppeMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param gruppe bzw. Objekt, welches verändert werden soll.
+	 * @param gruppe
+	 *            bzw. Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Gruppe update(Gruppe gruppe) {
@@ -178,9 +182,8 @@ public class GruppeMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id=\"" + gruppe.getBesitzerId() + "\", "
-					+ "gName=\" '" + gruppe.getName() + "' \", " + "erstellDatum=\"" + gruppe.getErstellDatum() + "\""
-					+ " WHERE gId=" + gruppe.getId());
+			stmt.executeUpdate("UPDATE gruppe SET " + "gruppe_anwender_Id= '" + gruppe.getBesitzerId() + "', "
+					+ "gName= '" + gruppe.getName() + "'  WHERE gId=" + gruppe.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -193,7 +196,8 @@ public class GruppeMapper {
 	/**
 	 * Mit dieser Methode kann ein Gruppen-Objekt aus der Datenbank gelöscht werden.
 	 * 
-	 * @param gruppe Objekt, welches gelöscht werden soll.
+	 * @param gruppe
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Gruppe gruppe) {
 		Connection con = DBConnection.connection();
@@ -246,8 +250,9 @@ public class GruppeMapper {
 	/**
 	 * Suche nach einer Gruppe mit vorgegebener Gruppen-Id
 	 * 
-	 * @param id zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
-	 *           der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
+	 *            der Primärschlüssel in der Datenbank.
 	 * @return Das Gruppen-Objekt, das mit seiner Gruppen-Id der übergebenen Id
 	 *         entspricht. Falls keine Gruppe zur übergebenen Id gefunden wurde,
 	 *         wird null zurückgegeben.
@@ -272,12 +277,13 @@ public class GruppeMapper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Suche nach einer Gruppe mit vorgegebener Gruppen-Id
 	 * 
-	 * @param id zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
-	 *           der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
+	 *            der Primärschlüssel in der Datenbank.
 	 * @return Das Gruppen-Objekt, das mit seiner Gruppen-Id der übergebenen Id
 	 *         entspricht. Falls keine Gruppe zur übergebenen Id gefunden wurde,
 	 *         wird null zurückgegeben.
@@ -309,8 +315,10 @@ public class GruppeMapper {
 	 * anwenderId und die gruppeId werden in eine Hilfstabelle namens
 	 * gruppenmitglieder eingetragen.
 	 * 
-	 * @param anwender welcher zu einer Gruppe hinzugefügt werden soll.
-	 * @param gruppe   zu welcher der vorgegebene Anwender hinzugefügt werden soll.
+	 * @param anwender
+	 *            welcher zu einer Gruppe hinzugefügt werden soll.
+	 * @param gruppe
+	 *            zu welcher der vorgegebene Anwender hinzugefügt werden soll.
 	 */
 	public Anwender addGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
 		Connection con = DBConnection.connection();
@@ -318,8 +326,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 			/*
-			 * MySQL Fehlermeldung: Error Code 1452. Cannot add or update a child row: 
-			 * a foreign key constraint fails
+			 * MySQL Fehlermeldung: Error Code 1452. Cannot add or update a child row: a
+			 * foreign key constraint fails
 			 */
 			stmt.executeUpdate("INSERT INTO gruppenmitglieder (gruppID, anwendID)" + " VALUES(" + gruppe.getId() + ", "
 					+ anwender.getId() + ")");
@@ -338,10 +346,12 @@ public class GruppeMapper {
 	 * passende Eintrag wird anhand der vorgegebenen anwenderId und gruppenId
 	 * gefunden.
 	 * 
-	 * @param anwender Objekt wessen Mitgliedschaftsbeziehung zu einem vorgegebenen
-	 *                 Gruppen-Objekt gelöscht werden soll.
-	 * @param gruppe   aus der ein vorgegebener Anwender als Mitglied gelöscht
-	 *                 werden soll.
+	 * @param anwender
+	 *            Objekt wessen Mitgliedschaftsbeziehung zu einem vorgegebenen
+	 *            Gruppen-Objekt gelöscht werden soll.
+	 * @param gruppe
+	 *            aus der ein vorgegebener Anwender als Mitglied gelöscht werden
+	 *            soll.
 	 */
 	public void deleteGruppenmitgliedschaft(Anwender anwender, Gruppe gruppe) {
 		Connection con = DBConnection.connection();
@@ -349,8 +359,8 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppID =" + gruppe.getId()
-					+ " AND anwendID=" + anwender.getId());
+			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppID =" + gruppe.getId() + " AND anwendID="
+					+ anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -361,8 +371,9 @@ public class GruppeMapper {
 	 * einem vorgegebenen Anwender haben. Dabei wird die Hilfstabelle
 	 * gruppenmitglieder mit einem INNER JOIN erweitert.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der Mitgliedschaft bei den Gruppen
-	 *                 übereinstimmen soll
+	 * @param anwender
+	 *            Objekt, dessen Id mit der Mitgliedschaft bei den Gruppen
+	 *            übereinstimmen soll
 	 * @return Alle Gruppe-Objekte in einer ArrayList, die in der Hilfstabelle
 	 *         aufgeführt sind.
 	 */
@@ -409,8 +420,9 @@ public class GruppeMapper {
 	 * besondere Rechte in Bezug auf welche Filme hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Gruppen-Objekte übereinstimmen soll.
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Gruppen-Objekte
+	 *            übereinstimmen soll.
 	 * @return Alle Gruppen-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */
@@ -449,9 +461,11 @@ public class GruppeMapper {
 	 * Gruppen-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Veränderungen vornehmen.
 	 * 
-	 * @param anwender welcher als Besitzer der Gruppe in der Datenbank eingetragen
-	 *                 werden soll.
-	 * @param gruppe   Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender
+	 *            welcher als Besitzer der Gruppe in der Datenbank eingetragen
+	 *            werden soll.
+	 * @param gruppe
+	 *            Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Gruppe gruppe) {
 		Connection con = DBConnection.connection();
@@ -471,8 +485,9 @@ public class GruppeMapper {
 	 * zugewiesen und soll nun gelöscht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gelöscht.
 	 * 
-	 * @param gruppe Objekt bei welchem die BesitzerId in der Datenbank
-	 *               zurückgesetzt werden soll.
+	 * @param gruppe
+	 *            Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt
+	 *            werden soll.
 	 */
 	public void deleteEigentumsstruktur(Gruppe gruppe) {
 		Connection con = DBConnection.connection();

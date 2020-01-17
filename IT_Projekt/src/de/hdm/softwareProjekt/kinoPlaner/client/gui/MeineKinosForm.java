@@ -37,7 +37,7 @@ public class MeineKinosForm extends VerticalPanel {
 	
 	private ArrayList<Kino> kinos;
 	private KinoErstellenForm bearbeiten;
-	private static Boolean edit;
+	private static Boolean edit = true;
 	
 	private Kinokette kinokette;
 	private MeineKinosForm anzeigen;
@@ -173,7 +173,7 @@ public class MeineKinosForm extends VerticalPanel {
 			
 			KinoErstellenForm.setEdit(edit);
 			bearbeiten = new KinoErstellenForm();
-			//KinokErstellenForm.setBearbeiten(ausgewaehltesKino);
+			
 			RootPanel.get("details").add(bearbeiten);
 		}
 		

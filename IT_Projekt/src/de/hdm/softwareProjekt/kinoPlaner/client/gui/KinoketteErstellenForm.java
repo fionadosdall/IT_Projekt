@@ -58,7 +58,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	
 	public KinoketteErstellenForm(Kinokette kk) {
-		this.kk = kk;
+		setBearbeiten(kk);
 	}
 
 

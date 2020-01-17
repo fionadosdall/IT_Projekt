@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Footer;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Header;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Navigator;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UmfragenAnzeigenForm;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
@@ -85,7 +86,8 @@ public class EditorEntry implements EntryPoint {
 			RootPanel.get("header").add(header);
 			RootPanel.get("navigator").add(navigator);
 			RootPanel.get("footer").add(footer);
-			
+			UmfragenAnzeigenForm uaf = new UmfragenAnzeigenForm();
+			RootPanel.get("details").add(uaf);
 		}
 		
 	}
