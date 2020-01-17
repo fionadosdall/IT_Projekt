@@ -1690,5 +1690,8 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
 			throws IllegalArgumentException;
+	
+	public Film getFilmByName(String name) throws IllegalArgumentException;
+
 
 }

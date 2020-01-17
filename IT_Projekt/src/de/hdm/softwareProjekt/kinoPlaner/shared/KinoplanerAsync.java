@@ -343,5 +343,8 @@ public interface KinoplanerAsync {
 
 	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
 			AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
+	 public void getFilmByName(String name, AsyncCallback<Film> callback) throws IllegalArgumentException; 
+
 
 }

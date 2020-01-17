@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
 /**
  * Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB
@@ -313,6 +314,28 @@ public class FilmMapper {
 		}
 		//Ergebnis zurückgeben in Form der eingangs erstellten ArrayList
 		return resultarray;
+	}
+	
+	public Film findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+					+ " WHERE fName='" + name + "' ORDER BY film_anwender_Id");
+			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Film f = new Film();
+				f.setId(resultset.getInt("fId"));
+				f.setName(resultset.getString("fName"));
+				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
+				f.setBeschreibung(resultset.getString("fBeschreibung"));
+				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return f;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 }
