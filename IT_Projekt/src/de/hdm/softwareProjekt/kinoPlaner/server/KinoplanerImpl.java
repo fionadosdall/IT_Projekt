@@ -1615,6 +1615,36 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Anwender getAnwenderByName(String name) throws IllegalArgumentException {
 		return this.anwenderMapper.findByName(name);
 	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe eines Kinos der durch den Namen gesucht wird.
+	 * </p>
+	 */
+	@Override
+	public Kino getKinoByName(String name) throws IllegalArgumentException {
+		return this.kinoMapper.findByName(name);
+	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Kinokette der durch den Namen gesucht wird.
+	 * </p>
+	 */
+	@Override
+	public Kinokette getKinoketteByName(String name) throws IllegalArgumentException {
+		return this.kinoketteMapper.findByName(name);
+	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Spielzeit der durch den Namen gesucht wird.
+	 * </p>
+	 */
+	@Override
+	public Spielzeit getSpielzeitByName(String name) throws IllegalArgumentException {
+		return this.spielzeitMapper.findByName(name);
+	}
 
 	/**
 	 * <p>
@@ -1926,27 +1956,31 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
+	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet,
 			Kino kino) throws IllegalArgumentException {
 
 		// Pruefen ob es überhaupt Vorstllungen gibt
 		if (resultSet != null) {
+			if (kino != null) {
 
-			// Leere ArrayList anlegen für das Filterergebnis
-			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+				// Leere ArrayList anlegen für das Filterergebnis
+				ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
 
-			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
-			for (Vorstellung v : resultSet) {
-				if (kino.getId() == this.getSpielplanById(v.getSpielplanId()).getKinoId()) {
-					newResultSet.add(v);
+				// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
+				for (Vorstellung v : resultSet) {
+					if (kino.getId() == this.getSpielplanById(v.getSpielplanId()).getKinoId()) {
+						newResultSet.add(v);
+					}
 				}
-			}
 
-			// Ergebnis zurueckgeben
-			return newResultSet;
-		} else {
-			return resultSet;
+				// Ergebnis zurueckgeben
+				return newResultSet;
+			} else {
+				return resultSet;
+			}
 		}
+		return resultSet;
+
 	}
 
 	/**
@@ -1955,27 +1989,31 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
+	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet,
 			Kinokette kinokette) throws IllegalArgumentException {
 
 		// Prüfen ob es ueberhaupt Vorstllungen gibt
 		if (resultSet != null) {
 
-			// Leere ArrayList anlegen für das Filterergebnis
-			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+			if (kinokette != null) {
 
-			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
-			for (Vorstellung v : resultSet) {
-				if (kinokette.getId() == this.getKinoById(this.getSpielplanById(v.getSpielplanId()).getKinoId())
-						.getKinokettenId()) {
-					newResultSet.add(v);
+				// Leere ArrayList anlegen für das Filterergebnis
+				ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+
+				// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
+				for (Vorstellung v : resultSet) {
+					if (kinokette.getId() == this.getKinoById(this.getSpielplanById(v.getSpielplanId()).getKinoId())
+							.getKinokettenId()) {
+						newResultSet.add(v);
+					}
 				}
+				// Ergebnis zurueckgeben
+				return newResultSet;
+			} else {
+				return resultSet;
 			}
-			// Ergebnis zurueckgeben
-			return newResultSet;
-		} else {
-			return resultSet;
 		}
+		return resultSet;
 	}
 
 	/**
@@ -1987,23 +2025,26 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Vorstellung> filterResultVorstellungenByFilm(ArrayList<Vorstellung> resultSet, Film film)
 			throws IllegalArgumentException {
 
-		// Pruefen ob es ueberhaupt Vorstellungen gibt
 		if (resultSet != null) {
+			if (film != null) {
 
-			// Leere ArrayList anlegen für das Filterergebnis
-			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+				// Leere ArrayList anlegen für das Filterergebnis
+				ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
 
-			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
-			for (Vorstellung v : resultSet) {
-				if (film.getId() == v.getFilmId()) {
-					newResultSet.add(v);
+				// Vorstellungen filtern und die Matches dem Filterergebnis hinzufuegen
+				for (Vorstellung v : resultSet) {
+					if (film.getId() == v.getFilmId()) {
+						newResultSet.add(v);
+					}
 				}
+				// Ergebnis zurueckgeben
+				return newResultSet;
+			} else {
+				return resultSet;
 			}
-			// Ergebnis zurueckgeben
-			return newResultSet;
-		} else {
-			return resultSet;
+
 		}
+		return resultSet;
 	}
 
 	/**
@@ -2018,21 +2059,25 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Pruefen ob es ueberhaupt Vorstllungen gibt
 		if (resultSet != null) {
 
-			// Leere ArrayList anlegen für das Filterergebnis
-			ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+			if (spielzeit != null) {
 
-			// Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
-			for (Vorstellung v : resultSet) {
-				if (spielzeit.getId() == v.getSpielzeitId()) {
-					newResultSet.add(v);
+				// Leere ArrayList anlegen für das Filterergebnis
+				ArrayList<Vorstellung> newResultSet = new ArrayList<Vorstellung>();
+
+				// Vorstellungen filtern und die Matches dem Filterergebnis hinzufügen
+				for (Vorstellung v : resultSet) {
+					if (spielzeit.getId() == v.getSpielzeitId()) {
+						newResultSet.add(v);
+					}
 				}
-			}
 
-			// Ergebnis zurueckgeben
-			return newResultSet;
-		} else {
-			return resultSet;
+				// Ergebnis zurueckgeben
+				return newResultSet;
+			} else {
+				return resultSet;
+			}
 		}
+		return resultSet;
 	}
 
 	/**
@@ -2678,12 +2723,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public void sinnloserCallback() throws IllegalArgumentException {
 		this.anwenderMapper.findAll();
 	}
-	
+
 	@Override
 	public Film getFilmByName(String name) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return this.filmMapper.findByName(name);
 	}
-
 
 }

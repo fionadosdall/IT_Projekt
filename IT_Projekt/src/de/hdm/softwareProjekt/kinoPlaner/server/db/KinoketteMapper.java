@@ -374,4 +374,28 @@ public class KinoketteMapper {
 		}
 	}
 
+	public Kinokette findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT kkId, kkName, kinokette_anwender_Id, sitz, website, erstellDatum FROM kinokette"
+							+ " WHERE kkName='" + name + "' ORDER BY kkName");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Kinokette kk = new Kinokette();
+				kk.setId(resultset.getInt("kkId"));
+				kk.setBesitzerId(resultset.getInt("kinokette_anwender_Id"));
+				kk.setName(resultset.getString("kkName"));
+				kk.setSitz(resultset.getString("sitz"));
+				kk.setWebsite(resultset.getString("website"));
+				kk.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return kk;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
 }

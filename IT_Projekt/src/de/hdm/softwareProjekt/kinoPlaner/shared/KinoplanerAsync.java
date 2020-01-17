@@ -187,10 +187,10 @@ public interface KinoplanerAsync {
 
 	public void getAllSpielzeiten(AsyncCallback<ArrayList<Spielzeit>> callback) throws IllegalArgumentException;
 
-	public void filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet, Kino kino,
+	public void filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet, Kino kino,
 			AsyncCallback<ArrayList<Vorstellung>> callback) throws IllegalArgumentException;
 
-	public void filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet, Kinokette kino,
+	public void filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet, Kinokette kino,
 			AsyncCallback<ArrayList<Vorstellung>> callback) throws IllegalArgumentException;
 
 	public void filterResultVorstellungenByFilm(ArrayList<Vorstellung> resultSet, Film film,
@@ -343,8 +343,13 @@ public interface KinoplanerAsync {
 
 	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
 			AsyncCallback<Void> callback) throws IllegalArgumentException;
-	
-	 public void getFilmByName(String name, AsyncCallback<Film> callback) throws IllegalArgumentException; 
 
+	public void getFilmByName(String name, AsyncCallback<Film> callback) throws IllegalArgumentException;
+
+	public void getKinoByName(String name, AsyncCallback<Kino> callback) throws IllegalArgumentException;
+
+	public void getKinoketteByName(String name, AsyncCallback<Kinokette> callback) throws IllegalArgumentException;
+
+	public void getSpielzeitByName(String name, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
 
 }

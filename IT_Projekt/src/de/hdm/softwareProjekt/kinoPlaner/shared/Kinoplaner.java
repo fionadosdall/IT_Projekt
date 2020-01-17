@@ -930,7 +930,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefilterten Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
+	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet,
 			Kino kino) throws IllegalArgumentException;
 
 	/**
@@ -945,7 +945,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefilterten Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinoOrKinokette(ArrayList<Vorstellung> resultSet,
+	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet,
 			Kinokette kino) throws IllegalArgumentException;
 
 	/**
@@ -1691,7 +1691,46 @@ public interface Kinoplaner extends RemoteService {
 	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
 			throws IllegalArgumentException;
 	
+	
+	/**
+	 * <p>
+	 * Rueckgabe eines Film der durch den Namen gesucht wird.
+	 * </p>
+	 * @param name
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Film getFilmByName(String name) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Rueckgabe eines Kinos der durch den Namen gesucht wird.
+	 * </p>
+	 * @param name
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Kino getKinoByName(String name) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Kinokette der durch den Namen gesucht wird.
+	 * </p>
+	 * @param name
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Kinokette getKinoketteByName(String name) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Rueckgabe einer Spielzeit der durch den Namen gesucht wird.
+	 * </p>
+	 * @param name
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Spielzeit getSpielzeitByName(String name) throws IllegalArgumentException;
 
 
 }

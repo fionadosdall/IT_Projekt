@@ -257,7 +257,6 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 	}
 
 	public void speichern() {
-		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
 		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>();
 
 		for (UmfrageoptionInfo ui : umfraoptionArray) {

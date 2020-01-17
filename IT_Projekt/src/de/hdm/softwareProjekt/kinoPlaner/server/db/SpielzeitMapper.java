@@ -313,4 +313,27 @@ public class SpielzeitMapper {
 		return null;
 	}
 
+	public Spielzeit findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit"
+							+ " WHERE szName='" + name + "' ORDER BY zeit");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Spielzeit sz = new Spielzeit();
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
+				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return sz;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
 }
