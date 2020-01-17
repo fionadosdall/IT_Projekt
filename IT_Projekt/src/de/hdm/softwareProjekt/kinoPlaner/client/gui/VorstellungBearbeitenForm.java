@@ -245,7 +245,7 @@ public class VorstellungBearbeitenForm extends FlowPanel {
 					
 				};
 				
-				kinoplaner.loeschen(film, loeschenCallback);
+				//kinoplaner.loeschen(film, loeschenCallback);
 				
 			}
 			

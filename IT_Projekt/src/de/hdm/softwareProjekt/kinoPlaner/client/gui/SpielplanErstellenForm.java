@@ -81,7 +81,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	private BusinessObjektView bov;
 	
 	
-	private ArrayList<Kino> kinoTB = new ArrayList<Kino>();
+	private ArrayList<Kino> kinos = new ArrayList<Kino>();
 	
 	private Grid spielplanGrid = new Grid(3, 2);
 	
@@ -182,6 +182,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		spielplanGrid.setWidget(0, 0, spielplanNameLabel);
 		spielplanGrid.setWidget(0, 1, spielplannameTextBox);
+		
+		kinoplaner.getKinosByAnwenderOwner(new KinoCallback());
 		
 		spielplanGrid.setWidget(1, 0, kinoLabel);
 		spielplanGrid.setWidget(1, 1, kinoListBox);
@@ -356,6 +358,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 			//RootPanel.get("details").clear();
 			SpielplaneintragForm neuerSpielplaneintrag = new SpielplaneintragForm();
 			neuerSpielplaneintrag.show();
+			//neuerSpielplaneintrag.center();
 			//RootPanel.get("details").add(neuerSpielplaneintrag);
 			
 			
@@ -397,7 +400,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	 * CALLBACKS
 	 */
 	
-	private class KinoCallback implements AsyncCallback <Kino> {
+	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -408,18 +411,25 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 
 		@Override
-		public void onSuccess(Kino kino) {
+		public void onSuccess(ArrayList<Kino> result) {
 			// TODO Auto-generated method stub
 			
-			neuesKino = kino;
-			kino.getName();
-			
-			//TODO kinoplaner.kinoHinzufuegen(neuesKino, new KinoHinzufuegenCallback());
-			
-			//Updaten des DataProviders
-			
-			dataProvider.getList().add(neuesKino);
-			dataProvider.refresh();
+			kinos = result;
+
+			if (result != null) {
+
+				for (Kino k : result) {
+
+					kinoListBox.addItem(k.getName());
+
+				}
+
+			} else {
+
+				kinoListBox.addItem("Keine Gruppen verfügbar");
+				kinoListBox.setEnabled(false);
+
+			}
 			
 		}
 		

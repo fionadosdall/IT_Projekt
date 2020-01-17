@@ -27,9 +27,6 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielzeitErstellenForm.SpeichernClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielzeitErstellenForm.VorstellungEntfernenClickHandler;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielzeitErstellenForm.VorstellungHinzufuegenClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
@@ -216,7 +213,7 @@ private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		});
 		
 		
-		kinoplaner.getVorstellungenBySpielplan(spielzeit1, new AsyncCallback<ArrayList<Vorstellung>>() {
+		/*kinoplaner.getVorstellungenBySpielplan(spielzeit1, new AsyncCallback<ArrayList<Vorstellung>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -236,7 +233,7 @@ private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		});
 		
 		
-		
+		*/
 		/********
 		 * CELL TABLE
 		 */

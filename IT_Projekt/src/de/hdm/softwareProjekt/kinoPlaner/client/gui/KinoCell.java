@@ -51,7 +51,7 @@ public class KinoCell extends AbstractCell<Kino>{
 	      
 	      private void doAction(Kino value, ValueUpdater<Kino> valueUpdater) {
 				RootPanel.get("details").clear();
-	    	  	KinoketteErstellenForm.setEdit(edit);
+				KinoketteErstellenForm.setEdit(edit);
 				KinoErstellenForm bearbeiten = new KinoErstellenForm(value);
 				RootPanel.get("details").add(bearbeiten);
 	      }
