@@ -137,7 +137,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
-			UmfrageBearbeitenForm bearbeitenForm = new UmfrageBearbeitenForm(umfrage);
+			UmfrageErstellenForm bearbeitenForm = new UmfrageErstellenForm();
+			bearbeitenForm.setUmfrage(umfrage);
 			RootPanel.get("details").add(bearbeitenForm);
 
 		}
