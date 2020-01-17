@@ -2678,5 +2678,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public void sinnloserCallback() throws IllegalArgumentException {
 		this.anwenderMapper.findAll();
 	}
+	
+	@Override
+	public Film getFilmByName(String name) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return this.filmMapper.findByName(name);
+	}
+
 
 }
