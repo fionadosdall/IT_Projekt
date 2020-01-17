@@ -63,14 +63,12 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 	private Label spielzeit = new Label ("Spielzeit ");
 	private Label datum = new Label ("Datum: ");
 	private Label vorstellung = new Label ("Spielzeit einer Vorstellung hinzufügen");
-	private Label spielzeitBearb = new Label("Spielzeit bearbeiten");
 	private Label vorstellungen = new Label ("Vorstellungen");
 	
 
 	private TextBox spielzeitnameTB = new TextBox();
 	private TextBox spielzeitTB = new TextBox();
 	private DateBox dateBox = new DateBox();
-	private TextBox spielzeitbearbTB = new TextBox();
 	
 	public static Boolean edit = false;
 
@@ -149,7 +147,6 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		spielzeitname.addStyleName("detailsboxLabels");
 		spielzeit.addStyleName("detailsboxLabels");
 		datum.addStyleName("detailsboxLabels");
-		spielzeitBearb.addStyleName("formHeaderLabel");
 		
 		spielzeitnameTB.addStyleName("nameTB");
 		spielzeitTB.addStyleName("SpielzeitTB");
@@ -163,17 +160,8 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		spielzeitnameTB.getElement().setPropertyString("placeholder", "Name eingeben");
 		spielzeitTB.getElement().setPropertyString("placeholder", "Spielzeit eingeben");
 		vorstellungTB.getElement().setPropertyString("placeholder", "Vorstellung eingeben");
-		spielzeitbearbTB.getElement().setPropertyString("placeholder", "Spielzeitname eingeben");
 		
 		// Zusammenbauen der Widgets
-		
-		if(edit1 == true) {
-			
-			detailsoben.add(spielzeitBearb);
-		}else {
-			detailsoben.add(title);
-			clear();
-		}
 		
 		this.add(detailsoben);
 		//this.add(detailsunten);
@@ -187,9 +175,7 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		spielzeitGrid.setWidget(2, 0, datum);
 		spielzeitGrid.setWidget(2, 1, dateBox);
 		
-		spielzeitGrid.setWidget(3, 0, spielzeitBearb);
-		spielzeitGrid.setWidget(3, 1, spielzeitbearbTB);
-		
+
 		inhaltObenPanel.add(spielzeitGrid);
 		this.add(inhaltObenPanel);
 		
@@ -370,7 +356,6 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		spielzeitnameTB.setText("");
 		spielzeitTB.setText("");
 		dateBox.setTitle("");
-		spielzeitbearbTB.setText("");
 		
 	}
 	private class VorstellungHinzufuegenClickHandler implements ClickHandler {
