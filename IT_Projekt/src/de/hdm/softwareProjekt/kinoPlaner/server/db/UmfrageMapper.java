@@ -357,10 +357,10 @@ public class UmfrageMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, umfrage.erstellDatum, , isGewählt, isOffen , gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, umfrage.erstellDatum, isGewählt, isOffen, gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
 							+ " FROM umfrage "
-							+ "INNER JOIN gruppenmitglieder ON gruppenmitglieder.gruppID = umfrage.umfrage_gruppen_Id "
-							+ " WHERE isOffen = 'false' AND gruppenmitglieder.anwendId = " + anwender.getId()
+							+ "INNER JOIN gruppenmitglieder ON gruppenmitglieder.gruppID = umfrage.umfrage_gruppen_Id"
+							+ " WHERE isOffen =0 AND gruppenmitglieder.anwendId = " + anwender.getId()
 							+ " ORDER BY uName");
 
 			while (resultset.next()) {

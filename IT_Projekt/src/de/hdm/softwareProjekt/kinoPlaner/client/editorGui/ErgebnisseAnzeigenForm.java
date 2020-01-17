@@ -16,7 +16,7 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-public class ErgebnisseAnzeigenForm extends VerticalPanel {
+public class ErgebnisseAnzeigenForm extends FlowPanel {
 
 	private BusinessObjektView bov = new BusinessObjektView();
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -26,6 +26,7 @@ public class ErgebnisseAnzeigenForm extends VerticalPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 
 	public void onLoad() {
+		
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -36,11 +37,12 @@ public class ErgebnisseAnzeigenForm extends VerticalPanel {
 		this.add(detailsunten);
 
 		detailsoben.add(hb);
-
+		detailsunten.add(p);
+		
+		p.add(bov);
+		
 		p.setStyleName("");
 		bov.setTitel("Meine Ergebnisse");
-		p.add(bov);
-		detailsunten.add(p);
 
 		kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
 
@@ -57,6 +59,11 @@ public class ErgebnisseAnzeigenForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
+			
+//			for (Umfrage u : result) {
+//				Window.alert(u.getName());
+//			}
+			
 			if (result != null) {
 				bov.setErgebnisse(result);
 			} else {
@@ -65,7 +72,7 @@ public class ErgebnisseAnzeigenForm extends VerticalPanel {
 				detailsunten.add(labelT);
 			}
 			Button erstellenButton = new Button("Umfrage erstellen!");
-			erstellenButton.setStyleName("speichernButton.gwt-Button");
+			erstellenButton.setStyleName("speichernButton");
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 			detailsunten.add(erstellenButton);
 
