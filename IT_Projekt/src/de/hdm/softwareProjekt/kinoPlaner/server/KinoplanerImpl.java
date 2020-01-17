@@ -460,27 +460,30 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId)
 			throws IllegalArgumentException {
-		// Ein neues Umfrage Objekt wird erstellt.
-		Umfrage u = new Umfrage();
+		if (umfrageMapper.findByName(name) == null) {
+			// Ein neues Umfrage Objekt wird erstellt.
+			Umfrage u = new Umfrage();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		u.setName(name);
-		u.setBesitzerId(this.anwender.getId());
-		u.setGruppenId(gruppenId);
-		u.setOpen(true);
-		u.setVoted(false);
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			u.setName(name);
+			u.setBesitzerId(this.anwender.getId());
+			u.setGruppenId(gruppenId);
+			u.setOpen(true);
+			u.setVoted(false);
 
-		Umfrage uFertig = this.umfrageMapper.insert(u);
-		// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
-		if (list != null) {
-			for (Vorstellung v : list) {
-				this.umfrageoptionHinzufuegen(v, uFertig);
+			Umfrage uFertig = this.umfrageMapper.insert(u);
+			// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
+			if (list != null) {
+				for (Vorstellung v : list) {
+					this.umfrageoptionHinzufuegen(v, uFertig);
+				}
+
 			}
 
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return uFertig;
 		}
-
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return uFertig;
+		return null;
 
 	}
 
@@ -1615,7 +1618,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Anwender getAnwenderByName(String name) throws IllegalArgumentException {
 		return this.anwenderMapper.findByName(name);
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe eines Kinos der durch den Namen gesucht wird.
@@ -1625,7 +1628,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Kino getKinoByName(String name) throws IllegalArgumentException {
 		return this.kinoMapper.findByName(name);
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Kinokette der durch den Namen gesucht wird.
@@ -1635,7 +1638,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Kinokette getKinoketteByName(String name) throws IllegalArgumentException {
 		return this.kinoketteMapper.findByName(name);
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Spielzeit der durch den Namen gesucht wird.
@@ -1873,13 +1876,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		return null;
 
 	}
-	
+
 	/**
 	 * <p>
 	 * Updaten einer Umfrage mitsamt der Veränderungen der Umfrageoptionen
 	 * </p>
 	 */
-	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen) throws IllegalArgumentException {
+	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen)
+			throws IllegalArgumentException {
 		if (umfrageMapper.findByName(umfrage.getName()) == null) {
 			speichern(umfrage);
 			ArrayList<Umfrageoption> alteUmfrageoptionen = getUmfrageoptionenByUmfrage(umfrage);
@@ -1889,7 +1893,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Umfrageoption u : alteUmfrageoptionen) {
 				int counter = 0;
 				for (Vorstellung uNeu : umfrageoptionen) {
-					if (u.getVorstellungsId()==uNeu.getId()) {
+					if (u.getVorstellungsId() == uNeu.getId()) {
 						fertigeUmfrageoptionen.add(u);
 						break;
 					} else {
@@ -1905,7 +1909,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Vorstellung uNeu : umfrageoptionen) {
 				int counter = 0;
 				for (Umfrageoption uFertig : fertigeUmfrageoptionen) {
-					if (uNeu.getId()==uFertig.getVorstellungsId()) {
+					if (uNeu.getId() == uFertig.getVorstellungsId()) {
 						break;
 					} else {
 						counter++;
@@ -2006,8 +2010,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet,
-			Kino kino) throws IllegalArgumentException {
+	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet, Kino kino)
+			throws IllegalArgumentException {
 
 		// Pruefen ob es überhaupt Vorstllungen gibt
 		if (resultSet != null) {

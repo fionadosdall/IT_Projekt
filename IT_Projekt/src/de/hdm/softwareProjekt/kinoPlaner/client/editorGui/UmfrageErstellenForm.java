@@ -628,22 +628,20 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(Umfrage result) {
 
-			
-			// TODO Auto-generated method stub
-			//Window.alert("Umfrage wurde erstellt" + result.getName());
-			// this.umfrage = result;
-			
-			RootPanel.get("details").clear();
-			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
+			if(result!=null) {
+				RootPanel.get("details").clear();
+				UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 
 
-			RootPanel.get("details").add(uaf);
+
+				RootPanel.get("details").add(uaf);
+				}else {
+					Window.alert("Name bereits vergeben");
+				}
 
 		}
 
-		// public void setUmfrage(Umfrage ) {
-		// this.umfrage = umfrage;
-		// }
+		
 
 	}
 
