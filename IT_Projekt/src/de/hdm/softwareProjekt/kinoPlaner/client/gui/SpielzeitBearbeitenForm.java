@@ -233,7 +233,7 @@ private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 		});*/
 		
 		
-		
+		*/
 		/********
 		 * CELL TABLE
 		 */

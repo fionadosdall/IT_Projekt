@@ -38,6 +38,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
+	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 	
 	private static Boolean edit = false;
@@ -58,7 +59,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	
 	public KinoketteErstellenForm(Kinokette kk) {
+		this.kk = kk;
 		setBearbeiten(kk);
+		setEdit(true);
 	}
 
 
@@ -74,6 +77,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		sitzLabel.addStyleName("textLabel");;
 		websiteLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
@@ -106,7 +110,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
-			untenPanel.add(speichernButton);
+			untenPanel.add(aenderungSpeichernButton);
 		} else {
 			clearForm();
 			untenPanel.add(speichernButton);
@@ -117,6 +121,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
+		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 	}
 		
 		
@@ -148,6 +153,23 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		}
 		
 	}
+	
+	private class AenderungSpeichernClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			
+			kk.setName(nameTextBox.getText());
+			kk.setSitz(sitzTextBox.getText());
+			kk.setWebsite(websiteTextBox.getText());
+			administration.speichern(kk, new AenderungSpeichernCallback());
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
+		}
+		
+	}
 
 		
 	/* Callback */
@@ -165,6 +187,24 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde angelegt");
 			
+		}
+		
+	}
+	
+	private class AenderungSpeichernCallback implements AsyncCallback<Void>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderungen konnten nicht gespeichert werden.");
+		}
+
+		
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderung gespeichert");
 		}
 		
 	}
