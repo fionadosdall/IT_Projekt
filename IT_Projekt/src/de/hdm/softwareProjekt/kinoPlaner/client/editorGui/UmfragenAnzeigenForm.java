@@ -42,7 +42,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		p.add(bov);
 		detailsunten.add(p);
 
-		kinoplaner.getUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
+		kinoplaner.getOpenUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
 
 	}
 

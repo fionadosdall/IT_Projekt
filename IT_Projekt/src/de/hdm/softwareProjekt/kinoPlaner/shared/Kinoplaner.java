@@ -1762,5 +1762,13 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public void isVotedEntfernen(Auswahl auswahl) throws IllegalArgumentException;
+	
+	/**
+	 * <p>
+	 * Rueckgabe aller offenen Umfragen des Anwenders
+	 * </p>
+	 * @return Offenen Umfragen
+	 */
+	public ArrayList<Umfrage> getOpenUmfragenByAnwender() throws IllegalArgumentException;
 
 }

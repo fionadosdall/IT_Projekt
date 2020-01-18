@@ -356,4 +356,8 @@ public interface KinoplanerAsync {
 			throws IllegalArgumentException;
 
 	public void isVotedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	public void getOpenUmfragenByAnwender(AsyncCallback<ArrayList<Umfrage>> callback) throws IllegalArgumentException;
+
+
 }

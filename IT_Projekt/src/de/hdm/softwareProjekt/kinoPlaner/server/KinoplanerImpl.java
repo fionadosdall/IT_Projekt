@@ -1514,6 +1514,16 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Umfrage> getClosedUmfragenByAnwender() {
 		return this.umfrageMapper.findAllClosedByAnwender(this.anwender);
 	}
+	
+	/**
+	 * <p>
+	 * Rueckgabe aller offenen Umfragen des Anwenders
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Umfrage> getOpenUmfragenByAnwender() {
+		return this.umfrageMapper.findAllOpenByAnwender(this.anwender);
+	}
 
 	/**
 	 * <p>

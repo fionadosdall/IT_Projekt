@@ -500,5 +500,49 @@ public class UmfrageMapper {
 		}
 		return null;
 	}
+	
+	/**
+	 * Umfragen können von einem Anwender geschlossen werden. Damit wird das Ende
+	 * der Umfrage signalisiert, es kann nicht weiter an ihr teilgenommen werden. In
+	 * dieser Methode kann man sich alle offenen Umfragen ausgeben lassen.
+	 * 
+	 * @param anwender dessen offenen Umfragen zurückgegeben werden sollen.
+	 * @return Eine ArrayList mit allen Umfragen die offen sind
+	 */
+	public ArrayList<Umfrage> findAllOpenByAnwender(Anwender anwender) {
+		Connection con = DBConnection.connection();
+
+		ArrayList<Umfrage> resultarray = new ArrayList<Umfrage>();
+		// Wie kann ich den Boolean isOpen testen?
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT uId, uName, umfrage_anwender_Id, umfrage_gruppen_Id, umfrage.erstellDatum, isGewählt, isOffen, gruppenmitglieder.gruppID, gruppenmitglieder.anwendID"
+							+ " FROM umfrage "
+							+ "INNER JOIN gruppenmitglieder ON gruppenmitglieder.gruppID = umfrage.umfrage_gruppen_Id"
+							+ " WHERE isOffen =1 AND gruppenmitglieder.anwendId = " + anwender.getId()
+							+ " ORDER BY uName");
+
+			while (resultset.next()) {
+				Umfrage u = new Umfrage();
+				u.setId(resultset.getInt("uId"));
+				u.setName(resultset.getString("uName"));
+				u.setGruppenId(resultset.getInt("umfrage_gruppen_Id"));
+				u.setBesitzerId(resultset.getInt("umfrage_anwender_Id"));
+				u.setErstellDatum(resultset.getTimestamp("umfrage.erstellDatum"));
+				u.setVoted(resultset.getBoolean("isGewählt"));
+				u.setOpen(resultset.getBoolean("isOffen"));
+
+				// Hinzuf�gen des neuen Objekts zur ArrayList
+				resultarray.add(u);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		// Rückgabe des Ergebnisses in Form einer ArrayList
+		return resultarray;
+	}
+
 
 }
