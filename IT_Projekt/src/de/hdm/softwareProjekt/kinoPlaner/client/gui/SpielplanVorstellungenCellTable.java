@@ -137,7 +137,7 @@ private class VorstellungInfo {
 		this.add(vorstellungenTable);
 		
 		vorstellungenTable.setWidth("100%");
-		vorstellungenTable.setEmptyTableWidget(new Label("Keine Vorstellungen angelegt."));
+		vorstellungenTable.setEmptyTableWidget(new Label("Keine Vorstellungen hinzugefügt."));
 		
 		Column<VorstellungInfo, String> buttonColumn = new Column<VorstellungInfo, String>(buttonCell) {
 
@@ -183,18 +183,11 @@ private class VorstellungInfo {
 
 		vorstellungenTable.addColumn(filmColumn, "Film");
 		
-		TextColumn<VorstellungInfo> spielzeitColumn = new TextColumn<VorstellungInfo>() {
-
-			@Override
-			public String getValue(VorstellungInfo object) {
-
-				return object.getSpielzeit();
-			}
-			
-		};
+		filmColumn.setSortable(true);
 		
 		
-		Column<VorstellungInfo, String> speilzeitColumn = new Column<VorstellungInfo, String>(spielzeitCell) {
+		
+		Column<VorstellungInfo, String> spielzeitColumn = new Column<VorstellungInfo, String>(spielzeitCell) {
 
 			@Override
 			public String getValue(VorstellungInfo object) {
@@ -204,8 +197,8 @@ private class VorstellungInfo {
 
 			}
 		};
-
-		vorstellungenTable.addColumn(speilzeitColumn, "Spielzeit");
+		spielzeitColumn.setSortable(true);
+		vorstellungenTable.addColumn(spielzeitColumn, "Spielzeit");
 		
 		dataProvider.addDataDisplay(vorstellungenTable);
 

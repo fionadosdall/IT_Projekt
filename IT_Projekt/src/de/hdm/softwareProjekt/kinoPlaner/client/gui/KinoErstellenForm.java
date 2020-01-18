@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -146,7 +147,36 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 	}
 	
-	
+private class KinoLoeschenDialogBox extends DialogBox{
+		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Kinokette entgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public KinoLoeschenDialogBox() {
+
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(abfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für die DailogBox
+			jaButton.addClickHandler(new LoeschenClickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+		}
+	}
 	
 	
 	/* ClickHandler */
@@ -170,10 +200,44 @@ public class KinoErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
+			KinoLoeschenDialogBox kinoLoeschenDB = new KinoLoeschenDialogBox();
+			kinoLoeschenDB.center();
+		}
+		
+	}
+	
+private class LoeschenClickHandler implements ClickHandler{
+
+		
+		private KinoLoeschenDialogBox kinoloeschenDB;
+		
+		public LoeschenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
+			this.kinoloeschenDB = kinoloeschenDB;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoloeschenDB.hide();
 			administration.loeschen(k, new KinoLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
+		}
+		
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+
+		private KinoLoeschenDialogBox kinoloeschenDB;
+		
+		public AbbrechenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
+			this.kinoloeschenDB = kinoloeschenDB;
+			
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoloeschenDB.hide();
 		}
 		
 	}

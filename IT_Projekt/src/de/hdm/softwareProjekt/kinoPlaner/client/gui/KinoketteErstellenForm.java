@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -124,7 +125,38 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 	}
 		
+	private class KinoketteLoeschenDialogBox extends DialogBox{
 		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Kinokette entgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public KinoketteLoeschenDialogBox() {
+
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(abfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für die DailogBox
+			jaButton.addClickHandler(new LoeschenClickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+		}
+	}
+	
+	/***ClickHandler***/
 		
 	public class SpeichernClickHandler implements ClickHandler {
 
@@ -141,15 +173,50 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	}
 	
 	private class KinoketteLoeschenClickHandler implements ClickHandler{
-
+		
+		
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+			KinoketteLoeschenDialogBox kinokinoketteloeschenDB = new KinoketteLoeschenDialogBox();
+			kinokinoketteloeschenDB.center();
+		}
+		
+	}
+	
+	private class LoeschenClickHandler implements ClickHandler{
+
+		
+		private KinoketteLoeschenDialogBox kinoketteloeschenDB;
+		
+		public LoeschenClickHandler(KinoketteLoeschenDialogBox kinoketteloeschenDB) {
+			this.kinoketteloeschenDB = kinoketteloeschenDB;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoketteloeschenDB.hide();
 			administration.loeschenKinoketteById(kk.getId(), new KinoketteLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkkf = new MeineKinokettenForm();
 			RootPanel.get("details").add(mkkf);
+		}
+		
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+
+		private KinoketteLoeschenDialogBox kinoketteloeschenDB;
+		
+		public AbbrechenClickHandler(KinoketteLoeschenDialogBox kinoketteloeschenDB) {
+			this.kinoketteloeschenDB = kinoketteloeschenDB;
+			
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoketteloeschenDB.hide();
 		}
 		
 	}
