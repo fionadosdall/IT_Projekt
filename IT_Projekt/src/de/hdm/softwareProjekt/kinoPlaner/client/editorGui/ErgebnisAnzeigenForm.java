@@ -18,29 +18,20 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
 public class ErgebnisAnzeigenForm extends FlowPanel {
-	
+
 	private Umfrage umfrage;
 	private Umfrage umfrageStichwahl;
 	private KinoplanerAsync kinoplaner;
-	private Umfrageoption umfrageoption;
-	private boolean ergebnis;
-
-	private HomeBar hb = new HomeBar();
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 
-	private Label title = new Label("Umfrage: " + umfrage.getName());
+	private Label title = new Label();
 
 	private TextArea txt = new TextArea();
-	
+
 	private ErgebnisAnzeigenTable eat;
-	
-	String zeit = eat.getErgebnisInfo().getSpielzeit();
-	String film = eat.getErgebnisInfo().getFilmName();
-	String kino = eat.getErgebnisInfo().getKinoName();
-	String stadt = eat.getErgebnisInfo().getStadt();
 
 	public ErgebnisAnzeigenForm(Umfrage umfrage) {
 		this.umfrage = umfrage;
@@ -49,7 +40,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	@Override
 	protected void onLoad() {
-		
+
 		super.onLoad();
 		kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -62,45 +53,20 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		title.addStyleName("title");
 
 		this.add(detailsoben);
-		this.add(detailsunten);
 		this.add(detailsboxInhalt);
+		this.add(detailsunten);
 
-		detailsoben.add(hb);
 		detailsoben.add(title);
-		
-		eat = new ErgebnisAnzeigenTable(umfrage);
-		
-		detailsunten.add(eat);
-		
-		StringBuffer buffi = new StringBuffer();
-		kinoplaner.ergebnisGefunden(umfrage, new ErgebnisGefundenCallback());
-		buffi.append("Für deine Umfrage ");
-		buffi.append(umfrage.getName());
-		
-		if (ergebnis == true) {
-			buffi.append(" konnte ein Gewinner ermittelt werden!\nIhr geht am ");
-			kinoplaner.umfrageGewinnerErmitteln(umfrage, new UmfrageGewinnerErmittelnCallback());
-			
-			buffi.append(zeit);
-			buffi.append(" in den Film " + film + " im Kino " + kino + ". Das Kino liegt in "
-					+ stadt + ".");
-			buffi.append("\n Viel Spaß!");
-			txt.setText(buffi.toString());
-		} else {
-			buffi.append(
-					" konnte kein Gewinner ermittelt werden! \n Wir haben eine Stichwahl für deine Gruppe gestaret! ");
-			txt.setText(buffi.toString());
-			
-			Button stichwahl = new Button("Stichwahl");
-			
-			kinoplaner.volltextSucheUmfragen("Stichwahl " + umfrage.getName(), new VolltextSucheUmfragenCallback());
-			stichwahl.addClickHandler(new StichwahlClickHandler());
-			detailsunten.add(stichwahl);
-		}
 
-		String text = buffi.toString();
-		txt.setText(text);
+		eat = new ErgebnisAnzeigenTable(umfrage);
+		eat.setErgebnisAnzeigenForm(this);
+		title.setText("Umfrage: " + umfrage.getName());
+
+		detailsboxInhalt.add(eat);
+
 		detailsunten.add(txt);
+
+		kinoplaner.ergebnisGefunden(umfrage, new ErgebnisGefundenCallback());
 
 	}
 
@@ -120,12 +86,29 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
+			
+			StringBuffer buffi = new StringBuffer();
+			buffi.append("Für deine Umfrage ");
+			buffi.append(umfrage.getName());
+
+			buffi.append(
+					" konnte kein Gewinner ermittelt werden! \n Wir haben eine Stichwahl für deine Gruppe gestaret! ");
+			txt.setText(buffi.toString());
+			Button stichwahl = new Button("Stichwahl");
+			stichwahl.addClickHandler(new StichwahlClickHandler());
+			detailsunten.add(stichwahl);
+
+			String text = buffi.toString();
+			txt.setText(text);
+			txt.setWidth("99%");
+			
 			for (Umfrage u : result) {
 				if (u.isOpen() == true) {
 					umfrageStichwahl = u;
@@ -136,38 +119,48 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	}
 
-	private class UmfrageGewinnerErmittelnCallback implements AsyncCallback<Umfrageoption> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Gewinner konnte nicht ermittelt werden.");
-
-		}
-
-		@Override
-		public void onSuccess(Umfrageoption result) {
-			umfrageoption = result;
-
-		}
-
-	}
-
 	private class ErgebnisGefundenCallback implements AsyncCallback<Boolean> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			Window.alert("Ergebnis nicht ermittelbar.");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Boolean result) {
-			ergebnis = result;
+
+			if (result == true) {
+
+				eat.gewinnerErmitteln();
+
+			} else {
+
+				kinoplaner.volltextSucheUmfragen("Stichwahl " + umfrage.getName(), new VolltextSucheUmfragenCallback());
+
+			}
 
 		}
 
 	}
 
+	public void setGewinner(String zeit, String film, String kino, String stadt) {
 
+		StringBuffer buffi = new StringBuffer();
+		buffi.append("Für deine Umfrage ");
+		buffi.append(umfrage.getName());
+		buffi.append(" konnte ein Gewinner ermittelt werden!\nIhr geht am ");
+
+		buffi.append(zeit);
+		buffi.append(" in den Film " + film + " im Kino " + kino + ". Das Kino liegt in " + stadt + ".");
+		buffi.append("\nViel Spaß!");
+		txt.setText(buffi.toString());
+
+		String text = buffi.toString();
+		txt.setText(text);
+		txt.setWidth("99%");
+		txt.setHeight("100%");
+	}
 
 }

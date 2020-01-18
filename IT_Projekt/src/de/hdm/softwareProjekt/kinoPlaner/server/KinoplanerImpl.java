@@ -406,7 +406,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId)
 			throws IllegalArgumentException {
 		ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
-		ArrayList<Spielplan> spielplaene = null;
+		ArrayList<Spielplan> spielplaene = new ArrayList<Spielplan>();
 
 		for (Kino k : kinos) {
 			// Ein neues Spielplan Objekt wird erstellt.
@@ -2553,7 +2553,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Gruppe> volltextSucheGruppen(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Gruppe> ergebnisse = null;
+		ArrayList<Gruppe> ergebnisse = new ArrayList<Gruppe>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2583,7 +2583,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Umfrage> volltextSucheUmfragen(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Umfrage> ergebnisse = null;
+		ArrayList<Umfrage> ergebnisse = new ArrayList<Umfrage>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2612,7 +2612,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Umfrage> volltextSucheErgebnisse(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Umfrage> ergebnisse = null;
+		ArrayList<Umfrage> ergebnisse = new ArrayList<Umfrage>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2643,7 +2643,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Kinokette> volltextSucheKinoketten(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Kinokette> ergebnisse = null;
+		ArrayList<Kinokette> ergebnisse = new ArrayList<Kinokette>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2674,7 +2674,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Kino> volltextSucheKinos(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Kino> ergebnisse = null;
+		ArrayList<Kino> ergebnisse = new ArrayList<Kino>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2705,7 +2705,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Spielplan> volltextSucheSpielplaene(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Spielplan> ergebnisse = null;
+		ArrayList<Spielplan> ergebnisse = new ArrayList<Spielplan>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2736,7 +2736,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Spielzeit> volltextSucheSpielzeit(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Spielzeit> ergebnisse = null;
+		ArrayList<Spielzeit> ergebnisse = new ArrayList<Spielzeit>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
@@ -2767,7 +2767,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Film> volltextSucheFilm(String text) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Film> ergebnisse = null;
+		ArrayList<Film> ergebnisse = new ArrayList<Film>();
 
 		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();

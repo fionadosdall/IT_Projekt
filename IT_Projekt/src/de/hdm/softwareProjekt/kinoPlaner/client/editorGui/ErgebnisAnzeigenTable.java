@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
 
-
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
@@ -21,8 +20,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
-public class ErgebnisAnzeigenTable extends FlowPanel{
-	
+public class ErgebnisAnzeigenTable extends FlowPanel {
+
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 	private Umfrage umfrage;
@@ -30,12 +29,6 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 	public ErgebnisAnzeigenTable(Umfrage umfrage) {
 		this.umfrage = umfrage;
 
-	}
-	
-	private ErgebnisInfo ergebnisInfo = new ErgebnisInfo();
-	
-	public ErgebnisInfo getErgebnisInfo() {
-		return ergebnisInfo;
 	}
 
 	class ErgebnisInfo {
@@ -92,11 +85,16 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 			this.spielzeit = spielzeit;
 		}
 
-
 	}
-	
+
+	private ErgebnisAnzeigenForm eaf;
+
+	public void setErgebnisAnzeigenForm(ErgebnisAnzeigenForm eaf) {
+		this.eaf = eaf;
+	}
+
 	CellTable<ErgebnisInfo> ergebnisCellTable;
-	
+
 	private ListDataProvider<ErgebnisInfo> dataProvider;
 	private List<ErgebnisInfo> list;
 
@@ -104,7 +102,7 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 	public void onLoad() {
 
 		dataProvider = new ListDataProvider<ErgebnisInfo>();
-		
+
 		list = dataProvider.getList();
 
 		ergebnisCellTable = new CellTable<ErgebnisInfo>();
@@ -113,9 +111,9 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 		ergebnisCellTable.setAutoHeaderRefreshDisabled(true);
 
 		ergebnisCellTable.setEmptyTableWidget(new Label("Keine Ergebnisse verfügbar!"));
-		
-		//CellTable
-		
+
+		// CellTable
+
 		Column<ErgebnisInfo, String> filmColumn = new Column<ErgebnisInfo, String>(new TextCell()) {
 
 			@Override
@@ -163,12 +161,12 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 		};
 
 		ergebnisCellTable.addColumn(stadtColumn, "Ort");
-		
+
 		Column<ErgebnisInfo, String> voteColumn = new Column<ErgebnisInfo, String>(new TextCell()) {
 
 			@Override
 			public String getValue(ErgebnisInfo object) {
-				
+
 				return "" + object.getErgebnis();
 			}
 
@@ -179,12 +177,11 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 		dataProvider.addDataDisplay(ergebnisCellTable);
 
 		this.add(ergebnisCellTable);
-		
+
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
 
-
 	}
-	
+
 	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
 
 		@Override
@@ -196,6 +193,7 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 
 		@Override
 		public void onSuccess(ArrayList<Umfrageoption> result) {
+
 			if (result == null) {
 
 				ergebnisCellTable.setEmptyTableWidget(new Label("Keine Umfrageoptionen verfügbar!"));
@@ -208,7 +206,7 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 					eI.setU(u);
 
 					list.add(eI);
-					
+
 					kinoplaner.berechneAuswahlenByUmfrageoption(u, new AuswahlCallback(eI));
 					kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(eI));
 					kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(eI));
@@ -219,6 +217,10 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 			}
 		}
 
+	}
+
+	public void gewinnerErmitteln() {
+		kinoplaner.umfrageGewinnerErmitteln(umfrage, new UmfrageGewinnerErmittelnCallback());
 	}
 
 	private class FilmByUmfrageoptionCallback implements AsyncCallback<Film> {
@@ -320,12 +322,32 @@ public class ErgebnisAnzeigenTable extends FlowPanel{
 		public void onSuccess(Integer result) {
 
 			info.setErgebnis(result);
-			
+
 			dataProvider.refresh();
 
+		}
+
+	}
+
+	private class UmfrageGewinnerErmittelnCallback implements AsyncCallback<Umfrageoption> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+		}
+
+		@Override
+		public void onSuccess(Umfrageoption result) {
+
+			for (ErgebnisInfo e : list) {
+				if (e.getU().getId() == result.getId()) {
+					eaf.setGewinner(e.getSpielzeit(), e.getFilmName(), e.getKinoName(), e.getStadt());
+				}
 			}
 
 		}
 
+	}
 
 }
