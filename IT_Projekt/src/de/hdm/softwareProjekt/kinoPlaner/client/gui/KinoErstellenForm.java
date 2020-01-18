@@ -152,7 +152,7 @@ private class KinoLoeschenDialogBox extends DialogBox{
 		private VerticalPanel verticalPanel = new VerticalPanel();
 		private HorizontalPanel buttonPanel = new HorizontalPanel();
 
-		private Label abfrage = new Label("Kinokette entgültig löschen?");
+		private Label abfrage = new Label("Kino entgültig löschen?");
 
 		private Button jaButton = new Button("Ja");
 		private Button neinButton = new Button("Nein");
