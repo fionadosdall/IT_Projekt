@@ -119,38 +119,44 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
-		if (aktuellerAnwender.getAnwender().getId()==gruppe.getBesitzerId()) {
-		detailsunten.add(bearbeiten);
-		bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
-		löschenImage.add(papierkorb);
-		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
-		detailsboxlöschen.add(löschenImage);
-		}
+		
 		this.add(detailsoben);
-		this.add(detailsboxlöschen);
-		this.add(detailslinks);
-		this.add(detailsrechts);
+//		this.add(detailslinks);
+//		this.add(detailsrechts);
 		this.add(detailsunten);
+		detailsunten.add(detailsboxlöschen);
 		
 
 		detailsoben.add(hb);
 		detailsoben.add(title);
 		title.setText(gruppe.getName());
 		kinoplaner.getUmfragenByGruppe(gruppe, new SucheUmfrageByGruppeCallback());
-		detailslinks.add(mitgliederLabel);
+//		detailslinks.add(mitgliederLabel);
+		detailsunten.add(mitgliederLabel);
 		gruppenmitgliederCellList = new CellList<Anwender>(gruppenmitgliederCell);
 		gruppenmitgliederCellList.setStyleName("");
-		gruppenmitgliederCellList.setPageSize(30);
+		gruppenmitgliederCellList.setPageSize(5);
 		dataProviderAnwender.addDataDisplay(gruppenmitgliederCellList);
-		detailslinks.add(gruppenmitgliederCellList);
+//		detailslinks.add(gruppenmitgliederCellList);
+		detailsunten.add(gruppenmitgliederCellList);
 		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
 
-		detailsrechts.add(umfrageLabel);
+//		detailsrechts.add(umfrageLabel);
+		detailsunten.add(umfrageLabel);
 		umfragenCellList = new CellList<Umfrage>(umfragenCell);
 		umfragenCellList.setStyleName("");
-		umfragenCellList.setPageSize(30);
+		umfragenCellList.setPageSize(20);
 		dataProviderUmfrage.addDataDisplay(umfragenCellList);
-		detailsrechts.add(umfragenCellList);
+//		detailsrechts.add(umfragenCellList);
+		detailsunten.add(umfragenCellList);
+		
+		if (aktuellerAnwender.getAnwender().getId()==gruppe.getBesitzerId()) {
+		detailsunten.add(bearbeiten);
+		bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
+		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
+		detailsboxlöschen.add(löschenImage);
+		löschenImage.add(papierkorb);
+		}
 
 	}
 
