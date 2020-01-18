@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanVorstellungenCellTable;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -28,6 +29,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 public class NeueCellTable extends VerticalPanel {
 
 	private UmfrageCellTable uct = null;
+	private SpielplanVorstellungenCellTable svct = null;
 
 	public NeueCellTable() {
 
@@ -41,6 +43,10 @@ public class NeueCellTable extends VerticalPanel {
 
 	public void setUmfrageCellTable(UmfrageCellTable uct) {
 		this.uct = uct;
+	}
+	
+	public void setSpielplanVorstellungenCellTable(SpielplanVorstellungenCellTable svct) {
+		this.svct = svct;
 	}
 
 	public interface CellTableResources extends CellTable.Resources {
