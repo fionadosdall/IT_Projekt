@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -25,6 +26,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
@@ -197,8 +199,6 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 					object.setVoteTeilnahme(false);
 				}
 
-				Window.alert(object.filmName + object.isVoteTeilnahme());
-
 			}
 		});
 
@@ -216,6 +216,14 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 		umfrageoptionCellTable.addColumn(filmColumn, "Film");
 
+		filmColumn.setSortable(true);
+
+		sortHandler.setComparator(filmColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
+
 		Column<UmfrageoptionInfo, String> kinoColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
 			@Override
@@ -228,7 +236,15 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 		umfrageoptionCellTable.addColumn(kinoColumn, "Kino");
 
-		Column<UmfrageoptionInfo, String> speilzeitColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
+		kinoColumn.setSortable(true);
+
+		sortHandler.setComparator(kinoColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
+
+		Column<UmfrageoptionInfo, String> spielzeitColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
 			@Override
 			public String getValue(UmfrageoptionInfo object) {
@@ -238,7 +254,15 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 			}
 		};
 
-		umfrageoptionCellTable.addColumn(speilzeitColumn, "Spielzeit");
+		umfrageoptionCellTable.addColumn(spielzeitColumn, "Spielzeit");
+
+		spielzeitColumn.setSortable(true);
+
+		sortHandler.setComparator(spielzeitColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		Column<UmfrageoptionInfo, String> stadtColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
@@ -252,55 +276,44 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 		umfrageoptionCellTable.addColumn(stadtColumn, "Ort");
 
+		stadtColumn.setSortable(true);
+
+		sortHandler.setComparator(stadtColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
+
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
 
 	}
 
 	public void speichern() {
-		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>() ;
+		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>();
 
 		for (UmfrageoptionInfo ui : umfraoptionArray) {
 			if (ui.isVoteTeilnahme() != null) {
 				Auswahl auswahl = new Auswahl();
 				if (ui.isVoteTeilnahme == true) {
-					
+
 					auswahl.setName(ui.getV().getName());
 					auswahl.setVoting(1);
 					auswahl.setUmfrageoptionId(ui.getV().getId());
 
 				} else {
-					
+
 					auswahl.setName(ui.getV().getName());
 					auswahl.setVoting(-1);
 					auswahl.setUmfrageoptionId(ui.getV().getId());
 
 				}
-				
+
 				umfrageoptionAuswahlArray.add(auswahl);
 			}
 		}
-		
-		Window.alert("Übergabewert"+umfrageoptionAuswahlArray.size());
-		
-		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen,umfrageoptionAuswahlArray.size(), new AuswahlErstellenCallback());
-		
-		kinoplaner.sinnloserCallback(new AsyncCallback<Void>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-				caught.printStackTrace();
-
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				RootPanel.get("details").clear();
-				VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(umfrage);
-				RootPanel.get("details").add(anzeigen);
-
-			}
-		});
+		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen, umfrageoptionAuswahlArray.size(),
+				umfrage, new AuswahlErstellenCallback());
 
 	}
 
@@ -454,8 +467,7 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
-
-	private class AuswahlErstellenCallback implements AsyncCallback<Void> {
+	private class AuswahlErstellenCallback implements AsyncCallback<Umfrage> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -465,13 +477,19 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 		}
 
 		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
+		public void onSuccess(Umfrage result) {
+			if (result.isOpen() == true) {
+				RootPanel.get("details").clear();
+				VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(result);
+				RootPanel.get("details").add(anzeigen);
+			} else {
+				RootPanel.get("details").clear();
+				ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(result);
+				RootPanel.get("details").add(anzeigen);
+			}
 
 		}
 
 	}
-
-
 
 }

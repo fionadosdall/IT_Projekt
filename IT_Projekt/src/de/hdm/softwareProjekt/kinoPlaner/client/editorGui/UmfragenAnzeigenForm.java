@@ -57,7 +57,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
-			if (result != null) {
+			if (result.size() != 0) {
 				bov.setUmfragen(result);
 			} else {
 				Label labelT = new Label();

@@ -58,7 +58,8 @@ public class UmfrageoptionMapper {
 	/**
 	 * Suche nach allen Umfrageoptionen über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Umfrageoptionen tragen
+	 * @param name
+	 *            den die gesuchten Umfrageoptionen tragen
 	 * @return Eine ArrayList, die alle gefundenen Umfrageoptionen enthält. Falls
 	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
 	 *         leer oder nur teilweise befüllt zurück gegeben wird.
@@ -104,7 +105,8 @@ public class UmfrageoptionMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -131,7 +133,8 @@ public class UmfrageoptionMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Umfrageoption-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param umfrageoption als das zu speichernde Objekt
+	 * @param umfrageoption
+	 *            als das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Umfrageoption insert(Umfrageoption umfrageoption) {
@@ -151,8 +154,9 @@ public class UmfrageoptionMapper {
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
 						"INSERT INTO Umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, voteErgebnis)"
-								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName()  
-								+ "', " + umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ","+umfrageoption.getVoteErgebnis()+")");
+								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName() + "', "
+								+ umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ","
+								+ umfrageoption.getVoteErgebnis() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -167,7 +171,8 @@ public class UmfrageoptionMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param umfrageoption als das Objekt, das verändert werden soll.
+	 * @param umfrageoption
+	 *            als das Objekt, das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Umfrageoption update(Umfrageoption umfrageoption) {
@@ -178,10 +183,10 @@ public class UmfrageoptionMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Umfrageoption SET " + "uoName=\" '" + umfrageoption.getName() + "' "
-					+ "erstellDatum=\"" + umfrageoption.getErstellDatum() + "\", " + "umfrageoption_umfrage_Id=\""
-					+ umfrageoption.getUmfrageId() + "\", " + "umfrageoption_vorstellung_Id=\""
-					+ umfrageoption.getVorstellungsId() + "\"" + " WHERE uoId=" + umfrageoption.getId());
+			stmt.executeUpdate("UPDATE Umfrageoption SET " + "uoName= '" + umfrageoption.getName() + "', "
+					+ "umfrageoption_vorstellung_Id='" + umfrageoption.getVorstellungsId() + "',"
+					+ "voteErgebnis='" + umfrageoption.getVoteErgebnis() + "' WHERE uoId="
+					+ umfrageoption.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -196,7 +201,8 @@ public class UmfrageoptionMapper {
 	 * Mit dieser Methode kann ein Umfrageoption-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param umfrageoption Objekt, welches gelöscht werden soll.
+	 * @param umfrageoption
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection();
@@ -218,8 +224,9 @@ public class UmfrageoptionMapper {
 	 * entsprechende umfrageId hinterlegt. Diese umfrageId muss mit der Id der im
 	 * Methodenparamter übergebenen Umfrage übereinstimmen.
 	 * 
-	 * @param umfrage Objekt, deren Id mit den umfrageIds in der
-	 *                Umfrageoption-Tabelle übereinstimmen soll.
+	 * @param umfrage
+	 *            Objekt, deren Id mit den umfrageIds in der Umfrageoption-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren umfrageId der
 	 *         übergebenen Umfrage entsprechen.
 	 */
@@ -260,8 +267,9 @@ public class UmfrageoptionMapper {
 	/**
 	 * Suche nach einer Umfrageoption mit vorgegebener Umfrageoption-Id
 	 * 
-	 * @param id zugehörig zu einer Umfrageoption, nach welcher gesucht werden soll,
-	 *           also der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einer Umfrageoption, nach welcher gesucht werden
+	 *            soll, also der Primärschlüssel in der Datenbank.
 	 * @return Das Umfrageoption-Objekt, das mit seiner Umfrageoption-Id der
 	 *         übergebenen Id entspricht. Falls keine Umfrageoption zur übergebenen
 	 *         Id gefunden wurde, wird null zurückgegeben.
@@ -296,8 +304,9 @@ public class UmfrageoptionMapper {
 	 * entsprechende vorstellungsId hinterlegt. Diese vorstellungsId muss mit der Id
 	 * der im Methodenparamter übergebenen Vorstellung übereinstimmen.
 	 * 
-	 * @param vorstellung Objekt, deren Id mit den vorstellungsIds in der
-	 *                    Umfrageoption-Tabelle übereinstimmen soll.
+	 * @param vorstellung
+	 *            Objekt, deren Id mit den vorstellungsIds in der
+	 *            Umfrageoption-Tabelle übereinstimmen soll.
 	 * @return Alle Umfrageoption-Objekte in einer ArrayList, deren vorstellungsId
 	 *         der übergebenen Vorstellung entsprechen.
 	 */

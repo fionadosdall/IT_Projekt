@@ -597,11 +597,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Die zugehoerige Umfrage wird als votiert markiert.
 		this.isVoted(a);
 
+		// Das Objekt wird in der Datenbank gespeichert
+		Auswahl object = this.auswahlMapper.insert(a);
+
 		// Die Umfrage gegebenfalls schließen
 		this.isClosedSetzen(a);
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.auswahlMapper.insert(a);
+		return object;
 
 	}
 
@@ -1082,14 +1084,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
-		// Die Umfrage ggegebenfalls oeffnen
-		this.isClosedEntfernen(auswahl);
 
 		// Prüfen ob die Umfrage noch gevotet ist
 		this.isVotedEntfernen(auswahl);
 
 		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
+
+		// Die Umfrage ggegebenfalls oeffnen
+		this.isClosedEntfernen(auswahl);
 
 	}
 
@@ -2254,6 +2257,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					max = u;
 				}
 			}
+			
+			
+			//Max aus der ArrayList entfernen
+			for(Umfrageoption u: resultSet) {
+				if(u.getId()==max.getId()) {
+					resultSet.remove(u);
+				}
+			}
 
 			// Rausfinden ob sich das hoechste Ergebnis doppelt
 			for (Umfrageoption u : resultSet) {
@@ -2275,12 +2286,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Umfrageoption umfrageGewinnerErmitteln(Umfrage umfrage) throws IllegalArgumentException {
 		// Umfrageoptionen anhand der Umfrage suchen
-		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
+		ArrayList<Umfrageoption> resultSet = new ArrayList<Umfrageoption>();
+		resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
 
 		Umfrageoption max = null;
 
 		// Pruefen ob es Umfrageoptionen gibt
-		if (resultSet != null) {
+		if (resultSet.size() != 0) {
 
 			// Ergebnisse berechenen
 			for (Umfrageoption u : resultSet) {
@@ -2309,13 +2321,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public ArrayList<Umfrageoption> stichwahlUmfrageoptionenErmitteln(Umfrage umfrage) {
 		// Umfrageoptionen der Umfrage suchen
-		ArrayList<Umfrageoption> resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
+		ArrayList<Umfrageoption> resultSet = new ArrayList<Umfrageoption>();
+		resultSet = this.getUmfrageoptionenByUmfrage(umfrage);
 
 		// Leere ArrayList für die Ergebnisse bereitstellen
-		ArrayList<Umfrageoption> stichwahlResultSet = null;
+		ArrayList<Umfrageoption> stichwahlResultSet = new ArrayList<Umfrageoption>();
 
 		// Pruefen ob es Umfrageoptionen gibt
-		if (resultSet != null) {
+		if (resultSet.size()!=0) {
 
 			// Ergebnisse berechnen
 			for (Umfrageoption u : resultSet) {
@@ -2332,15 +2345,26 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					max = u;
 				}
 			}
+			
+			stichwahlResultSet.add(max);
+			
+			//Max aus der ArrayList entfernen
+			for(Umfrageoption u: resultSet) {
+				if(u.getId()==max.getId()) {
+					resultSet.remove(u);
+				}
+			}
 
 			// Stichwahlopionen suchen und hinzufuegen
 			for (Umfrageoption u : resultSet) {
 				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
 					stichwahlResultSet.add(u);
+					
 				}
 			}
 
 		}
+
 		return stichwahlResultSet;
 	}
 
@@ -2358,17 +2382,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Umfrage für die Stichwahl erstellen
 		Umfrage u = this.erstellenStichwahl(name, umfrage.getGruppenId());
 		u.setBesitzerId(umfrage.getBesitzerId());
-		this.speichern(u);
+		Umfrage fertigeUmfrage = this.umfrageMapper.insert(u);
 
 		// Stichwahlumfrageoptionen suchen
-		ArrayList<Umfrageoption> umfrageoptionen = null;
+		ArrayList<Umfrageoption> umfrageoptionen = new ArrayList<Umfrageoption>();
 		umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
 
 		// Stichwahlvorstellungen suchen
-		if (umfrageoptionen != null) {
+		if (umfrageoptionen.size() != 0) {
 			for (Umfrageoption umfr : umfrageoptionen) {
 				String nameUmfrageoption = "Stichwahl " + umfr.getName();
-				this.erstellenUmfrageoption(nameUmfrageoption, umfr.getUmfrageId(), umfr.getVorstellungsId());
+				this.erstellenUmfrageoption(nameUmfrageoption, fertigeUmfrage.getId(), umfr.getVorstellungsId());
 			}
 		}
 
@@ -2406,16 +2430,19 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// hat
 		for (Anwender a : gruppenmitglieder) {
 			int count = 0;
+
 			if (resAuswahlen != null) {
 				for (Auswahl aus : resAuswahlen) {
 					if (aus.getBesitzerId() == a.getId()) {
 						count++;
+
 					}
 				}
 			}
 
 			// Wenn der Anwender noch keinen Vote erstellt hat für die Umfrage, so ist die
 			// Umfrage noch offen
+
 			if (count == 0) {
 				return;
 			}
@@ -2426,9 +2453,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		umfrageMapper.update(umfrage);
 
 		// Dann wird geprüft ob eine Stichwahl oder ein Ergebnis vorliegt
-		//if (ergebnisGefunden(umfrage) == false) {
-		//	this.stichwahlStarten(umfrage);
-		//}
+		if (ergebnisGefunden(umfrage) == false) {
+			this.stichwahlStarten(umfrage);
+		}
 	}
 
 	/**
@@ -2769,8 +2796,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * bestehnder Auswahlen
 	 * </p>
 	 */
-	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
-			int size) throws IllegalArgumentException {
+	public Umfrage auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
+			int size, Umfrage umfrage) throws IllegalArgumentException {
 
 		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
 
@@ -2816,6 +2843,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				}
 			}
 		}
+		
+		return this.umfrageMapper.findById(umfrage.getId());
 	}
 
 	/**

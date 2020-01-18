@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -20,6 +21,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
@@ -172,6 +174,14 @@ public class VotingsAnzeigenTable extends FlowPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(voteColumn, "Voting Stand");
+		
+		voteColumn.setSortable(true);
+
+		sortHandler.setComparator(voteColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		umfrageoptionCellTable.setColumnWidth(voteColumn, 100, Unit.PX);
 
@@ -186,6 +196,14 @@ public class VotingsAnzeigenTable extends FlowPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(filmColumn, "Film");
+		
+		filmColumn.setSortable(true);
+
+		sortHandler.setComparator(filmColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		Column<UmfrageoptionInfo, String> kinoColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
@@ -196,10 +214,18 @@ public class VotingsAnzeigenTable extends FlowPanel{
 
 			}
 		};
-
+		
 		umfrageoptionCellTable.addColumn(kinoColumn, "Kino");
+		
+		kinoColumn.setSortable(true);
 
-		Column<UmfrageoptionInfo, String> speilzeitColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
+		sortHandler.setComparator(kinoColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
+
+		Column<UmfrageoptionInfo, String> spielzeitColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
 			@Override
 			public String getValue(UmfrageoptionInfo object) {
@@ -209,7 +235,15 @@ public class VotingsAnzeigenTable extends FlowPanel{
 			}
 		};
 
-		umfrageoptionCellTable.addColumn(speilzeitColumn, "Spielzeit");
+		umfrageoptionCellTable.addColumn(spielzeitColumn, "Spielzeit");
+		
+		spielzeitColumn.setSortable(true);
+
+		sortHandler.setComparator(spielzeitColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		Column<UmfrageoptionInfo, String> stadtColumn = new Column<UmfrageoptionInfo, String>(new TextCell()) {
 
@@ -222,6 +256,14 @@ public class VotingsAnzeigenTable extends FlowPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(stadtColumn, "Ort");
+		
+		stadtColumn.setSortable(true);
+
+		sortHandler.setComparator(stadtColumn, new Comparator<UmfrageoptionInfo>() {
+			public int compare(UmfrageoptionInfo o1, UmfrageoptionInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
 

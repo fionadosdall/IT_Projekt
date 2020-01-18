@@ -1686,10 +1686,11 @@ public interface Kinoplaner extends RemoteService {
 	 *            ArrayList der zu erstellenden Auswahlen
 	 * @param alteAuswahlen
 	 *            ArrayList der zu bisherigen Auswahlen
+	 * @return Zugehörige Umfrage
 	 * @throws IllegalArgumentException
 	 */
-	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen, int size)
-			throws IllegalArgumentException;
+	public Umfrage auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
+			int size, Umfrage umfrage) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1756,7 +1757,8 @@ public interface Kinoplaner extends RemoteService {
 	 * darf, nach löschen der Auswahl.
 	 * </p>
 	 * 
-	 * @param auswahl Auswahlobjekt
+	 * @param auswahl
+	 *            Auswahlobjekt
 	 * @throws IllegalArgumentException
 	 */
 	public void isVotedEntfernen(Auswahl auswahl) throws IllegalArgumentException;

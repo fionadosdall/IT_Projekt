@@ -127,7 +127,6 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 			RootPanel.get("details").clear();
 			VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(umfrage);
 			RootPanel.get("details").add(anzeigen);
-
 		}
 
 	}

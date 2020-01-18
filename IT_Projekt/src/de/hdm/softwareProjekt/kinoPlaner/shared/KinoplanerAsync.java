@@ -341,8 +341,8 @@ public interface KinoplanerAsync {
 
 	public void sinnloserCallback(AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen, int size,
-			AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
+			int size, Umfrage umfrage, AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
 
 	public void getFilmByName(String name, AsyncCallback<Film> callback) throws IllegalArgumentException;
 
@@ -351,8 +351,9 @@ public interface KinoplanerAsync {
 	public void getKinoketteByName(String name, AsyncCallback<Kinokette> callback) throws IllegalArgumentException;
 
 	public void getSpielzeitByName(String name, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
-	
-	public void updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
+
+	public void updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, AsyncCallback<Umfrage> callback)
+			throws IllegalArgumentException;
 
 	public void isVotedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
 }
