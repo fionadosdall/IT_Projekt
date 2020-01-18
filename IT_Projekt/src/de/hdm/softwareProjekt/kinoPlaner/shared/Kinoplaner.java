@@ -930,8 +930,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefilterten Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet,
-			Kino kino) throws IllegalArgumentException;
+	public ArrayList<Vorstellung> filterResultVorstellungenByKino(ArrayList<Vorstellung> resultSet, Kino kino)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -945,8 +945,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefilterten Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet,
-			Kinokette kino) throws IllegalArgumentException;
+	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet, Kinokette kino)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1688,60 +1688,77 @@ public interface Kinoplaner extends RemoteService {
 	 *            ArrayList der zu bisherigen Auswahlen
 	 * @throws IllegalArgumentException
 	 */
-	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen, int size)
 			throws IllegalArgumentException;
-	
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe eines Film der durch den Namen gesucht wird.
 	 * </p>
+	 * 
 	 * @param name
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
 	public Film getFilmByName(String name) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe eines Kinos der durch den Namen gesucht wird.
 	 * </p>
+	 * 
 	 * @param name
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
 	public Kino getKinoByName(String name) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Kinokette der durch den Namen gesucht wird.
 	 * </p>
+	 * 
 	 * @param name
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
 	public Kinokette getKinoketteByName(String name) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe einer Spielzeit der durch den Namen gesucht wird.
 	 * </p>
+	 * 
 	 * @param name
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
 	public Spielzeit getSpielzeitByName(String name) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Updaten einer Umfrage mitsamt der Veränderungen der Umfrageoptionen
 	 * </p>
-	 * @param umfrage Umfrageobjekt
-	 * @param umfrageoptionen Zu erstellende Umfrageobjete
+	 * 
+	 * @param umfrage
+	 *            Umfrageobjekt
+	 * @param umfrageoptionen
+	 *            Zu erstellende Umfrageobjete
 	 * @return gespeichertes Umfrageobjekt
 	 * @throws IllegalArgumentException
 	 */
-	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen) throws IllegalArgumentException;
+	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen)
+			throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Es wird geprueft ob der Boolean isVoted der Klasse Umfrage noch true sein
+	 * darf, nach löschen der Auswahl.
+	 * </p>
+	 * 
+	 * @param auswahl Auswahlobjekt
+	 * @throws IllegalArgumentException
+	 */
+	public void isVotedEntfernen(Auswahl auswahl) throws IllegalArgumentException;
 
 }

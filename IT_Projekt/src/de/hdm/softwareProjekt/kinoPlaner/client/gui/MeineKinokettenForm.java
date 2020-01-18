@@ -115,8 +115,8 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		
 		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		untenPanel.add(loeschenButton);
-		untenPanel.add(bearbeitenButton);
+		//untenPanel.add(loeschenButton);
+		//untenPanel.add(bearbeitenButton);
 		this.add(untenPanel);
 		
 	}

@@ -152,7 +152,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 			
 
 		}
-
+ 
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("details").clear();
