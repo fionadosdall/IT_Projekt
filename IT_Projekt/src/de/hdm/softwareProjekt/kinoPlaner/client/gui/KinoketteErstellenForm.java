@@ -146,7 +146,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			//TODO administration.kinoketteEntfernen(kinoketteBearbeiten, new KinoketteLoeschenCallback());
+			administration.loeschenKinoketteById(kk.getId(), new KinoketteLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkkf = new MeineKinokettenForm();
 			RootPanel.get("details").add(mkkf);
@@ -209,7 +209,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 	}
 	
-	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
+	private class KinoketteLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -219,9 +219,12 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		}
 
 		@Override
-		public void onSuccess(Kinokette result) {
+		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde gelöscht.");
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
 		}
 	}
 	
