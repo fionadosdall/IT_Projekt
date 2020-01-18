@@ -346,6 +346,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		k.setStrasse(strassse);
 		k.setHausnummer(hausnummer);
 		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+		k.setKinokettenId(0);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.kinoMapper.insert(k);
@@ -597,7 +598,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.isVoted(a);
 
 		// Die Umfrage gegebenfalls schließen
-		// this.isClosedSetzen(a);
+		this.isClosedSetzen(a);
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 		return this.auswahlMapper.insert(a);
@@ -1082,7 +1083,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
 		// Die Umfrage ggegebenfalls oeffnen
-		// this.isClosedEntfernen(auswahl);
+		this.isClosedEntfernen(auswahl);
+
+		// Prüfen ob die Umfrage noch gevotet ist
+		this.isVotedEntfernen(auswahl);
 
 		// Loeschen der Auswahl
 		this.auswahlMapper.delete(auswahl);
@@ -1841,18 +1845,23 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
 
 			for (Anwender a : alteGruppenmitglieder) {
-				int counter = 0;
-				for (Anwender aNeu : gruppenmitglieder) {
-					if (a.equals(aNeu)) {
-						fertigeGruppenmitglieder.add(a);
-						break;
-					} else {
-						counter++;
+				if (gruppenmitglieder != null) {
+					int counter = 0;
+
+					for (Anwender aNeu : gruppenmitglieder) {
+						if (a.equals(aNeu)) {
+							fertigeGruppenmitglieder.add(a);
+							break;
+						} else {
+							counter++;
+						}
+						if (counter == gruppenmitglieder.size()) {
+							gruppenmitgliedEntfernen(a, gruppe);
+							counter = 0;
+						}
 					}
-					if (counter == gruppenmitglieder.size()) {
-						gruppenmitgliedEntfernen(a, gruppe);
-						counter = 0;
-					}
+				} else {
+					gruppenmitgliedEntfernen(a, gruppe);
 				}
 			}
 
@@ -1891,18 +1900,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			ArrayList<Umfrageoption> fertigeUmfrageoptionen = new ArrayList<Umfrageoption>();
 
 			for (Umfrageoption u : alteUmfrageoptionen) {
-				int counter = 0;
-				for (Vorstellung uNeu : umfrageoptionen) {
-					if (u.getVorstellungsId() == uNeu.getId()) {
-						fertigeUmfrageoptionen.add(u);
-						break;
-					} else {
-						counter++;
+				if (umfrageoptionen != null) {
+					int counter = 0;
+					for (Vorstellung uNeu : umfrageoptionen) {
+						if (u.getVorstellungsId() == uNeu.getId()) {
+							fertigeUmfrageoptionen.add(u);
+							break;
+						} else {
+							counter++;
+						}
+						if (counter == umfrageoptionen.size()) {
+							loeschen(u);
+							counter = 0;
+						}
 					}
-					if (counter == umfrageoptionen.size()) {
-						loeschen(u);
-						counter = 0;
-					}
+				} else {
+					loeschen(u);
 				}
 			}
 
@@ -2002,6 +2015,37 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		if (u.isVoted() == false) {
 			u.setVoted(true);
 		}
+		umfrageMapper.update(u);
+	}
+
+	/**
+	 * <p>
+	 * Es wird geprueft ob der Boolean isVoted der Klasse Umfrage noch true sein
+	 * darf, nach löschen der Auswahl.
+	 * </p>
+	 */
+	@Override
+	public void isVotedEntfernen(Auswahl auswahl) {
+
+		// Umfrage zur Auswahl herausfinden
+		Umfrage u = this.umfrageMapper
+				.findById(this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId());
+
+		// Alle Umfrageoptionen zur Umfrage herausfinden
+		ArrayList<Umfrageoption> uO = this.umfrageoptionMapper.findAllByUmfrage(u);
+
+		// Alle Auswahlen zur Umfrage herausfinden
+		ArrayList<Auswahl> a = new ArrayList<Auswahl>();
+
+		for (Umfrageoption umf : uO) {
+			a.addAll(this.auswahlMapper.findAllByUmfrageoption(umf));
+		}
+
+		if (a.size() == 1) {
+			u.setVoted(false);
+		}
+		umfrageMapper.update(u);
+
 	}
 
 	/**
@@ -2197,6 +2241,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			// Ergebnisse berechnen
 			for (Umfrageoption u : resultSet) {
 				u.setVoteErgebnis(this.berechneAuswahlenByUmfrageoption(u));
+				umfrageoptionMapper.update(u);
 			}
 
 			Umfrageoption max = null;
@@ -2316,7 +2361,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.speichern(u);
 
 		// Stichwahlumfrageoptionen suchen
-		ArrayList<Umfrageoption> umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
+		ArrayList<Umfrageoption> umfrageoptionen = null;
+		umfrageoptionen = this.stichwahlUmfrageoptionenErmitteln(umfrage);
 
 		// Stichwahlvorstellungen suchen
 		if (umfrageoptionen != null) {
@@ -2344,15 +2390,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByUmfrage(umfrage);
 
 		// Erstellen einer leeren ArrayList für die Auswahlen
-		ArrayList<Auswahl> resAuswahlen = null;
+		ArrayList<Auswahl> resAuswahlen = new ArrayList<Auswahl>();
 
 		// Suchen aller Auswahlen für die Umfrageoptionen und hinzufuegen in die
 		// Auswahlen ArrayList
 		for (Umfrageoption u : umfrageoptionen) {
-			ArrayList<Auswahl> auswahlen = this.getAuswahlenByUmfrageoption(u);
-			for (Auswahl a : auswahlen) {
-				resAuswahlen.add(a);
-			}
+			resAuswahlen.addAll(this.getAuswahlenByUmfrageoption(u));
 		}
 
 		// Suchen aller Gruppenmitglieder die an der Umfrage teilnehemn
@@ -2363,9 +2406,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// hat
 		for (Anwender a : gruppenmitglieder) {
 			int count = 0;
-			for (Auswahl aus : resAuswahlen) {
-				if (aus.getBesitzerId() == a.getId()) {
-					count++;
+			if (resAuswahlen != null) {
+				for (Auswahl aus : resAuswahlen) {
+					if (aus.getBesitzerId() == a.getId()) {
+						count++;
+					}
 				}
 			}
 
@@ -2381,9 +2426,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		umfrageMapper.update(umfrage);
 
 		// Dann wird geprüft ob eine Stichwahl oder ein Ergebnis vorliegt
-		if (ergebnisGefunden(umfrage) == false) {
-			this.stichwahlStarten(umfrage);
-		}
+		//if (ergebnisGefunden(umfrage) == false) {
+		//	this.stichwahlStarten(umfrage);
+		//}
 	}
 
 	/**
@@ -2455,7 +2500,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		ArrayList<Umfrage> umfragen = this.getClosedUmfragenByAnwender();
 
 		// Leeres Ergebnissarray anlegen
-		ArrayList<Umfrage> zeitgueltigeUmfragen = null;
+		ArrayList<Umfrage> zeitgueltigeUmfragen = new ArrayList<Umfrage>();
 
 		// Aktuelle Zeit abrufen
 		Date date = new Date(System.currentTimeMillis());
@@ -2724,45 +2769,51 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * bestehnder Auswahlen
 	 * </p>
 	 */
-	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen)
-			throws IllegalArgumentException {
+	public void auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
+			int size) throws IllegalArgumentException {
+
 		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
-		ArrayList<Auswahl> umfraoptionAuswahlenArray = new ArrayList<Auswahl>();
 
 		for (Auswahl a : alteAuswahlen) {
 			int counter = 0;
-			for (Auswahl aGesamt : zuErstellendeAuswahlen) {
-				if (a.getUmfrageoptionId() == aGesamt.getUmfrageoptionId()) {
-					a.setVoting(aGesamt.getVoting());
-					fertigeAuswahlen.add(a);
-					speichern(a);
-					break;
-				} else {
-					counter++;
-				}
-				if (counter == zuErstellendeAuswahlen.size()) {
-					loeschen(a);
-					counter = 0;
-				}
-			}
-		}
-
-		for (Auswahl aGesamt : zuErstellendeAuswahlen) {
-			int counter = 0;
-			if (fertigeAuswahlen.size() != 0) {
-				for (Auswahl aFertig : fertigeAuswahlen) {
-					if (aGesamt.getUmfrageoptionId() == aFertig.getUmfrageoptionId()) {
+			if (size != 0) {
+				for (Auswahl aGesamt : zuErstellendeAuswahlen) {
+					if (a.getUmfrageoptionId() == aGesamt.getUmfrageoptionId()) {
+						a.setVoting(aGesamt.getVoting());
+						fertigeAuswahlen.add(a);
+						speichern(a);
 						break;
 					} else {
 						counter++;
 					}
-					if (counter == fertigeAuswahlen.size()) {
-						erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+					if (counter == zuErstellendeAuswahlen.size()) {
+						loeschen(a);
 						counter = 0;
 					}
 				}
 			} else {
-				erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+				loeschen(a);
+			}
+		}
+
+		if (size != 0) {
+			for (Auswahl aGesamt : zuErstellendeAuswahlen) {
+				int counter = 0;
+				if (fertigeAuswahlen.size() != 0) {
+					for (Auswahl aFertig : fertigeAuswahlen) {
+						if (aGesamt.getUmfrageoptionId() == aFertig.getUmfrageoptionId()) {
+							break;
+						} else {
+							counter++;
+						}
+						if (counter == fertigeAuswahlen.size()) {
+							erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+							counter = 0;
+						}
+					}
+				} else {
+					erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+				}
 			}
 		}
 	}

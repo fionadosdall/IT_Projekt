@@ -257,7 +257,7 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 	}
 
 	public void speichern() {
-		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>();
+		ArrayList<Auswahl> umfrageoptionAuswahlArray = new ArrayList<Auswahl>() ;
 
 		for (UmfrageoptionInfo ui : umfraoptionArray) {
 			if (ui.isVoteTeilnahme() != null) {
@@ -280,7 +280,9 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 			}
 		}
 		
-		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen, new AuswahlErstellenCallback());
+		Window.alert("Übergabewert"+umfrageoptionAuswahlArray.size());
+		
+		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen,umfrageoptionAuswahlArray.size(), new AuswahlErstellenCallback());
 		
 		kinoplaner.sinnloserCallback(new AsyncCallback<Void>() {
 
