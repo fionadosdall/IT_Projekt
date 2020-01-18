@@ -1,5 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -46,7 +48,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	private static Boolean edit = false;
 	private MeineKinosForm mkf;
-	private Kino kinoBearbeiten;
+	private ArrayList<Kinokette> kinoketten = new ArrayList<Kinokette>();
 	private Kino k;
 	
 	
@@ -56,15 +58,15 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	public KinoErstellenForm() {
 		
-		speichernButton.addClickHandler(new SpeichernClickHandler());
-		untenPanel.add(speichernButton);
-		//loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		
 		
 		
 	}
 	
 	public KinoErstellenForm(Kino k) {
+		this.k = k;
 		setBearbeiten(k);
+		setEdit(true);
 	}
 	
 	
@@ -126,6 +128,7 @@ public class KinoErstellenForm extends VerticalPanel {
 
 		this.add(kinoGrid);
 		
+		administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
@@ -137,7 +140,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		this.add(untenPanel);
 		
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		untenPanel.add(speichernButton);
+		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		
 	}
+	
+	
 	
 	
 	/* ClickHandler */
@@ -161,7 +170,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			// administration.kinoEntfernen(kinoBearbeiten.getId(), new KinoLoeschenCallback());
+			administration.loeschen(k, new KinoLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
@@ -189,7 +198,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 	
 	
-	private class KinoLoeschenCallback implements AsyncCallback<Kino> {
+	private class KinoLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -199,9 +208,41 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 		@Override
-		public void onSuccess(Kino result) {
+		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino wurde gelöscht.");
+			
+		}
+		
+	}
+	
+	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kinokette> result) {
+			
+			kinoketten = result;
+
+			if (result != null) {
+
+				for (Kinokette kk : result) {
+
+					kinokettenListBox.addItem(kk.getName());
+
+				}
+
+			} else {
+
+				kinokettenListBox.addItem("Keine Gruppen verfügbar");
+				kinokettenListBox.setEnabled(false);
+
+			}
 			
 		}
 		
