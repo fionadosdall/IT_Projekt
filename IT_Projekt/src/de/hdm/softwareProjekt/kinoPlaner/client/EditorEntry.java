@@ -19,9 +19,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 public class EditorEntry implements EntryPoint {
 	
 	Header header = new Header();
-	Navigator navigator = new Navigator();
 	Footer footer = new Footer();
-	private 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	
 
@@ -84,7 +83,6 @@ public class EditorEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("header").add(header);
-			RootPanel.get("navigator").add(navigator);
 			RootPanel.get("footer").add(footer);
 			UmfragenAnzeigenForm uaf = new UmfragenAnzeigenForm();
 			RootPanel.get("details").add(uaf);
