@@ -16,6 +16,12 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+
+/***
+ * Klasse zur Darstellung von Umfrage-Objekten für den Navigator
+ * 
+ *
+ */
 public class UmfrageCell extends AbstractCell<Umfrage> {
 
 

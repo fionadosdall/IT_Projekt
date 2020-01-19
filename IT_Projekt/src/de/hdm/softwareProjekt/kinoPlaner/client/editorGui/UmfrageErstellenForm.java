@@ -23,6 +23,11 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+/****
+ * Formular für das Anlegen einer neuen Umfrage im  Datenstamm
+ * 
+ *
+ */
 public class UmfrageErstellenForm extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -50,6 +55,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private Label SpiezeitLabel = new Label("Spielzeit");
 	private Label filmLabel = new Label("Filme");
 
+	
 	private TextBox umfrageTextBox = new TextBox();
 
 	private ListBox gruppenListBox = new ListBox();

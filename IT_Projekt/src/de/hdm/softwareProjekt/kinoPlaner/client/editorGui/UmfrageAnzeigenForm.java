@@ -14,11 +14,21 @@ import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+/***
+ * Die Klasse stellt das Formular um die Umfragen anzuzeigen
+ * @author fiona
+ *
+ */
 public class UmfrageAnzeigenForm extends FlowPanel {
 	private Umfrage umfrage = null;
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
+	
+	/**
+	 * Erstellen der Widgets
+	 * 
+	 */
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
@@ -37,13 +47,25 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	private UmfrageAnzeigenTable uat;
 
+	/***
+	 * Buttons erstellen
+	 */
 	private Button speichern = new Button("Speichern");
 	private Button votingsAnzeigen = new Button("Votings anzeigen");
 	private Button bearbeiten = new Button("Bearbeiten");
 
 	private Image papierkorb = new Image();
 
+	/**
+	 * onLoad()- Methode : Die Widgets werden der Form hinzugefügt
+	 * und formatiert
+	 */
 	public void onLoad() {
+		
+		/**
+		 * Stylenamen vergeben
+		 * 
+		 */
 
 		uat = new UmfrageAnzeigenTable(umfrage);
 
@@ -72,6 +94,9 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		title.addStyleName("title");
 
+		/**
+		 * Zusammenbauen der Widgets
+		 */
 		this.add(detailsoben);
 		this.add(detailsunten);
 
@@ -96,10 +121,28 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	}
 
+	/*
+	 * Konstruktor
+	 */
 	public UmfrageAnzeigenForm(Umfrage umfrage) {
 		this.umfrage = umfrage;
 
 	}
+	
+	
+	/***********************************************
+	 * CLICKHANDLER
+	 * *********************************************
+	 * 
+	 *
+	 */
+	
+	/**
+	 * Wenn der Nutzer, die Umfrage löschen möchte kann er dies mit einem Click
+	 * auf den Button machen
+	 * @author fiona
+	 *
+	 */
 
 	public class UmfrageLoeschenClickHandler implements ClickHandler {
 
@@ -120,6 +163,13 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	}
 
+	/***
+	 * Möchte der Nutzer sich die Votings in der Umfrage anzeien lassen,
+	 * so kann er dies mit einem Klick auf dem Button machen.
+	 *Der Nutzer gelangt zur Anzeigen-Form der Votings
+	 * @author fiona
+	 *
+	 */
 	private class VotingsAnzeigenClickHandler implements ClickHandler {
 
 		@Override
@@ -130,6 +180,14 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Wenn der Nutzer die Umfrage bearbeiten möchte, gelangt er mit einem
+	 * Klick auf den Button in die Erstellen-Form der Umfrage in welcher 
+	 * die Umfrage bearbeitet werden kann.
+	 * @author fiona
+	 *
+	 */
 	
 	private class UmfrageBearbeitenClickHandler implements ClickHandler {
 
@@ -143,6 +201,14 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	
+	/***************************************************
+	 * CALLBACKS
+	 * **********************************************
+	 * 
+	 *
+	 */
 
 	private class UmfrageLoeschenCallback implements AsyncCallback<Void> {
 
