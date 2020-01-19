@@ -149,8 +149,8 @@ public class SpielzeitMapper {
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
 						"INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" 
-								+ " VALUES(" + spielzeit.getId() + ", '" + spielzeit.getName() + "', " 
-								+ spielzeit.dateToString() + ", " + spielzeit.getBesitzerId() + ")");
+								+ " VALUES(" + spielzeit.getId() + ", '" + spielzeit.getName() + "', '" 
+								+ spielzeit.dateToString() + "', " + spielzeit.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

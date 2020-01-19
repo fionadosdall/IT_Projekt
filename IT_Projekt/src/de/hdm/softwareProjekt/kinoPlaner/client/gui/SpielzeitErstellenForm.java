@@ -59,6 +59,8 @@ public class SpielzeitErstellenForm extends PopupPanel {
  //   private DatePicker datePicker = new DatePicker();
 	
 	DateFormaterSpielzeit dfs;
+	
+	private SpielplaneintragForm sef;
 
 	private Button loeschenButton = new Button("Löschen");
 	private Button speichernButton = new Button("Speichern");
@@ -158,10 +160,17 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-
-			kinoplaner.erstellenSpielzeit("", dateBox.getValue(), new SpielzeitErstellenCallback());
 			
-			Window.alert(dateBox.getValue().toString());
+			
+//			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+//			String pattern ="yyyy.dd.MM HH:mm:ss";
+//			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+//			String formatiert = dft.format(dateBox.getValue());
+//			
+//			Window.alert("formatiert" + formatiert);
+		
+			kinoplaner.erstellenSpielzeit("", dateBox.getValue().toString(), new SpielzeitErstellenCallback());
+			
 			
 		}
 		
@@ -207,8 +216,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			
 				Window.alert("Spielzeit wurde erstellt");
 				
-				SpielplaneintragForm sef = new SpielplaneintragForm();
-				SpielplaneintragForm.getSpeilzeitListBox().addItem(result.getZeit().toString());
+				sef.getSpeilzeitListBox().addItem(result.getZeit().toString());
 				
 				Window.alert(result.getZeit().toString());
 				
