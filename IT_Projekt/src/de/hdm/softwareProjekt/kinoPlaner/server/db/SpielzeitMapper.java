@@ -174,9 +174,9 @@ public class SpielzeitMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName=\" '" + spielzeit.getName() + "' \", "
-					+ "erstellDatum=\"" + spielzeit.getErstellDatum() + "\", " + "spielzeit_anwender_Id=\""
-					+ spielzeit.getBesitzerId() + "\", " + "zeit=\"" + spielzeit.getZeit() + "\"" + " WHERE szId="
+			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
+					+ "erstellDatum= '" + spielzeit.getErstellDatum() + "' , " + "spielzeit_anwender_Id= '"
+					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.getZeit() + "' WHERE szId="
 					+ spielzeit.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();

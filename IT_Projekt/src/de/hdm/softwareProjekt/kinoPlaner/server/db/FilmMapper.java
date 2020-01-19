@@ -2,6 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
+
 
 /**
  * Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB
@@ -71,8 +72,8 @@ public class FilmMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum " + "FROM film"
-							+ " WHERE fName = '" + name + "' ORDER BY fName");
+					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum "
+							+ "FROM film" + " WHERE fName = '" + name + "' ORDER BY fName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Film-Objekt erstellt und die
@@ -138,8 +139,8 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 			/**
-			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden
-			 * Filme ist.
+			 * Im Folgenden: Überprüfung, welches die h�chste Id der schon bestehenden Filme
+			 * ist.
 			 */
 			ResultSet resultset = stmt.executeQuery("SELECT MAX(fId) AS maxId " + "FROM film");
 			if (resultset.next()) {
@@ -149,16 +150,18 @@ public class FilmMapper {
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
+
 					"INSERT INTO Film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)"
 							+ " VALUES(" + film.getId() + ", '" + film.getName() + "', '" + film.getBeschreibung() + "', '"
 									+ film.getBewertung() + "', " + film.getBesitzerId() + ")");
+
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		/**
-		 * Rückgabe des Film-Objektes. Durch die Methode wurde das Objekt ggf. angepasst (z.B:
-		 * angepasste Id)
+		 * Rückgabe des Film-Objektes. Durch die Methode wurde das Objekt ggf. angepasst
+		 * (z.B: angepasste Id)
 		 */
 		return film;
 	}
@@ -178,9 +181,9 @@ public class FilmMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen
 			 */
-			stmt.executeUpdate("UPDATE film SET " + "film_anwender_Id=\"" + film.getBesitzerId() + "\", " + "fName=\" '"
-					+ film.getName() + "' \", " + "fBeschreibung=\" '" + film.getBeschreibung() + "' \", " + "bewertung=\""
-					+ film.getBewertung() + "\", " + "erstellDatum=\"" + film.getErstellDatum() + "\"" + " WHERE fId="
+			stmt.executeUpdate("UPDATE film SET " + "film_anwender_Id= '" + film.getBesitzerId() + "', " + "fName='"
+					+ film.getName() + "', " + "fBeschreibung= '" + film.getBeschreibung() + "' , " + "bewertung='"
+					+ film.getBewertung() + "', " + "erstellDatum='" + film.getErstellDatum() + "' WHERE fId="
 					+ film.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -221,8 +224,8 @@ public class FilmMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
 							+ " WHERE fId=" + id + " ORDER BY fName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -256,7 +259,8 @@ public class FilmMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film" + " ORDER BY fName");
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+							+ " ORDER BY fName");
 
 			while (resultset.next()) {
 				Film f = new Film();
@@ -295,8 +299,8 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
 							+ " WHERE film_anwender_Id=" + anwender.getId() + " ORDER BY film_anwender_Id");
 			while (resultset.next()) {
 				Film f = new Film();
@@ -313,16 +317,17 @@ public class FilmMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//Ergebnis zurückgeben in Form der eingangs erstellten ArrayList
+		// Ergebnis zurückgeben in Form der eingangs erstellten ArrayList
 		return resultarray;
 	}
-	
+
 	public Film findByName(String name) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery("SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
-					+ " WHERE fName='" + name + "' ORDER BY film_anwender_Id");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+							+ " WHERE fName='" + name + "' ORDER BY film_anwender_Id");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Film f = new Film();

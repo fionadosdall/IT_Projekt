@@ -55,7 +55,7 @@ public class AnwenderMapper {
 	/**
 	 * Suche nach allen Anwendern über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Anwender tragen 
+	 * @param name den die gesuchten Anwender tragen
 	 * @return Eine ArrayList, die alle gefundenen Anwender enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -90,7 +90,7 @@ public class AnwenderMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//Ergebnis zurückgeben in Form der ArrayList
+		// Ergebnis zurückgeben in Form der ArrayList
 		return resultarray;
 	}
 
@@ -111,7 +111,7 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='" + name+"'");
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -144,10 +144,11 @@ public class AnwenderMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO anwender(aId, aName, gMail)" + "VALUES(" + anwender.getId()
-						+ ",'" + anwender.getName() + "','" + anwender.getGmail() +"')");
-				
-				ResultSet resultset2 = stmt.executeQuery("SELECT erstellDatum " + "FROM anwender WHERE aID ="+anwender.getId());
+				stmt.executeUpdate("INSERT INTO anwender(aId, aName, gMail)" + "VALUES(" + anwender.getId() + ",'"
+						+ anwender.getName() + "','" + anwender.getGmail() + "')");
+
+				ResultSet resultset2 = stmt
+						.executeQuery("SELECT erstellDatum " + "FROM anwender WHERE aID =" + anwender.getId());
 				if (resultset2.next()) {
 					// Setzen des DB erzeugten Timestamp
 					anwender.setErstellDatum(resultset2.getTimestamp("erstellDatum"));
@@ -177,9 +178,9 @@ public class AnwenderMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE anwender SET " + "'aName'=\" '" + anwender.getName() + "' \", " + "gMail=\" ' "
-					+ anwender.getGmail() + " ' \", " + "erstellDatum=\"" + anwender.getErstellDatum() + "\" "
-					+ "WHERE aId=" + anwender.getId());
+			stmt.executeUpdate("UPDATE anwender SET " + "aName= '" + anwender.getName() + "', " + "gMail= '"
+					+ anwender.getGmail() + "' ," + "erstellDatum= '" + anwender.getErstellDatum() + "' WHERE aId="
+					+ anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -209,10 +210,11 @@ public class AnwenderMapper {
 	}
 
 	/**
-	 * Alle in der Datenbank vorhandenen Anwender sollen gesucht und ausgegeben werden
+	 * Alle in der Datenbank vorhandenen Anwender sollen gesucht und ausgegeben
+	 * werden
 	 * 
-	 * @return Alle Anwender-Objekte, die in der Datenbank eingetragen sind, werden in
-	 *         einer ArrayList zurückgegeben.
+	 * @return Alle Anwender-Objekte, die in der Datenbank eingetragen sind, werden
+	 *         in einer ArrayList zurückgegeben.
 	 */
 	public ArrayList<Anwender> findAll() {
 		Connection con = DBConnection.connection();
@@ -222,8 +224,8 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aId, aName, gMail, erstellDatum FROM anwender "
-			+ "ORDER BY aName");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT aId, aName, gMail, erstellDatum FROM anwender " + "ORDER BY aName");
 
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
@@ -261,8 +263,8 @@ public class AnwenderMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery
-					("SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aId=" + id + " ORDER BY aName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aId=" + id + " ORDER BY aName");
 			// Pruefung, ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Anwender a = new Anwender();
@@ -291,8 +293,8 @@ public class AnwenderMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt.executeQuery(
-					"SELECT aId, gMail, aName, erstellDatum FROM anwender" + " WHERE aName='" + name + "' ORDER BY aName");
+			ResultSet resultset = stmt.executeQuery("SELECT aId, gMail, aName, erstellDatum FROM anwender"
+					+ " WHERE aName='" + name + "' ORDER BY aName");
 			if (resultset.next()) {
 				Anwender a = new Anwender();
 				a.setId(resultset.getInt("aId"));
@@ -307,37 +309,37 @@ public class AnwenderMapper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * find by gmail
 	 */
-	
-	public Anwender findByGmail (String gmail) {
-		
+
+	public Anwender findByGmail(String gmail) {
+
 		Connection con = DBConnection.connection();
 		String sql = "SELECT * FROM anwender WHERE gMail= ' " + gmail + " ' ";
-		
+
 		try {
-			
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(sql);
-			
-				if (rs.next()) {
-				Anwender anwender = new Anwender ();
-				
-				
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				Anwender anwender = new Anwender();
+
 				anwender.setId(rs.getInt("aId"));
 				anwender.setName(rs.getString("aName"));
 				anwender.setGmail(rs.getString("gMail"));
 				anwender.setErstellDatum(rs.getTimestamp("erstellDatum"));
-				
+
 				return anwender;
-				}
-			
-		}catch (SQLException e) {
-				e.printStackTrace();
-			
-		} return null;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		return null;
 	}
 
 	/**
@@ -359,10 +361,10 @@ public class AnwenderMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery(
-					"SELECT gruppID, anwendID, anwender.gMail, anwender.aName, anwender.erstellDatum "+
-							"FROM gruppenmitglieder INNER JOIN anwender ON anwendID = anwender.aId WHERE gruppID =  "+
-							gruppe.getId()+" ORDER BY aId");
+			ResultSet resultset = stmt
+					.executeQuery("SELECT gruppID, anwendID, anwender.gMail, anwender.aName, anwender.erstellDatum "
+							+ "FROM gruppenmitglieder INNER JOIN anwender ON anwendID = anwender.aId WHERE gruppID =  "
+							+ gruppe.getId() + " ORDER BY aId");
 			/**
 			 * F�r jeden Eintrag im Suchergebnis wird jetzt ein Anwender-Objekt erstellt und
 			 * damit wird die ArrayListe Durchlauf für Durchlauf der Schleife

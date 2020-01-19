@@ -205,10 +205,10 @@ public class SpielplanMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Spielplan SET " + "spName=\" '" + spielplan.getName() + "' \", "
-					+ "spielplan_anwender_Id=\"" + spielplan.getBesitzerId() + "\", " + "spielplan_kino_Id=\""
-					+ spielplan.getKinoId() + "\", " + "erstellDatum=\"" + spielplan.getErstellDatum() + "\""
-					+ " WHERE spId=" + spielplan.getId());
+			stmt.executeUpdate("UPDATE Spielplan SET " + "spName= '" + spielplan.getName() + "' , "
+					+ "spielplan_anwender_Id= '" + spielplan.getBesitzerId() + "' , " + "spielplan_kino_Id= '"
+					+ spielplan.getKinoId() + "' , " + "erstellDatum= '" + spielplan.getErstellDatum() + "' WHERE spId="
+					+ spielplan.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -328,9 +328,9 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT spId, spName, spielplan_anwender_Id, kinoId, erstellDatum " + "FROM Spielplan"
-							+ " WHERE spielplan_anwender_Id = " + anwenderOwner.getId() + " ORDER BY spielplan_kino_Id");
+			ResultSet resultset = stmt.executeQuery("SELECT spId, spName, spielplan_anwender_Id, kinoId, erstellDatum "
+					+ "FROM Spielplan" + " WHERE spielplan_anwender_Id = " + anwenderOwner.getId()
+					+ " ORDER BY spielplan_kino_Id");
 
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();
@@ -479,8 +479,8 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Spielplan SET " + "spielplan_anwender_Id=\"" + "\"" + " WHERE spId="
-					+ spielplan.getId());
+			stmt.executeUpdate(
+					"UPDATE Spielplan SET " + "spielplan_anwender_Id=\"" + "\"" + " WHERE spId=" + spielplan.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

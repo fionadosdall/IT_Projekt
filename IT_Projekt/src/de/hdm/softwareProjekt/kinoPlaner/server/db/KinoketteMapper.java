@@ -144,22 +144,23 @@ public class KinoketteMapper {
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				kinokette.setId(resultset.getInt("maxId") + 1);
-				
+
 			}
-			
-			PreparedStatement stmt2 = con.prepareStatement("INSERT INTO kinokette (kkId, sitz, kkName, website, erstellDatum,"
-					+ " kinokette_anwender_Id) VALUES(?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
-					
-					stmt2.setInt(1, kinokette.getId());
-					stmt2.setString(2, kinokette.getSitz());
-					stmt2.setString(3, kinokette.getName());
-					stmt2.setString(4, kinokette.getWebsite());
-					stmt2.setTimestamp(5, kinokette.getErstellDatum());
-					stmt2.setInt(6, kinokette.getBesitzerId());
-					
-				
-					
-					stmt2.executeUpdate();
+
+			PreparedStatement stmt2 = con
+					.prepareStatement(
+							"INSERT INTO kinokette (kkId, sitz, kkName, website, erstellDatum,"
+									+ " kinokette_anwender_Id) VALUES(?, ?, ?, ?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
+
+			stmt2.setInt(1, kinokette.getId());
+			stmt2.setString(2, kinokette.getSitz());
+			stmt2.setString(3, kinokette.getName());
+			stmt2.setString(4, kinokette.getWebsite());
+			stmt2.setTimestamp(5, kinokette.getErstellDatum());
+			stmt2.setInt(6, kinokette.getBesitzerId());
+
+			stmt2.executeUpdate();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -185,10 +186,10 @@ public class KinoketteMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen
 			 */
-			stmt.executeUpdate("UPDATE kinokette SET " + "kinokette_anwender_Id=\"" + kinokette.getBesitzerId() + "\", "
-					+ "kkName=\" '" + kinokette.getName() + "' \", " + "erstellDatum=\"" + kinokette.getErstellDatum()
-					+ "\", " + "sitz=\" '" + kinokette.getSitz() + "' \", " + "website=\" '" + kinokette.getWebsite()
-					+ "' \" " + "WHERE kkId=" + kinokette.getId());
+			stmt.executeUpdate("UPDATE kinokette SET " + "kinokette_anwender_Id= '" + kinokette.getBesitzerId() + "', "
+					+ "kkName= '" + kinokette.getName() + "', " + "erstellDatum= '" + kinokette.getErstellDatum()
+					+ "', " + "sitz= '" + kinokette.getSitz() + "' , " + "website= '" + kinokette.getWebsite()
+					+ "' WHERE kkId=" + kinokette.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

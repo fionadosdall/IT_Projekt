@@ -58,9 +58,9 @@ public class AuswahlMapper {
 	 * Suche nach allen Auswahl-Objekten über vorgegebenen Namen.
 	 * 
 	 * @param name den die gesuchten Auswahl-Objekte tragen
-	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enthält. Falls eine
-	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
-	 *         oder nur teilweise befüllt zurück gegeben wird.
+	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enthält. Falls
+	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
+	 *         leer oder nur teilweise befüllt zurück gegeben wird.
 	 */
 	public ArrayList<Auswahl> findAllByName(String name) {
 		Connection con = DBConnection.connection();
@@ -70,9 +70,9 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum " 
-					+ "FROM auswahl" + " WHERE awName = '" + name + "' ORDER BY awName");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum "
+							+ "FROM auswahl" + " WHERE awName = '" + name + "' ORDER BY awName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Auswahl-Objekt erstellt und
@@ -149,9 +149,11 @@ public class AuswahlMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO auswahl (awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting)"
-						+ "VALUES(" + auswahl.getId() + ", '" + auswahl.getName() + "', " + auswahl.getBesitzerId() + ", "
-						+ auswahl.getUmfrageoptionId() + ", " + auswahl.getVoting() + ")");
+				stmt.executeUpdate(
+						"INSERT INTO auswahl (awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting)"
+								+ "VALUES(" + auswahl.getId() + ", '" + auswahl.getName() + "', "
+								+ auswahl.getBesitzerId() + ", " + auswahl.getUmfrageoptionId() + ", "
+								+ auswahl.getVoting() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -179,9 +181,10 @@ public class AuswahlMapper {
 			 * Update wird in die Datenbank eingetragen
 			 */
 			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id='" + auswahl.getBesitzerId() + "', "
-					+ "auswahl_umfrageoption_Id='" + auswahl.getUmfrageoptionId() + "', " + "voting='" + auswahl.getVoting()
-					+ "', " + "awName= '" + auswahl.getName() + "' WHERE awId=" + auswahl.getId());
-			
+					+ "auswahl_umfrageoption_Id='" + auswahl.getUmfrageoptionId() + "', " + "voting='"
+					+ auswahl.getVoting() + "', " + "awName= '" + auswahl.getName() + "' WHERE awId="
+					+ auswahl.getId());
+
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -221,8 +224,8 @@ public class AuswahlMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
 							+ " WHERE awId=" + id + " ORDER BY auswahl_umfrageoption_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -248,9 +251,9 @@ public class AuswahlMapper {
 	 * 
 	 * @param umfrageoption zu welcher man alle getroffenen Auswahlen ausgegebenen
 	 *                      haben m�chte.
-	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enth�lt. Falls eine
-	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
-	 *         oder nur teilweise bef�llt zur�ckgegeben wird.
+	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enth�lt. Falls
+	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
+	 *         leer oder nur teilweise bef�llt zur�ckgegeben wird.
 	 */
 	public ArrayList<Auswahl> findAllByUmfrageoption(Umfrageoption umfrageoption) {
 		Connection con = DBConnection.connection();
@@ -260,9 +263,10 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ " WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId() + " ORDER BY auswahl_anwender_Id");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
+							+ " WHERE auswahl_umfrageoption_Id=" + umfrageoption.getId()
+							+ " ORDER BY auswahl_anwender_Id");
 
 			/**
 			 * F�r jeden Eintrag im Sucheregbnis wird nun ein Auswahl-Objekt erstellt. Damit
@@ -284,7 +288,7 @@ public class AuswahlMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//Ergebnis zurückgeben in Form der ArrayList 
+		// Ergebnis zurückgeben in Form der ArrayList
 		return resultarray;
 	}
 
@@ -305,8 +309,8 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate(
-					"UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + anwender.getId() + "\"" + " WHERE awId=" + auswahl.getId());
+			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id=\"" + anwender.getId() + "\""
+					+ " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -327,7 +331,8 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE auswahl SET " + "auswahl_anwender_Id= " + null + "\"" + " WHERE awId=" + auswahl.getId());
+			stmt.executeUpdate(
+					"UPDATE auswahl SET " + "auswahl_anwender_Id= " + null + "\"" + " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -335,8 +340,8 @@ public class AuswahlMapper {
 
 	/**
 	 * Ein Auswahl-Objekt wird mithilfe einer vorgegebenen Umfrageoption, zu welcher
-	 * die Auswahl gehört, gesucht. Außerdem wird der Anwender angegeben, welcher die
-	 * Umfrageoption entsprechend der Auswahl beantwortet hat.
+	 * die Auswahl gehört, gesucht. Außerdem wird der Anwender angegeben, welcher
+	 * die Umfrageoption entsprechend der Auswahl beantwortet hat.
 	 * 
 	 * @param anwender      Objekt nach welchem die Suche nach der Auswahl gefiltert
 	 *                      wird.
@@ -349,9 +354,10 @@ public class AuswahlMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet resultset = stmt
-					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " AND auswahl_umfrageoption_Id=" + umfrageoption.getId());
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
+							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " AND auswahl_umfrageoption_Id="
+							+ umfrageoption.getId());
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
 				Auswahl a = new Auswahl();
@@ -389,8 +395,8 @@ public class AuswahlMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
 							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " ORDER BY awId");
 			while (resultset.next()) {
 				Auswahl a = new Auswahl();
@@ -407,7 +413,7 @@ public class AuswahlMapper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		//Ergebnis zurückgeben in Form der ArrayList 
+		// Ergebnis zurückgeben in Form der ArrayList
 		return resultarray;
 	}
 

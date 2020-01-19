@@ -179,10 +179,10 @@ public class KinoMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id=\"" + kino.getBesitzerId() + "\", " + "kName=\" '"
-					+ kino.getName() + "' \", " + "erstellDatum=\"" + kino.getErstellDatum() + "\", " + "plz=\""
-					+ kino.getPlz() + "\", " + "stadt=\" '" + kino.getStadt() + "' \", " + "strasse=\" '" + kino.getStrasse()
-					+ "' \", " + "hausnummer=\"" + kino.getHausnummer() + "\"" + " WHERE kId=" + kino.getId());
+			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id= '" + kino.getBesitzerId() + "' , " + "kName= '"
+					+ kino.getName() + "', " + "erstellDatum= '" + kino.getErstellDatum() + "' , " + "plz= '"
+					+ kino.getPlz() + "' , " + "stadt= '" + kino.getStadt() + "', " + "strasse= '" + kino.getStrasse()
+					+ "' , " + "hausnummer= '" + kino.getHausnummer() + "' WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
