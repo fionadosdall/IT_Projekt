@@ -1,7 +1,9 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
-import java.sql.Date;
+import java.util.Date;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 
 public class Spielzeit extends BesitzerBusinessObjekt{
 	
@@ -25,8 +27,8 @@ public class Spielzeit extends BesitzerBusinessObjekt{
  * Setzen der Zeit
  */
 
-	public void setZeit(Date zeit) {
-		this.zeit = zeit;
+	public void setZeit(Date date) {
+		this.zeit = date;
 	}
 
 /**
@@ -39,12 +41,13 @@ public class Spielzeit extends BesitzerBusinessObjekt{
 	
 /**
  * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz
- * Dies kann selbstverständlich in Subklassen ueberschrieben werden
+ * Dies kann selbstverstï¿½ndlich in Subklassen ueberschrieben werden
  */
 
 	@Override
 	public String toString() {
-		return "Spielzeit [zeit=" + zeit + "]";
+
+		return zeit.toString();
 	}
 	
 	
