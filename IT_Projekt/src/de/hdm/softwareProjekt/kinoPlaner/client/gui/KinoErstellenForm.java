@@ -195,10 +195,7 @@ private class KinoLoeschenDialogBox extends DialogBox{
 			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
 		
 			
-			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
-					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), kk.getId(),
-					new KinoErstellenCallback());
-			clearForm();
+			
 			
 		}		
 		
@@ -333,7 +330,12 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
-			kk = result;
+			
+			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
+					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
+					new KinoErstellenCallback());
+			clearForm();
+			
 		}
 		
 	}

@@ -37,6 +37,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	private HomeBarAdmin hb = new HomeBarAdmin();
 	
 	private Label formHeaderLabel = new Label ("Dashboard");
+	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschten Spielplan anklicken.");
 	
 	private ArrayList <Spielplan> spielplaene;
 	private Kino kino;
@@ -52,8 +53,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	
 	/*Erstellen der Buttons*/
 	
-	private Button loeschenButton = new Button(" Auswahl löschen");
-	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
+	
 	
 	/*Vergeben der Style-Namen*/
 	
@@ -69,8 +69,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		inhaltPanel.addStyleName("detailsboxInhalt");
 		
 		formHeaderLabel.addStyleName("formHeaderLabel");
-		loeschenButton.addStyleName("loeschenButton");
-		bearbeitenButton.addStyleName("bearbeitenButton");
+	
 		untenPanel.addStyleName("untenPanel");
 		
 		/* Zusammenbauen der Widgets*/
@@ -89,8 +88,8 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 
 		
 		
-		untenPanel.add(loeschenButton);
-		untenPanel.add(bearbeitenButton);
+		
+		untenPanel.add(bearbeitenLabel);
 		this.add(untenPanel);
 		
 		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
