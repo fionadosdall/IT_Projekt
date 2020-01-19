@@ -79,6 +79,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 
 		@Override
 		public void onClick(ClickEvent event) {
+			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoErstellenForm erstellen = new KinoErstellenForm();
 			KinoErstellenForm.setEdit(edit);
@@ -92,6 +93,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 
 		@Override
 		public void onClick(ClickEvent event) {
+			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoketteErstellenForm erstellen = new KinoketteErstellenForm();
 			KinoketteErstellenForm.setEdit(edit);
@@ -107,6 +109,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			dropdown.clear();
 			RootPanel.get("details").clear();
 			SpielplanErstellenForm erstellen = new SpielplanErstellenForm();
 			SpielplanErstellenForm.setEdit(edit);

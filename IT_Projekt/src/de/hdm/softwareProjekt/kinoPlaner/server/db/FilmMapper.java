@@ -148,9 +148,10 @@ public class FilmMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
-				stmt.executeUpdate("INSERT INTO film (fId, fName, film_anwender_Id, erstellDatum, fBeschreibung, bewertung)"
-						+ " VALUES( " + film.getId() + ", '" + film.getName() + "', " + film.getBesitzerId() + ", "
-						+ film.getErstellDatum() + ", '" + film.getBeschreibung() + "', " + film.getBewertung() + ") ");
+				stmt.executeUpdate(
+					"INSERT INTO Film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)"
+							+ " VALUES(" + film.getId() + ", '" + film.getName() + "', '" + film.getBeschreibung() + "', '"
+									+ film.getBewertung() + "', " + film.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
