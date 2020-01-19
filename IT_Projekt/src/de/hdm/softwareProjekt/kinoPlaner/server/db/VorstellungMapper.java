@@ -183,11 +183,11 @@ public class VorstellungMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Vorstellung SET " + "vName=\" '" + vorstellung.getName() + "' \", "
-					+ "erstellDatum=\"" + vorstellung.getErstellDatum() + "\", " + "vorstellung_spielplan_Id=\""
-					+ vorstellung.getSpielzeitId() + "\", " + "vorstellung_spielzeit_Id=\""
-					+ vorstellung.getSpielzeitId() + "\", " + "vorstellung_film_Id=\"" + vorstellung.getFilmId() + "\" "
-					+ " WHERE vId=" + vorstellung.getId());
+			stmt.executeUpdate("UPDATE Vorstellung SET " + "vName= '" + vorstellung.getName() + "' , "
+					+ "erstellDatum= '" + vorstellung.getErstellDatum() + "' , " + "vorstellung_spielplan_Id= '"
+					+ vorstellung.getSpielzeitId() + "' , " + "vorstellung_spielzeit_Id= '"
+					+ vorstellung.getSpielzeitId() + "' , " + "vorstellung_film_Id= '" + vorstellung.getFilmId()
+					+ "' WHERE vId=" + vorstellung.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

@@ -172,12 +172,13 @@ public class FilmErstellenForm extends PopupPanel {
 				// TODO Auto-generated method stub
 				
 				
-			//	kinoplaner.erstellenFilm(nameTextBox.getText(), beschreibungTextBox.getText(), bewertungTextBox.getText(),
-					//	new FilmErstellenCallback());
+				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(), bewertungTextBox.getValue(),
+						new FilmErstellenCallback());
 				
+				Window.alert(nameTextBox.getValue());
+				Window.alert(beschreibungTextBox.getValue());
+				Window.alert(bewertungTextBox.getValue());
 				
-				clearForm();
-				FilmErstellenForm.this.hide();
 
 			}
 		
@@ -212,6 +213,17 @@ public class FilmErstellenForm extends PopupPanel {
 				// TODO Auto-generated method stub
 				Systemmeldung.anzeigen("Film wurde angelegt");
 				
+				Window.alert(nameTextBox.getValue());
+				Window.alert(beschreibungTextBox.getValue());
+				Window.alert(bewertungTextBox.getValue());
+				
+				clearForm();
+				FilmErstellenForm.this.hide();
+				
+				SpielplaneintragForm sef = new SpielplaneintragForm();
+				SpielplaneintragForm.getFilmListBox().addItem(result.getName());
+			
+				Window.alert(result.getName());
 			}
 	
 		}
@@ -229,6 +241,7 @@ public class FilmErstellenForm extends PopupPanel {
 			public void onSuccess(Film result) {
 				// TODO Auto-generated method stub
 				Systemmeldung.anzeigen("Film wurde gelöscht");
+				
 			}}
 			
 		

@@ -13,6 +13,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
+ * Die AdminEntry Klasse implementiert das Interface Entry Point & definiert somit auch
+ * die Methode onModuleLoad().
+ * Die Methode wird zu Beginn des Seitenaufrufs aufgerufen
  */
 
 
@@ -34,14 +37,30 @@ public class AdminEntry implements EntryPoint {
 	}
 	
 	/**Callbacks**/
+	/***********************************
+	 * Hier erstellt die onModuleLoad()-Methode Instanzen des asynchronen
+	 * Interfaces KinoplanerAsynC
+	 * @author fiona
+	 *
+	 */
 	
 	private class GetAnwenderByIdCallback implements AsyncCallback<Anwender> {
 
+		/***************
+		 * Wenn fehlgeschlagen: Ein neuer Anwender/User soll erstellt werden
+		 */
 		@Override
 		public void onFailure(Throwable caught) {
 			kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
 			
 		}
+		
+		
+		/*
+		 * 
+		 * Wenn ein Anwender eingeloogt ist, wird dieser zurückggegeben. 
+		 * Anderenfalls soll ein neuer Anwender erstellt werden
+		 */
 
 		@Override
 		public void onSuccess(Anwender result) {
@@ -81,6 +100,10 @@ public class AdminEntry implements EntryPoint {
 			// TODO Auto-generated method stub
 			
 		}
+		
+		/*
+		 * onSucces: Anwender ist in als Editor eingeloogt
+		 */
 
 		@Override
 		public void onSuccess(Void result) {
@@ -95,6 +118,8 @@ public class AdminEntry implements EntryPoint {
 	
 	/*
 	 * Die Klasse dient jederzeit zum Aufrufen des aktuellen Anwenders
+	 * Klasse ist public, damit global auf sie zugeriffen werden kann
+	 * zb von anderen GUI - Klassen
 	 */
 
 	public static class aktuellerAnwender {

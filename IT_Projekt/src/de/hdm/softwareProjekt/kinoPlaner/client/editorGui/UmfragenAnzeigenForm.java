@@ -16,16 +16,39 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+
+/***
+ * Die Klasse stellt das Formular für das Anzeigen einer Umfrage
+ * 
+ */
 public class UmfragenAnzeigenForm extends FlowPanel {
+	
+	/*
+	 * BusinessObjectView = Vorlage um die Ansicht von Business Object
+	 * zu erstellen. Bo's werden in CellLists angezeigt
+	 */
 
 	private BusinessObjektView bov = new BusinessObjektView();
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+	
+	/**
+	 * Erstellen der Widgets
+	 */
 	private VerticalPanel p = new VerticalPanel();
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	
+	/*
+	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt
+	 * und formatiert
+	 */
 
 	public void onLoad() {
+		
+		/*
+		 * Style-Namen vergeben
+		 */
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -42,9 +65,16 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		p.add(bov);
 		detailsunten.add(p);
 
-		kinoplaner.getUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
+		kinoplaner.getOpenUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
 
 	}
+	
+	/***
+	 * 
+	 * Private Klasse
+	 * alle Umfrage-Instanzen, zu denen der Anwender gehört, aus dem System bekommen
+	 *
+	 */
 
 	private class SucheUmfragenByAnwenderCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
@@ -57,7 +87,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
-			if (result != null) {
+			if (result.size() != 0) {
 				bov.setUmfragen(result);
 			} else {
 				Label labelT = new Label();
@@ -70,6 +100,15 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 			detailsunten.add(erstellenButton);
 
 		}
+		
+		
+		/**
+		 * Click-Handler: Wenn Anwender, die passende Umfrage noch nicht vorfindent,
+		 * kann er eine neue Umfrage erstellen.
+		 * Mit dem Klick auf den Button gelangt er zur Erstellen-Form einer Gruppe
+		 * 
+		 *
+		 */
 
 		private class UmfrageErstellenClickHandler implements ClickHandler {
 

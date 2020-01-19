@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -38,6 +39,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
+	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 	
 	private static Boolean edit = false;
@@ -58,7 +60,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	
 	
 	public KinoketteErstellenForm(Kinokette kk) {
+		this.kk = kk;
 		setBearbeiten(kk);
+		setEdit(true);
 	}
 
 
@@ -74,6 +78,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		sitzLabel.addStyleName("textLabel");;
 		websiteLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
@@ -106,7 +111,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
-			untenPanel.add(speichernButton);
+			untenPanel.add(aenderungSpeichernButton);
 		} else {
 			clearForm();
 			untenPanel.add(speichernButton);
@@ -117,9 +122,41 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
+		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 	}
 		
+	private class KinoketteLoeschenDialogBox extends DialogBox{
 		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Kinokette entgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public KinoketteLoeschenDialogBox() {
+
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(abfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für die DailogBox
+			jaButton.addClickHandler(new LoeschenClickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+		}
+	}
+	
+	/***ClickHandler***/
 		
 	public class SpeichernClickHandler implements ClickHandler {
 
@@ -136,12 +173,64 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	}
 	
 	private class KinoketteLoeschenClickHandler implements ClickHandler{
-
+		
+		
+		
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			KinoketteLoeschenDialogBox kinokinoketteloeschenDB = new KinoketteLoeschenDialogBox();
+			kinokinoketteloeschenDB.center();
+		}
+		
+	}
+	
+	private class LoeschenClickHandler implements ClickHandler{
+
+		
+		private KinoketteLoeschenDialogBox kinoketteloeschenDB;
+		
+		public LoeschenClickHandler(KinoketteLoeschenDialogBox kinoketteloeschenDB) {
+			this.kinoketteloeschenDB = kinoketteloeschenDB;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoketteloeschenDB.hide();
+			administration.loeschenKinoketteById(kk.getId(), new KinoketteLoeschenCallback());
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
+		}
+		
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+
+		private KinoketteLoeschenDialogBox kinoketteloeschenDB;
+		
+		public AbbrechenClickHandler(KinoketteLoeschenDialogBox kinoketteloeschenDB) {
+			this.kinoketteloeschenDB = kinoketteloeschenDB;
 			
-			//TODO administration.kinoketteEntfernen(kinoketteBearbeiten, new KinoketteLoeschenCallback());
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoketteloeschenDB.hide();
+		}
+		
+	}
+	
+	private class AenderungSpeichernClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			
+			kk.setName(nameTextBox.getText());
+			kk.setSitz(sitzTextBox.getText());
+			kk.setWebsite(websiteTextBox.getText());
+			administration.speichern(kk, new AenderungSpeichernCallback());
 			RootPanel.get("details").clear();
 			mkkf = new MeineKinokettenForm();
 			RootPanel.get("details").add(mkkf);
@@ -169,7 +258,25 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		
 	}
 	
-	private class KinoketteLoeschenCallback implements AsyncCallback<Kinokette> {
+	private class AenderungSpeichernCallback implements AsyncCallback<Void>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderungen konnten nicht gespeichert werden.");
+		}
+
+		
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderung gespeichert");
+		}
+		
+	}
+	
+	private class KinoketteLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -179,9 +286,12 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		}
 
 		@Override
-		public void onSuccess(Kinokette result) {
+		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde gelöscht.");
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
 		}
 	}
 	

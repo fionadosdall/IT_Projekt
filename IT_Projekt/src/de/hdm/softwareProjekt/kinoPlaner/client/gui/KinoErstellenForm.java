@@ -1,9 +1,13 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -46,8 +50,9 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	private static Boolean edit = false;
 	private MeineKinosForm mkf;
-	private Kino kinoBearbeiten;
+	private ArrayList<Kinokette> kinoketten = new ArrayList<Kinokette>();
 	private Kino k;
+	private Kinokette kk;
 	
 	
 	/**
@@ -56,15 +61,15 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	public KinoErstellenForm() {
 		
-		speichernButton.addClickHandler(new SpeichernClickHandler());
-		untenPanel.add(speichernButton);
-		//loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		
 		
 		
 	}
 	
 	public KinoErstellenForm(Kino k) {
+		this.k = k;
 		setBearbeiten(k);
+		setEdit(true);
 	}
 	
 	
@@ -126,6 +131,7 @@ public class KinoErstellenForm extends VerticalPanel {
 
 		this.add(kinoGrid);
 		
+		administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
@@ -137,6 +143,41 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		this.add(untenPanel);
 		
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		untenPanel.add(speichernButton);
+		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		
+	}
+	
+private class KinoLoeschenDialogBox extends DialogBox{
+		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label abfrage = new Label("Kino entgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public KinoLoeschenDialogBox() {
+
+			abfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(abfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für die DailogBox
+			jaButton.addClickHandler(new LoeschenClickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+		}
 	}
 	
 	
@@ -148,9 +189,17 @@ public class KinoErstellenForm extends VerticalPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			String kinoketteName = kinokettenListBox.getSelectedItemText();
+			
+			
+			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
+		
+			
 			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
-					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 
+					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), kk.getId(),
 					new KinoErstellenCallback());
+			clearForm();
+			
 		}		
 		
 	}
@@ -161,10 +210,44 @@ public class KinoErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			// administration.kinoEntfernen(kinoBearbeiten.getId(), new KinoLoeschenCallback());
+			KinoLoeschenDialogBox kinoLoeschenDB = new KinoLoeschenDialogBox();
+			kinoLoeschenDB.center();
+		}
+		
+	}
+	
+private class LoeschenClickHandler implements ClickHandler{
+
+		
+		private KinoLoeschenDialogBox kinoloeschenDB;
+		
+		public LoeschenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
+			this.kinoloeschenDB = kinoloeschenDB;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoloeschenDB.hide();
+			administration.loeschen(k, new KinoLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
+		}
+		
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+
+		private KinoLoeschenDialogBox kinoloeschenDB;
+		
+		public AbbrechenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
+			this.kinoloeschenDB = kinoloeschenDB;
+			
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			kinoloeschenDB.hide();
 		}
 		
 	}
@@ -189,7 +272,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 	
 	
-	private class KinoLoeschenCallback implements AsyncCallback<Kino> {
+	private class KinoLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -199,10 +282,58 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 		@Override
-		public void onSuccess(Kino result) {
+		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino wurde gelöscht.");
 			
+		}
+		
+	}
+	
+	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kinokette> result) {
+			
+			kinoketten = result;
+
+			if (result != null) {
+
+				for (Kinokette kk : result) {
+
+					kinokettenListBox.addItem(kk.getName());
+
+				}
+
+			} else {
+
+				kinokettenListBox.addItem("Keine Gruppen verfügbar");
+				kinokettenListBox.setEnabled(false);
+
+			}
+			
+		}
+		
+	}
+	
+	private class KinoketteByNameCallback implements AsyncCallback<Kinokette>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			kk = result;
 		}
 		
 	}

@@ -150,8 +150,10 @@ public class UmfrageCellTable extends VerticalPanel {
 			public void update(int index, VorstellungInfo object, String value) {
 				// TODO Auto-generated method stub
 				
-				dataProviderUmfrage.getList().remove(object);
+				dataProviderUmfrage.getList().remove(object); 
 				dataProviderUmfrage.refresh();
+				nct.addVorstellung(object.getU());
+				
 
 			}
 		});
@@ -217,21 +219,21 @@ public class UmfrageCellTable extends VerticalPanel {
 
 	public void addUmfrageoption(ArrayList<Vorstellung> neueUmfrageoptionen) {
 
-		neueUmfrageoptionen = nct.getUmfrageOptionen();
+		this.neueUmfrageoptionen = nct.getUmfrageOptionen();
 
-		if (neueUmfrageoptionen != null) {
+		if (this.neueUmfrageoptionen != null) {
 			
 			umfrageList.clear();
 
-			for (Vorstellung v : neueUmfrageoptionen) {
+			for (Vorstellung v : this.neueUmfrageoptionen) {
 
-				Window.alert(v.getName());
+				//Window.alert(v.getName());
 
 				uI = new VorstellungInfo();
 
 				uI.setU(v);
 
-				Window.alert(v.getName());
+				//Window.alert(v.getName());
 
 				umfrageList.add(uI);
 

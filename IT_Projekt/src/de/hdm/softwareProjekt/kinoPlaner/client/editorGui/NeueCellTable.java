@@ -17,18 +17,36 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanVorstellungenCellTable;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class NeueCellTable extends VerticalPanel {
 
 	private UmfrageCellTable uct = null;
+	private SpielplanVorstellungenCellTable svct = null;
+
+	public NeueCellTable() {
+
+	}
+
+	public NeueCellTable(Umfrage umfrage) {
+		this.umfrage = umfrage;
+	}
+
+	private Umfrage umfrage;
 
 	public void setUmfrageCellTable(UmfrageCellTable uct) {
 		this.uct = uct;
+	}
+	
+	public void setSpielplanVorstellungenCellTable(SpielplanVorstellungenCellTable svct) {
+		this.svct = svct;
 	}
 
 	public interface CellTableResources extends CellTable.Resources {
@@ -98,7 +116,12 @@ public class NeueCellTable extends VerticalPanel {
 	private ListDataProvider<VorstellungInfo> dataProvider = new ListDataProvider<VorstellungInfo>();
 	private List<VorstellungInfo> list = dataProvider.getList();
 
-	private ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
+	private ArrayList<Vorstellung> vorFilterVorstellungen = new ArrayList<Vorstellung>();
+
+	public ArrayList<Vorstellung> getVorFilterVorstellungen() {
+		return vorFilterVorstellungen;
+	}
+
 	private ArrayList<Vorstellung> umfrageOptionen = new ArrayList<Vorstellung>();
 
 	public ArrayList<Vorstellung> getUmfrageOptionen() {
@@ -150,12 +173,9 @@ public class NeueCellTable extends VerticalPanel {
 
 				umfrageOptionen.add(vorstellung);
 
+				vorFilterVorstellungen.remove(vorstellung);
+
 				uct.addUmfrageoption(umfrageOptionen);
-
-				for (Vorstellung v : umfrageOptionen) {
-					Window.alert("for Schliefe " + v.getName());
-				}
-
 
 			}
 		});
@@ -227,8 +247,11 @@ public class NeueCellTable extends VerticalPanel {
 				return o1.getStadt().compareTo(o2.getStadt());
 			}
 		});
-
 		kinoplaner.getAllVorstellungen(new VorstellungCallback());
+
+		if (umfrage != null) {
+			kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		}
 
 		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
 		vorstellungenCellTable.addColumn(filmColumn, "Film");
@@ -240,20 +263,96 @@ public class NeueCellTable extends VerticalPanel {
 
 	}
 
+	public void filterResultUpdaten(ArrayList<Vorstellung> vorstellungen) {
+
+		// Löschen des bisherigen Anzeigeinhalts
+		list.clear();
+
+		for (Vorstellung v : vorstellungen) {
+
+			vI = new VorstellungInfo();
+
+			vI.setV(v);
+
+			list.add(vI);
+
+			kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
+			kinoplaner.getKinoByVorstellung(v, new KinoCallback(vI));
+			kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(vI));
+
+		}
+
+	}
+
+	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Umfrageoption> result) {
+			for (Umfrageoption u : result) {
+
+				kinoplaner.getVorstellungByUmfrageoption(u, new GetVorstellungByUmfrageoptionCallback());
+
+			}
+
+		}
+
+	}
+
+	private class GetVorstellungByUmfrageoptionCallback implements AsyncCallback<Vorstellung> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(Vorstellung result) {
+
+			for (Vorstellung v : vorFilterVorstellungen) {
+				if (v.getId() == result.getId()) {
+					
+					for (VorstellungInfo vI : list) {
+						if(vI.getV().getId()==v.getId()) {
+							dataProvider.getList().remove(vI);
+						}
+					}
+
+					umfrageOptionen.add(v);
+
+					vorFilterVorstellungen.remove(v);
+
+					uct.addUmfrageoption(umfrageOptionen);
+				}
+			}
+
+		}
+
+	}
+
 	private class VorstellungCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			// TODO Auto-generated method stub
-			vorstellungen = result;
 
-			for (Vorstellung v : vorstellungen) {
+			vorFilterVorstellungen = result;
+
+			for (Vorstellung v : result) {
 
 				vI = new VorstellungInfo();
 
@@ -264,9 +363,6 @@ public class NeueCellTable extends VerticalPanel {
 				kinoplaner.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
 				kinoplaner.getKinoByVorstellung(v, new KinoCallback(vI));
 				kinoplaner.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(vI));
-
-				kinoplaner.getVorstellungById(v.getId(), new VorstellungByIdCallback(vI));
-
 			}
 
 		}
@@ -283,13 +379,13 @@ public class NeueCellTable extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Film result) {
-			// TODO Auto-generated method stub
 
 			info.filmName = result.getName();
 
@@ -309,13 +405,13 @@ public class NeueCellTable extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Kino result) {
-			// TODO Auto-generated method stub
 
 			info.kinoName = result.getName();
 
@@ -337,13 +433,14 @@ public class NeueCellTable extends VerticalPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			// TODO Auto-generated method stub
+
 			info.spielzeit = result.getZeit().toString();
 
 			dataProvider.refresh();
@@ -352,29 +449,20 @@ public class NeueCellTable extends VerticalPanel {
 
 	}
 
-	private class VorstellungByIdCallback implements AsyncCallback<Vorstellung> {
+	public void addVorstellung(Vorstellung vorstellung2) {
 
-		VorstellungInfo info = null;
+		vorFilterVorstellungen.add(vorstellung2);
+		umfrageOptionen.remove(vorstellung2);
 
-		VorstellungByIdCallback(VorstellungInfo info) {
-			this.info = info;
-		}
+		vI = new VorstellungInfo();
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert(caught.getMessage());
+		vI.setV(vorstellung2);
 
-		}
+		list.add(vI);
 
-		@Override
-		public void onSuccess(Vorstellung result) {
-			// TODO Auto-generated method stub
-
-			info.v = result;
-			Window.alert(info.v.getName());
-
-		}
+		kinoplaner.getFilmById(vorstellung2.getFilmId(), new FilmByIdCallback(vI));
+		kinoplaner.getKinoByVorstellung(vorstellung2, new KinoCallback(vI));
+		kinoplaner.getSpielzeitById(vorstellung2.getSpielzeitId(), new SpielzeitCallback(vI));
 
 	}
 

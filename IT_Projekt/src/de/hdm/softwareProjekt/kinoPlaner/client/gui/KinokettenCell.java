@@ -53,7 +53,7 @@ public class KinokettenCell extends AbstractCell<Kinokette>{
 				/*KinoketteErstellenForm anzeigen = new KinoketteErstellenForm(value);
 				RootPanel.get("details").add(anzeigen);*/
 	    	  
-	    	  	KinoketteErstellenForm.setEdit(edit);
+	    	  	//KinoketteErstellenForm.setEdit(edit);
 	    	  	KinoketteErstellenForm bearbeiten = new KinoketteErstellenForm(value);
 				//KinoketteErstellenForm.setBearbeiten(value);
 				RootPanel.get("details").add(bearbeiten);

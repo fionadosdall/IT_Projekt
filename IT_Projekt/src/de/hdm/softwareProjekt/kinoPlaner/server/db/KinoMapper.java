@@ -179,10 +179,10 @@ public class KinoMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id=\"" + kino.getBesitzerId() + "\", " + "kName=\" '"
-					+ kino.getName() + "' \", " + "erstellDatum=\"" + kino.getErstellDatum() + "\", " + "plz=\""
-					+ kino.getPlz() + "\", " + "stadt=\" '" + kino.getStadt() + "' \", " + "strasse=\" '" + kino.getStrasse()
-					+ "' \", " + "hausnummer=\"" + kino.getHausnummer() + "\"" + " WHERE kId=" + kino.getId());
+			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id= '" + kino.getBesitzerId() + "' , " + "kName= '"
+					+ kino.getName() + "', " + "erstellDatum= '" + kino.getErstellDatum() + "' , " + "plz= '"
+					+ kino.getPlz() + "' , " + "stadt= '" + kino.getStadt() + "', " + "strasse= '" + kino.getStrasse()
+					+ "' , " + "hausnummer= '" + kino.getHausnummer() + "' WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -459,6 +459,32 @@ public class KinoMapper {
 		}
 		// ArrayList mit Ergebnis zurückgeben
 		return resultarray;
+	}
+
+	public Kino findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+							+ " WHERE kName='" + name + "' ORDER BY kName");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Kino k = new Kino();
+				k.setId(resultset.getInt("kId"));
+				k.setBesitzerId(resultset.getInt("kino_anwender_Id"));
+				k.setName(resultset.getString("kName"));
+				k.setPlz(resultset.getInt("plz"));
+				k.setStadt(resultset.getString("stadt"));
+				k.setStrasse(resultset.getString("strasse"));
+				k.setHausnummer(resultset.getString("hausnummer"));
+				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return k;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 }

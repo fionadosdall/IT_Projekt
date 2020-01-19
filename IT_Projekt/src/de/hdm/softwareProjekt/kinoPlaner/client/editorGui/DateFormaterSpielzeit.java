@@ -3,24 +3,43 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 //import java.sql.Date;
 import java.util.Date;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
-
 public class DateFormaterSpielzeit {
 	
 	Date date;
-
+	private int year;
+	private int month;
+	private int day;
+	private int hour;
+	private int minute;
 	
 	public DateFormaterSpielzeit (Date date) {
 		this.date = date;
-
+		year = date.getYear();
+		month = date.getMonth()+1;
+		day = date.getDate();
+		hour = date.getHours();
+		minute = date.getMinutes();
 	}
 	
 	public String toString() {
-		DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
-		String pattern ="dd.MM.yy HH:mm";
-		DateTimeFormat dft = new DateTimeFormat(pattern) {};
-		return dft.format(date);
+		StringBuffer buffi = new StringBuffer();
+		buffi.append(year);
+		buffi.append("-");
+		if (month<10) {
+			buffi.append("0");
+		}
+		buffi.append(month);
+		buffi.append("-");
+		if (day<10) {
+			buffi.append("0");
+		}
+		buffi.append(day);
+		buffi.append(" ");
+		buffi.append(hour);
+		buffi.append(":");
+		buffi.append(minute);		
+		
+		return buffi.toString();
 	}
 
 }

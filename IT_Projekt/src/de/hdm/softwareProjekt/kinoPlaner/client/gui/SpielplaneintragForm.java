@@ -1,6 +1,8 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,7 +18,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielplaneintragForm extends PopupPanel {
@@ -44,7 +48,16 @@ public class SpielplaneintragForm extends PopupPanel {
 	private Vorstellung vorstellung;
 	
 	private static ListBox filmListBox = new ListBox();
+	
+	public static ListBox getFilmListBox() {
+		return filmListBox;
+	}
+
 	private static ListBox spielzeitListBox = new ListBox();
+	
+	public static ListBox getSpeilzeitListBox() {
+		return spielzeitListBox;
+	}
 	
 	public static Boolean edit = false;
 	
@@ -121,6 +134,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		//this.setPopupPosition(30, 50);
 		this.add(popupPanel);
 		
+		administration.getAllFilme(new FilmeCallback());
+		administration.getAllSpielzeiten(new SpielzeitenCallback());
 		
 	}
 	
@@ -157,9 +172,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
 			SpielzeitErstellenForm spielzeit = new SpielzeitErstellenForm();
-			RootPanel.get("details").add(spielzeit);
+			spielzeit.center();
 			
 		}
 		
@@ -168,6 +182,57 @@ public class SpielplaneintragForm extends PopupPanel {
 	
 	
 	/*** Callbacks ***/
+	
+	private class FilmeCallback implements AsyncCallback<ArrayList<Film>>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Film> result) {
+			// TODO Auto-generated method stub
+			
+			if(result != null) {
+				
+				for(Film f : result) {
+					filmListBox.addItem(f.getName());
+				}
+			} else {
+				filmListBox.addItem("Keine Filme verfügbar");
+				filmListBox.setEnabled(false);
+			}
+		}
+		
+	}
+	
+	private class SpielzeitenCallback implements AsyncCallback<ArrayList<Spielzeit>>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Spielzeit> result) {
+			// TODO Auto-generated method stub
+			
+				if(result != null) {
+				
+				for(Spielzeit s : result) {
+					spielzeitListBox.addItem(s.getZeit().toString());
+				}
+			} else {
+				spielzeitListBox.addItem("Keine Spielzeiten verfügbar");
+				spielzeitListBox.setEnabled(false);
+			}
+		}
+			
+		
+	}
 	
 	private class SpielplaneintragErstellenCallback implements AsyncCallback<Spielplan>{
 

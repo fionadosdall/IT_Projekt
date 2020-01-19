@@ -127,7 +127,6 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 			RootPanel.get("details").clear();
 			VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(umfrage);
 			RootPanel.get("details").add(anzeigen);
-
 		}
 
 	}
@@ -137,7 +136,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
-			UmfrageBearbeitenForm bearbeitenForm = new UmfrageBearbeitenForm(umfrage);
+			UmfrageErstellenForm bearbeitenForm = new UmfrageErstellenForm();
+			bearbeitenForm.setUmfrage(umfrage);
 			RootPanel.get("details").add(bearbeitenForm);
 
 		}
@@ -151,7 +151,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 			
 
 		}
-
+ 
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("details").clear();

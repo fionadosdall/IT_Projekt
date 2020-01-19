@@ -64,11 +64,13 @@ public class BurgerMenue extends FlowPanel {
 		}
 
 	}
+	
 
 	private class GruppeErstellenHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			dropdown.clear();
 			RootPanel.get("details").clear();
 			GruppeErstellenForm erstellen = new GruppeErstellenForm();
 			RootPanel.get("details").add(erstellen);
@@ -81,6 +83,7 @@ public class BurgerMenue extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			dropdown.clear();
 			RootPanel.get("details").clear();
 			UmfrageErstellenForm erstellen = new UmfrageErstellenForm();
 			RootPanel.get("details").add(erstellen);

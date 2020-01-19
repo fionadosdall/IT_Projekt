@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
@@ -84,8 +83,7 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				Date date = new Date(resultset.getTimestamp("zeit").getTime());
-				sz.setZeit(date);
+				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -176,9 +174,9 @@ public class SpielzeitMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName=\" '" + spielzeit.getName() + "' \", "
-					+ "erstellDatum=\"" + spielzeit.getErstellDatum() + "\", " + "spielzeit_anwender_Id=\""
-					+ spielzeit.getBesitzerId() + "\", " + "zeit=\"" + spielzeit.getZeit() + "\"" + " WHERE szId="
+			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
+					+ "erstellDatum= '" + spielzeit.getErstellDatum() + "' , " + "spielzeit_anwender_Id= '"
+					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.getZeit() + "' WHERE szId="
 					+ spielzeit.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -231,8 +229,7 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				Date date = new Date(resultset.getTimestamp("zeit").getTime());
-				sz.setZeit(date);
+				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -272,8 +269,7 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				Date date = new Date(resultset.getTimestamp("zeit").getTime());
-				sz.setZeit(date);
+				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -307,8 +303,30 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				Date date = new Date(resultset.getTimestamp("zeit").getTime());
-				sz.setZeit(date);
+				sz.setZeit(resultset.getDate("zeit"));
+				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				return sz;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
+	public Spielzeit findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit"
+							+ " WHERE szName='" + name + "' ORDER BY zeit");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Spielzeit sz = new Spielzeit();
+				sz.setId(resultset.getInt("szId"));
+				sz.setName(resultset.getString("szName"));
+				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
+				sz.setZeit(resultset.getDate("zeit"));
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return sz;
 			}
