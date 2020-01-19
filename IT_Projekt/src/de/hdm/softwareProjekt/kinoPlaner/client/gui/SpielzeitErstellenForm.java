@@ -11,6 +11,8 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -98,7 +100,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		speichernButton.addStyleName("speichernButton");
 		
-		spielzeitTB.getElement().setPropertyString("placeholder", "Spielzeit eingeben");
+		dateBox.getElement().setPropertyString("placeholder", "Spielzeit auswählen");
 		
 		
 		if (edit == true) {
@@ -156,11 +158,11 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
-			Date date = dateBox.getValue();
-					
-			kinoplaner.erstellenSpielzeit("", date, new SpielzeitErstellenCallback());
+
+			kinoplaner.erstellenSpielzeit("", dateBox.getValue(), new SpielzeitErstellenCallback());
 			
-			Window.alert(date.toString());
+			Window.alert(dateBox.getValue().toString());
+			
 		}
 		
 	}
@@ -202,13 +204,13 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		@Override
 		public void onSuccess(Spielzeit result) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Spielzeit wurde erstellt");
-				RootPanel.get("details").clear();
-				
-		
+			
+				Window.alert("Spielzeit wurde erstellt");
 				
 				SpielplaneintragForm sef = new SpielplaneintragForm();
 				SpielplaneintragForm.getSpeilzeitListBox().addItem(result.getZeit().toString());
+				
+				Window.alert(result.getZeit().toString());
 				
 				SpielzeitErstellenForm.this.hide();
 				
