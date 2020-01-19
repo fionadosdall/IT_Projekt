@@ -112,7 +112,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			SpielplanErstellenForm erstellen = new SpielplanErstellenForm();
-			SpielplanErstellenForm.setEdit(edit);
+		
 			RootPanel.get("details").add(erstellen);
 		}
 		

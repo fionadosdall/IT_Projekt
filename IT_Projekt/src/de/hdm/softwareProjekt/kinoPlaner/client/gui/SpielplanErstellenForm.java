@@ -3,34 +3,26 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlowPanel;
+
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
+
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueCellTable;
+
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
@@ -72,6 +64,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	private Button entfernenButton = new Button("Vorstellung entfernen");
 	private Button speichernButton = new Button("Speichern");
 
+	private ArrayList<Kino> kinos = new ArrayList<Kino>();
 	private ListDataProvider<Kino> dataProvider = new ListDataProvider<Kino>();
 	private List<Kino> list = dataProvider.getList();
 
@@ -98,13 +91,18 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 
+	private SpielplaneintragForm neuerSpielplaneintrag;
+
 	public void onLoad() {
-		
-		if(edit == true) {
-		vorstellungenCellTable = new SpielplanVorstellungenCellTable(spielplan);
-		}else {
+
+		if (edit == true) {
+			vorstellungenCellTable = new SpielplanVorstellungenCellTable(spielplan);
+
+		} else {
 			vorstellungenCellTable = new SpielplanVorstellungenCellTable();
 		}
+
+		vorstellungenCellTable.setParent(this);
 
 		// Vergeben der Stylenamen
 
@@ -141,6 +139,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		if (edit == true) {
 
 			detailsoben.add(spielplanBearbeitenFormLabel);
+			spielplannameTextBox.setText(spielplan.getName());
 		} else {
 			detailsoben.add(spielplanformLabel);
 			clearForm();
@@ -287,6 +286,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		 */
 	}
 
+	public void closeSpielplaneintragForm() {
+		neuerSpielplaneintrag.hide();
+	}
+
 	/**************************
 	 * CLICKHANDLER
 	 */
@@ -297,9 +300,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			// RootPanel.get("details").clear();
-			SpielplaneintragForm.getFilmListBox().clear();
-			SpielplaneintragForm.getSpeilzeitListBox().clear();
-			SpielplaneintragForm neuerSpielplaneintrag = new SpielplaneintragForm();
+
+			neuerSpielplaneintrag = new SpielplaneintragForm(vorstellungenCellTable);
 			neuerSpielplaneintrag.show();
 			// neuerSpielplaneintrag.center();
 			// RootPanel.get("details").add(neuerSpielplaneintrag);
@@ -312,9 +314,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			// kinoplaner.erstellenSpielplanKino(spielplannameTB.getValue(), kinoId, new
-			// SpielplanErstellenCallback());
+
+			kinoplaner.getKinoByName(kinoListBox.getSelectedValue(), new GetKinoByNameCallback());
 
 		}
 
@@ -340,54 +341,74 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	 * CALLBACKS
 	 */
 
-	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
+	private class GetKinoByNameCallback implements AsyncCallback<Kino> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-
-			Systemmeldung.anzeigen("KinoCallback funktioniert nicht");
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onSuccess(ArrayList<Kino> result) {
-			// TODO Auto-generated method stub
-
-			//kinos = result;
-
-			if (result != null) {
-
-				for (Kino k : result) {
-
-					kinoListBox.addItem(k.getName());
-
-				}
-
-			} else {
-
-				kinoListBox.addItem("Keine Gruppen verfügbar");
-				kinoListBox.setEnabled(false);
-
-			}
-
-		}
-
-	}
-
-	private class SpielplaneintragHinzufuegenCallback implements AsyncCallback<Kino> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-
-			Systemmeldung.anzeigen("KinoHinzufügenCallback funktioniert nicht");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Kino result) {
+			if (kinokettenCheckBox.getValue() == true) {
+				if (result.getKinokettenId() != 0) {
+					kinoplaner.erstellenSpielplaeneKinokette(spielplannameTextBox.getValue(), result.getKinokettenId(),
+							vorstellungenCellTable.getVorstellungenArray(),
+							new ErstellenSpielplaeneKinoketteCallback());
+				} else {
+					Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
+				}
+			} else {
+				kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
+						vorstellungenCellTable.getVorstellungenArray(), new ErstellenSpielplanKinoCallback());
+			}
+		}
 
-			Systemmeldung.anzeigen("Kino wurde hinzugefügt");
+	}
+
+	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kino> result) {
+
+			kinos = result;
+			int indexSelected = 0;
+			int counter = 0;
+
+			if (result.size() != 0) {
+
+				for (Kino k : result) {
+
+					kinoListBox.addItem(k.getName());
+
+					if (edit == true) {
+						if (k.getId() == spielplan.getKinoId()) {
+							indexSelected = counter;
+						} else {
+							counter++;
+						}
+					}
+
+				}
+				if (edit == true) {
+					kinoListBox.setSelectedIndex(indexSelected);
+				}
+
+			} else {
+
+				kinoListBox.addItem("Kein Kino verfügbar");
+				kinoListBox.setEnabled(false);
+
+			}
 
 		}
 
@@ -411,58 +432,52 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	/* Callback */
 
-	private class SpielplanErstellenCallback implements AsyncCallback<Spielplan> {
+	private class ErstellenSpielplaeneKinoketteCallback implements AsyncCallback<ArrayList<Spielplan>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Eine neuer Spielplan konnte leider nicht erstellt werden");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
-		public void onSuccess(Spielplan result) {
-			// TODO Auto-generated method stub
+		public void onSuccess(ArrayList<Spielplan> result) {
 
-			/*
-			 * if (spielplannameTB.getValue() == "" ) {
-			 * Systemmeldung.anzeigen("Es wurde kein Spielplanname eingegebnen"); } else {
-			 * RootPanel.get("details").clear(); spielplaeneF =new MeineSpielplaeneForm();
-			 * RootPanel.get("details").add(spielplaeneF); }
-			 */
+			if (result == null) {
+				Window.alert("Name bereits vergeben!");
+			} else {
+				RootPanel.get("details").clear();
+				spielplaeneF = new MeineSpielplaeneForm();
+				RootPanel.get("details").add(spielplaeneF);
+			}
 
 		}
 
 	}
 
-	private class SucheVorstellungenBySpielplanCallback implements AsyncCallback<Vorstellung> {
+	public class ErstellenSpielplanKinoCallback implements AsyncCallback<Spielplan> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
-		public void onSuccess(Vorstellung result) {
-			// TODO Auto-generated method stub
-
+		public void onSuccess(Spielplan result) {
+			if (result == null) {
+				Window.alert("Name bereits vergeben!");
+			} else {
+				RootPanel.get("details").clear();
+				spielplaeneF = new MeineSpielplaeneForm();
+				RootPanel.get("details").add(spielplaeneF);
+			}
 		}
 
 	}
 
 	/** Methoden ***/
-
-	public Boolean getEdit() {
-		return edit;
-	}
-
-	public static void setEdit(Boolean edit) {
-		SpielplanErstellenForm.edit = edit;
-	}
-
-	public static void setBearbeiten(Spielplan spielplan) {
-
-	}
 
 	public void clearForm() {
 		// spielplannameTB.setText("");

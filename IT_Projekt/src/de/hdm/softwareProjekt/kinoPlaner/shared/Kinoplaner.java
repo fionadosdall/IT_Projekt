@@ -199,7 +199,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielplan Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielplan erstellenSpielplanKino(String name, int kinoId) throws IllegalArgumentException;
+	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -299,7 +299,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielzeit Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielzeit erstellenSpielzeit(String name, Date zeit) throws IllegalArgumentException;
+	public Spielzeit erstellenSpielzeit(String name, String zeit) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1158,7 +1158,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return fertiges Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId,  ArrayList<Vorstellung> neueVorstellungen)
 			throws IllegalArgumentException;
 
 	/**

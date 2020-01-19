@@ -147,7 +147,7 @@ public class VorstellungMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Vorstellungen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Vorstellung");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(vId) AS maxId " + "FROM Vorstellung");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				vorstellung.setId(resultset.getInt("maxId") + 1);
@@ -155,9 +155,9 @@ public class VorstellungMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate("INSERT INTO Vorstellung (vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id,"
-						+ "vorstellung_spielplan_Id, erstellDatum)" + " VALUES(" + vorstellung.getId() + ", '"
+						+ "vorstellung_spielplan_Id)" + " VALUES(" + vorstellung.getId() + ", '"
 						+ vorstellung.getName() + "', " + vorstellung.getFilmId() + ", " + vorstellung.getSpielzeitId()
-						+ ", " + vorstellung.getSpielplanId() + ", " + vorstellung.getErstellDatum() + ")");
+						+ ", " + vorstellung.getSpielplanId() +  ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -18,6 +18,7 @@ public class DateFormaterSpielzeit {
 		DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
 		String pattern ="dd.MM.yy HH:mm";
 		DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+		
 		return dft.format(date);
 	}
 

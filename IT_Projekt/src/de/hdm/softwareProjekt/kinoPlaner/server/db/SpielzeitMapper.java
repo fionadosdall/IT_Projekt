@@ -150,7 +150,7 @@ public class SpielzeitMapper {
 				stmt.executeUpdate(
 						"INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" 
 								+ " VALUES(" + spielzeit.getId() + ", '" + spielzeit.getName() + "', " 
-								+ spielzeit.getZeit() + ", " + spielzeit.getBesitzerId() + ")");
+								+ spielzeit.dateToString() + ", " + spielzeit.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -177,8 +177,8 @@ public class SpielzeitMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
-					+ "erstellDatum= '" + spielzeit.getErstellDatum() + "' , " + "spielzeit_anwender_Id= '"
-					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.getZeit() + "' WHERE szId="
+					 + "' , " + "spielzeit_anwender_Id= '"
+					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.dateToString() + "' WHERE szId="
 					+ spielzeit.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();

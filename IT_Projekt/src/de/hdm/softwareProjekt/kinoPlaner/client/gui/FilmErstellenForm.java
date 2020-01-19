@@ -56,9 +56,9 @@ public class FilmErstellenForm extends PopupPanel {
 	
 	
 	
-	private static TextBox nameTextBox = new TextBox();
-	private static TextBox beschreibungTextBox = new TextBox();
-	private static TextBox bewertungTextBox = new TextBox();
+	private TextBox nameTextBox = new TextBox();
+	private TextBox beschreibungTextBox = new TextBox();
+	private TextBox bewertungTextBox = new TextBox();
 	private TextBox laengeTextBox = new TextBox();
 	
 	
@@ -67,9 +67,11 @@ public class FilmErstellenForm extends PopupPanel {
 	private Button loeschenButton = new Button("Löschen");
 	
 	
-	private static Boolean edit = false;
+
 	private Film filmBearbeiten;
 	private Film film;
+	
+	private SpielplaneintragForm parent;
 	
 	/*****
 	 * Bei der Instanzzierung wird der ClickHandler dem  Button hinzugefügt
@@ -89,6 +91,15 @@ public class FilmErstellenForm extends PopupPanel {
 	}
 	
 	
+	public FilmErstellenForm(SpielplaneintragForm parent) {
+		this.parent = parent;
+	}
+	
+	public FilmErstellenForm(SpielplaneintragForm parent, Film film) {
+		this.parent = parent;
+		this.film = film;
+	}
+
 	public void onLoad() {
 	
 	/* Setzen der Style Namen
@@ -120,9 +131,10 @@ public class FilmErstellenForm extends PopupPanel {
 		 */
 		
 		
-		if (edit == true) {
+		if (film != null) {
 			
 			obenPanel.add(filmBearbeitenFormLabel);
+			this.setBearbeiten();
 		}else {
 			obenPanel.add(filmFormLabel);
 			clearForm();
@@ -145,7 +157,7 @@ public class FilmErstellenForm extends PopupPanel {
 		
 		
 		
-		if(edit == true) {
+		if(film != null) {
 			untenPanel.add(loeschenButton);
 			untenPanel.add(speichernButton);
 			
@@ -216,12 +228,10 @@ public class FilmErstellenForm extends PopupPanel {
 				Window.alert(nameTextBox.getValue());
 				Window.alert(beschreibungTextBox.getValue());
 				Window.alert(bewertungTextBox.getValue());
+
 				
-				clearForm();
-				FilmErstellenForm.this.hide();
-				
-				SpielplaneintragForm sef = new SpielplaneintragForm();
-				SpielplaneintragForm.getFilmListBox().addItem(result.getName());
+				//SpielplaneintragForm sef = new SpielplaneintragForm();
+				parent.refresh();
 			
 				Window.alert(result.getName());
 			}
@@ -250,17 +260,9 @@ public class FilmErstellenForm extends PopupPanel {
 /*********
  * Methoden
  */
-			
-		public Boolean getEdit() {
-			return edit;
-		}
-		
-		public static void setEdit (Boolean edit) {
-			FilmErstellenForm.edit=edit;
-			
-		}
+
 	
-	public static void setBearbeiten(Film film) {
+	public void setBearbeiten() {
 		
 		nameTextBox.setText(film.getName());
 		beschreibungTextBox.setText(film.getBeschreibung());

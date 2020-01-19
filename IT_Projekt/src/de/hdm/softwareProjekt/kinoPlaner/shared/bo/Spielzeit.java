@@ -14,6 +14,7 @@ public class Spielzeit extends BesitzerBusinessObjekt{
 	}
 	
 	private Date zeit;
+	private String dateToString;
 
 /**
  * Auslesen der Zeit
@@ -29,6 +30,14 @@ public class Spielzeit extends BesitzerBusinessObjekt{
 
 	public void setZeit(Date date) {
 		this.zeit = date;
+	}
+	
+	public void setDatetoString(String dateString) {
+		this.dateToString = dateString;
+	}
+	
+	public String dateToString() {
+		return dateToString;
 	}
 
 /**

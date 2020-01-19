@@ -49,8 +49,8 @@ public class SpielplanEintragCell extends AbstractCell<Vorstellung> {
 	
 	private void doAction(Vorstellung value, ValueUpdater<Vorstellung> valueUpdater) {
 		RootPanel.get("details").clear();
-		SpielplaneintragForm anzeigen = new SpielplaneintragForm(value);
-		RootPanel.get("details").add(anzeigen);
+		//SpielplaneintragForm anzeigen = new SpielplaneintragForm(value);
+		//RootPanel.get("details").add(anzeigen);
   }
 
 }

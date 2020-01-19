@@ -60,7 +60,8 @@ public class SpielplanMapper {
 	/**
 	 * Suche nach allen Spielplan-Objekten über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Spielpläne tragen
+	 * @param name
+	 *            den die gesuchten Spielpläne tragen
 	 * @return Eine ArrayList, die alle gefundenen Spielpläne enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -74,7 +75,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, spielplan_kinokette_Id, erstellDatum "
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, spielplan_kinokette_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id "
 							+ "FROM Spielplan" + " WHERE spName = '" + name + "' ORDER BY spName");
 
 			/**
@@ -89,6 +90,7 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
 			}
@@ -105,7 +107,8 @@ public class SpielplanMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -134,7 +137,7 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum FROM Spielplan"
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
 							+ " WHERE spName= '" + name + "' ORDER BY spielplan_kino_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			while (resultset.next()) {
@@ -144,6 +147,7 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
 
@@ -157,10 +161,11 @@ public class SpielplanMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Spielplan-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param spielplan bzw. das zu speichernde Objekt
+	 * @param spielplan
+	 *            bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
-	public Spielplan insert(Spielplan spielplan) {
+	public Spielplan insertKino(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -168,7 +173,7 @@ public class SpielplanMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Spielpläne ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Spielplan");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(spId) AS maxId " + "FROM Spielplan");
 			if (resultset.next()) {
 				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
 				spielplan.setId(resultset.getInt("maxId") + 1);
@@ -176,10 +181,42 @@ public class SpielplanMapper {
 
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
-						"INSERT INTO Spielplan (spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum)"
+						"INSERT INTO Spielplan (spId, spName, spielplan_anwender_Id, spielplan_kino_Id, isKinokettenSpielplan)"
 								+ " VALUES(" + spielplan.getId() + ", '" + spielplan.getName() + "', "
 								+ spielplan.getBesitzerId() + ", " + spielplan.getKinoId() + ", "
-								+ spielplan.getErstellDatum() + ")");
+								+ spielplan.iskinokettenSpielplanToTinyint() + ")");
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		/**
+		 * Rückgabe des Spielplan-Objekts. Durch die Methode wurde das Objekt ggf.
+		 * angepasst (z.B. angepasste Id)
+		 */
+		return spielplan;
+	}
+	
+	public Spielplan insertKinokette(Spielplan spielplan) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			/**
+			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
+			 * Spielpläne ist.
+			 */
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(spId) AS maxId " + "FROM Spielplan");
+			if (resultset.next()) {
+				// Wenn die h�chste Id gefunden wurde, wird eine neue Id mit +1 h�her erstellt
+				spielplan.setId(resultset.getInt("maxId") + 1);
+				stmt = con.createStatement();
+
+				// Jetzt wird die Id tats�chlich eingef�gt:
+				stmt.executeUpdate(
+						"INSERT INTO Spielplan (spId, spName, spielplan_anwender_Id, spielplan_kino_Id, isKinokettenSpielplan, spielplan_kinokette_Id)"
+								+ " VALUES(" + spielplan.getId() + ", '" + spielplan.getName() + "', "
+								+ spielplan.getBesitzerId() + ", " + spielplan.getKinoId() + ", "
+								+ spielplan.iskinokettenSpielplanToTinyint() + ", "
+								+ spielplan.getKinokettenId() +")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -194,7 +231,8 @@ public class SpielplanMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param spielplan als das Objekt, welches verändert werden soll.
+	 * @param spielplan
+	 *            als das Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Spielplan update(Spielplan spielplan) {
@@ -207,7 +245,8 @@ public class SpielplanMapper {
 			 */
 			stmt.executeUpdate("UPDATE Spielplan SET " + "spName= '" + spielplan.getName() + "' , "
 					+ "spielplan_anwender_Id= '" + spielplan.getBesitzerId() + "' , " + "spielplan_kino_Id= '"
-					+ spielplan.getKinoId() + "' , " + "erstellDatum= '" + spielplan.getErstellDatum() + "' WHERE spId="
+					+ spielplan.getKinoId() + "' , " + "spielplan_kinokette_Id= '" + spielplan.getKinokettenId()
+					+ "' , " + "isKinokettenSpielplan= '" + spielplan.iskinokettenSpielplanToTinyint() + "' WHERE spId="
 					+ spielplan.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -222,7 +261,8 @@ public class SpielplanMapper {
 	 * Mit dieser Methode kann ein Spielplan-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param spielplan Objekt, welches gelöscht werden soll.
+	 * @param spielplan
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
@@ -240,8 +280,9 @@ public class SpielplanMapper {
 	/**
 	 * Suche nach einem Spielplan mit vorgegebener Kino-Id
 	 * 
-	 * @param id zugehörig zu einem Spielplan, nach welchem gesucht werden soll,
-	 *           also der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einem Spielplan, nach welchem gesucht werden soll,
+	 *            also der Primärschlüssel in der Datenbank.
 	 * @return Das Spielplan-Objekt, das mit seiner Spielplan-Id der übergebenen Id
 	 *         entspricht. Falls kein Spielplan zur übergebenen Id gefunden wurde,
 	 *         wird null zurückgegeben.
@@ -251,7 +292,7 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum FROM Spielplan"
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
 							+ " WHERE spId=" + id + " ORDER BY spielplan_kino_Id");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -261,6 +302,8 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
 
 				return sp;
 			}
@@ -285,8 +328,8 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum "
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id "
 							+ "FROM Spielplan" + " ORDER BY spielplan_kino_Id");
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
@@ -299,6 +342,8 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
 			}
@@ -315,8 +360,9 @@ public class SpielplanMapper {
 	 * besondere Rechte in Bezug auf welche Spielpläne hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Spielplan-Objekte übereinstimmen soll.
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten
+	 *            Spielplan-Objekte übereinstimmen soll.
 	 * @return Alle Spielplan-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */
@@ -328,9 +374,10 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT spId, spName, spielplan_anwender_Id, kinoId, erstellDatum "
-					+ "FROM Spielplan" + " WHERE spielplan_anwender_Id = " + anwenderOwner.getId()
-					+ " ORDER BY spielplan_kino_Id");
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT spId, spName, spielplan_anwender_Id, kinoId, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id "
+							+ "FROM Spielplan" + " WHERE spielplan_anwender_Id = " + anwenderOwner.getId()
+							+ " ORDER BY spielplan_kino_Id");
 
 			while (resultset.next()) {
 				Spielplan sp = new Spielplan();
@@ -339,6 +386,8 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
@@ -357,8 +406,9 @@ public class SpielplanMapper {
 	 * kinoId hinterlegt. Diese kinoId muss mit der Id des im Methodenparamter
 	 * übergebenen Kinos übereinstimmen.
 	 * 
-	 * @param kino Objekt, dessen Id mit den kinoId in der Spielplan-Tabelle
-	 *             übereinstimmen soll.
+	 * @param kino
+	 *            Objekt, dessen Id mit den kinoId in der Spielplan-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Spielplan-Objekte in einer ArrayList, deren kinoId des
 	 *         übergebenen Kinos entsprechen.
 	 */
@@ -371,7 +421,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum FROM Spielplan"
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
 							+ " WHERE spielplan_kino_Id = " + kino.getId() + " ORDER BY spielplan_kino_Id");
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Spielplan-Objekt erstellt
@@ -384,6 +434,8 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
 
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
@@ -402,8 +454,9 @@ public class SpielplanMapper {
 	 * entsprechende kinokettenId hinterlegt. Diese kinokettenId muss mit der Id der
 	 * im Methodenparamter übergebenen Kinokette übereinstimmen.
 	 * 
-	 * @param kinokette Objekt, dessen Id mit den kinokettenIds in der Kino-Tabelle
-	 *                  übereinstimmen soll.
+	 * @param kinokette
+	 *            Objekt, dessen Id mit den kinokettenIds in der Kino-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Spielplan-Objekte in einer ArrayList, deren kinokettenId der
 	 *         übergebenen Kinokette entspricht.
 	 */
@@ -416,7 +469,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kinokette_Id, erstellDatum FROM Spielplan"
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kinokette_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
 							+ " WHERE spielplan_kinokette_Id = " + kinokette.getId()
 							+ " ORDER BY spielplan_kinokette_Id");
 			/**
@@ -430,6 +483,8 @@ public class SpielplanMapper {
 				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
 				sp.setKinoId(resultset.getInt("spielplan_kinokette_Id"));
 				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sp);
@@ -448,9 +503,11 @@ public class SpielplanMapper {
 	 * Spielplan-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Veränderungen vornehmen.
 	 * 
-	 * @param anwender  welcher als Besitzer des Spielplans in der Datenbank
-	 *                  eingetragen werden soll.
-	 * @param spielplan Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender
+	 *            welcher als Besitzer des Spielplans in der Datenbank eingetragen
+	 *            werden soll.
+	 * @param spielplan
+	 *            Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Spielplan spielplan) {
 		Connection con = DBConnection.connection();
@@ -458,7 +515,7 @@ public class SpielplanMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE Spielplan SET " + "spielplan_anwender_Id=\"" + anwender.getId() + "\""
+			stmt.executeUpdate("UPDATE Spielplan SET " + "spielplan_anwender_Id=" + anwender.getId() + ""
 					+ " WHERE spId=" + spielplan.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -470,8 +527,9 @@ public class SpielplanMapper {
 	 * zugewiesen und soll nun gelöscht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gelöscht.
 	 * 
-	 * @param spielplan Objekt bei welchem die BesitzerId in der Datenbank
-	 *                  zurückgesetzt werden soll.
+	 * @param spielplan
+	 *            Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt
+	 *            werden soll.
 	 */
 	public void deleteEigentumsstruktur(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
@@ -480,10 +538,36 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate(
-					"UPDATE Spielplan SET " + "spielplan_anwender_Id=\"" + "\"" + " WHERE spId=" + spielplan.getId());
+					"UPDATE Spielplan SET " + "spielplan_anwender_Id=" + "" + " WHERE spId=" + spielplan.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
+	}
+
+	public Object findByName(String name) {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
+							+ " WHERE spName='" + name + "' ORDER BY spielplan_kino_Id");
+			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
+			if (resultset.next()) {
+				Spielplan sp = new Spielplan();
+				sp.setId(resultset.getInt("spId"));
+				sp.setName(resultset.getString("spName"));
+				sp.setBesitzerId(resultset.getInt("spielplan_anwender_Id"));
+				sp.setKinoId(resultset.getInt("spielplan_kino_Id"));
+				sp.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				sp.setKinokettenSpielplan(resultset.getBoolean("isKinokettenSpielplan"));
+				sp.setKinokettenId(resultset.getInt("spielplan_kinokette_Id"));
+
+				return sp;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 }

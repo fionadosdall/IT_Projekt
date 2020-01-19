@@ -381,19 +381,33 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielplan erstellenSpielplanKino(String name, int kinoId) throws IllegalArgumentException {
-		// Ein neues Spielplan Objekt wird erstellt.
-		Spielplan s = new Spielplan();
+	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen)
+			throws IllegalArgumentException {
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		s.setName(name);
-		s.setBesitzerId(this.anwender.getId());
-		s.setKinoId(kinoId);
-		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		s.setKinokettenSpielplan(false);
+		if (spielplanMapper.findByName(name) == null) {
+			// Ein neues Spielplan Objekt wird erstellt.
+			Spielplan s = new Spielplan();
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.spielplanMapper.insert(s);
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			s.setName(name);
+			s.setBesitzerId(this.anwender.getId());
+			s.setKinoId(kinoId);
+			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			s.setKinokettenSpielplan(false);
+
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			Spielplan fertigerSpielplan = this.spielplanMapper.insertKino(s);
+
+			if (neueVorstellungen.size() != 0) {
+				for (Vorstellung v : neueVorstellungen) {
+					erstellenVorstellung(fertigerSpielplan.getId(), v.getSpielzeitId(), v.getFilmId());
+				}
+			}
+
+			return fertigerSpielplan;
+
+		}
+		return null;
 	}
 
 	/**
@@ -403,28 +417,39 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId)
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId, ArrayList<Vorstellung> neueVorstellungen)
 			throws IllegalArgumentException {
-		ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
-		ArrayList<Spielplan> spielplaene = new ArrayList<Spielplan>();
 
-		for (Kino k : kinos) {
-			// Ein neues Spielplan Objekt wird erstellt.
-			Spielplan s = new Spielplan();
+		if (spielplanMapper.findByName(name) == null) {
+			ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
+			ArrayList<Spielplan> spielplaene = new ArrayList<Spielplan>();
 
-			// Die Attribute des Objekts werden mit Werten befuellt.
-			s.setName(name);
-			s.setBesitzerId(this.anwender.getId());
-			s.setKinoId(k.getId());
-			s.setKinokettenId(kinoketteId);
-			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-			s.setKinokettenSpielplan(true);
-			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-			this.spielplanMapper.insert(s);
-			spielplaene.add(s);
+			for (Kino k : kinos) {
+				// Ein neues Spielplan Objekt wird erstellt.
+				Spielplan s = new Spielplan();
+
+				// Die Attribute des Objekts werden mit Werten befuellt.
+				s.setName(name);
+				s.setBesitzerId(this.anwender.getId());
+				s.setKinoId(k.getId());
+				s.setKinokettenId(kinoketteId);
+				s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+				s.setKinokettenSpielplan(true);
+				// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+				Spielplan fertigerSpielplan = this.spielplanMapper.insertKinokette(s);
+				spielplaene.add(fertigerSpielplan);
+				
+				if (neueVorstellungen.size() != 0) {
+					for (Vorstellung v : neueVorstellungen) {
+						erstellenVorstellung(fertigerSpielplan.getId(), v.getSpielzeitId(), v.getFilmId());
+					}
+				}
+
+			}
+
+			return spielplaene;
 		}
-
-		return spielplaene;
+		return null;
 	}
 
 	/**
@@ -440,8 +465,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		String name = (getSpielplanById(spielplanId).getName() + getSpielzeitById(spielzeitId).getName()
-				+ getFilmById(filmId).getName());
+		String name = (getSpielplanById(spielplanId).getName() + getSpielzeitById(spielzeitId).getId()
+				+ getFilmById(filmId).getId());
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -562,14 +587,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielzeit erstellenSpielzeit(String name, Date zeit) throws IllegalArgumentException {
+	public Spielzeit erstellenSpielzeit(String name, String zeit) throws IllegalArgumentException {
 		// Ein neues Spielzeit Objekt wird erstellt.
 		Spielzeit s = new Spielzeit();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
 		s.setName(name);
 		s.setBesitzerId(this.anwender.getId());
-		s.setZeit(zeit);
+		s.setDatetoString(zeit);
 		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
@@ -1514,7 +1539,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public ArrayList<Umfrage> getClosedUmfragenByAnwender() {
 		return this.umfrageMapper.findAllClosedByAnwender(this.anwender);
 	}
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe aller offenen Umfragen des Anwenders
@@ -2267,11 +2292,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					max = u;
 				}
 			}
-			
-			
-			//Max aus der ArrayList entfernen
-			for(Umfrageoption u: resultSet) {
-				if(u.getId()==max.getId()) {
+
+			// Max aus der ArrayList entfernen
+			for (Umfrageoption u : resultSet) {
+				if (u.getId() == max.getId()) {
 					resultSet.remove(u);
 				}
 			}
@@ -2338,7 +2362,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		ArrayList<Umfrageoption> stichwahlResultSet = new ArrayList<Umfrageoption>();
 
 		// Pruefen ob es Umfrageoptionen gibt
-		if (resultSet.size()!=0) {
+		if (resultSet.size() != 0) {
 
 			// Ergebnisse berechnen
 			for (Umfrageoption u : resultSet) {
@@ -2355,12 +2379,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					max = u;
 				}
 			}
-			
+
 			stichwahlResultSet.add(max);
-			
-			//Max aus der ArrayList entfernen
-			for(Umfrageoption u: resultSet) {
-				if(u.getId()==max.getId()) {
+
+			// Max aus der ArrayList entfernen
+			for (Umfrageoption u : resultSet) {
+				if (u.getId() == max.getId()) {
 					resultSet.remove(u);
 				}
 			}
@@ -2369,7 +2393,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Umfrageoption u : resultSet) {
 				if (max.getVoteErgebnis() == u.getVoteErgebnis()) {
 					stichwahlResultSet.add(u);
-					
+
 				}
 			}
 
@@ -2853,7 +2877,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				}
 			}
 		}
-		
+
 		return this.umfrageMapper.findById(umfrage.getId());
 	}
 

@@ -9,6 +9,13 @@ public class Spielplan extends BesitzerBusinessObjekt {
 	private int kinokettenId;
 
 	private boolean kinokettenSpielplan;
+	
+	public int iskinokettenSpielplanToTinyint() {
+		if (kinokettenSpielplan == true)
+			return 1;
+		else
+			return 0;
+	}
 
 	public Spielplan() {
 		super();
