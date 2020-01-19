@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
@@ -83,7 +84,8 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				sz.setZeit(resultset.getDate("zeit"));
+				Date date = new Date(resultset.getTimestamp("zeit").getTime());
+				sz.setZeit(date);
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -229,7 +231,8 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				sz.setZeit(resultset.getDate("zeit"));
+				Date date = new Date(resultset.getTimestamp("zeit").getTime());
+				sz.setZeit(date);
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -269,7 +272,8 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				sz.setZeit(resultset.getDate("zeit"));
+				Date date = new Date(resultset.getTimestamp("zeit").getTime());
+				sz.setZeit(date);
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				// Hinzuf�gen des neuen Objekts zur ArrayList
 				resultarray.add(sz);
@@ -303,7 +307,8 @@ public class SpielzeitMapper {
 				sz.setId(resultset.getInt("szId"));
 				sz.setName(resultset.getString("szName"));
 				sz.setBesitzerId(resultset.getInt("spielzeit_anwender_Id"));
-				sz.setZeit(resultset.getDate("zeit"));
+				Date date = new Date(resultset.getTimestamp("zeit").getTime());
+				sz.setZeit(date);
 				sz.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return sz;
 			}
