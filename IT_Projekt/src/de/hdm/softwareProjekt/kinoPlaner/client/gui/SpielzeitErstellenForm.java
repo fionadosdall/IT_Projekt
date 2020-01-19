@@ -38,18 +38,16 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielzeitErstellenForm extends PopupPanel {
 	
-	private static Boolean edit1 = false;
+	private static Boolean edit = false;
 	
-	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
 	private VerticalPanel popupPanel = new VerticalPanel();
-	private HorizontalPanel detailsoben = new HorizontalPanel();
-	private HorizontalPanel detailsunten = new HorizontalPanel();
-	private VerticalPanel inhaltObenPanel = new VerticalPanel();
-	private HorizontalPanel inhaltUntenPanel = new HorizontalPanel();
-	private VerticalPanel inhaltUntenLinksPanel = new VerticalPanel();
-	private VerticalPanel inhaltUntenRechtsPanel = new VerticalPanel();
+	private HorizontalPanel obenPanel = new HorizontalPanel();
+	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
+	private FlowPanel detailsoben = new FlowPanel();
+	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel speichernBox = new FlowPanel();
 	private FlowPanel detailsBoxObenMitte = new FlowPanel();
 	private FlowPanel detailsBoxMitteMitte = new FlowPanel();
@@ -59,7 +57,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private FlowPanel detailsMitteBox = new FlowPanel();
 	private FlowPanel detailsBoxUnten = new FlowPanel();
 
-	
 	private Label title = new Label ("Neue Spielzeit erstellen");
 	private Label spielzeitname = new Label ("Name: ");
 	private Label spielzeit = new Label ("Spielzeit ");
@@ -67,28 +64,20 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private Label vorstellung = new Label ("Spielzeit einer Vorstellung hinzufügen");
 	private Label vorstellungen = new Label ("Vorstellungen");
 	
-
 	private TextBox spielzeitnameTB = new TextBox();
 	private TextBox spielzeitTB = new TextBox();
 	private DateBox dateBox = new DateBox();
 	
-	public static Boolean edit = false;
+	private Button hinzufuegenButton = new Button("Hinzufügen");
+	private Button entfernenButton = new Button ("Vorstellung entfernen");
+	private Button speichernButton = new Button("Speichern");
 
 	private MultiWordSuggestOracle alleVorstellungenOracle = new MultiWordSuggestOracle();
 	private SuggestBox vorstellungTB = new SuggestBox(alleVorstellungenOracle);
 	
-	private SpielzeitErstellenForm bearbeiten;
-		
+	private Grid spielzeitGrid = new Grid (4, 2);
 	
 	private ArrayList<Vorstellung> vorstellung2TB = new ArrayList<Vorstellung>();
-	
-	private Grid spielzeitGrid = new Grid (3, 2);
-	
-	private Button hinzufuegenButton = new Button("Hinzufügen");
-	private Button entfernenButton = new Button ("Vorstellung entfernen");
-	private Button speichernButton = new Button("Speichern");
-	
-	private Spielzeit spz;
 	
 	private CellTable<Vorstellung> vorstellungCellTable = new CellTable<Vorstellung>(KEY_PROVIDER);
 	
@@ -109,16 +98,13 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private Vorstellung neueVorstellung = null;
 	private Spielzeit spielzeit2 = null;
 	
-	private SpielzeitBearbeitenForm spielezeitenF;
-	
 	/** Kunstruktor zur Übergabe des zu bearbeiteden Spielplan **/
 	
 	public SpielzeitErstellenForm(Spielzeit spz) {
-		super(true);
-		this.spz = spz;
-		
+		this.spielzeit2 = spz;
 	}
 	
+
 	/** Default-Konstruktor **/
 	
 	public SpielzeitErstellenForm() {
@@ -127,7 +113,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 	public void onLoad() {
 		
-	// Vergeben der Stylenames
+	/** Vergeben der Stylenames **/
 	
 		this.addStyleName("detailscontainer");
 		this.addStyleName("center");
@@ -146,7 +132,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		detailsBoxMitteUnten.addStyleName("detailsBoxMitteUnten");
 		detailsBoxUntenMitte.addStyleName("detailsBoxUntenMitte");
 		detailsBoxUnten.addStyleName("detailsBoxUnten");
-		
+
 		title.addStyleName("title");
 		spielzeitname.addStyleName("detailsboxLabels");
 		spielzeit.addStyleName("detailsboxLabels");
@@ -167,7 +153,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		
 		// Zusammenbauen der Widgets
 		
-		popupPanel.add(detailsoben);
+		this.add(detailsoben);
 		//this.add(detailsunten);
 		
 		spielzeitGrid.setWidget(0, 0, spielzeitname);
@@ -178,26 +164,27 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		
 		spielzeitGrid.setWidget(2, 0, datum);
 		spielzeitGrid.setWidget(2, 1, dateBox);
-		
 
-		inhaltObenPanel.add(spielzeitGrid);
-		popupPanel.add(inhaltObenPanel);
 		
-		if(edit1 == true) {
+		obenPanel.add(spielzeitGrid);
+		popupPanel.add(obenPanel);
+		
+		if(edit == true) {
 			
-			inhaltUntenPanel.add(speichernButton);
-			inhaltUntenPanel.add(hinzufuegenButton);
-			inhaltUntenPanel.add(entfernenButton);
+			detailsunten.add(speichernButton);
+			detailsunten.add(hinzufuegenButton);
+			detailsunten.add(entfernenButton);
+			
 		}else {
 			clearFormular();
-			inhaltUntenPanel.add(hinzufuegenButton);
+			detailsunten.add(hinzufuegenButton);
 		}
 		
 		popupPanel.add(hinzufuegenButton);
 		
 		this.add(popupPanel);
 		
-/*
+
 		detailsoben.add(title);
 
 		detailsunten.add(detailsObenBox);
@@ -211,42 +198,34 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		detailsMitteBox.add(vorstellung);
 		detailsMitteBox.add(detailsBoxMitteMitte);
 		detailsBoxMitteMitte.add(vorstellungTB);
+		
 		detailsMitteBox.add(detailsBoxMitteUnten);
 		detailsBoxMitteUnten.add(hinzufuegenButton);
 
-		detailsUntenBox.add(vorstellungen);
-		detailsUntenBox.add(detailsBoxUntenMitte);
+		detailsBoxUnten.add(vorstellungen);
+		detailsBoxUnten.add(detailsBoxUntenMitte);
+		
 		detailsBoxUntenMitte.add(vorstellungCellTable);
-		detailsUntenBox.add(detailsBoxUnten);
+		detailsBoxUnten.add(detailsBoxUnten);
 		detailsBoxUnten.add(entfernenButton);
 
-		if(edit1 == true) {
+		if(edit == true) {
 			//detailsunten.add(loeschenButton);
 			detailsunten.add(speichernButton);
 		} else {
-			//clearForm();
+			clearFormular();
 			detailsunten.add(speichernButton);
 		}
 		speichernBox.add(speichernButton);
-	*/	
-		vorstellungCellTable.setEmptyTableWidget(new Label("Es wurde noch keine Vorstellung hinzugefügt "));
+		
+		vorstellungCellTable.setEmptyTableWidget(new Label("Es wurde noch keine Vorstellung hinzugefügt"));
 		
 		
 		/* ClickHandler */
 		
-/*		private class HinzufuegenClickHandler implements ClickHandler {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				kinoplaner.erstellenSpielzeit(spielzeitnameTB.getText(), spielzeitTB.getText(),
-						dateBox.getDatePicker(), spielzeitbearbTB.getText());
-								
-			}
-			
-		}
-		
-*/
+		hinzufuegenButton.addClickHandler(new SpielzeitHinzufuegenClickHandler());
+		speichernButton.addClickHandler(new SpeichernClickHandler());
+		entfernenButton.addClickHandler(new EntfernenClickHandler());
 		
 		// Alle Vorstellungen die im System vorhanden sind werden geladen
 		kinoplaner.getAllVorstellungen(new AsyncCallback<ArrayList<Vorstellung>>() {
@@ -269,9 +248,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		
 /**
  * CELL TABLE
- * 
  */
-		
 		TextCell namenTextCell = new TextCell();
 		
 		Column <Vorstellung, String> namenColumn = new Column <Vorstellung, String>(namenTextCell) {
@@ -291,7 +268,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 			@Override
 			public String getValue(Vorstellung object) {
-				// TODO Auto-generated method stub
 				return "-";
 			}
 			
@@ -321,8 +297,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 					
 				};
 				
-				// kinoplaner.
-				
 			}
 			
 		});
@@ -349,13 +323,44 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 /**
  * CLICKHANDLER
- * 
- *
  */
 	
+}
+
+	private class SpielzeitHinzufuegenClickHandler implements ClickHandler {
+
+	@Override
+	public void onClick(ClickEvent event) {
+		// TODO Auto-generated method stub
 		
+		spielzeitTB.setText("");
+		
+			}
+	}
+	
+	private class SpeichernClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+	//kinoplaner.erstellenSpielzeit(spielzeitnameTB, new SpielzeitErstellenCallback() );
+			SpielzeitErstellenForm.this.hide();
+		}
 		
 	}
+	
+	private class EntfernenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+			RootPanel.get("details").clear();
+			
+		}
+		
+	}
+	
 	private void clearFormular() {
 		// TODO Auto-generated method stub
 		
@@ -364,44 +369,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		dateBox.setTitle("");
 		
 	}
-	private class VorstellungHinzufuegenClickHandler implements ClickHandler {
-
-	@Override
-	public void onClick(ClickEvent event) {
-		// TODO Auto-generated method stub
-		
-		vorstellungTB.setText("");
-		
-			}
-	}
-	
-	
-	private class SpeichernClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-	//kinoplaner.erstellenSpielzeit(spielzeitnameTB, zeit, new SpielzeitErstellenCallback() );
-			SpielzeitErstellenForm.this.hide();
-		}
-		
-	}
-	
-	//private class VorstellungEntfernenClickHandler implements ClickHandler {
-
-		//@Override
-		//public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			
-		//}
-		
-	//}
-	
-/**
- * Callbacks
- * @author fiona
- *
- */
 	
 private class VorstellungCallback implements AsyncCallback<Vorstellung> {
 
@@ -427,9 +394,7 @@ private class VorstellungCallback implements AsyncCallback<Vorstellung> {
 	}
 	
 }
-	
-	
-	
+
 	private class VorstellungHinzufuegenCallback implements AsyncCallback<Vorstellung> {
 
 	@Override
@@ -443,7 +408,7 @@ private class VorstellungCallback implements AsyncCallback<Vorstellung> {
 		// TODO Auto-generated method stub
 		Systemmeldung.anzeigen("Vorstellung wurde hinzugefügt");
 	}
-	}
+}
 	
 	
 private class VorstellungEntfernenCallback implements AsyncCallback<Vorstellung> {
@@ -461,7 +426,6 @@ private class VorstellungEntfernenCallback implements AsyncCallback<Vorstellung>
 	}
 	
 }
-	
 		
 	/* Callback */
 				
@@ -483,14 +447,9 @@ private class VorstellungEntfernenCallback implements AsyncCallback<Vorstellung>
 				
 				RootPanel.get("details").clear();
 				
-			}
-			
-		
+				}
 				
 			}
 		}
 		
 	}
-
-
-
