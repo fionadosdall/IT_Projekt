@@ -42,6 +42,10 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	private VerticalPanel popupPanel = new VerticalPanel();
+	private HorizontalPanel obenPanel = new HorizontalPanel();
+	private HorizontalPanel untenPanel = new HorizontalPanel();
+	
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel speichernBox = new FlowPanel();
@@ -161,8 +165,9 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		spielzeitGrid.setWidget(2, 0, datum);
 		spielzeitGrid.setWidget(2, 1, dateBox);
 
-		inhaltObenPanel.add(spielzeitGrid);
-		popupPanel.add(inhaltObenPanel);
+		
+		obenPanel.add(spielzeitGrid);
+		popupPanel.add(obenPanel);
 		
 		if(edit == true) {
 			
