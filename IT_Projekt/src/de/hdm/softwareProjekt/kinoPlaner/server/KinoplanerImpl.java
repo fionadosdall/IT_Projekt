@@ -26,7 +26,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
