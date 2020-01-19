@@ -96,6 +96,8 @@ public class VorstellungErstellenForm extends FlowPanel {
 	
 	public void onLoad( ) {
 		
+		/** Vergeben der Stylenames **/
+		
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
