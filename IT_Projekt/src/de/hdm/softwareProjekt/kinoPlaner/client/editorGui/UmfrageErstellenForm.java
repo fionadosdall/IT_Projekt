@@ -392,6 +392,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * Hier wird die Spielzeit einer Vorstellung angegeben. Die Vorstellung
+	 * wird hier namentlich gesucht.
+	 * @author fiona
+	 *
+	 */
 
 	private class GetSpielzeitByNameCallback implements AsyncCallback<Spielzeit> {
 
@@ -410,6 +417,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Hier wird die Gruppe geladen für welche eine Umfrage erstellt werden soll
+	 * 
+	 * @author fiona
+	 *
+	 */
 
 	private class GruppenCallback implements AsyncCallback<ArrayList<Gruppe>> {
 
@@ -459,6 +473,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Hier wird das Kino geladen welches bei der Erstellung der Umfrage
+	 * ausgewählt werden kann
+	 * 
+	 *
+	 */
 
 	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 

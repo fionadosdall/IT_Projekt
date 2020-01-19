@@ -217,6 +217,13 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 			
 
 		}
+		
+		
+		/**
+		 * Bei Erfolg wird die Umfrage aus der UmfrageAnzeigenForm gelöscht
+		 * 
+		 */
+		
  
 		@Override
 		public void onSuccess(Void result) {
