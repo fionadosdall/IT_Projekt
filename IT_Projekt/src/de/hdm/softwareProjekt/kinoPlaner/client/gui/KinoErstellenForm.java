@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -51,6 +52,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	private MeineKinosForm mkf;
 	private ArrayList<Kinokette> kinoketten = new ArrayList<Kinokette>();
 	private Kino k;
+	private Kinokette kk;
 	
 	
 	/**
@@ -187,9 +189,17 @@ private class KinoLoeschenDialogBox extends DialogBox{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			String kinoketteName = kinokettenListBox.getSelectedItemText();
+			
+			
+			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
+		
+			
 			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
-					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 
+					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), kk.getId(),
 					new KinoErstellenCallback());
+			clearForm();
+			
 		}		
 		
 	}
@@ -308,6 +318,22 @@ private class LoeschenClickHandler implements ClickHandler{
 
 			}
 			
+		}
+		
+	}
+	
+	private class KinoketteByNameCallback implements AsyncCallback<Kinokette>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			kk = result;
 		}
 		
 	}
