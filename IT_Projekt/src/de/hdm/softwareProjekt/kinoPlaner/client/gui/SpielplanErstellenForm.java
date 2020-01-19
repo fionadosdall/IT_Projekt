@@ -343,6 +343,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			//RootPanel.get("details").clear();
+			SpielplaneintragForm.getFilmListBox().clear();
+			SpielplaneintragForm.getSpeilzeitListBox().clear();
 			SpielplaneintragForm neuerSpielplaneintrag = new SpielplaneintragForm();
 			neuerSpielplaneintrag.show();
 			//neuerSpielplaneintrag.center();
