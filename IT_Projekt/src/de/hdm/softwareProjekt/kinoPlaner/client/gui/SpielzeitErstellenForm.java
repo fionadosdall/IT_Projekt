@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -35,12 +36,13 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-public class SpielzeitErstellenForm extends VerticalPanel {
+public class SpielzeitErstellenForm extends PopupPanel {
 	
 	private static Boolean edit1 = false;
 	
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	private VerticalPanel popupPanel = new VerticalPanel();
 	private HorizontalPanel detailsoben = new HorizontalPanel();
 	private HorizontalPanel detailsunten = new HorizontalPanel();
 	private VerticalPanel inhaltObenPanel = new VerticalPanel();
@@ -112,13 +114,15 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 	/** Kunstruktor zur Übergabe des zu bearbeiteden Spielplan **/
 	
 	public SpielzeitErstellenForm(Spielzeit spz) {
+		super(true);
 		this.spz = spz;
+		
 	}
 	
 	/** Default-Konstruktor **/
 	
 	public SpielzeitErstellenForm() {
-		
+		super(true);
 	}
 	
 	public void onLoad() {
@@ -163,7 +167,7 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		
 		// Zusammenbauen der Widgets
 		
-		this.add(detailsoben);
+		popupPanel.add(detailsoben);
 		//this.add(detailsunten);
 		
 		spielzeitGrid.setWidget(0, 0, spielzeitname);
@@ -177,7 +181,7 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		
 
 		inhaltObenPanel.add(spielzeitGrid);
-		this.add(inhaltObenPanel);
+		popupPanel.add(inhaltObenPanel);
 		
 		if(edit1 == true) {
 			
@@ -189,7 +193,9 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 			inhaltUntenPanel.add(hinzufuegenButton);
 		}
 		
-		this.add(hinzufuegenButton);
+		popupPanel.add(hinzufuegenButton);
+		
+		this.add(popupPanel);
 		
 /*
 		detailsoben.add(title);
@@ -376,7 +382,7 @@ public class SpielzeitErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 	//kinoplaner.erstellenSpielzeit(spielzeitnameTB, zeit, new SpielzeitErstellenCallback() );
-			
+			SpielzeitErstellenForm.this.hide();
 		}
 		
 	}

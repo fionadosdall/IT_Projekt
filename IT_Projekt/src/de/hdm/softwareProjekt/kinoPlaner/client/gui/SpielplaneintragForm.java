@@ -172,9 +172,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
 			SpielzeitErstellenForm spielzeit = new SpielzeitErstellenForm();
-			RootPanel.get("details").add(spielzeit);
+			spielzeit.center();
 			
 		}
 		
