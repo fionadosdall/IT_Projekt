@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -35,7 +36,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-public class SpielzeitErstellenForm extends FlowPanel {
+public class SpielzeitErstellenForm extends PopupPanel {
 	
 	private static Boolean edit = false;
 	
@@ -99,6 +100,13 @@ public class SpielzeitErstellenForm extends FlowPanel {
 		this.spielzeit2 = spz;
 	}
 	
+
+	/** Default-Konstruktor **/
+	
+	public SpielzeitErstellenForm() {
+		super(true);
+	}
+	
 	public void onLoad() {
 		
 	/** Vergeben der Stylenames **/
@@ -153,7 +161,8 @@ public class SpielzeitErstellenForm extends FlowPanel {
 		spielzeitGrid.setWidget(2, 0, datum);
 		spielzeitGrid.setWidget(2, 1, dateBox);
 
-		detailsoben.add(spielzeitGrid);
+		inhaltObenPanel.add(spielzeitGrid);
+		popupPanel.add(inhaltObenPanel);
 		
 		if(edit == true) {
 			
@@ -166,7 +175,9 @@ public class SpielzeitErstellenForm extends FlowPanel {
 			detailsunten.add(hinzufuegenButton);
 		}
 		
-		this.add(hinzufuegenButton);
+		popupPanel.add(hinzufuegenButton);
+		
+		this.add(popupPanel);
 		
 
 		detailsoben.add(title);
@@ -328,7 +339,7 @@ public class SpielzeitErstellenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 	//kinoplaner.erstellenSpielzeit(spielzeitnameTB, new SpielzeitErstellenCallback() );
-			
+			SpielzeitErstellenForm.this.hide();
 		}
 		
 	}
