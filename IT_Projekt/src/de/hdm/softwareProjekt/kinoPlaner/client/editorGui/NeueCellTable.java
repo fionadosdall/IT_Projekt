@@ -29,7 +29,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 public class NeueCellTable extends VerticalPanel {
 
 	private UmfrageCellTable uct = null;
-	private SpielplanVorstellungenCellTable svct = null;
+
 
 	public NeueCellTable() {
 
@@ -45,9 +45,6 @@ public class NeueCellTable extends VerticalPanel {
 		this.uct = uct;
 	}
 	
-	public void setSpielplanVorstellungenCellTable(SpielplanVorstellungenCellTable svct) {
-		this.svct = svct;
-	}
 
 	public interface CellTableResources extends CellTable.Resources {
 

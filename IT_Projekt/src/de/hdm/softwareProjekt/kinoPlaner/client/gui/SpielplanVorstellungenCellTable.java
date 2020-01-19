@@ -60,9 +60,8 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	
 	
 
-	public SpielplanVorstellungenCellTable(NeueCellTable nct) {
-		this.nct = nct;
-		nct.setSpielplanVorstellungenCellTable(this);
+	public SpielplanVorstellungenCellTable() {
+		
 	}
 	
 public SpielplanVorstellungenCellTable(Spielplan spielplan) {
