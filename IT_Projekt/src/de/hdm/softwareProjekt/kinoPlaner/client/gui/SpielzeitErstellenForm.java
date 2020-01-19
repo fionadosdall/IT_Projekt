@@ -35,7 +35,9 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplaneintragForm.SpielzeitenCallback;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
@@ -50,7 +52,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 
 	private Label title = new Label ("Neue Spielzeit erstellen");
-	private Label spielzeit = new Label ("Spielzeit ");
+	private Label spielzeitLabel = new Label ("Spielzeit ");
 	private Label spielzeitBearbeiten = new Label("Spielzeit bearbeiten");
 	private Label datum = new Label ("Datum: ");
 	
@@ -67,19 +69,27 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 	private Grid spielzeitGrid = new Grid (3, 2);
 
-	private Spielzeit spielzeit2 = null;
-	
-	/** Kunstruktor zur Übergabe des zu bearbeiteden Spielplan **/
-	
-	public SpielzeitErstellenForm(Spielzeit spz) {
-		this.spielzeit2 = spz;
-	}
+	private Spielzeit spielzeit;
 	
 
 	/** Default-Konstruktor **/
 	
 	public SpielzeitErstellenForm() {
 		super(true);
+	}
+	
+	public SpielzeitErstellenForm(Spielzeit spielzeit) {
+		super(true);
+		this.spielzeit = spielzeit;
+	}
+	
+	public SpielzeitErstellenForm(SpielplaneintragForm sef) {
+		this.sef = sef;
+	}
+	
+	public SpielzeitErstellenForm(SpielplaneintragForm sef, Spielzeit spielzeit) {
+		this.sef = sef;
+		this.spielzeit = spielzeit;
 	}
 	
 	public void onLoad() {
@@ -91,7 +101,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		this.addStyleName("popupPanel");
 
 		title.addStyleName("formHeaderLabel");
-		spielzeit.addStyleName("textLabel");
+		spielzeitLabel.addStyleName("textLabel");
 		datum.addStyleName("textLabel");
 		
 		obenPanel.addStyleName("popupObenPanel");
@@ -105,10 +115,11 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		dateBox.getElement().setPropertyString("placeholder", "Spielzeit auswählen");
 		
 		
-		if (edit == true) {
+		if (spielzeit != null) {
 			
 			obenPanel.add(spielzeitBearbeiten);
-		}else {
+		
+		} else {
 			obenPanel.add(title);
 			clearFormular();
 		}
@@ -117,14 +128,11 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		
 		spielzeitGrid.setWidget(0, 0, datum);
 		spielzeitGrid.setWidget(0, 1, dateBox);
-		
-//		spielzeitGrid.setWidget(1, 0, datum);
-//		spielzeitGrid.setWidget(1, 1, dateBox);
-		
+	
 
 		popupPanel.add(spielzeitGrid);
 
-		if(edit == true) {
+		if (spielzeit != null) {
 			untenPanel.add(loeschenButton);
 			untenPanel.add(speichernButton);
 			
@@ -160,16 +168,14 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			
+			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+			String pattern ="yyyy-MM-dd HH:mm:ss";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+			String formatiert = dft.format(dateBox.getValue());
 			
-			
-//			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
-//			String pattern ="yyyy.dd.MM HH:mm:ss";
-//			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
-//			String formatiert = dft.format(dateBox.getValue());
-//			
-//			Window.alert("formatiert" + formatiert);
+			Window.alert("formatiert" + formatiert);
 		
-			kinoplaner.erstellenSpielzeit("", dateBox.getValue().toString(), new SpielzeitErstellenCallback());
+			kinoplaner.erstellenSpielzeit("", formatiert, new SpielzeitErstellenCallback());
 			
 			
 		}
@@ -215,12 +221,15 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			// TODO Auto-generated method stub
 			
 				Window.alert("Spielzeit wurde erstellt");
-				
-				sef.getSpeilzeitListBox().addItem(result.getZeit().toString());
-				
-				Window.alert(result.getZeit().toString());
-				
+								
 				SpielzeitErstellenForm.this.hide();
+				
+				DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+				String pattern ="yyyy-MM-dd HH:mm:ss";
+				DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+				String formatiert = dft.format(result.getZeit());
+				
+				sef.getSpeilzeitListBox().addItem(formatiert);
 				
 				
 			}
