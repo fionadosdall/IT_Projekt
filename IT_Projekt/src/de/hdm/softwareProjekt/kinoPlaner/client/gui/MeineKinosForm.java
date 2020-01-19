@@ -43,12 +43,14 @@ public class MeineKinosForm extends VerticalPanel {
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
 	private Label formHeaderLabel = new Label("Dashboard");
+	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschtes Kino anklicken.");
+
 	
 	
 	private Grid felder = new Grid(3,1);
 	private HomeBarAdmin hb = new HomeBarAdmin();
-	private Button loeschenButton = new Button(" Auswahl löschen");
-	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
+	
+
 	
 	
 	
@@ -64,8 +66,7 @@ public class MeineKinosForm extends VerticalPanel {
 		obenPanel.addStyleName("obenPanel");
 		hbPanel.addStyleName("hbPanel");
 		inhaltPanel.addStyleName("inhaltPanel");
-		loeschenButton.addStyleName("loeschenButton");
-		bearbeitenButton.addStyleName("bearbeitenButton");
+		
 		untenPanel.addStyleName("untenPanel");
 		formHeaderLabel.addStyleName("formHeaderLabel");
 		
@@ -121,11 +122,10 @@ public class MeineKinosForm extends VerticalPanel {
 		
 		//detailsboxInhalt.add(felder);*/
 		
-		untenPanel.add(loeschenButton);
-		untenPanel.add(bearbeitenButton);
+		untenPanel.add(bearbeitenLabel);
 		this.add(untenPanel);
 		
-		bearbeitenButton.addClickHandler(new KinoBearbeitenClickHandler());
+		
 
 	}
 	

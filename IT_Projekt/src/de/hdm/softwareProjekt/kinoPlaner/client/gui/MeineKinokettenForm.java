@@ -55,6 +55,8 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	
 	private Label formHeaderLabel = new Label("Dashboard");
+	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschte Kinokette anklicken.");
+
 	
 	
 	/* Erstellen der Buttons */
@@ -116,7 +118,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		//untenPanel.add(loeschenButton);
-		//untenPanel.add(bearbeitenButton);
+		untenPanel.add(bearbeitenLabel);
 		this.add(untenPanel);
 		
 	}
