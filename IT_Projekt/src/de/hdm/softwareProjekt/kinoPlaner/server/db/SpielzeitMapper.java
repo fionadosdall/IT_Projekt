@@ -140,7 +140,7 @@ public class SpielzeitMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Spielzeiten ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(id) AS maxId " + "FROM Spielzeit");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(szId) AS maxId " + "FROM Spielzeit");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				spielzeit.setId(resultset.getInt("maxId") + 1);
@@ -148,9 +148,9 @@ public class SpielzeitMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO Spielzeit (szId, szName, spielzeit_anwender_Id, zeit, erstellDatum)" + " VALUES("
-								+ spielzeit.getId() + ", '" + spielzeit.getName() + "', " + spielzeit.getBesitzerId()
-								+ ", " + spielzeit.getZeit() + ", " + spielzeit.getErstellDatum() + ")");
+						"INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" 
+								+ " VALUES(" + spielzeit.getId() + ", '" + spielzeit.getName() + "', " 
+								+ spielzeit.getZeit() + ", " + spielzeit.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
