@@ -173,7 +173,7 @@ public class SpielplaneintragForm extends PopupPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			SpielzeitErstellenForm spielzeit = new SpielzeitErstellenForm();
-			spielzeit.center();
+			spielzeit.show();
 			
 		}
 		
