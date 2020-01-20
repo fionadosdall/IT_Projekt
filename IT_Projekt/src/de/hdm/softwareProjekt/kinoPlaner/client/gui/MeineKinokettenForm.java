@@ -170,7 +170,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 			RootPanel.get("details").clear();
 			//Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
 			
-			KinoketteErstellenForm.setEdit(edit);
+			
 			bearbeiten = new KinoketteErstellenForm();
 			//	KinoketteErstellenForm.setBearbeiten(ausgewaehlteKinokette);
 			RootPanel.get("details").add(bearbeiten);

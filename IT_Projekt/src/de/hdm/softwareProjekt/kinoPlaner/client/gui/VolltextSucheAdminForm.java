@@ -193,7 +193,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			
-			KinoketteErstellenForm.setEdit(edit);
+			
 			bearbeiten = new KinoketteErstellenForm(kk);
 			RootPanel.get("details").add(bearbeiten);
 		
@@ -229,7 +229,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		public void onDoubleClick(DoubleClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			KinoErstellenForm.setEdit(edit);
+			
 			bearbeiten = new KinoErstellenForm(k);
 			RootPanel.get("details").add(bearbeiten);
 		}
@@ -266,7 +266,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		public void onDoubleClick(DoubleClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			KinoketteErstellenForm.setEdit(edit);
+			
 			bearbeiten = new SpielplanErstellenForm(sp);
 			RootPanel.get("details").add(bearbeiten);
 		}

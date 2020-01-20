@@ -171,7 +171,7 @@ public class MeineKinosForm extends VerticalPanel {
 			RootPanel.get("details").clear();
 
 			
-			KinoErstellenForm.setEdit(edit);
+			
 			bearbeiten = new KinoErstellenForm();
 			
 			RootPanel.get("details").add(bearbeiten);
