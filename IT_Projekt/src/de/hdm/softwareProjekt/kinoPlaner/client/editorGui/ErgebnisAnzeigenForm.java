@@ -17,6 +17,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
+/* Die Klasse stellt das Formular um die Ergebnisse anzuzeigen
+ * 
+ */
 public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	private Umfrage umfrage;

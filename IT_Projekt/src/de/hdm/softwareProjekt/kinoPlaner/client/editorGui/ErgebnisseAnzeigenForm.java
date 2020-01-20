@@ -2,6 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -16,7 +17,15 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+/* Die Klasse stellt das Formular um die Umfragen anzuzeigen
+ * 
+ */
+
 public class ErgebnisseAnzeigenForm extends FlowPanel {
+	
+	/* 
+	 * Erstellen der Widgets
+	 */
 
 	private BusinessObjektView bov = new BusinessObjektView();
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();

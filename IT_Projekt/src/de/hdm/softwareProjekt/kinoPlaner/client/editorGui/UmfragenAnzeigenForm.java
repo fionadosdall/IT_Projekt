@@ -46,6 +46,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 	public void onLoad() {
 		
+		
 		/*
 		 * Style-Namen vergeben
 		 */
