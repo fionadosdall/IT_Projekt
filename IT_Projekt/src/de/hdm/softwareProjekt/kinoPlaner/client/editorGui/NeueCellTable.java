@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,10 +27,16 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+/**
+ * Klasse NeueCellTable dient in der UmfrageErstellenForm als Hilfmittel, um
+ * alle möglichen Vorstellungen anzuzeigen.
+ * 
+ *
+ */
+
 public class NeueCellTable extends VerticalPanel {
 
 	private UmfrageCellTable uct = null;
-
 
 	public NeueCellTable() {
 
@@ -44,7 +51,6 @@ public class NeueCellTable extends VerticalPanel {
 	public void setUmfrageCellTable(UmfrageCellTable uct) {
 		this.uct = uct;
 	}
-	
 
 	public interface CellTableResources extends CellTable.Resources {
 
@@ -316,9 +322,9 @@ public class NeueCellTable extends VerticalPanel {
 
 			for (Vorstellung v : vorFilterVorstellungen) {
 				if (v.getId() == result.getId()) {
-					
+
 					for (VorstellungInfo vI : list) {
-						if(vI.getV().getId()==v.getId()) {
+						if (vI.getV().getId() == v.getId()) {
 							dataProvider.getList().remove(vI);
 						}
 					}
