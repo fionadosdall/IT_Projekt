@@ -272,6 +272,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
+	
+	/***
+	 * Wenn die Vorstellung anhand des Namens des Films gefilter wurde, wird diese
+	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
+	 * @author fiona
+	 *
+	 */
 	private class GetFilmByNameCallback implements AsyncCallback<Film> {
 
 		@Override
@@ -313,6 +320,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Wenn die Vorstellung anhand des Namens des Kinos gefilter wurde, wird diese
+	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
+	 * @
+	 *
+	 */
 
 	private class GetKinoByName implements AsyncCallback<Kino> {
 
@@ -448,7 +462,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	/***
 	 * Hier wird die Gruppe geladen für welche eine Umfrage erstellt werden soll
 	 * 
-	 * @author fiona
+	 * 
 	 *
 	 */
 
