@@ -47,7 +47,6 @@ public class FilmErstellenForm extends PopupPanel {
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 
 	private Label filmFormLabel = new Label("Neuer Film");
-	private Label filmBearbeitenFormLabel = new Label("Film bearbeiten");
 	private Label nameLabel = new Label("Filmname:");
 	private Label beschreibungLabel = new Label("Beschreibung:");
 	private Label bewertungLabel = new Label("Bewertung:");
@@ -66,10 +65,8 @@ public class FilmErstellenForm extends PopupPanel {
 	private Button speichernButton = new Button("Speichern");
 	private Button loeschenButton = new Button("Löschen");
 	
-	
 
-	private Film filmBearbeiten;
-	private Film film;
+	private Film film = null;
 	
 	private SpielplaneintragForm parent;
 	
@@ -111,7 +108,6 @@ public class FilmErstellenForm extends PopupPanel {
 
 
 		filmFormLabel.addStyleName("formHeaderLabel");
-		filmBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
 		beschreibungLabel.addStyleName("textLabel");
 		bewertungLabel.addStyleName("textLabel");
@@ -131,17 +127,8 @@ public class FilmErstellenForm extends PopupPanel {
 		 */
 		
 		
-		if (film != null) {
-			
-			obenPanel.add(filmBearbeitenFormLabel);
-			this.setBearbeiten();
-		}else {
-			obenPanel.add(filmFormLabel);
-			clearForm();
-		}
-		
 		popupPanel.add(obenPanel);
-		
+		obenPanel.add(filmFormLabel);
 		
 		filmGrid.setWidget(0, 0, nameLabel);
 		filmGrid.setWidget(0, 1, nameTextBox);
@@ -157,17 +144,21 @@ public class FilmErstellenForm extends PopupPanel {
 		
 		
 		
-		if(film != null) {
-			untenPanel.add(loeschenButton);
-			untenPanel.add(speichernButton);
+		if(film == null) {
+			nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
+			beschreibungTextBox.getElement().setPropertyString("placeholder", "Beschreibung eingeben");
+			bewertungTextBox.getElement().setPropertyString("placeholder", "Bewertung eingeben");
 			
 		} else {
-			clearForm();
-			untenPanel.add(speichernButton);
+			nameTextBox.setText(film.getName());
+			beschreibungTextBox.setText(film.getBeschreibung());
+			bewertungTextBox.setText(film.getBewertung());
+			filmFormLabel.setText("Film bearbeiten");
 		}
 		
 		
 		popupPanel.add(untenPanel);
+		untenPanel.add(speichernButton);
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
@@ -184,6 +175,9 @@ public class FilmErstellenForm extends PopupPanel {
 				// TODO Auto-generated method stub
 				
 				
+				if (film == null) {
+					Window.alert("hier");
+				
 				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(), bewertungTextBox.getValue(),
 						new FilmErstellenCallback());
 				
@@ -191,6 +185,16 @@ public class FilmErstellenForm extends PopupPanel {
 				Window.alert(beschreibungTextBox.getValue());
 				Window.alert(bewertungTextBox.getValue());
 				
+				} else {
+					
+					Window.alert("hier 2");
+					film.setName(nameTextBox.getValue());
+					film.setBewertung(bewertungTextBox.getValue());
+					film.setBeschreibung(beschreibungTextBox.getValue());
+					
+					kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(), bewertungTextBox.getValue(),
+							new FilmErstellenCallback());
+				}
 
 			}
 		
@@ -237,6 +241,7 @@ public class FilmErstellenForm extends PopupPanel {
 			}
 	
 		}
+
 		
 		
 		private class FilmLoeschenCallback implements AsyncCallback<Film>{

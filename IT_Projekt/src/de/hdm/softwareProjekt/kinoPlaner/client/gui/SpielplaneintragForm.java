@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeErstellenForm;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
@@ -52,6 +53,10 @@ public class SpielplaneintragForm extends PopupPanel {
 	private SpielplanVorstellungenCellTable svct;
 	private FilmErstellenForm film;
 	private SpielzeitErstellenForm spielzeit;
+	
+	private FilmErstellenForm erstellen;
+	
+	private Film filmB;
 
 	private ListBox filmListBox = new ListBox();
 
@@ -118,13 +123,13 @@ public class SpielplaneintragForm extends PopupPanel {
 		spielplaneintragGrid.setWidget(1, 1, filmListBox);
 		spielplaneintragGrid.setWidget(1, 2, filmErstellenButton);
 
-		// spielplaneintragGrid.setWidget(2, 2, filmBearbeitenButton);
+		 spielplaneintragGrid.setWidget(2, 2, filmBearbeitenButton);
 
 		spielplaneintragGrid.setWidget(3, 0, spielzeitLabel);
 		spielplaneintragGrid.setWidget(3, 1, spielzeitListBox);
 		spielplaneintragGrid.setWidget(3, 2, spielzeitErstellenButton);
 
-		// spielplaneintragGrid.setWidget(4, 2, spielzeitBearbeitenButton);
+		 spielplaneintragGrid.setWidget(4, 2, spielzeitBearbeitenButton);
 
 		popupPanel.add(spielplaneintragGrid);
 
@@ -134,6 +139,7 @@ public class SpielplaneintragForm extends PopupPanel {
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		filmErstellenButton.addClickHandler(new NeuerFilmClickHandler());
 		spielzeitErstellenButton.addClickHandler(new NeueSpielzeitClickHandler());
+		filmBearbeitenButton.addClickHandler(new FilmBearbeitenClickHandler());
 
 		// this.center();
 		// this.setPopupPosition(30, 50);
@@ -141,6 +147,9 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		administration.getAllFilme(new FilmeCallback());
 		administration.getAllSpielzeiten(new SpielzeitenCallback());
+		
+		administration.getFilmByName(filmListBox.getSelectedValue(), new FilmByNameCallback());
+		
 
 	}
 
@@ -171,6 +180,19 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		}
 
+	}
+	
+	private class FilmBearbeitenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			
+			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmByNameCallback());
+
+			
+		}
+		
 	}
 
 	public void hideFilmPopup() {
@@ -215,6 +237,29 @@ public class SpielplaneintragForm extends PopupPanel {
 			}
 		}
 
+	}
+	
+	private class FilmByNameCallback implements AsyncCallback<Film> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Film result) {
+			// TODO Auto-generated method stub
+			
+			 erstellen = new FilmErstellenForm(result);
+			 
+			 if (result != null) {
+				 
+				 erstellen.show();
+			
+			 }
+		}
+		
 	}
 
 	private class SpielzeitenCallback implements AsyncCallback<ArrayList<Spielzeit>> {
