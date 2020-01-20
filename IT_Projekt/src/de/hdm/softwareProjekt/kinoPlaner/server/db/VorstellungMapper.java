@@ -278,8 +278,8 @@ public class VorstellungMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
-							+ "FROM Vorstellung" + " WHERE vorstellung_spielplan_Id = " + spielplan.getId()
-							+ "ORDER BY vName");
+							+ " FROM Vorstellung" + " WHERE vorstellung_spielplan_Id = " + spielplan.getId()
+							+ " ORDER BY vName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Vorstellungs-Objekt erstellt

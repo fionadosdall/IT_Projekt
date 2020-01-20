@@ -70,11 +70,13 @@ public class SpielplaneintragForm extends PopupPanel {
 	}
 
 	public SpielplaneintragForm(SpielplanVorstellungenCellTable svct) {
+		super(true);
 		this.svct = svct;
 
 	}
 
 	public SpielplaneintragForm(SpielplanVorstellungenCellTable svct, Vorstellung vorstellung) {
+		super(true);
 		this.svct = svct;
 		this.vorstellung = vorstellung;
 	}

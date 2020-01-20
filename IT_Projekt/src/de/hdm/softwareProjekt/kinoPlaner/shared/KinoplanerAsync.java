@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
@@ -49,8 +48,8 @@ public interface KinoplanerAsync {
 	public void erstellenKinokette(String name, String sitz, String website, AsyncCallback<Kinokette> callback)
 			throws IllegalArgumentException;
 
-	public void erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen, AsyncCallback<Spielplan> callback)
-			throws IllegalArgumentException;
+	public void erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen,
+			AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
 
 	public void erstellenVorstellung(int spielplanId, int spielzeitId, int filmId, AsyncCallback<Vorstellung> callback)
 			throws IllegalArgumentException;
@@ -360,5 +359,10 @@ public interface KinoplanerAsync {
 
 	public void getOpenUmfragenByAnwender(AsyncCallback<ArrayList<Umfrage>> callback) throws IllegalArgumentException;
 
+	public void updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan,
+			AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
+
+	public void updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan,
+			AsyncCallback<ArrayList<Spielplan>> callback) throws IllegalArgumentException;
 
 }

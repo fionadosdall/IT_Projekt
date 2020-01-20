@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -199,7 +198,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return erstelltes Spielplan Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen) throws IllegalArgumentException;
+	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen)
+			throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1158,8 +1158,8 @@ public interface Kinoplaner extends RemoteService {
 	 * @return fertiges Objekt
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId,  ArrayList<Vorstellung> neueVorstellungen)
-			throws IllegalArgumentException;
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId,
+			ArrayList<Vorstellung> neueVorstellungen) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1763,13 +1763,44 @@ public interface Kinoplaner extends RemoteService {
 	 * @throws IllegalArgumentException
 	 */
 	public void isVotedEntfernen(Auswahl auswahl) throws IllegalArgumentException;
-	
+
 	/**
 	 * <p>
 	 * Rueckgabe aller offenen Umfragen des Anwenders
 	 * </p>
+	 * 
 	 * @return Offenen Umfragen
 	 */
 	public ArrayList<Umfrage> getOpenUmfragenByAnwender() throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Erstellen von Vorstellungen aus einem Array, mit vergleich, löschung und
+	 * update bestehnder Vorstellungen
+	 * </p>
+	 * 
+	 * @param zuErstellendeVorstellungen
+	 * @param spielplan
+	 *            Spielplan der geupdatet wird
+	 * @return geupdateter spielplan
+	 * @throws IllegalArgumentException
+	 */
+	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan)
+			throws IllegalArgumentException;
+
+	/**
+	 * <p>
+	 * Erstellen von Vorstellunegn aus einem Array, mit vergleich, löschung und
+	 * update bestehnderVorstellung, als Teil des Kinokettenspielplan
+	 * </p>
+	 * 
+	 * @param zuErstellendeVorstellungen
+	 * @param spielplan
+	 *            Spielplan der geupdatet wird
+	 * @return geupdateter spielpläne
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Spielplan> updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen,
+			Spielplan spielplan) throws IllegalArgumentException;
 
 }

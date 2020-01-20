@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueCellTable;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -417,8 +418,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId, ArrayList<Vorstellung> neueVorstellungen)
-			throws IllegalArgumentException {
+	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId,
+			ArrayList<Vorstellung> neueVorstellungen) throws IllegalArgumentException {
 
 		if (spielplanMapper.findByName(name) == null) {
 			ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
@@ -438,7 +439,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				// Das Objekt wird in der Datenbank gespeichert und wiedergeben
 				Spielplan fertigerSpielplan = this.spielplanMapper.insertKinokette(s);
 				spielplaene.add(fertigerSpielplan);
-				
+
 				if (neueVorstellungen.size() != 0) {
 					for (Vorstellung v : neueVorstellungen) {
 						erstellenVorstellung(fertigerSpielplan.getId(), v.getSpielzeitId(), v.getFilmId());
@@ -465,7 +466,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		String name = (getSpielplanById(spielplanId).getName() + getSpielzeitById(spielzeitId).getId()
+		String name = (getSpielplanById(spielplanId).getName() 
+				+ getSpielzeitById(spielzeitId).getId()
 				+ getFilmById(filmId).getId());
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
@@ -1598,7 +1600,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner() throws IllegalArgumentException {
-		return this.spielplanMapper.findAllByAnwenderOwner(this.anwender);
+		ArrayList<Spielplan> array = new ArrayList<Spielplan>();
+		array = this.spielplanMapper.findAllByAnwenderOwner(this.anwender);
+
+		return array;
 	}
 
 	/**
@@ -2830,6 +2835,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * bestehnder Auswahlen
 	 * </p>
 	 */
+	@Override
 	public Umfrage auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
 			int size, Umfrage umfrage) throws IllegalArgumentException {
 
@@ -2879,6 +2885,122 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		}
 
 		return this.umfrageMapper.findById(umfrage.getId());
+	}
+
+	/**
+	 * <p>
+	 * Erstellen von Vorstellunegn aus einem Array, mit vergleich, löschung und
+	 * update bestehnderVorstellung, als Teil des Kinokettenspielplan
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Spielplan> updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen,
+			Spielplan spielplan) throws IllegalArgumentException {
+
+		speichern(spielplan);
+
+		ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
+		ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
+		alteVorstellungen = getVorstellungenBySpielplan(spielplan);
+
+		for (Vorstellung v : alteVorstellungen) {
+			int counter = 0;
+			if (zuErstellendeVorstellungen.size() != 0) {
+				for (Vorstellung vGesamt : zuErstellendeVorstellungen) {
+					if (v.getId() == vGesamt.getId()) {
+						fertigeVorstellungen.add(vGesamt);
+						speichern(vGesamt);
+						break;
+					} else {
+						counter++;
+					}
+					if (counter == zuErstellendeVorstellungen.size()) {
+						loeschen(v);
+						counter = 0;
+					}
+				}
+			} else {
+				loeschen(v);
+			}
+		}
+
+		if (zuErstellendeVorstellungen.size() != 0) {
+			for (Vorstellung vGesamt : zuErstellendeVorstellungen) {
+
+				if (fertigeVorstellungen.size() != 0) {
+
+					if (vGesamt.getId() == 0) {
+						erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+
+					}
+
+				} else {
+					erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * <p>
+	 * Erstellen von Vorstellungen aus einem Array, mit vergleich, löschung und
+	 * update bestehnder Vorstellungen
+	 * </p>
+	 */
+	@Override
+	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan)
+			throws IllegalArgumentException {
+
+		if (spielplanMapper.findByName(spielplan.getName()) == null||spielplanMapper.findById(spielplan.getId()) != null) {
+
+			speichern(spielplan);
+
+			ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
+			ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
+			alteVorstellungen = getVorstellungenBySpielplan(spielplan);
+
+			for (Vorstellung v : alteVorstellungen) {
+				int counter = 0;
+				if (zuErstellendeVorstellungen.size() != 0) {
+					for (Vorstellung vGesamt : zuErstellendeVorstellungen) {
+						if (v.getId() == vGesamt.getId()) {
+							fertigeVorstellungen.add(vGesamt);
+							speichern(vGesamt);
+							break;
+						} else {
+							counter++;
+						}
+						if (counter == zuErstellendeVorstellungen.size()) {
+							loeschen(v);
+							counter = 0;
+						}
+					}
+				} else {
+					loeschen(v);
+				}
+			}
+
+			if (zuErstellendeVorstellungen.size() != 0) {
+				for (Vorstellung vGesamt : zuErstellendeVorstellungen) {
+
+					if (fertigeVorstellungen.size() != 0) {
+
+						if (vGesamt.getId() == 0) {
+							erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+
+						}
+
+					} else {
+						erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+					}
+				}
+			}
+
+			return this.spielplanMapper.findById(spielplan.getId());
+		}
+		return null;
 	}
 
 	/**

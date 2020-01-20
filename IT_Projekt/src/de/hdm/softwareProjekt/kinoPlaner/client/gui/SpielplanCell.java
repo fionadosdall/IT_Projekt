@@ -47,7 +47,7 @@ public SpielplanCell() {
   
   private void doAction(Spielplan value, ValueUpdater<Spielplan> valueUpdater) {
 		RootPanel.get("details").clear();
-		SpielplanBearbeitenForm anzeigen = new SpielplanBearbeitenForm(value);
+		SpielplanErstellenForm anzeigen = new SpielplanErstellenForm(value);
 		RootPanel.get("details").add(anzeigen);
   }
 

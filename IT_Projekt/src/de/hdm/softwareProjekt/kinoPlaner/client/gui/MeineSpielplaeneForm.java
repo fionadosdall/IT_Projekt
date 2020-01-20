@@ -81,7 +81,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		this.add(hbPanel);
 		
 		bov.setTitel("Meine Spielpläne");
-		kinoplaner.getAllSpielplaene(new GetSpielplaeneByAnwenderOwnerCallback());
+	
 		
 		inhaltPanel.add(bov);
 		this.add(inhaltPanel);

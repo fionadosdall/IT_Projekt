@@ -375,7 +375,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, kinoId, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id "
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id "
 							+ "FROM Spielplan" + " WHERE spielplan_anwender_Id = " + anwenderOwner.getId()
 							+ " ORDER BY spielplan_kino_Id");
 
@@ -469,7 +469,7 @@ public class SpielplanMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kinokette_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
+					"SELECT spId, spName, spielplan_anwender_Id, spielplan_kino_Id, erstellDatum, isKinokettenSpielplan, spielplan_kinokette_Id FROM Spielplan"
 							+ " WHERE spielplan_kinokette_Id = " + kinokette.getId()
 							+ " ORDER BY spielplan_kinokette_Id");
 			/**

@@ -224,12 +224,6 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		
 
 			neueVorstellungen.add(neueVorstellung);
-			
-			Window.alert("Hier");
-			
-			for(Vorstellung v : neueVorstellungen) {
-				Window.alert(v.getFilmId() + " " + v.getSpielzeitId());
-			}
 
 			VorstellungInfo vI = new VorstellungInfo();
 
@@ -261,7 +255,23 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			// TODO Auto-generated method stub
+			
+			for(Vorstellung v : result) {
+				
+				neueVorstellungen.add(v);
+
+				VorstellungInfo vI = new VorstellungInfo();
+
+				vI.setU(v);
+
+				vorstellungList.add(vI);
+
+				dataProvider.refresh();
+
+				administration.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
+				administration.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(vI));
+				
+			}
 
 		}
 
@@ -285,7 +295,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-
+			
 			info.filmName = result.getName();
 
 			dataProvider.refresh();

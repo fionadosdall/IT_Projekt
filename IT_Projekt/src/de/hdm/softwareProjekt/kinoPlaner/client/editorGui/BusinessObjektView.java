@@ -35,6 +35,7 @@ public class BusinessObjektView extends VerticalPanel {
 
 	private HorizontalPanel head = new HorizontalPanel();
 	private HorizontalPanel actions = new HorizontalPanel();
+	private VerticalPanel cellList = new VerticalPanel();
 	private Label titel = new Label();
 	private CellList<Gruppe> listGruppe;
 	private CellList<Umfrage> listUmfrage;
@@ -52,6 +53,7 @@ public class BusinessObjektView extends VerticalPanel {
 		head.add(titel);
 		head.add(actions);
 		this.add(head);
+		this.add(cellList);
 
 	}
 
@@ -66,7 +68,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listGruppe.setPageSize(30);
 		listGruppe.setRowData(gruppen);
 
-		this.add(listGruppe);
+		cellList.add(listGruppe);
 	}
 
 
@@ -77,7 +79,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listUmfrage.setStyleName("");
 		listUmfrage.setPageSize(30);
 		listUmfrage.setRowData(umfragen);
-		this.add(listUmfrage);
+		cellList.add(listUmfrage);
 	}
 	
 	public void setErgebnisse(ArrayList<Umfrage> ergebnisse) {
@@ -86,7 +88,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listErgebnis.setStyleName("");
 		listErgebnis.setPageSize(30);
 		listErgebnis.setRowData(ergebnisse);
-		this.add(listErgebnis);
+		cellList.add(listErgebnis);
 	}
 	
 	public void setKinos(ArrayList<Kino> kinos) {
@@ -95,7 +97,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listKino.setStyleName("");
 		listKino.setPageSize(30);
 		listKino.setRowData(kinos);
-		this.add(listKino);
+		cellList.add(listKino);
 	}
 	
 	public void setKinoketten(ArrayList<Kinokette> kinoketten) {
@@ -104,7 +106,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listKinokette.setStyleName("");
 		listKinokette.setPageSize(30);
 		listKinokette.setRowData(kinoketten);
-		this.add(listKinokette);
+		cellList.add(listKinokette);
 	}
 	
 	public void setSpielplaene(ArrayList<Spielplan> spielplaene) {
@@ -113,7 +115,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listSpielplan.setStyleName("");
 		listSpielplan.setPageSize(30);
 		listSpielplan.setRowData(spielplaene);
-		this.add(listUmfrage);
+		cellList.add(listSpielplan);
 	}
 	
 	public void setVorstellungen(ArrayList<Vorstellung> vorstellungen) {
@@ -122,7 +124,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listVorstellung.setStyleName("");
 		listVorstellung.setPageSize(30);
 		listVorstellung.setRowData(vorstellungen);
-		this.add(listVorstellung);
+		cellList.add(listVorstellung);
 	}
 
 	public void addAction(Image image, ClickHandler clickHandler) {

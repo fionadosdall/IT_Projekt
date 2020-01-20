@@ -30,8 +30,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielplanErstellenForm extends VerticalPanel {
 
-	public static Boolean edit = false;
-
 	private int kinoId;
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -95,7 +93,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	public void onLoad() {
 
-		if (edit == true) {
+		if (spielplan != null) {
 			vorstellungenCellTable = new SpielplanVorstellungenCellTable(spielplan);
 
 		} else {
@@ -136,7 +134,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		// Zusammenbauen der Widgets
 
-		if (edit == true) {
+		if (spielplan != null) {
 
 			detailsoben.add(spielplanBearbeitenFormLabel);
 			spielplannameTextBox.setText(spielplan.getName());
@@ -156,7 +154,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		spielplanGrid.setWidget(1, 1, kinoListBox);
 
 		inhaltObenPanel.add(spielplanGrid);
-		inhaltObenPanel.add(kinokettenCheckBox);
+		//inhaltObenPanel.add(kinokettenCheckBox);
 		this.add(inhaltObenPanel);
 
 		// TODO kinoplaner.getVorstellungenBySpielplan(spielplan, new
@@ -321,22 +319,6 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 
-	private class KinoketteBearbeitenClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
-			// Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
-
-			
-			bearbeiten = new SpielplanErstellenForm(spielplan);
-			// SpielplanErstellenForm.setBearbeiten();
-			RootPanel.get("details").add(bearbeiten);
-		}
-
-	}
-
 	/*****
 	 * CALLBACKS
 	 */
@@ -352,17 +334,61 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Kino result) {
-			if (kinokettenCheckBox.getValue() == true) {
-				if (result.getKinokettenId() != 0) {
-					kinoplaner.erstellenSpielplaeneKinokette(spielplannameTextBox.getValue(), result.getKinokettenId(),
-							vorstellungenCellTable.getVorstellungenArray(),
-							new ErstellenSpielplaeneKinoketteCallback());
-				} else {
-					Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
-				}
+			if (spielplan != null) {
+			//	if (kinokettenCheckBox.getValue() == true) {
+
+					////if (result.getKinokettenId() != 0) {
+						//if (spielplan.isKinokettenSpielplan() == true) {
+
+						//} else {
+
+						//}
+					//} else {
+						//Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
+					//}
+					//if (spielplan.isKinokettenSpielplan() == true) {
+
+					//} else {
+			
+				spielplan.setName(spielplannameTextBox.getValue());
+				
+				kinoplaner.updateSpielplanKino(vorstellungenCellTable.getVorstellungenArray(), spielplan, new AsyncCallback<Spielplan>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+						caught.printStackTrace();
+						
+					}
+
+					@Override
+					public void onSuccess(Spielplan result) {
+						if (result == null) {
+							Window.alert("Name bereits vergeben!");
+						} else {
+							RootPanel.get("details").clear();
+							spielplaeneF = new MeineSpielplaeneForm();
+							RootPanel.get("details").add(spielplaeneF);
+						}
+						
+					}
+				});
+					//}
+				//}
+
 			} else {
-				kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
-						vorstellungenCellTable.getVorstellungenArray(), new ErstellenSpielplanKinoCallback());
+				//if (kinokettenCheckBox.getValue() == true) {
+					//if (result.getKinokettenId() != 0) {
+					//	kinoplaner.erstellenSpielplaeneKinokette(spielplannameTextBox.getValue(),
+							//	result.getKinokettenId(), vorstellungenCellTable.getVorstellungenArray(),
+							//	new ErstellenSpielplaeneKinoketteCallback());
+					//} else {
+					//	Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
+					//}
+				//} else {
+					kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
+							vorstellungenCellTable.getVorstellungenArray(), new ErstellenSpielplanKinoCallback());
+				//}
 			}
 		}
 
@@ -390,7 +416,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 					kinoListBox.addItem(k.getName());
 
-					if (edit == true) {
+					if (spielplan != null) {
 						if (k.getId() == spielplan.getKinoId()) {
 							indexSelected = counter;
 						} else {
@@ -399,7 +425,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 					}
 
 				}
-				if (edit == true) {
+				if (spielplan != null) {
 					kinoListBox.setSelectedIndex(indexSelected);
 				}
 
