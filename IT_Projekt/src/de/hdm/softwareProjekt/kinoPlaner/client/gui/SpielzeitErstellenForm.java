@@ -35,7 +35,6 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
-import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplaneintragForm.SpielzeitenCallback;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;

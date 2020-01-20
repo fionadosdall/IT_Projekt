@@ -36,6 +36,11 @@ public class BurgerMenueAdmin extends FlowPanel{
 		RootPanel.get("dropdown").add(dropdown);
 
 	}
+	
+	/**Erstellung der ClickHandler, welche für 
+	 * die Interaktion mit dem BurgerMenü benötigt werden.
+	 * 
+	 */
 
 	private class BurgerMenueClickHandler implements ClickHandler {
 		private int clickCounter = 0;
@@ -75,6 +80,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 
 	}
 
+	
 	private class KinoErstellenClickHandler implements ClickHandler {
 
 		@Override

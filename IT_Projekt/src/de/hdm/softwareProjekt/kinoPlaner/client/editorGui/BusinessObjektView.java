@@ -31,6 +31,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+/** Die Klasse BusinessObjektView, erstellt für alle BO's die
+ * entsprechenden CellLists, welche für die Auflistung der 
+ *
+ */
 public class BusinessObjektView extends VerticalPanel {
 
 	private HorizontalPanel head = new HorizontalPanel();
@@ -46,6 +50,10 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Vorstellung> listVorstellung;
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	/*
+	 * onLoad()- Methode, 
+	 */
+
 	public void onLoad() {
 		head.setStyleName("");
 		actions.setStyleName("");
@@ -61,6 +69,8 @@ public class BusinessObjektView extends VerticalPanel {
 		this.titel.setText(titel);
 	}
 
+	//Erstellung der CellListen für die BusinessObjekte
+	
 	public void setGruppen(ArrayList<Gruppe> gruppen) {
 		GruppeCell cell = new GruppeCell();
 		listGruppe = new CellList<Gruppe>(cell);
@@ -70,8 +80,6 @@ public class BusinessObjektView extends VerticalPanel {
 
 		cellList.add(listGruppe);
 	}
-
-
 	
 	public void setUmfragen(ArrayList<Umfrage> umfragen) {
 		UmfrageCell cell = new UmfrageCell();
