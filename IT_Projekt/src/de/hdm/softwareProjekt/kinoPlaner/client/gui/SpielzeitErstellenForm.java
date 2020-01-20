@@ -95,9 +95,12 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		dateBox.getElement().setPropertyString("placeholder", "Spielzeit auswählen");
 		
 		
+		
+		
 		if (spielzeit != null) {
 			
 			obenPanel.add(spielzeitBearbeiten);
+			dateBox.setValue(spielzeit.getZeit());
 		
 		} else {
 			obenPanel.add(title);
@@ -155,8 +158,14 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			String formatiert = dft.format(dateBox.getValue());
 			
 			Window.alert("formatiert" + formatiert);
+			
+			if(spielzeit==null) {
 		
-			kinoplaner.erstellenSpielzeit("", formatiert, new SpielzeitErstellenCallback());
+			kinoplaner.erstellenSpielzeit(formatiert, formatiert, new SpielzeitErstellenCallback());
+			}else{
+				spielzeit.setDatetoString(formatiert);
+				kinoplaner.speichern(spielzeit, new SpeichernCallback());
+			}
 			
 			
 		}
@@ -186,15 +195,31 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 		
 	/* Callback */
+	
+	private class SpeichernCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			
+			parent.spielzeitRefresh();
+		}
+		
+	}
 				
 	private class SpielzeitErstellenCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Eine neue Spielzeit konnte leider nicht erstellt werden");
-			
 			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -203,7 +228,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			
 				Window.alert("Spielzeit wurde erstellt");
 								
-				SpielzeitErstellenForm.this.hide();
+			
 				
 				parent.spielzeitRefresh();
 				

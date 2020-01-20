@@ -2,23 +2,47 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.ClickableTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ImageCell;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.cell.client.Cell.Context;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -57,6 +81,13 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	private CellTable<VorstellungInfo> vorstellungenTable = new CellTable<VorstellungInfo>(100, tableRes);
 
 	private ButtonCell buttonCell = new ButtonCell();
+	
+	private VorstellungBearbeitenCell bearbeitenCell;
+	
+	private Image image = new Image();
+	
+
+    
 	private TextCell filmCell = new TextCell();
 	private TextCell spielzeitCell = new TextCell();
 
@@ -122,6 +153,8 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		}
 
 	}
+	
+	
 
 	public ArrayList<Vorstellung> getVorstellungenArray() {
 		return neueVorstellungen;
@@ -136,7 +169,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenTable);
-
+		
+		bearbeitenCell = new VorstellungBearbeitenCell(vorstellung, this);
+		
 		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(vorstellungList);
 		vorstellungenTable.addColumnSortHandler(sortHandler);
 
@@ -183,6 +218,18 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 			}
 		});
+		
+		Column<VorstellungInfo, Vorstellung> bearbeitenColumn = new Column<VorstellungInfo, Vorstellung>(bearbeitenCell){
+
+			@Override
+			public Vorstellung getValue(VorstellungInfo object) {
+				// TODO Auto-generated method stub
+				return object.getVorstellung();
+			}
+		};
+
+		vorstellungenTable.addColumn(bearbeitenColumn, "Bearbeiten");
+
 
 		Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
@@ -233,6 +280,19 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	}
 
 	/* Methoden */
+	
+	public void updateVorstellung(Vorstellung bearbeiteteVorstellung, SpielplaneintragForm root ) {
+		
+		for(VorstellungInfo v : vorstellungList) {
+			if(v.getVorstellung()==bearbeiteteVorstellung) {
+				administration.getFilmById(bearbeiteteVorstellung.getFilmId(), new FilmByIdCallback(v));
+				administration.getSpielzeitById(bearbeiteteVorstellung.getSpielzeitId(), new SpielzeitCallback(v));
+			}
+		}
+		
+		root.hide();
+		
+	}
 
 	public void addVorstellung(Vorstellung neueVorstellung) {
 
@@ -345,5 +405,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		}
 
 	}
+
+
 
 }

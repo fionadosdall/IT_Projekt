@@ -326,7 +326,7 @@ public class FilmMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum FROM film"
+					"SELECT fId, fName, film_anwender_Id, fBeschreibung, bewertung, erstellDatum  FROM film"
 							+ " WHERE fName='" + name + "' ORDER BY film_anwender_Id");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -335,6 +335,7 @@ public class FilmMapper {
 				f.setName(resultset.getString("fName"));
 				f.setBesitzerId(resultset.getInt("film_anwender_Id"));
 				f.setBeschreibung(resultset.getString("fBeschreibung"));
+				f.setBewertung(resultset.getString("bewertung"));
 				f.setErstellDatum(resultset.getTimestamp("erstellDatum"));
 				return f;
 			}

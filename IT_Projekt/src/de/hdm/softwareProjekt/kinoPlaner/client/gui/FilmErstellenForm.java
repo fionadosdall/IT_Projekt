@@ -58,7 +58,7 @@ public class FilmErstellenForm extends PopupPanel {
 	private TextBox nameTextBox = new TextBox();
 	private TextBox beschreibungTextBox = new TextBox();
 	private TextBox bewertungTextBox = new TextBox();
-	private TextBox laengeTextBox = new TextBox();
+	
 	
 	
 	private Grid filmGrid = new Grid(4,2);
@@ -89,10 +89,12 @@ public class FilmErstellenForm extends PopupPanel {
 	
 	
 	public FilmErstellenForm(SpielplaneintragForm parent) {
+		super(true);
 		this.parent = parent;
 	}
 	
 	public FilmErstellenForm(SpielplaneintragForm parent, Film film) {
+		super(true);
 		this.parent = parent;
 		this.film = film;
 	}
@@ -119,7 +121,7 @@ public class FilmErstellenForm extends PopupPanel {
 		nameTextBox.addStyleName("formularTextBox");
 		beschreibungTextBox.addStyleName("formularTextBox");
 		bewertungTextBox.addStyleName("formularTextBox");
-		laengeTextBox.addStyleName("formularTextBox");
+		
 		
 		
 		/******
@@ -136,8 +138,7 @@ public class FilmErstellenForm extends PopupPanel {
 		filmGrid.setWidget(1, 1, beschreibungTextBox);
 		filmGrid.setWidget(2, 0, bewertungLabel);
 		filmGrid.setWidget(2, 1, bewertungTextBox);
-		filmGrid.setWidget(3, 0, laengeLabel);
-		filmGrid.setWidget(3, 1, laengeTextBox);
+		
 		
 		
 		popupPanel.add(filmGrid);
@@ -192,8 +193,22 @@ public class FilmErstellenForm extends PopupPanel {
 					film.setBewertung(bewertungTextBox.getValue());
 					film.setBeschreibung(beschreibungTextBox.getValue());
 					
-					kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(), bewertungTextBox.getValue(),
-							new FilmErstellenCallback());
+					kinoplaner.speichern(film, new AsyncCallback<Void>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert(caught.getMessage());
+							caught.printStackTrace();
+							
+						}
+
+						@Override
+						public void onSuccess(Void result) {
+							Systemmeldung.anzeigen("Film wurde geupdatet");
+							parent.refresh();
+							
+						}
+					});
 				}
 
 			}
@@ -220,8 +235,8 @@ public class FilmErstellenForm extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				Systemmeldung.anzeigen("Ein neuer Film konnte leider nicht angelegt werden");
+				Window.alert(caught.getMessage());
+				caught.printStackTrace();
 			}
 
 			@Override
@@ -248,8 +263,8 @@ public class FilmErstellenForm extends PopupPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				Systemmeldung.anzeigen("Film konnte nicht gelöscht werden");
+				Window.alert(caught.getMessage());
+				caught.printStackTrace();
 			}
 
 			@Override
@@ -281,7 +296,7 @@ public class FilmErstellenForm extends PopupPanel {
 			nameTextBox.setText("");
 			beschreibungTextBox.setText("");
 			bewertungTextBox.setText("");
-			laengeTextBox.setText("");
+	
 		}
 		
 	}

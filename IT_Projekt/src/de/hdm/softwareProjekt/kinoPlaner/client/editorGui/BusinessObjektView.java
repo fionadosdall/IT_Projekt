@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -39,7 +40,7 @@ public class BusinessObjektView extends VerticalPanel {
 
 	private HorizontalPanel head = new HorizontalPanel();
 	private HorizontalPanel actions = new HorizontalPanel();
-	private VerticalPanel cellList = new VerticalPanel();
+	private ScrollPanel cellList = new ScrollPanel();
 	private Label titel = new Label();
 	private CellList<Gruppe> listGruppe;
 	private CellList<Umfrage> listUmfrage;
@@ -61,6 +62,7 @@ public class BusinessObjektView extends VerticalPanel {
 		head.add(titel);
 		head.add(actions);
 		this.add(head);
+		cellList.setSize("375px", "300px");
 		this.add(cellList);
 
 	}
