@@ -198,7 +198,8 @@ public class KinoMapper {
 			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id= '" + kino.getBesitzerId() + "' , " + "kName= '"
 					+ kino.getName() + "', " + "erstellDatum= '" + kino.getErstellDatum() + "' , " + "plz= '"
 					+ kino.getPlz() + "' , " + "stadt= '" + kino.getStadt() + "', " + "strasse= '" + kino.getStrasse()
-					+ "' , " + "hausnummer= '" + kino.getHausnummer() + "' WHERE kId=" + kino.getId());
+					+ "' , " + "hausnummer= '" + kino.getHausnummer() + "' , " + "kino_kinokette_Id= '" + kino.getKinokettenId()
+					+ "' WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
