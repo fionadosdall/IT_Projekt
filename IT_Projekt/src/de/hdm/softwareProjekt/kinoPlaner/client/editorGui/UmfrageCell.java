@@ -18,7 +18,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 
 /***
- * Klasse zur Darstellung von Umfrage-Objekten für den Navigator
+ * Klasse zur Darstellung von Umfrage-Objekten für den Navigator.
+ * Alle Klassen die auf -Cell enden sind abgewandelte/ veränderte Abstact Cells
  * 
  *
  */
