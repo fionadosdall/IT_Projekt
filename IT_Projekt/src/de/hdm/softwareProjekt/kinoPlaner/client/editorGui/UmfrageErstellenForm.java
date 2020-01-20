@@ -99,12 +99,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/****************************************************************
+	 * onLoad-Methode
 	 * 
-	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
-	 */
+	 * **************************************************************/
 	public void onLoad() {
+		
+		// Vergeben der Stylenames
 
 		this.addStyleName("detailscontainer");
 
@@ -208,6 +209,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
+	/**
+	 * Hier werden die unterschiedlichen Filter für das Erstellen einer Umfrage
+	 * bereitgestellt
+	 * 
+	 *
+	 */
+	
+	
 	private class FilternClickHandler implements ClickHandler {
 
 		@Override
@@ -229,6 +238,15 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	}
 
+	/***
+	 * Hier findet der Erstellvorgang einer Umfrage statt.
+	 * Hierfür muss zuerst der gruppenname ausgewählt werden. Ist dieser 
+	 * vorhanden kann die Gruppe ausgewählt werden und die Umfrage dazu erstellt
+	 * werden. Ist kein Gruppenname eingegeben meldet dass System, dass zuerst
+	 * eine Gruppe aussgewählt werden soll
+	 * 
+	 *
+	 */
 	private class UmfrageErstellenClickHandler implements ClickHandler {
 
 		@Override
@@ -356,6 +374,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * Wenn die Vorstellung anhand des Namens der Kinokette gefilter wurde, wird diese
+	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
+	 */
 
 	private class GetKinoketteByNameCallback implements AsyncCallback<Kinokette> {
 
@@ -365,7 +387,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 			caught.printStackTrace();
 
 		}
-
+		
 		@Override
 		public void onSuccess(Kinokette result) {
 			kinoplaner.filterResultVorstellungenByKinokette(resultSet, result,
@@ -375,6 +397,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	}
 
+	
+	/**
+	 * 
+	 * 
+	 *
+	 */
 	private class FilterResultVorstellungenBySpielzeitCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
 		@Override
@@ -394,9 +422,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 	
 	/**
-	 * Hier wird die Spielzeit einer Vorstellung angegeben. Die Vorstellung
-	 * wird hier namentlich gesucht.
-	 * @author fiona
+	 * Hier wird die Vorstellung anhand der Spielzeit gefiltert, und zurückggegeben.
+	 * Ist dies nicht möglich so werden Clients- & Serverseitige Fehler ausgegeben.
 	 *
 	 */
 
@@ -514,6 +541,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * Hier wird die Spielzeit geladen, welche bei der Erstellung der Umfrage ausgewählt werden kann
+	 */
 
 	private class SpielzeitCallback implements AsyncCallback<ArrayList<Spielzeit>> {
 
@@ -553,6 +584,13 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Hier werden die Filme geladen, welche bei der Erstellung einer Umfrage 
+	 * ausgewählt werden können
+	 * @author fiona
+	 *
+	 */
 
 	private class FilmeCalllback implements AsyncCallback<ArrayList<Film>> {
 
@@ -586,6 +624,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * 
+	 */
 
 	private class GruppeByNameCallback implements AsyncCallback<Gruppe> {
 
@@ -644,6 +686,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 		
 	}
 
+	/****
+	 * Callback wird benötigt um eine Umfrage zu erstellen
+	 * 
+	 *
+	 */
 	private class UmfrageErstellenCallback implements AsyncCallback<Umfrage> {
 
 		@Override
