@@ -263,6 +263,8 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 			Systemmeldung.anzeigen("Ein neues Kino konnte leider nicht erstellt werden");
 		}
 
@@ -270,6 +272,9 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onSuccess(Kino result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino wurde angelegt");
+			RootPanel.get("details").clear();
+			mkf = new MeineKinosForm();
+			RootPanel.get("details").add(mkf);
 		}
 		
 	}
@@ -279,6 +284,8 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 			Systemmeldung.anzeigen("Änderungen konnten nicht gespeichert werden.");
 		}
 
@@ -286,6 +293,9 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Änderungen gespeichert.");
+			RootPanel.get("details").clear();
+			mkf = new MeineKinosForm();
+			RootPanel.get("details").add(mkf);
 		}
 		
 		
@@ -299,7 +309,8 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino konnte nicht gelöscht werden.");
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -316,7 +327,8 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -348,20 +360,21 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			
-			if(edit = false) {
+			/*if(edit = false) {*/
 			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
 					new KinoErstellenCallback());
 			
 			
-			}else {
+			/*}else {
 				k.setName(nameTextBox.getText());
 				k.setKinokettenId(result.getId());
 				k.setStrasse(stadtTextBox.getText());
@@ -370,7 +383,7 @@ private class LoeschenClickHandler implements ClickHandler{
 				k.setStadt(stadtTextBox.getText());
 				administration.speichern(k, new KinoAendernCallback());
 				
-			}
+			}*/
 			clearForm();
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
