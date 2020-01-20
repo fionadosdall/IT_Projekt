@@ -168,7 +168,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			KinoketteErstellenForm.setEdit(edit);
+			
 			bearbeiten = new SpielplanErstellenForm();
 			RootPanel.get("details").add(bearbeiten);
 		}

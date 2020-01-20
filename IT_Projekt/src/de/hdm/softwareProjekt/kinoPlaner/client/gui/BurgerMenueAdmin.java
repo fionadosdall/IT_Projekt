@@ -82,7 +82,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoErstellenForm erstellen = new KinoErstellenForm();
-			KinoErstellenForm.setEdit(edit);
+			
 			RootPanel.get("details").add(erstellen);
 
 		}
@@ -96,7 +96,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoketteErstellenForm erstellen = new KinoketteErstellenForm();
-			KinoketteErstellenForm.setEdit(edit);
+			
 			RootPanel.get("details").add(erstellen);
 
 		}

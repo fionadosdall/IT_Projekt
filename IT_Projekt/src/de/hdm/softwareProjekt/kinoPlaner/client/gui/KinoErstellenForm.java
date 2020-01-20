@@ -45,10 +45,11 @@ public class KinoErstellenForm extends VerticalPanel {
 	private static ListBox kinokettenListBox = new ListBox();
 	
 	private Button speichernButton = new Button("Speichern");
+	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 	private Grid kinoGrid = new Grid(6, 2);
 	
-	private static Boolean edit = false;
+	private Boolean edit = false;
 	private MeineKinosForm mkf;
 	private ArrayList<Kinokette> kinoketten = new ArrayList<Kinokette>();
 	private Kino k;
@@ -87,6 +88,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		plzLabel.addStyleName("textLabel");
 		stadtLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("obenPanel");
 		untenPanel.addStyleName("untenPanel");
@@ -135,7 +137,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
-			untenPanel.add(speichernButton);
+			untenPanel.add(aenderungSpeichernButton);
 		} else {
 			clearForm();
 			untenPanel.add(speichernButton);
@@ -144,8 +146,8 @@ public class KinoErstellenForm extends VerticalPanel {
 		this.add(untenPanel);
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
-		untenPanel.add(speichernButton);
 		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
+		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		
 	}
 	
@@ -248,6 +250,9 @@ private class LoeschenClickHandler implements ClickHandler{
 		}
 		
 	}
+	
+	
+	
 
 		
 	/* Callback */
@@ -265,6 +270,24 @@ private class LoeschenClickHandler implements ClickHandler{
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino wurde angelegt");
 		}
+		
+	}
+	
+	private class KinoAendernCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderungen konnten nicht gespeichert werden.");
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Änderungen gespeichert.");
+		}
+		
+		
 		
 	}
 	
@@ -331,14 +354,33 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			
+			if(edit = false) {
 			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
 					new KinoErstellenCallback());
-			clearForm();
 			
+			
+			}else {
+				k.setName(nameTextBox.getText());
+				k.setKinokettenId(result.getId());
+				k.setStrasse(stadtTextBox.getText());
+				k.setHausnummer(hnrTextBox.getText());
+				k.setPlz(Integer.parseInt(plzTextBox.getText()));
+				k.setStadt(stadtTextBox.getText());
+				administration.speichern(k, new KinoAendernCallback());
+				
+			}
+			clearForm();
 		}
 		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 /**Methoden***/
@@ -347,17 +389,17 @@ private class LoeschenClickHandler implements ClickHandler{
 		return edit;
 	}
 
-	public static void setEdit(Boolean edit) {
-		KinoErstellenForm.edit = edit;
+	public void setEdit(Boolean edit) {
+		this.edit = edit;
 	}
 
 	
 	public static void setBearbeiten(Kino kino) {
 		
 		
-		
+			
 			nameTextBox.setText(kino.getName());
-			plzTextBox.setText(plzTextBox.getText().toString());
+			plzTextBox.setText(Integer.toString(kino.getPlz()));
 			strasseTextBox.setText(kino.getStrasse());
 			hnrTextBox.setText(kino.getHausnummer());
 			stadtTextBox.setText(kino.getStadt());

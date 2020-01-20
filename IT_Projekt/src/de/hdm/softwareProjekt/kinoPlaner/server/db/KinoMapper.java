@@ -1,7 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
-
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -146,15 +146,31 @@ public class KinoMapper {
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				kino.setId(resultset.getInt("maxId") + 1);
-				stmt = con.createStatement();
-
-				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate(
-						"INSERT INTO Kino (kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum)"
-								+ " VALUES(" + kino.getId() + ", '" + kino.getName() + "', " + kino.getBesitzerId()
-								+ ", " + kino.getPlz() + ", '" + kino.getStadt() + "', '" + kino.getStrasse() + "', "
-								+ kino.getHausnummer() + ", " + kino.getErstellDatum() + ")");
+				
+				
 			}
+				PreparedStatement stmt2 = con
+						.prepareStatement(
+								"INSERT INTO kino (kId, kName, plz, stadt, strasse,"
+								+ " hausnummer, erstellDatum, kino_kinokette_Id,"
+								+ " kino_anwender_Id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+								Statement.RETURN_GENERATED_KEYS);
+				
+				stmt2.setInt(1, kino.getId());
+				stmt2.setString(2, kino.getName());
+				stmt2.setInt(3, kino.getPlz());
+				stmt2.setString(4, kino.getStadt());
+				stmt2.setString(5, kino.getStrasse());
+				stmt2.setString(6, kino.getHausnummer());
+				stmt2.setTimestamp(7, kino.getErstellDatum());
+				stmt2.setInt(8, kino.getKinokettenId());
+				stmt2.setInt(9, kino.getBesitzerId());
+				
+				
+				stmt2.executeUpdate();
+
+				
+				
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

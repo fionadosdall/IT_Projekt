@@ -42,7 +42,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 	
-	private static Boolean edit = false;
+	private Boolean edit = false;
 	private Kinokette kinoketteBearbeiten;
 	private Kinokette kk;
 	
@@ -301,8 +301,8 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		return edit;
 	}
 
-	public static void setEdit(Boolean edit) {
-		KinoketteErstellenForm.edit = edit;
+	public void setEdit(Boolean edit) {
+		this.edit = edit;
 	}
 
 	

@@ -329,7 +329,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 			RootPanel.get("details").clear();
 			// Kinokette ausgewaehlteKinokette = felder.getSelectionModel().getSelected();
 
-			KinoketteErstellenForm.setEdit(edit);
+			
 			bearbeiten = new SpielplanErstellenForm(spielplan);
 			// SpielplanErstellenForm.setBearbeiten();
 			RootPanel.get("details").add(bearbeiten);
