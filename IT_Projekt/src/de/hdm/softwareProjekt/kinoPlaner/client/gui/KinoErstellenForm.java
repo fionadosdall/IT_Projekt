@@ -460,7 +460,6 @@ private class LoeschenClickHandler implements ClickHandler{
 			administration.getKinoketteById(k.getKinokettenId(), new KinoketteByIdCallback());
 			
 			nameTextBox.setText(kino.getName());
-			kinokettenListBox.setSelectedIndex(kino.getKinokettenId());
 			plzTextBox.setText(Integer.toString(kino.getPlz()));
 			strasseTextBox.setText(kino.getStrasse());
 			hnrTextBox.setText(kino.getHausnummer());
