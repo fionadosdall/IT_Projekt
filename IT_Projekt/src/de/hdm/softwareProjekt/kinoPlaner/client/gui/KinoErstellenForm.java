@@ -196,6 +196,7 @@ private class KinoLoeschenDialogBox extends DialogBox{
 			
 			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
 		
+				
 			
 			
 			
@@ -371,6 +372,9 @@ private class LoeschenClickHandler implements ClickHandler{
 				
 			}
 			clearForm();
+			RootPanel.get("details").clear();
+			mkf = new MeineKinosForm();
+			RootPanel.get("details").add(mkf);
 		}
 		
 	}
