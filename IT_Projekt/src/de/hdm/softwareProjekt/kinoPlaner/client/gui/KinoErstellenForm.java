@@ -417,7 +417,28 @@ private class LoeschenClickHandler implements ClickHandler{
 	
 	
 	
-	
+	private class KinoketteByIdCallback implements AsyncCallback<Kinokette>{
+
+		@Override
+		public void onFailure(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onSuccess(Kinokette result) {
+			// TODO Auto-generated method stub
+			int index;
+			for(int i = 0; i<kinokettenListBox.getItemCount();i++) {
+				if(kinokettenListBox.getItemText(i).equals(result.getName())) {
+					index = i;
+					kinokettenListBox.setSelectedIndex(index);
+				}
+			}
+			
+		}
+		
+	}
 	
 	
 	
@@ -434,11 +455,12 @@ private class LoeschenClickHandler implements ClickHandler{
 	}
 
 	
-	public static void setBearbeiten(Kino kino) {
+	public void setBearbeiten(Kino kino) {
 		
-		
+			administration.getKinoketteById(k.getKinokettenId(), new KinoketteByIdCallback());
 			
 			nameTextBox.setText(kino.getName());
+			kinokettenListBox.setSelectedIndex(kino.getKinokettenId());
 			plzTextBox.setText(Integer.toString(kino.getPlz()));
 			strasseTextBox.setText(kino.getStrasse());
 			hnrTextBox.setText(kino.getHausnummer());
