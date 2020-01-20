@@ -182,7 +182,7 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			spielzeit = new SpielzeitErstellenForm();
+			spielzeit = new SpielzeitErstellenForm(eigeneForm);
 			spielzeit.show();
 
 		}
@@ -238,6 +238,7 @@ public class SpielplaneintragForm extends PopupPanel {
 					DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
 					spielzeitListBox.addItem(dft.format(s.getZeit()));
 					spielzeitenHastable.put(dft.format(s.getZeit()), s.getId());
+					
 
 				}
 			} else {
@@ -302,12 +303,17 @@ public class SpielplaneintragForm extends PopupPanel {
 
 	public void refresh() {
 		filmListBox.clear();
-		spielzeitListBox.clear();
 		administration.getAllFilme(new FilmeCallback());
-		administration.getAllSpielzeiten(new SpielzeitenCallback());
 		film.hide();
+		
+	}
+	
+	public void spielzeitRefresh() {
+		spielzeitListBox.clear();
+		administration.getAllSpielzeiten(new SpielzeitenCallback());
 		spielzeit.hide();
 		
 	}
+	
 
 }
