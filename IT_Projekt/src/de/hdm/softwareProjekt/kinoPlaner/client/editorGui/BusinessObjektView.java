@@ -31,8 +31,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-/** Die Klasse BusinessObjektView, erstellt für alle BO's die
- * entsprechenden CellLists, welche für die Auflistung der 
+/** Die Klasse BusinessObjektView, stellt die passenden BO's für die 
+ * CellLists zur Verfügung
  *
  */
 public class BusinessObjektView extends VerticalPanel {
@@ -50,9 +50,9 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Vorstellung> listVorstellung;
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
-	/*
-	 * onLoad()- Methode, 
-	 */
+	
+	//onLoad()- Methode, fügt die Panels, nach Laden der Seite hinzu.
+	 
 
 	public void onLoad() {
 		head.setStyleName("");
@@ -69,7 +69,11 @@ public class BusinessObjektView extends VerticalPanel {
 		this.titel.setText(titel);
 	}
 
-	//Erstellung der CellListen für die BusinessObjekte
+	/*Erstellung der CellListen für die BusinessObjekte, durch Übergabe
+	 * der entsprechenden Klassen als Liste, wird für jedes BO eine eigene 
+	 * Liste angelegt.
+	 */
+	
 	
 	public void setGruppen(ArrayList<Gruppe> gruppen) {
 		GruppeCell cell = new GruppeCell();
@@ -135,6 +139,8 @@ public class BusinessObjektView extends VerticalPanel {
 		cellList.add(listVorstellung);
 	}
 
+	//Methodendeklaration 
+	
 	public void addAction(Image image, ClickHandler clickHandler) {
 		image.setStyleName("");
 		image.addClickHandler(clickHandler);

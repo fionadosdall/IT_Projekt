@@ -23,6 +23,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 	private Umfrage umfrageStichwahl;
 	private KinoplanerAsync kinoplaner;
 
+	// Erstellen der Widgets
+	
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
@@ -38,12 +40,19 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	}
 
+
+	/*
+	 * onLoad()-Methode: Die Widgets werden der Form hinzugefügt und formatiert.
+	 */
+	
 	@Override
 	protected void onLoad() {
 
 		super.onLoad();
 		kinoplaner = ClientsideSettings.getKinoplaner();
 
+		// Vergeben der Stylenamen 
+		
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -70,6 +79,11 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	}
 
+	/*
+	 * Click-Handler: Wenn bei einer Umfrage kein eindeutiges Ergebnis erzielt wurde,
+	 * wird mit Klick auf den Button eine Stichwahl gestartet.
+	 */
+	
 	private class StichwahlClickHandler implements ClickHandler {
 
 		@Override
@@ -82,6 +96,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 	}
 
+	//AsyncCallbacks
+	
 	private class VolltextSucheUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override
@@ -91,6 +107,12 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		}
 
+		
+		/* Methode onSuccess() startet eine Stichwahl, falls die durchgeführte 
+		 * Umfrage, noch offen ist. Hierfür ist die Interaktion mit dem Button 
+		 * "Stichwahl" notwendig. 
+		 */
+		
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			
@@ -118,6 +140,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	//AsyncCallback
 
 	private class ErgebnisGefundenCallback implements AsyncCallback<Boolean> {
 
@@ -128,6 +152,10 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		}
 
+		/* Methode onSuccess prüft, ob die durchgeführte Stichwahl einen Gewinner
+		 * hat oder nicht. Falls kein Gewinner ermittel wurde, wird dies angezeigt.
+		 */
+		
 		@Override
 		public void onSuccess(Boolean result) {
 
@@ -144,6 +172,9 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	// Die Methode setGewinner(), gibt die erfolgreich durchgeführte Umfrage oder Stichwahl aus
+	 
 
 	public void setGewinner(String zeit, String film, String kino, String stadt) {
 
