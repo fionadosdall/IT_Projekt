@@ -1,48 +1,30 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.dom.client.Style.Unit;
+
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DefaultDateTimeFormatInfo;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielzeitErstellenForm extends PopupPanel {
-	
-	private static Boolean edit = false;
 	
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
@@ -57,11 +39,10 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	
 	private TextBox spielzeitTB = new TextBox();
 	private DateBox dateBox = new DateBox();
- //   private DatePicker datePicker = new DatePicker();
+	
+	private SpielplaneintragForm parent;
 	
 	DateFormaterSpielzeit dfs;
-	
-	private SpielplaneintragForm sef;
 
 	private Button loeschenButton = new Button("Löschen");
 	private Button speichernButton = new Button("Speichern");
@@ -82,12 +63,12 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		this.spielzeit = spielzeit;
 	}
 	
-	public SpielzeitErstellenForm(SpielplaneintragForm sef) {
-		this.sef = sef;
+	public SpielzeitErstellenForm(SpielplaneintragForm parent) {
+		this.parent = parent;
 	}
 	
-	public SpielzeitErstellenForm(SpielplaneintragForm sef, Spielzeit spielzeit) {
-		this.sef = sef;
+	public SpielzeitErstellenForm(SpielplaneintragForm parent, Spielzeit spielzeit) {
+		this.parent = parent;
 		this.spielzeit = spielzeit;
 	}
 	
@@ -106,8 +87,8 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		obenPanel.addStyleName("popupObenPanel");
 		untenPanel.addStyleName("popupUntenPanel");
 		
-		spielzeitTB.addStyleName("formularTextBox");
-	//	dateBox.addStyleName("DatumB");
+		dateBox.addStyleName("formularTextBox");
+	
 
 		speichernButton.addStyleName("speichernButton");
 		
@@ -127,6 +108,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		
 		spielzeitGrid.setWidget(0, 0, datum);
 		spielzeitGrid.setWidget(0, 1, dateBox);
+
 	
 
 		popupPanel.add(spielzeitGrid);
@@ -149,7 +131,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		/* ClickHandler */
 
 		speichernButton.addClickHandler(new SpeichernClickHandler());
-
+		
 		
 /**
  * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
@@ -223,12 +205,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 								
 				SpielzeitErstellenForm.this.hide();
 				
-				DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
-				String pattern ="yyyy-MM-dd HH:mm:ss";
-				DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
-				String formatiert = dft.format(result.getZeit());
-				
-				sef.getSpeilzeitListBox().addItem(formatiert);
+				parent.spielzeitRefresh();
 				
 				
 			}

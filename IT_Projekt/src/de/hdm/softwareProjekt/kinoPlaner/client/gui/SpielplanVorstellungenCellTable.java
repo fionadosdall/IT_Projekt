@@ -59,11 +59,11 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	private ButtonCell buttonCell = new ButtonCell();
 	private TextCell filmCell = new TextCell();
 	private TextCell spielzeitCell = new TextCell();
-	
+
 	private SpielplanErstellenForm parent;
-	
+
 	public void setParent(SpielplanErstellenForm parent) {
-		this.parent=parent;
+		this.parent = parent;
 	}
 
 	public SpielplanVorstellungenCellTable() {
@@ -159,10 +159,24 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 			@Override
 			public void update(int index, VorstellungInfo object, String value) {
+
+				int count = 0;
 				for (Vorstellung v : neueVorstellungen) {
-					if (v.getId() == object.getVorstellung().getId()) {
-						neueVorstellungen.remove(v);
+					if (v.getId() == 0) {
+						if (v.getFilmId() == object.getVorstellung().getFilmId()
+								&& v.getSpielzeitId() == object.getVorstellung().getSpielzeitId()) {
+							neueVorstellungen.remove(count);
+
+							break;
+
+						}
+					} else {
+						if (v.getId() == object.getVorstellung().getId()) {
+							neueVorstellungen.remove(count);
+							break;
+						}
 					}
+					count++;
 				}
 				dataProvider.getList().remove(object);
 				dataProvider.refresh();
@@ -221,24 +235,21 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	/* Methoden */
 
 	public void addVorstellung(Vorstellung neueVorstellung) {
-		
 
-			neueVorstellungen.add(neueVorstellung);
+		neueVorstellungen.add(neueVorstellung);
 
-			VorstellungInfo vI = new VorstellungInfo();
+		VorstellungInfo vI = new VorstellungInfo();
 
-			vI.setU(neueVorstellung);
+		vI.setU(neueVorstellung);
 
-			vorstellungList.add(vI);
+		vorstellungList.add(vI);
 
-			dataProvider.refresh();
-			
-			parent.closeSpielplaneintragForm();
+		dataProvider.refresh();
 
-			administration.getFilmById(neueVorstellung.getFilmId(), new FilmByIdCallback(vI));
-			administration.getSpielzeitById(neueVorstellung.getSpielzeitId(), new SpielzeitCallback(vI));
+		parent.closeSpielplaneintragForm();
 
-		
+		administration.getFilmById(neueVorstellung.getFilmId(), new FilmByIdCallback(vI));
+		administration.getSpielzeitById(neueVorstellung.getSpielzeitId(), new SpielzeitCallback(vI));
 
 	}
 
@@ -255,9 +266,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			
-			for(Vorstellung v : result) {
-				
+
+			for (Vorstellung v : result) {
+
 				neueVorstellungen.add(v);
 
 				VorstellungInfo vI = new VorstellungInfo();
@@ -270,7 +281,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 				administration.getFilmById(v.getFilmId(), new FilmByIdCallback(vI));
 				administration.getSpielzeitById(v.getSpielzeitId(), new SpielzeitCallback(vI));
-				
+
 			}
 
 		}
@@ -295,7 +306,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-			
+
 			info.filmName = result.getName();
 
 			dataProvider.refresh();
@@ -324,8 +335,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 			// TODO Auto-generated method stub
 
 			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
-			String pattern ="EEEE dd.MM.yyyy HH:mm";
-			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+			String pattern = "EEEE dd.MM.yyyy HH:mm";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+			};
 			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();

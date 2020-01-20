@@ -467,8 +467,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
 		String name = (getSpielplanById(spielplanId).getName() 
-				+ getSpielzeitById(spielzeitId).getId()
-				+ getFilmById(filmId).getId());
+				+ spielzeitId
+				+ filmId);
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -684,7 +684,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Spielplan spielplan) throws IllegalArgumentException {
+	public Spielplan speichern(Spielplan spielplan) throws IllegalArgumentException {
 		ArrayList<Spielplan> spielpl = this.spielplanMapper.findAllByName(spielplan.getName());
 		if (spielplan.isKinokettenSpielplan() == false) {
 			if (spielpl.size() > 1) {
@@ -703,10 +703,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				s.setKinokettenId(spielplan.getKinokettenId());
 				s.setKinokettenSpielplan(true);
 				this.spielplanMapper.update(s);
-				return;
+	
 			}
 		}
-		this.spielplanMapper.update(spielplan);
+		return this.spielplanMapper.update(spielplan);
 
 	}
 
@@ -2952,10 +2952,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan)
 			throws IllegalArgumentException {
-
+		
 		if (spielplanMapper.findByName(spielplan.getName()) == null||spielplanMapper.findById(spielplan.getId()) != null) {
-
-			speichern(spielplan);
+			
+			Spielplan fertigSpielplan = speichern(spielplan);
+			
 
 			ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
 			ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
@@ -2988,17 +2989,18 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					if (fertigeVorstellungen.size() != 0) {
 
 						if (vGesamt.getId() == 0) {
-							erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+
+							erstellenVorstellung(fertigSpielplan.getId(), vGesamt.getSpielzeitId(), vGesamt.getFilmId());
 
 						}
 
 					} else {
-						erstellenVorstellung(spielplan.getId(), vGesamt.getFilmId(), vGesamt.getSpielzeitId());
+						erstellenVorstellung(fertigSpielplan.getId(), vGesamt.getSpielzeitId(), vGesamt.getFilmId());
 					}
 				}
 			}
 
-			return this.spielplanMapper.findById(spielplan.getId());
+			return this.spielplanMapper.findById(fertigSpielplan.getId());
 		}
 		return null;
 	}

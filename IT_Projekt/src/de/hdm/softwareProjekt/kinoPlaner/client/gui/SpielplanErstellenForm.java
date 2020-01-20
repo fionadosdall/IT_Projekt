@@ -351,8 +351,12 @@ public class SpielplanErstellenForm extends VerticalPanel {
 					//} else {
 			
 				spielplan.setName(spielplannameTextBox.getValue());
+				spielplan.setKinoId(result.getId());
 				
-				kinoplaner.updateSpielplanKino(vorstellungenCellTable.getVorstellungenArray(), spielplan, new AsyncCallback<Spielplan>() {
+				ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
+				vorstellungen = vorstellungenCellTable.getVorstellungenArray();
+				
+				kinoplaner.updateSpielplanKino(vorstellungen, spielplan, new AsyncCallback<Spielplan>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
