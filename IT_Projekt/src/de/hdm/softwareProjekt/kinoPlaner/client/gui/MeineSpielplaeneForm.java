@@ -44,7 +44,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	private MeineSpielplaeneForm anzeigen;
 	private SpielplanErstellenForm erstellen;
 	private SpielplanErstellenForm bearbeiten;
-	
+	private Button spielplanErstellenButton = new Button("Spielplan erstellen");
 
 	
 	private static Boolean edit;
@@ -89,8 +89,11 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		
 		
 		
-		untenPanel.add(bearbeitenLabel);
+		//untenPanel.add(bearbeitenLabel);
+		untenPanel.add(spielplanErstellenButton);
 		this.add(untenPanel);
+		
+		spielplanErstellenButton.addClickHandler(new SpielplanErstellenClickHandler());
 		
 		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
 		
@@ -147,10 +150,10 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	
 	}
 	
-	private class SpielplanErstellenClickHandler implements DoubleClickHandler {
+	private class SpielplanErstellenClickHandler implements ClickHandler {
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			erstellen = new SpielplanErstellenForm();
 			RootPanel.get("details").add(erstellen);
@@ -188,6 +191,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		public void onSuccess(ArrayList<Spielplan> result) {
 			bov.setSpielplaene(result);
 			inhaltPanel.add(bov);
+			inhaltPanel.add(bearbeitenLabel);
 		}
 		
 	}

@@ -24,6 +24,15 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+/**
+ * Der obere Bereich/Kopfbereich des Kinoplaners wird durch die Header-Klasse
+ * dargestellt. Der Header wird auf jeder Seite/Ansicht im Kinoplaner identisch
+ * angezeigt. Der Header stellt dem Benutzer folgende Funktionen zur Verfügung:
+ * Volltextsuche, Home-Button im zurück zum Dashboard (Startseite) zu gelangen,
+ * Wechsel zwischen den beiden Clients Editor und Admin, User-Button um zu
+ * dessen Profil zu gelangen.
+ *
+ */
 public class Header extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -51,7 +60,12 @@ public class Header extends FlowPanel {
 	private UserForm uf;
 	private VolltextSucheForm vsf;
 
+	/**
+	 * onLoad()-Methode: Die Widgets werden dem Header hinzugefügt und formatiert.
+	 */
 	public void onLoad() {
+
+		// Stylenamen vergeben
 
 		this.addStyleName("headerGesamt");
 
@@ -84,7 +98,6 @@ public class Header extends FlowPanel {
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
 
-		
 		headerRechts.add(headerRechtsElementSuchen);
 		headerRechts.add(headerRechtsElementLupe);
 		headerRechts.add(headerRechtsElementHome);
@@ -105,16 +118,21 @@ public class Header extends FlowPanel {
 		suchenImage.addClickHandler(new SuchenClickHandler());
 		suchenTextBox.addKeyPressHandler(new SuchenKeyPressHandler());
 
-		//kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
-	
+		// kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
+
 		kinoplaner.getUmfragenByAnwender(new GetUmfragenByAnwenderCallback());
-		//kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
+		// kinoplaner.anzeigenVonClosedUmfragen(new
+		// AnzeigenVonClosedUmfragenCallback());
 
 	}
 
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
+	/**
+	 * ClickHandler für den Suchen-Button (dargestellt durch eine Lupe)
+	 *
+	 */
 	private class SuchenKeyPressHandler implements KeyPressHandler {
 
 		@Override
@@ -124,11 +142,17 @@ public class Header extends FlowPanel {
 				vsf = new VolltextSucheForm(suchenTextBox.getText());
 				RootPanel.get("details").add(vsf);
 			}
-			
+
 		}
-		
+
 	}
-	
+
+	/**
+	 * Click-Handler um beim Klicken auf den Homebutton wieder zurück zur Startseite
+	 * zu gelangen, dem Dashboard
+	 * 
+	 *
+	 */
 	private class HomeClickHandler implements ClickHandler {
 
 		@Override
@@ -142,6 +166,13 @@ public class Header extends FlowPanel {
 
 	}
 
+	/**
+	 * ClickHandler, um den Benutzer durch Klicken des User-Buttons auf sein Profil
+	 * weiterzuleiten. Im User-Profil wird angezeigt welcher Benutzer eingeloggt ist
+	 * und man kann sich ausloggen.
+	 * 
+	 *
+	 */
 	private class UserFormClickHandler implements ClickHandler {
 
 		@Override
@@ -155,6 +186,10 @@ public class Header extends FlowPanel {
 
 	}
 
+	/**
+	 * ClickHandler für die Volltext-Suche
+	 *
+	 */
 	private class SuchenClickHandler implements ClickHandler {
 
 		@Override
@@ -170,6 +205,12 @@ public class Header extends FlowPanel {
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
+	/**
+	 * Alle Gruppen sollen ausgegeben werden, zu denen der eingeloggte Anwender/User
+	 * gehört.So sieht der User auf der Startseite ein Dashboard über alle für ihn
+	 * relevanten Business Objekte, darunter auch seine Gruppen.
+	 *
+	 */
 	private class GetGruppenByAnwenderCallback implements AsyncCallback<ArrayList<Gruppe>> {
 
 		@Override
@@ -188,6 +229,12 @@ public class Header extends FlowPanel {
 
 	}
 
+	/**
+	 * Alle Umfragen sollen ausgegeben werden, zu denen der eingeloggte
+	 * Anwender/User gehört. So sieht der User auf der Startseite ein Dashboard über
+	 * alle für ihn relevanten Business Objekte, darunter auch seine Umfragen.
+	 *
+	 */
 	private class GetUmfragenByAnwenderCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override
@@ -206,6 +253,13 @@ public class Header extends FlowPanel {
 
 	}
 
+	/**
+	 * Alle geschlossenen Umfragen sollen ausgegeben werden, zu denen der
+	 * eingeloggte Anwender/User gehört. So sieht der User auf der Startseite ein
+	 * Dashboard über alle für ihn relevanten Business Objekte, darunter auch seine
+	 * geschlossenen Umfragen.
+	 *
+	 */
 	private class AnzeigenVonClosedUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override

@@ -30,10 +30,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-
 /*****
  * Formular für das Anlegen einer neuen Gruppe im Datenstamm
- * @author 
+ * 
+ * @author
  *
  */
 public class GruppeErstellenForm extends FlowPanel {
@@ -59,10 +59,11 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private TextBox gruppenameTB = new TextBox();
 
-	// Hier werden alle Anwendernamen die im System vorhanden gespeichert
+	/**
+	 * Hier werden alle Anwendernamen, die im System vorhanden sind, gespeichert
+	 */
 	private MultiWordSuggestOracle alleAnwenderOracle = new MultiWordSuggestOracle();
-	
-	
+
 	private SuggestBox mitgliedTB = new SuggestBox(alleAnwenderOracle);
 
 	private ArrayList<Anwender> anwenderTB = new ArrayList<Anwender>();
@@ -109,14 +110,16 @@ public class GruppeErstellenForm extends FlowPanel {
 	public void setGruppe(Gruppe gruppe) {
 		this.gruppe = gruppe;
 	}
-	
-/**************************************
- * onLoad Methode
- ****************************************/
+
+	/**************************************
+	 * onLoad Methode
+	 ****************************************/
 
 	public void onLoad() {
 
-		// Vergeben der Stylenames
+		/**
+		 * Vergeben der Stylenames
+		 */
 
 		this.addStyleName("detailscontainer");
 
@@ -187,7 +190,9 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hinzugefügt"));
 
-		// Click-Handler
+		/**
+		 *  Click-Handler
+		 */
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
 		// entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
@@ -230,7 +235,9 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		};
 
-		// LoeschenButton Hinzufuegen
+		/**
+		 * LoeschenButton Hinzufuegen
+		 */
 
 		Cell<String> loeschenCell = new ButtonCell();
 
@@ -244,7 +251,9 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		};
 
-		// FieldUpdater fuer betaetigung des LoeschenButton erstellen
+		/**
+		 * FieldUpdater fuer Betaetigung des LoeschenButton erstellen
+		 */
 
 		loeschenColumn.setFieldUpdater(new FieldUpdater<Anwender, String>() {
 
@@ -292,7 +301,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	 * 
 	 *
 	 */
-	
+
 	private class MitgliedHinzufuegenClickHandler implements ClickHandler {
 
 		@Override
@@ -303,10 +312,10 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*******
-	 * Sobald das Textfeld ausgefpllt ist, wird eine neue Gruppe  nach dem Klicken des 
-	 * addButton erstellt
+	 * Sobald das Textfeld ausgefüllt ist, wird eine neue Gruppe nach dem Klicken
+	 * des add-Buttons erstellt
 	 * 
 	 *
 	 */
@@ -355,12 +364,11 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*******************************************************
 	 * 
-	 *  Hier wird ein Gruppenmitglied anhand seiner Gruppe gesucht,
-	 *  wird nur gemacht wenn die Gruppe bearbeitet wird, nicht wenn sie 
-	 *  erstellt wird
+	 * Hier wird ein Gruppenmitglied anhand seiner Gruppe gesucht, wird nur gemacht
+	 * wenn die Gruppe bearbeitet wird, nicht wenn sie erstellt wird
 	 *
 	 **********************************************************/
 
@@ -376,7 +384,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		public void onSuccess(ArrayList<Anwender> result) {
 			for (Anwender a : result) {
 				if (a.equals(aktuellerAnwender.getAnwender())) {
-				
+
 				} else {
 					dataProvider.getList().add(a);
 					anwenderListe.add(a);
@@ -387,10 +395,12 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/********
-	 * Der String des Namens wird aus der SuggestBox rausgeholt und mit dem Callback gesucht
-	 * damit wird der passende Anwender zu dem Name zurückggeben um ihn der Gruppe hinzuzufügen
+	 * Der String des Namens wird aus der SuggestBox rausgeholt und mit dem Callback
+	 * gesucht damit wird der passende Anwender zu dem Name zurückggeben um ihn der
+	 * Gruppe hinzuzufügen
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -422,7 +432,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/******
 	 * Callback wird benötigt um eine Gruppe zu erstellen
 	 * 

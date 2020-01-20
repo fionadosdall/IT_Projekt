@@ -35,6 +35,11 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
+/**
+ * Die Klasse UmfrageAnzeigenTable dient als Vorlage um Umfragen in einer
+ * UmfragenAnzeigenForm anzuzeigen.
+ *
+ */
 public class UmfrageAnzeigenTable extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -43,6 +48,8 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 	String ka = "Keine Auswahl";
 	String t = "Teilnehmen";
 	String nt = "Nicht Teilnehmen";
+
+	// Konstruktor
 
 	public UmfrageAnzeigenTable(Umfrage umfrage) {
 		this.umfrage = umfrage;
@@ -130,6 +137,9 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 	private ListDataProvider<UmfrageoptionInfo> dataProvider;
 	private List<UmfrageoptionInfo> list;
 
+	/**
+	 * onLoad()-Methode
+	 */
 	@Override
 	public void onLoad() {
 
@@ -317,6 +327,15 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**********************************************************
+	 * CALLBACKS
+	 **********************************************************/
+	/**
+	 * Callback: Alle Umfrageoptionen einer vorgegebenen Umfrage sollen ausgegeben
+	 * werden. Hat die gewünschte keine Umfrageoptionen, wird eine leere CellTable
+	 * zurückgegeben mit einem Hinweis für den Nutzer. Die Umfrageoptionen sollen in
+	 * einer Liste wiedergegeben werden (UmfrageoptionInfo)
+	 */
 	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
 
 		@Override
@@ -354,6 +373,11 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**
+	 * Callback Rückgabe eines Filmes, welcher zu einer vorgegebenen Umfrageoption
+	 * gehört. Das Filmname soll der UmfrageoptionInfo hinzugefügt werden.
+	 *
+	 */
 	private class FilmByUmfrageoptionCallback implements AsyncCallback<Film> {
 
 		UmfrageoptionInfo info = null;
@@ -380,6 +404,12 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**
+	 * Callback: Zur UmfrageoptionInformation der Kinoname und die jeweilige Stadt
+	 * hinzugefügt.
+	 * 
+	 *
+	 */
 	private class KinoCallback implements AsyncCallback<Kino> {
 
 		UmfrageoptionInfo info = null;
@@ -408,6 +438,9 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**
+	 * Callback: Zur UmfrageoptionInfo wird die Spielzeit hinzugefügt.
+	 */
 	private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 
 		UmfrageoptionInfo info = null;
@@ -434,6 +467,12 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**
+	 * Callback: Zur UmfrageoptionInfo soll die Auswahl hinzugefügt werden, die zu
+	 * besagter Umfrageoption gehört. Dazu wird das entsprechende Voting abgerufen
+	 * und hinzugefügt. Außerdem wird die VotingTeilnahme des Users bei der
+	 * Umfrageoption hinterlegt.
+	 */
 	private class AuswahlCallback implements AsyncCallback<Auswahl> {
 
 		UmfrageoptionInfo info = null;
@@ -467,6 +506,12 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 	}
 
+	/**
+	 * Callback: Das Ergebnis einer Umfrage soll angezeigt werden -->
+	 * ErgebnisAnzeigenForm. Andernfalls, wenn die Umfrage noch läuft/offen ist,
+	 * sollen die bisherigen Votings angezeigt werden (--> VotingAnzeigenForm).
+	 *
+	 */
 	private class AuswahlErstellenCallback implements AsyncCallback<Umfrage> {
 
 		@Override

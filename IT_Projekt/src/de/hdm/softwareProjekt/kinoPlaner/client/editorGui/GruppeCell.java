@@ -11,45 +11,48 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
-public class GruppeCell extends AbstractCell<Gruppe>{
+/**
+ * Klasse GruppeCell dient zur Darstellung der Gruppen-BusinessObjekte in der
+ * BusinessObject-View. (--> rendern). Alle Klassen, die auf ...Cell enden, sind
+ * abgewandeltete/veränderte AbstractCells.
+ *
+ */
+public class GruppeCell extends AbstractCell<Gruppe> {
 
-	
 	@Override
 	public void render(Context context, Gruppe value, SafeHtmlBuilder sb) {
 		if (value == null) {
 			return;
 		}
-		
+
 		sb.appendHtmlConstant("<div>");
 		sb.appendEscaped(value.getName());
 		sb.appendHtmlConstant("</div>");
-		
+
 	}
-	
-    public GruppeCell() {
 
-        super("click");
-      }
+	public GruppeCell() {
 
+		super("click");
+	}
 
-      @Override
-      public void onBrowserEvent(Context context, Element parent, Gruppe value, NativeEvent event,
-          ValueUpdater<Gruppe> valueUpdater) {
-        // Handle the click event.
-        if ("click".equals(event.getType())) {
-          // Ignore clicks that occur outside of the outermost element.
-          EventTarget eventTarget = event.getEventTarget();
-          if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
-            doAction(value, valueUpdater);
-          }
-        }
-      }
-      
-      private void doAction(Gruppe value, ValueUpdater<Gruppe> valueUpdater) {
-			RootPanel.get("details").clear();
-			GruppeAnzeigenForm anzeigen = new GruppeAnzeigenForm(value);
-			RootPanel.get("details").add(anzeigen);
-      }
-	
+	@Override
+	public void onBrowserEvent(Context context, Element parent, Gruppe value, NativeEvent event,
+			ValueUpdater<Gruppe> valueUpdater) {
+		// Handle the click event.
+		if ("click".equals(event.getType())) {
+			// Ignore clicks that occur outside of the outermost element.
+			EventTarget eventTarget = event.getEventTarget();
+			if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
+				doAction(value, valueUpdater);
+			}
+		}
+	}
+
+	private void doAction(Gruppe value, ValueUpdater<Gruppe> valueUpdater) {
+		RootPanel.get("details").clear();
+		GruppeAnzeigenForm anzeigen = new GruppeAnzeigenForm(value);
+		RootPanel.get("details").add(anzeigen);
+	}
 
 }
