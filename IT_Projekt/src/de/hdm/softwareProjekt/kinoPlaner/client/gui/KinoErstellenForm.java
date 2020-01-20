@@ -147,7 +147,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
-		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
+		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 		
 	}
 	
@@ -191,7 +191,7 @@ private class KinoLoeschenDialogBox extends DialogBox{
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			String kinoketteName = kinokettenListBox.getSelectedItemText();
+			String kinoketteName = kinokettenListBox.getSelectedValue();
 			
 			
 			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
@@ -201,6 +201,17 @@ private class KinoLoeschenDialogBox extends DialogBox{
 			
 			
 		}		
+		
+	}
+	
+	private class AenderungSpeichernClickHandler implements ClickHandler{
+
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			String kinoketteName = kinokettenListBox.getSelectedValue();
+			administration.getKinoketteByName(kinoketteName,new AenderungKinoketteByNameCallback());
+		}
 		
 	}
 	
@@ -374,21 +385,33 @@ private class LoeschenClickHandler implements ClickHandler{
 					new KinoErstellenCallback());
 			
 			
-			/*}else {
-				k.setName(nameTextBox.getText());
-				k.setKinokettenId(result.getId());
-				k.setStrasse(stadtTextBox.getText());
-				k.setHausnummer(hnrTextBox.getText());
-				k.setPlz(Integer.parseInt(plzTextBox.getText()));
-				k.setStadt(stadtTextBox.getText());
-				administration.speichern(k, new KinoAendernCallback());
-				
-			}*/
+			
 			clearForm();
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
 		}
+		
+	}
+	
+	private class AenderungKinoketteByNameCallback implements AsyncCallback<Kinokette>{
+		
+		public void onFailure(Throwable caught){
+			
+		}
+		
+		public void onSuccess(Kinokette result) {
+			k.setName(nameTextBox.getText());
+			k.setKinokettenId(result.getId());
+			k.setStrasse(stadtTextBox.getText());
+			k.setHausnummer(hnrTextBox.getText());
+			k.setPlz(Integer.parseInt(plzTextBox.getText()));
+			k.setStadt(stadtTextBox.getText());
+			administration.speichern(k, new KinoAendernCallback());
+			
+			
+		}
+		
 		
 	}
 	
