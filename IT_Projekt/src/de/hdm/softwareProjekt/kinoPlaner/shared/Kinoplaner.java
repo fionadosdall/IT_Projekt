@@ -387,7 +387,7 @@ public interface Kinoplaner extends RemoteService {
 	 *            Spielplanobjekt
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Spielplan spielplan) throws IllegalArgumentException;
+	public Spielplan speichern(Spielplan spielplan) throws IllegalArgumentException;
 
 	/**
 	 * <p>

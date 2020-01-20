@@ -20,7 +20,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  *
  */
 
-//Findbyspielzeit und byfilm 
+// Findbyspielzeit und byfilm
 
 public class VorstellungMapper {
 
@@ -61,7 +61,8 @@ public class VorstellungMapper {
 	/**
 	 * Suche nach allen Vorstellungen über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Vorstellungen tragen
+	 * @param name
+	 *            den die gesuchten Vorstellungen tragen
 	 * @return Eine ArrayList, die alle gefundenen Vorstellungen enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -110,7 +111,8 @@ public class VorstellungMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -136,7 +138,8 @@ public class VorstellungMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Vorstellungs-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param vorstellung als das zu speichernde Objekt
+	 * @param vorstellung
+	 *            als das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Vorstellung insert(Vorstellung vorstellung) {
@@ -155,9 +158,9 @@ public class VorstellungMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate("INSERT INTO Vorstellung (vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id,"
-						+ "vorstellung_spielplan_Id)" + " VALUES(" + vorstellung.getId() + ", '"
-						+ vorstellung.getName() + "', " + vorstellung.getFilmId() + ", " + vorstellung.getSpielzeitId()
-						+ ", " + vorstellung.getSpielplanId() +  ")");
+						+ "vorstellung_spielplan_Id)" + " VALUES(" + vorstellung.getId() + ", '" + vorstellung.getName()
+						+ "', " + vorstellung.getFilmId() + ", " + vorstellung.getSpielzeitId() + ", "
+						+ vorstellung.getSpielplanId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -172,7 +175,8 @@ public class VorstellungMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param vorstellung als das Objekt, das verändert werden soll.
+	 * @param vorstellung
+	 *            als das Objekt, das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Vorstellung update(Vorstellung vorstellung) {
@@ -184,10 +188,9 @@ public class VorstellungMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE Vorstellung SET " + "vName= '" + vorstellung.getName() + "' , "
-					+ "erstellDatum= '" + vorstellung.getErstellDatum() + "' , " + "vorstellung_spielplan_Id= '"
-					+ vorstellung.getSpielzeitId() + "' , " + "vorstellung_spielzeit_Id= '"
-					+ vorstellung.getSpielzeitId() + "' , " + "vorstellung_film_Id= '" + vorstellung.getFilmId()
-					+ "' WHERE vId=" + vorstellung.getId());
+					+ "vorstellung_spielplan_Id= '" + vorstellung.getSpielplanId() + "' , "
+					+ "vorstellung_spielzeit_Id= '" + vorstellung.getSpielzeitId() + "' , " + "vorstellung_film_Id= '"
+					+ vorstellung.getFilmId() + "' WHERE vId=" + vorstellung.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -201,7 +204,8 @@ public class VorstellungMapper {
 	 * Mit dieser Methode kann ein Vorstellungs-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param vorstellung Objekt, welches gelöscht werden soll.
+	 * @param vorstellung
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Vorstellung vorstellung) {
 		Connection con = DBConnection.connection();
@@ -263,8 +267,9 @@ public class VorstellungMapper {
 	 * entsprechende spielplanId hinterlegt. Diese spielplanId muss mit der Id des
 	 * im Methodenparamter übergebenen Spielplans übereinstimmen.
 	 * 
-	 * @param spielplan Objekt, dessen Id mit den spielplanIds in der
-	 *                  Vorstellungs-Tabelle übereinstimmen soll.
+	 * @param spielplan
+	 *            Objekt, dessen Id mit den spielplanIds in der Vorstellungs-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielplanIds dem
 	 *         übergebenen Spielplan entsprechen.
 	 */
@@ -308,8 +313,9 @@ public class VorstellungMapper {
 	/**
 	 * Suche nach einer Vorstellung mit vorgegebener Vorstellungs-Id
 	 * 
-	 * @param id zugehörig zu einer Vorstellung, nach welcher gesucht werden soll,
-	 *           also der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einer Vorstellung, nach welcher gesucht werden soll,
+	 *            also der Primärschlüssel in der Datenbank.
 	 * @return Das Vorstellungs-Objekt, das mit seiner Vorstellungs-Id der
 	 *         übergebenen Id entspricht. Falls keine Vorstellung zur übergebenen Id
 	 *         gefunden wurde, wird null zurückgegeben.
@@ -345,8 +351,9 @@ public class VorstellungMapper {
 	 * filmId hinterlegt. Diese filmId muss mit der Id des im Methodenparamter
 	 * übergebenen Films übereinstimmen.
 	 * 
-	 * @param film Objekt, dessen Id mit den filmIds in der Vorstellungs-Tabelle
-	 *             übereinstimmen soll.
+	 * @param film
+	 *            Objekt, dessen Id mit den filmIds in der Vorstellungs-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren filmIds dem
 	 *         übergebenen Film entsprechen.
 	 */
@@ -396,8 +403,9 @@ public class VorstellungMapper {
 	 * entsprechende spielzeitId hinterlegt. Diese spielzeitId muss mit der Id der
 	 * im Methodenparamter übergebenen Spielzeit übereinstimmen.
 	 * 
-	 * @param spielzeit Objekt, dessen Id mit den spielzeitIds in der
-	 *                  Vorstellungs-Tabelle übereinstimmen soll.
+	 * @param spielzeit
+	 *            Objekt, dessen Id mit den spielzeitIds in der Vorstellungs-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Vorstellungs-Objekte in einer ArrayList, deren spielzeitIds der
 	 *         übergebenen Spielzeit entsprechen.
 	 */

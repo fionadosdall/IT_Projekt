@@ -55,17 +55,17 @@ public class SpielplaneintragForm extends PopupPanel {
 
 	private ListBox filmListBox = new ListBox();
 
-	public  ListBox getFilmListBox() {
+	public ListBox getFilmListBox() {
 		return filmListBox;
 	}
 
-	private  ListBox spielzeitListBox = new ListBox();
-	
+	private ListBox spielzeitListBox = new ListBox();
+
 	private SpielplaneintragForm eigeneForm;
 
 	private HashMap<String, Integer> spielzeitenHastable = new HashMap<String, Integer>();
 
-	public  ListBox getSpeilzeitListBox() {
+	public ListBox getSpeilzeitListBox() {
 		return spielzeitListBox;
 	}
 
@@ -88,7 +88,7 @@ public class SpielplaneintragForm extends PopupPanel {
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
 		this.addStyleName("popupPanel");
-		
+
 		eigeneForm = this;
 
 		spielplaneintragFormLabel.addStyleName("formHeaderLabel");
@@ -151,7 +151,7 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+
 			Vorstellung v = new Vorstellung();
 
 			administration.getFilmByName(filmListBox.getSelectedValue(), new GetFilmByNameCallback(v));
@@ -165,14 +165,14 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+
 			film = new FilmErstellenForm(eigeneForm);
-			film.show();	
+			film.show();
 
 		}
 
 	}
-	
+
 	public void hideFilmPopup() {
 		film.hide();
 	}
@@ -234,11 +234,11 @@ public class SpielplaneintragForm extends PopupPanel {
 
 				for (Spielzeit s : result) {
 					DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
-					String pattern ="EEEE dd.MM.yyyy HH:mm";
-					DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {};
+					String pattern = "EEEE dd.MM.yyyy HH:mm";
+					DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+					};
 					spielzeitListBox.addItem(dft.format(s.getZeit()));
 					spielzeitenHastable.put(dft.format(s.getZeit()), s.getId());
-					
 
 				}
 			} else {
@@ -295,25 +295,27 @@ public class SpielplaneintragForm extends PopupPanel {
 		public void onSuccess(Spielzeit result) {
 
 			v.setSpielzeitId(result.getId());
+			v.setId(0);
 			svct.addVorstellung(v);
-			
+
 		}
 
 	}
 
 	public void refresh() {
 		filmListBox.clear();
+
 		administration.getAllFilme(new FilmeCallback());
+
 		film.hide();
-		
+
 	}
-	
+
 	public void spielzeitRefresh() {
 		spielzeitListBox.clear();
 		administration.getAllSpielzeiten(new SpielzeitenCallback());
 		spielzeit.hide();
-		
+
 	}
-	
 
 }

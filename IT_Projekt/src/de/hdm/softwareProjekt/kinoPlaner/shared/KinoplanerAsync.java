@@ -79,7 +79,7 @@ public interface KinoplanerAsync {
 
 	public void speichern(Kinokette kinokette, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void speichern(Spielplan spielplan, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Spielplan spielplan, AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
 
 	public void speichern(Vorstellung vorstellung, AsyncCallback<Void> callback) throws IllegalArgumentException;
 

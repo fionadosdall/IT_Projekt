@@ -321,7 +321,7 @@ public class UmfrageoptionMapper {
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
 							+ "FROM Umfrageoption" + " WHERE umfrageoption_vorstellung_Id=" + vorstellung.getId()
-							+ "ORDER BY uoName");
+							+ " ORDER BY uoName");
 
 			while (resultset.next()) {
 				Umfrageoption uo = new Umfrageoption();
