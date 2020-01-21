@@ -20,17 +20,26 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
+/**
+ * Die Klasse ErgebnisAnzeigenTable dient als Vorlage um Ergebnisse 
+ * in einer ErgebnisAnzeigenForm darzustellen. 
+ *
+ */
+
 public class ErgebnisAnzeigenTable extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 	private Umfrage umfrage;
+	
+	//Konstruktor 
 
 	public ErgebnisAnzeigenTable(Umfrage umfrage) {
 		this.umfrage = umfrage;
 
 	}
 
+	
 	class ErgebnisInfo {
 
 		Umfrageoption u;;
@@ -98,13 +107,18 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 	private ListDataProvider<ErgebnisInfo> dataProvider;
 	private List<ErgebnisInfo> list;
 
+	//onLoad()-Methode
+	
 	@Override
 	public void onLoad() {
 
+		
 		dataProvider = new ListDataProvider<ErgebnisInfo>();
 
 		list = dataProvider.getList();
 
+		// CellTable
+		
 		ergebnisCellTable = new CellTable<ErgebnisInfo>();
 		ergebnisCellTable.setWidth("100%");
 
@@ -112,7 +126,7 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 
 		ergebnisCellTable.setEmptyTableWidget(new Label("Keine Ergebnisse verfügbar!"));
 
-		// CellTable
+		
 
 		Column<ErgebnisInfo, String> filmColumn = new Column<ErgebnisInfo, String>(new TextCell()) {
 
@@ -181,6 +195,13 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
 
 	}
+	
+	/** Callback: Alle Umfrageoptionen einer vorgegebenen Umfrage sollen ausgegeben
+	 * werden. Hat die gewünschte keine Umfrageoptionen, wird eine leere CellTable
+	 * zurückgegeben mit einem Hinweis für den Nutzer, dass keine Umfrageoption verfügbar ist. 
+	 * Die Umfrageoptionen sollen in einer Liste wiedergegeben werden. (ErgebnisInfo)
+	 * 
+	 */
 
 	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
 
@@ -222,6 +243,12 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 	public void gewinnerErmitteln() {
 		kinoplaner.umfrageGewinnerErmitteln(umfrage, new UmfrageGewinnerErmittelnCallback());
 	}
+	
+	/**
+	 * Callback Rückgabe eines Filmes, welcher zu einer vorgegebenen ErgebnisInfo
+	 * gehört. Das Filmname soll der ErgebnisInfo hinzugefügt werden.
+	 *
+	 */
 
 	private class FilmByUmfrageoptionCallback implements AsyncCallback<Film> {
 
@@ -248,6 +275,13 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * Callback: Zur ErgebnisInfo wird der Kinoname und die jeweilige Stadt
+	 * hinzugefügt.
+	 * 
+	 *
+	 */
 
 	private class KinoCallback implements AsyncCallback<Kino> {
 
@@ -276,6 +310,10 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * Callback: Zur ErgebnisInfo wird die Spielzeit hinzugefügt.
+	 */
 
 	private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 
@@ -302,6 +340,12 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * Callback: Zur ErgebnisInfo soll die Auswahl hinzugefügt werden, die zu
+	 * der ErgebnisInfo gehört. Dazu wird das entsprechende Ergebnis abgerufen
+	 * und hinzugefügt. 
+	 */
 
 	private class AuswahlCallback implements AsyncCallback<Integer> {
 
@@ -328,6 +372,14 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 		}
 
 	}
+	
+	/** 
+	 * Callback: die Klasse UmfrageGewinnerErmitteln liefert mit der onSuccess() Methode 
+	 * das Ergebnis einer Umfrage und liefert hierfür das entsprechnde Ergebnis bzw. Gewinner, 
+	 * indem die Umfrageoptionen miteinander verglichen werden. 
+	 * 
+	 *
+	 */
 
 	private class UmfrageGewinnerErmittelnCallback implements AsyncCallback<Umfrageoption> {
 
