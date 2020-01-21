@@ -33,8 +33,14 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	
+	/** 
+	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt und formatiert
+	 */
 
 	public void onLoad() {
+		
+		//Vergeben der Stylenamen 
 		
 		this.addStyleName("detailscontainer");
 
@@ -56,6 +62,13 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
 
 	}
+	
+	/**
+	 * Callback ruft Methode onFailure() auf, wenn das Anzeigen der Umfragen
+	 * misslungen ist und onSuccess () wenn der Aufruf erfolgreich war.
+	 *
+	 */
+	
 
 	private class AnzeigenVonClosedUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
@@ -66,6 +79,14 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 
 		}
 
+		
+		/**
+		 * onSuceess() - Methode: Umfrage Ergebnisse werden auf Verfügbarkeit
+		 * geprüft. Es werden Buttons zur verfügung gestellt, mit denen man eine Umfrage 
+		 * erstellt od. gespeichert werden kann.
+		 * 
+		 */
+		
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			
@@ -86,6 +107,8 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 			detailsunten.add(erstellenButton);
 
 		}
+		
+		//Erstellung der ClickHandler
 
 		private class UmfrageErstellenClickHandler implements ClickHandler {
 
