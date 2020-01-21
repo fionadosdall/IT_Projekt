@@ -29,7 +29,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 /**
  * Klasse NeueCellTable dient in der UmfrageErstellenForm als Hilfmittel, um
- * alle möglichen Vorstellungen anzuzeigen.
+ * alle möglichen Vorstellungen anzuzeigen. 
+ * Um große Tabellen schnell, einfach zu rendern. 
  * 
  *
  */

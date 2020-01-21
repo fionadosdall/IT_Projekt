@@ -36,6 +36,10 @@ public class GruppeCell extends AbstractCell<Gruppe> {
 		super("click");
 	}
 
+	/**
+	 * Methode wenn Ereignis im Browser passiert
+	 * 
+	 */
 	@Override
 	public void onBrowserEvent(Context context, Element parent, Gruppe value, NativeEvent event,
 			ValueUpdater<Gruppe> valueUpdater) {
