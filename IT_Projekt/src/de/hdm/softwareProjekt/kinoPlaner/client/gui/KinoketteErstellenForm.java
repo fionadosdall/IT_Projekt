@@ -33,9 +33,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	private Label sitzLabel = new Label("Sitz:");
 	private Label websiteLabel = new Label("Website:");
 	
-	private static TextBox nameTextBox = new TextBox();
-	private static TextBox sitzTextBox = new TextBox();
-	private static TextBox websiteTextBox = new TextBox();
+	private TextBox nameTextBox = new TextBox();
+	private TextBox sitzTextBox = new TextBox();
+	private TextBox websiteTextBox = new TextBox();
 	
 	private Grid kinoketteGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
@@ -51,22 +51,19 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	 */	
 	
 	public KinoketteErstellenForm() {
-		
-		
-		
-		
-		
+	
 	}
 	
 	
 	public KinoketteErstellenForm(Kinokette kk) {
 		this.kk = kk;
-		setBearbeiten(kk);
+		
 		setEdit(true);
 	}
 
 
 	public void onLoad() {
+		
 		
 		/* Setzen der Style-Namen */
 		this.addStyleName("center");
@@ -93,7 +90,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			obenPanel.add(kinoketteBearbeitenFormLabel);
 		}else {
 			obenPanel.add(kinoketteFormLabel);
-			clearForm();
+			
 		}
 		
 		
@@ -123,6 +120,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
+		setBearbeiten(kk);
 	}
 		
 	private class KinoketteLoeschenDialogBox extends DialogBox{
@@ -166,7 +164,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(),
 					websiteTextBox.getText(), new KinoketteErstellenCallback());
 			
-			clearForm();
+			
 			
 		}		
 		
@@ -253,6 +251,10 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kinokette wurde angelegt");
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
+			
 			
 		}
 		
@@ -272,6 +274,9 @@ public class KinoketteErstellenForm extends VerticalPanel{
 		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Änderung gespeichert");
+			RootPanel.get("details").clear();
+			mkkf = new MeineKinokettenForm();
+			RootPanel.get("details").add(mkkf);
 		}
 		
 	}
@@ -306,7 +311,7 @@ public class KinoketteErstellenForm extends VerticalPanel{
 	}
 
 	
-	public static void setBearbeiten(Kinokette kinokette) {
+	public void setBearbeiten(Kinokette kinokette) {
 		
 		
 			nameTextBox.setText(kinokette.getName());

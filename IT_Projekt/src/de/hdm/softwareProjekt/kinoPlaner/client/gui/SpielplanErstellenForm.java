@@ -61,6 +61,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	private Button hinzufuegenButton = new Button("Vorstellung Hinzufügen");
 	private Button entfernenButton = new Button("Vorstellung entfernen");
 	private Button speichernButton = new Button("Speichern");
+	private Button loeschenButton = new Button("Löschen");
 
 	private ArrayList<Kino> kinos = new ArrayList<Kino>();
 	private ListDataProvider<Kino> dataProvider = new ListDataProvider<Kino>();
@@ -127,6 +128,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		kinoLabel.addStyleName("textLabel");
 		vorstellung.addStyleName("detailsboxLabels");
 		vorstellungen.addStyleName("detailsboxLabels");
+		loeschenButton.addStyleName("loeschenButton");
 
 		spielplannameTextBox.getElement().setPropertyString("placeholder", "Spielplanname eingeben");
 
@@ -138,9 +140,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 			detailsoben.add(spielplanBearbeitenFormLabel);
 			spielplannameTextBox.setText(spielplan.getName());
+			
 		} else {
 			detailsoben.add(spielplanformLabel);
-			clearForm();
+			
 		}
 
 		this.add(detailsoben);
@@ -171,10 +174,17 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		detailsunten.add(speichernButton);
 		this.add(detailsunten);
+		
+		if(spielplan!=null) {
+			detailsunten.add(loeschenButton);
+			
+		}
+			
 
 
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		loeschenButton.addClickHandler(new LoeschenClickHandler());
 
 	}
 
@@ -185,7 +195,15 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	/**************************
 	 * CLICKHANDLER
 	 */
+	private class LoeschenClickHandler implements ClickHandler {
 
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(spielplan, new LoeschenSpielplanCallback());
+			
+		}
+		
+	}
 	
 	
 	private class SpielplaneintragHinzufuegenClickHandler implements ClickHandler {
@@ -291,6 +309,26 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	private class LoeschenSpielplanCallback implements AsyncCallback<Void> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+			
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			Systemmeldung.anzeigen("Spielplan wurde gelöscht");
+			RootPanel.get("details").clear();
+			spielplaeneF = new MeineSpielplaeneForm();
+			RootPanel.get("details").add(spielplaeneF);
+			
+		}
+		
+	}
 
 	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 
@@ -338,46 +376,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 
-	// private class KinoEntfernenCallback implements AsyncCallback<Kino> {
 
-	// @Override
-	// public void onFailure(Throwable caught) {
-	// TODO Auto-generated method stub
 
-	// }
-
-	// @Override
-	// public void onSuccess(Kino result) {
-	// TODO Auto-generated method stub
-
-	// }
-
-	// }
-
-	/* Callback */
-
-	private class ErstellenSpielplaeneKinoketteCallback implements AsyncCallback<ArrayList<Spielplan>> {
-
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert(caught.getMessage());
-			caught.printStackTrace();
-		}
-
-		@Override
-		public void onSuccess(ArrayList<Spielplan> result) {
-
-			if (result == null) {
-				Window.alert("Name bereits vergeben!");
-			} else {
-				RootPanel.get("details").clear();
-				spielplaeneF = new MeineSpielplaeneForm();
-				RootPanel.get("details").add(spielplaeneF);
-			}
-
-		}
-
-	}
 
 	public class ErstellenSpielplanKinoCallback implements AsyncCallback<Spielplan> {
 

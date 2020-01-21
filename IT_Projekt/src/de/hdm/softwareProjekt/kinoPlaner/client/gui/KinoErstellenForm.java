@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
@@ -38,12 +37,12 @@ public class KinoErstellenForm extends VerticalPanel {
 	private Label strasseLabel = new Label("Straße:");
 	private Label hnrLabel = new Label("Hausnummer:");
 	
-	private static TextBox nameTextBox = new TextBox();
-	private static TextBox plzTextBox = new TextBox();
-	private static TextBox stadtTextBox = new TextBox();
-	private static TextBox strasseTextBox = new TextBox();
-	private static TextBox hnrTextBox = new TextBox();
-	private static ListBox kinokettenListBox = new ListBox();
+	private TextBox nameTextBox = new TextBox();
+	private TextBox plzTextBox = new TextBox();
+	private TextBox stadtTextBox = new TextBox();
+	private TextBox strasseTextBox = new TextBox();
+	private TextBox hnrTextBox = new TextBox();
+	private ListBox kinokettenListBox = new ListBox();
 	
 	private Button speichernButton = new Button("Speichern");
 	private Button aenderungSpeichernButton = new Button("Änderung speichern");
@@ -52,8 +51,8 @@ public class KinoErstellenForm extends VerticalPanel {
 	
 	private Boolean edit = false;
 	private MeineKinosForm mkf;
-	private ArrayList<Kinokette> kinoketten = new ArrayList<Kinokette>();
-	private Kino k;
+	
+	private Kino kino;
 	private Kinokette kk;
 	
 	
@@ -69,14 +68,15 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 	
 	public KinoErstellenForm(Kino k) {
-		this.k = k;
-		setBearbeiten(k);
+		this.kino = k;
+		
 		setEdit(true);
 	}
 	
 	
 
 	public void onLoad() {
+		
 		
 		/*Vergeben der Style-Namen*/
 		
@@ -112,7 +112,7 @@ public class KinoErstellenForm extends VerticalPanel {
 			obenPanel.add(kinokBearbeitenFormLabel);
 		} else {
 			obenPanel.add(kinoFormLabel);
-			clearForm();
+		
 		}
 		
 		
@@ -134,14 +134,13 @@ public class KinoErstellenForm extends VerticalPanel {
 
 		this.add(kinoGrid);
 		
-		
+		administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
 		
 		if(edit == true) {
 			untenPanel.add(loeschenButton);
 			untenPanel.add(aenderungSpeichernButton);
 		} else {
-			administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
-			clearForm();
+			
 			untenPanel.add(speichernButton);
 		}
 		
@@ -150,6 +149,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
+		setBearbeiten(kino);
 		
 	}
 	
@@ -195,8 +195,13 @@ private class KinoLoeschenDialogBox extends DialogBox{
 			// TODO Auto-generated method stub
 			String kinoketteName = kinokettenListBox.getSelectedValue();
 			
-			
+			if(kinoketteName!="Keine Auswahl") {
 			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
+			}else{ 
+				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
+						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0,
+						new KinoErstellenCallback());
+			}
 		
 				
 			
@@ -212,7 +217,17 @@ private class KinoLoeschenDialogBox extends DialogBox{
 		public void onClick(ClickEvent event) {
 			
 			String kinoketteName = kinokettenListBox.getSelectedValue();
+			if(kinoketteName!="Keine Auswahl") {
 			administration.getKinoketteByName(kinoketteName,new AenderungKinoketteByNameCallback());
+			}else {
+				kino.setName(nameTextBox.getText());
+				kino.setKinokettenId(0);
+				kino.setStrasse(stadtTextBox.getText());
+				kino.setHausnummer(hnrTextBox.getText());
+				kino.setPlz(Integer.parseInt(plzTextBox.getText()));
+				kino.setStadt(stadtTextBox.getText());
+				administration.speichern(kino, new KinoAendernCallback());
+			}
 		}
 		
 	}
@@ -241,7 +256,7 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			kinoloeschenDB.hide();
-			administration.loeschen(k, new KinoLoeschenCallback());
+			administration.loeschen(kino, new KinoLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
@@ -288,6 +303,7 @@ private class LoeschenClickHandler implements ClickHandler{
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
+		
 		}
 		
 	}
@@ -347,19 +363,39 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onSuccess(ArrayList<Kinokette> result) {
 			
-			kinoketten = result;
+			int indexSelected = 0;
+			int counter = 1;
+			
+			kinokettenListBox.addItem("Keine Auswahl");
 
-			if (result != null) {
-				kinokettenListBox.clear();
+			if (result.size() != 0) {
+			
 				for (Kinokette kk : result) {
-					
+					Window.alert("counter anfang: "+counter);
+					Window.alert("Kinoketteid:"+ kk.getId());
+					Window.alert("KinoketteidKino:"+ kino.getId());
 					kinokettenListBox.addItem(kk.getName());
 
+					if (kino != null) {
+						if (kk.getId() == kino.getKinokettenId()) {
+							indexSelected = counter;
+							Window.alert("counter: "+ counter);
+
+						} else {
+							counter++;
+							Window.alert("counter++ ");
+							
+						}
+					}
+
+				}
+				if (kino != null) {
+					kinokettenListBox.setSelectedIndex(indexSelected);
 				}
 
 			} else {
 
-				kinokettenListBox.addItem("Keine Gruppen verfügbar");
+				kinokettenListBox.addItem("Kein Kino verfügbar");
 				kinokettenListBox.setEnabled(false);
 
 			}
@@ -387,11 +423,6 @@ private class LoeschenClickHandler implements ClickHandler{
 					new KinoErstellenCallback());
 			
 			
-			
-			clearForm();
-			RootPanel.get("details").clear();
-			mkf = new MeineKinosForm();
-			RootPanel.get("details").add(mkf);
 		}
 		
 	}
@@ -399,86 +430,24 @@ private class LoeschenClickHandler implements ClickHandler{
 	private class AenderungKinoketteByNameCallback implements AsyncCallback<Kinokette>{
 		
 		public void onFailure(Throwable caught){
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 		
 		public void onSuccess(Kinokette result) {
-			k.setName(nameTextBox.getText());
-			k.setKinokettenId(result.getId());
-			k.setStrasse(stadtTextBox.getText());
-			k.setHausnummer(hnrTextBox.getText());
-			k.setPlz(Integer.parseInt(plzTextBox.getText()));
-			k.setStadt(stadtTextBox.getText());
-			administration.speichern(k, new KinoAendernCallback());
+			kino.setName(nameTextBox.getText());
+			kino.setKinokettenId(result.getId());
+			kino.setStrasse(stadtTextBox.getText());
+			kino.setHausnummer(hnrTextBox.getText());
+			kino.setPlz(Integer.parseInt(plzTextBox.getText()));
+			kino.setStadt(stadtTextBox.getText());
+			administration.speichern(kino, new KinoAendernCallback());
 			
 			
 		}
 		
 		
 	}
-	
-	
-	
-	private class KinoketteByIdCallback implements AsyncCallback<ArrayList<Kinokette>>{
-
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/*@Override
-		public void onSuccess(Kinokette result) {
-			// TODO Auto-generated method stub
-			int index;
-			for(int i = 0; i<kinokettenListBox.getItemCount();i++) {
-				if(kinokettenListBox.getItemText(i).equals(result.getName())) {
-					index = i;
-					kinokettenListBox.setSelectedIndex(index);
-				}
-			}
-			
-		}*/
-		
-		@Override
-		public void onSuccess(ArrayList<Kinokette> result) {
-
-			int indexSelected = 0;
-			int counter = 0;
-
-			if (result.size() != 0) {
-				kinokettenListBox.clear();
-				for (Kinokette kk : result) {
-
-					kinokettenListBox.addItem(kk.getName());
-
-					if (k != null) {
-						if (kk.getId() == k.getKinokettenId()) {
-							indexSelected = counter;
-
-						} else {
-							counter++;
-						}
-					}
-
-				}
-				if (k != null) {
-					kinokettenListBox.setSelectedIndex(indexSelected);
-				}
-
-			} else {
-
-				kinokettenListBox.addItem("Kein Kino verfügbar");
-				kinokettenListBox.setEnabled(false);
-
-			}
-
-		}
-
-		
-	}
-	
-	
 	
 	
 	
@@ -494,8 +463,8 @@ private class LoeschenClickHandler implements ClickHandler{
 
 	
 	public void setBearbeiten(Kino kino) {
-		
-			administration.getKinokettenByAnwenderOwner(new KinoketteByIdCallback());
+			
+			
 			
 			nameTextBox.setText(kino.getName());
 			plzTextBox.setText(Integer.toString(kino.getPlz()));

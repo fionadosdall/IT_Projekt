@@ -56,7 +56,8 @@ public class KinoMapper {
 	/**
 	 * Suche nach allen Kinos über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Kinos tragen
+	 * @param name
+	 *            den die gesuchten Kinos tragen
 	 * @return Eine ArrayList, die alle gefundenen Kinos enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -88,6 +89,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(k);
@@ -105,7 +107,8 @@ public class KinoMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
@@ -131,7 +134,8 @@ public class KinoMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Kino-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param kino als das zu speichernde Objekt
+	 * @param kino
+	 *            als das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Kino insert(Kino kino) {
@@ -146,31 +150,24 @@ public class KinoMapper {
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				kino.setId(resultset.getInt("maxId") + 1);
-				
-				
-			}
-				PreparedStatement stmt2 = con
-						.prepareStatement(
-								"INSERT INTO kino (kId, kName, plz, stadt, strasse,"
-								+ " hausnummer, erstellDatum, kino_kinokette_Id,"
-								+ " kino_anwender_Id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
-								Statement.RETURN_GENERATED_KEYS);
-				
-				stmt2.setInt(1, kino.getId());
-				stmt2.setString(2, kino.getName());
-				stmt2.setInt(3, kino.getPlz());
-				stmt2.setString(4, kino.getStadt());
-				stmt2.setString(5, kino.getStrasse());
-				stmt2.setString(6, kino.getHausnummer());
-				stmt2.setTimestamp(7, kino.getErstellDatum());
-				stmt2.setInt(8, kino.getKinokettenId());
-				stmt2.setInt(9, kino.getBesitzerId());
-				
-				
-				stmt2.executeUpdate();
 
-				
-				
+			}
+			PreparedStatement stmt2 = con.prepareStatement("INSERT INTO kino (kId, kName, plz, stadt, strasse,"
+					+ " hausnummer, erstellDatum, kino_kinokette_Id,"
+					+ " kino_anwender_Id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+			stmt2.setInt(1, kino.getId());
+			stmt2.setString(2, kino.getName());
+			stmt2.setInt(3, kino.getPlz());
+			stmt2.setString(4, kino.getStadt());
+			stmt2.setString(5, kino.getStrasse());
+			stmt2.setString(6, kino.getHausnummer());
+			stmt2.setTimestamp(7, kino.getErstellDatum());
+			stmt2.setInt(8, kino.getKinokettenId());
+			stmt2.setInt(9, kino.getBesitzerId());
+
+			stmt2.executeUpdate();
+
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -184,7 +181,8 @@ public class KinoMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param kino als das Objekt, das verändert werden soll.
+	 * @param kino
+	 *            als das Objekt, das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Kino update(Kino kino) {
@@ -196,10 +194,9 @@ public class KinoMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE Kino SET " + "kino_anwender_Id= '" + kino.getBesitzerId() + "' , " + "kName= '"
-					+ kino.getName() + "', " + "erstellDatum= '" + kino.getErstellDatum() + "' , " + "plz= '"
-					+ kino.getPlz() + "' , " + "stadt= '" + kino.getStadt() + "', " + "strasse= '" + kino.getStrasse()
-					+ "' , " + "hausnummer= '" + kino.getHausnummer() + "' , " + "kino_kinokette_Id= '" + kino.getKinokettenId()
-					+ "' WHERE kId=" + kino.getId());
+					+ kino.getName() + "' , " + "plz= '" + kino.getPlz() + "' , " + "stadt= '" + kino.getStadt() + "', "
+					+ "strasse= '" + kino.getStrasse() + "' , " + "hausnummer= '" + kino.getHausnummer() + "' , "
+					+ "kino_kinokette_Id= '" + kino.getKinokettenId() + "' WHERE kId=" + kino.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -212,7 +209,8 @@ public class KinoMapper {
 	/**
 	 * Mit dieser Methode kann ein Kino-Objekt aus der Datenbank gelöscht werden.
 	 * 
-	 * @param kino Objekt, welches gelöscht werden soll.
+	 * @param kino
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Kino kino) {
 		Connection con = DBConnection.connection();
@@ -241,8 +239,8 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt
-					.executeQuery("SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum"
+			ResultSet resultset = stmt.executeQuery(
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum"
 							+ " FROM Kino" + " ORDER BY kName");
 
 			while (resultset.next()) {
@@ -255,6 +253,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(k);
@@ -269,8 +268,9 @@ public class KinoMapper {
 	/**
 	 * Suche nach einem Kino mit vorgegebener Kino-Id
 	 * 
-	 * @param id zugehörig zu einem Kino, nach welchem gesucht werden soll, also der
-	 *           Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einem Kino, nach welchem gesucht werden soll, also
+	 *            der Primärschlüssel in der Datenbank.
 	 * @return Das Kino-Objekt, das mit seiner Kino-Id der übergebenen Id
 	 *         entspricht. Falls kein Kino zur übergebenen Id gefunden wurde, wird
 	 *         null zurückgegeben.
@@ -280,7 +280,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
 							+ " WHERE kId=" + id + " ORDER BY kName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -293,6 +293,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 				return k;
 			}
 		} catch (SQLException e1) {
@@ -307,8 +308,9 @@ public class KinoMapper {
 	 * besondere Rechte in Bezug auf welche Kinos hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Kino-Objekte übereinstimmen soll.
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Kino-Objekte
+	 *            übereinstimmen soll.
 	 * @return Alle Kino-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */
@@ -321,7 +323,7 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
 							+ " WHERE kino_anwender_Id = " + anwenderOwner.getId() + " ORDER BY kName");
 
 			while (resultset.next()) {
@@ -334,6 +336,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(k);
@@ -349,8 +352,10 @@ public class KinoMapper {
 	 * Kino-Objekte können zu einer bestimmten Kinokette hinzugefügt werden. Dadurch
 	 * wird in der Datenbank eine Beziehung zwischen den beiden Objekten angelegt.
 	 * 
-	 * @param kinokette die ein vorgegebenes Kino enthalten soll.
-	 * @param kino      das zu einer Kinokette hinzugefügt werden soll.
+	 * @param kinokette
+	 *            die ein vorgegebenes Kino enthalten soll.
+	 * @param kino
+	 *            das zu einer Kinokette hinzugefügt werden soll.
 	 */
 	public void addKinokette(Kinokette kinokette, Kino kino) {
 		Connection con = DBConnection.connection();
@@ -371,8 +376,9 @@ public class KinoMapper {
 	 * vorgegebenen kinoId gefunden. Anschließend wird in der Kino-Tabelle die
 	 * kinokettenId zurückgesetzt.
 	 * 
-	 * @param kino Objekt, bei welchem die Beziehung zu einer beliebligen Kinokette
-	 *             gelöscht werden soll.
+	 * @param kino
+	 *            Objekt, bei welchem die Beziehung zu einer beliebligen Kinokette
+	 *            gelöscht werden soll.
 	 */
 	public void deleteKinokette(Kino kino) {
 		Connection con = DBConnection.connection();
@@ -393,9 +399,11 @@ public class KinoMapper {
 	 * Kino-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als einziger
 	 * Veränderungen vornehmen.
 	 * 
-	 * @param anwender welcher als Besitzer des Kinos in der Datenbank eingetragen
-	 *                 werden soll.
-	 * @param kino     Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender
+	 *            welcher als Besitzer des Kinos in der Datenbank eingetragen werden
+	 *            soll.
+	 * @param kino
+	 *            Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Kino kino) {
 		Connection con = DBConnection.connection();
@@ -415,8 +423,9 @@ public class KinoMapper {
 	 * zugewiesen und soll nun gelöscht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gelöscht.
 	 * 
-	 * @param kino Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt
-	 *             werden soll.
+	 * @param kino
+	 *            Objekt bei welchem die BesitzerId in der Datenbank zurückgesetzt
+	 *            werden soll.
 	 */
 	public void deleteEigentumsstruktur(Kino kino) {
 		Connection con = DBConnection.connection();
@@ -437,8 +446,9 @@ public class KinoMapper {
 	 * Diese kinokettenId muss mit der Id der im Methodenparamter übergebenen
 	 * Kinokette übereinstimmen.
 	 * 
-	 * @param kinokette Objekt, dessen Id mit den kinokettenIds in der Kino-Tabelle
-	 *                  übereinstimmen soll.
+	 * @param kinokette
+	 *            Objekt, dessen Id mit den kinokettenIds in der Kino-Tabelle
+	 *            übereinstimmen soll.
 	 * @return Alle Kino-Objekte in einer ArrayList, deren kinokettenId der
 	 *         übergebenen Kinokette entspricht.
 	 */
@@ -451,7 +461,7 @@ public class KinoMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
 							+ " WHERE kino_kinokette_Id = " + kinokette.getId() + " ORDER BY kName");
 			/**
 			 * FÜr jeden Eintrag im Suchergebnis wird jetzt ein Kino-Objekt erstellt und die
@@ -467,6 +477,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 
 				// Hinzufügen des neuen Objekts zur ArrayList
 				resultarray.add(k);
@@ -483,7 +494,7 @@ public class KinoMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT kId, kName, kino_anwender_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
+					"SELECT kId, kName, kino_anwender_Id, kino_kinokette_Id, plz, stadt, strasse, hausnummer, erstellDatum FROM Kino"
 							+ " WHERE kName='" + name + "' ORDER BY kName");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -496,6 +507,7 @@ public class KinoMapper {
 				k.setStrasse(resultset.getString("strasse"));
 				k.setHausnummer(resultset.getString("hausnummer"));
 				k.setErstellDatum(resultset.getTimestamp("erstellDatum"));
+				k.setKinokettenId(resultset.getInt("kino_kinokette_Id"));
 				return k;
 			}
 		} catch (SQLException e1) {
