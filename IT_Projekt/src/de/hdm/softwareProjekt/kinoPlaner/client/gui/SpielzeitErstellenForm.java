@@ -121,7 +121,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		popupPanel.add(spielzeitGrid);
 
 		if (spielzeit != null) {
-			untenPanel.add(loeschenButton);
+			//untenPanel.add(loeschenButton);
 			untenPanel.add(speichernButton);
 
 		} else {
