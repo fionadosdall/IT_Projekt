@@ -1,3 +1,4 @@
+
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -13,6 +14,13 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
+
+/**
+ * Klasse zur Darstellung von Ergebnis-Objekten für den Navigator
+ * Alle Klassen die auf Cell enden sind abgewandelte bzw. veränderte
+ * Abstract Cells
+ *
+ */
 
 public class ErgebnisCell extends AbstractCell<Umfrage> {
 	
