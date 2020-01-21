@@ -367,7 +367,7 @@ public class VorstellungMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
-							+ " FROM Vorstellung" + " WHERE vorstellung_film_Id = " + film + " ORDER BY vName");
+							+ " FROM Vorstellung" + " WHERE vorstellung_film_Id = " + film.getId() + " ORDER BY vName");
 			/**
 			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife
 			 * wird dann der Resultarray nach und nach aufgebaut und befüllt. Hierbei wird
@@ -418,7 +418,7 @@ public class VorstellungMapper {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT vId, vName, vorstellung_film_Id, vorstellung_spielzeit_Id, vorstellung_spielplan_Id, erstellDatum"
-							+ " FROM Vorstellung" + " WHERE vorstellung_spielzeit_Id = " + spielzeit
+							+ " FROM Vorstellung" + " WHERE vorstellung_spielzeit_Id = " + spielzeit.getId()
 							+ " ORDER BY vName");
 			/**
 			 * Prüfe ob das geklappt hat, also ob ein Ergebnis vorliegt. Durch die Schleife

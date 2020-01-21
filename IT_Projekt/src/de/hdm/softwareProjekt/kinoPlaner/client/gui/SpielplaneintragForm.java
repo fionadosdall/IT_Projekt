@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
@@ -31,7 +32,7 @@ public class SpielplaneintragForm extends PopupPanel {
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 
-	private Grid spielplaneintragGrid = new Grid(5, 3);
+	private Grid spielplaneintragGrid = new Grid(7, 3);
 
 	private Label spielplaneintragFormLabel = new Label("Spielplaneintrag erstellen");
 	private Label spielplaneintragBearbeitenFormLabel = new Label("Spielplan bearbeiten");
@@ -44,6 +45,8 @@ public class SpielplaneintragForm extends PopupPanel {
 	private Button spielzeitErstellenButton = new Button("Neue Spielzeit erstellen");
 	private Button filmBearbeitenButton = new Button("Film bearbeiten");
 	private Button spielzeitBearbeitenButton = new Button("Spielzeit bearbeiten");
+	private Button filmLoeschenButton = new Button("Film löschen");
+	private Button spielzeitLoeschenButton = new Button("Spielzeit löschen");
 
 	private Vorstellung vorstellung;
 	private SpielplanVorstellungenCellTable svct;
@@ -101,6 +104,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		untenPanel.addStyleName("popupUntenPanel");
 		speichernButton.addStyleName("speichernButton");
 		closeButton.addStyleName("entfernenButton");
+		filmLoeschenButton.addStyleName("entfernenButton");
+		spielzeitLoeschenButton.addStyleName("entfernenButton");
 
 		spielzeitListBox.setSize("180px", "25px");
 		filmListBox.setSize("180px", "25px");
@@ -122,18 +127,19 @@ public class SpielplaneintragForm extends PopupPanel {
 		spielplaneintragGrid.setWidget(1, 2, filmErstellenButton);
 
 		spielplaneintragGrid.setWidget(2, 2, filmBearbeitenButton);
+		spielplaneintragGrid.setWidget(3, 2, filmLoeschenButton);
 
-		spielplaneintragGrid.setWidget(3, 0, spielzeitLabel);
-		spielplaneintragGrid.setWidget(3, 1, spielzeitListBox);
-		spielplaneintragGrid.setWidget(3, 2, spielzeitErstellenButton);
+		spielplaneintragGrid.setWidget(4, 0, spielzeitLabel);
+		spielplaneintragGrid.setWidget(4, 1, spielzeitListBox);
+		spielplaneintragGrid.setWidget(4, 2, spielzeitErstellenButton);
 
-		spielplaneintragGrid.setWidget(4, 2, spielzeitBearbeitenButton);
+		spielplaneintragGrid.setWidget(5, 2, spielzeitBearbeitenButton);
+		spielplaneintragGrid.setWidget(6, 2, spielzeitLoeschenButton);
 
 		popupPanel.add(spielplaneintragGrid);
 
 		untenPanel.add(speichernButton);
-		if (vorstellung != null)
-			untenPanel.add(closeButton);
+
 		popupPanel.add(untenPanel);
 
 		closeButton.addClickHandler(new CloseClickHandler());
@@ -142,6 +148,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		spielzeitErstellenButton.addClickHandler(new NeueSpielzeitClickHandler());
 		filmBearbeitenButton.addClickHandler(new FilmBearbeitenClickHandler());
 		spielzeitBearbeitenButton.addClickHandler(new SpielzeitBearbeitenClickHandler());
+		spielzeitLoeschenButton.addClickHandler(new SpielzeitLoeschenClickHandler());
+		filmLoeschenButton.addClickHandler(new FilmLoeschenClickHandler());
 
 		// this.center();
 		// this.setPopupPosition(30, 50);
@@ -153,6 +161,27 @@ public class SpielplaneintragForm extends PopupPanel {
 	}
 
 	/*** Clickhandler ***/
+
+	private class FilmLoeschenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmGetNameFueLoeschenCallback());
+
+		}
+
+	}
+
+	private class SpielzeitLoeschenClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
+					new SpielzeitByIdFuerLoeschenCallback());
+
+		}
+
+	}
 
 	private class CloseClickHandler implements ClickHandler {
 
@@ -169,8 +198,8 @@ public class SpielplaneintragForm extends PopupPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 
-			spielzeit = new SpielzeitErstellenForm(eigeneForm);
-			spielzeit.show();
+			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
+					new SpielzeitByIDCallback());
 
 		}
 
@@ -180,7 +209,7 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+
 			if (vorstellung == null) {
 				Vorstellung v = new Vorstellung();
 
@@ -196,7 +225,6 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
 
 			film = new FilmErstellenForm(eigeneForm);
 			film.show();
@@ -209,7 +237,7 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
+
 
 			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmByNameCallback());
 
@@ -225,15 +253,92 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
-					new SpielzeitByIDCallback());
+			spielzeit = new SpielzeitErstellenForm(eigeneForm);
+
+			spielzeit.show();
 
 		}
 
 	}
 
 	/*** Callbacks ***/
+
+	private class SpielzeitByIdFuerLoeschenCallback implements AsyncCallback<Spielzeit> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+		}
+
+		@Override
+		public void onSuccess(Spielzeit result) {
+			administration.loeschen(result, new SpielzeitLoeschenCalback());
+
+		}
+
+	}
+
+	private class SpielzeitLoeschenCalback implements AsyncCallback<Boolean> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(Boolean result) {
+			if (result == true) {
+				spielzeitRefresh();
+				Systemmeldung.anzeigen("Spielzeit wurde gelöscht.");
+			} else {
+				Systemmeldung.anzeigen("Löschen der Spielzeit nicht möglich, wird verwendet.");
+			}
+
+		}
+
+	}
+
+	private class FilmGetNameFueLoeschenCallback implements AsyncCallback<Film> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(Film result) {
+			administration.loeschen(result, new FilmLoeschenCallback());
+
+		}
+
+	}
+
+	private class FilmLoeschenCallback implements AsyncCallback<Boolean> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(Boolean result) {
+			if (result == true) {
+				refresh();
+				Systemmeldung.anzeigen("Film wurde gelöscht.");
+			} else {
+				Systemmeldung.anzeigen("Löschen des Films nicht möglich, wird verwendet.");
+			}
+
+		}
+
+	}
 
 	private class FilmeCallback implements AsyncCallback<ArrayList<Film>> {
 
@@ -285,7 +390,8 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
