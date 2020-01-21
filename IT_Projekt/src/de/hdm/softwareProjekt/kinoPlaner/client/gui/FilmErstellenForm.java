@@ -206,6 +206,7 @@ public class FilmErstellenForm extends PopupPanel {
 						public void onSuccess(Void result) {
 							Systemmeldung.anzeigen("Film wurde geupdatet");
 							parent.refresh();
+							removeFromParent();
 							
 						}
 					});

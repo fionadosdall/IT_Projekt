@@ -177,7 +177,7 @@ public class SpielzeitMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
-					 + "' , " + "spielzeit_anwender_Id= '"
+					 + "spielzeit_anwender_Id= '"
 					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.dateToString() + "' WHERE szId="
 					+ spielzeit.getId());
 		} catch (SQLException e2) {

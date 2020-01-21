@@ -1061,7 +1061,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			}
 
 			// Dannach loesche die Spielzeit
-			this.loeschen(film);
+			this.filmMapper.delete(film);
 
 			// Gib zurueck, dass erfolgreich geloescht wurde
 			return true;
@@ -1093,7 +1093,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				this.loeschen(spielzeiten.get(0));
 			}
 			// Dannach loesche die Spielzeit
-			this.loeschen(spielzeit);
+			this.spielzeitMapper.delete(spielzeit);
 
 			// Gib zurueck, dass erfolgreich geloescht wurde
 			return true;
