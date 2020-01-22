@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
@@ -40,7 +39,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	private SpielplaneintragForm parent;
 
-	DateFormaterSpielzeit dfs;
+
 
 	private Button loeschenButton = new Button("Löschen");
 	private Button speichernButton = new Button("Speichern");
