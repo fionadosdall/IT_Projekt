@@ -334,17 +334,7 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public void isVoted(Auswahl auswahl);
 
-	/**
-	 * <p>
-	 * Speichern eines Anwenders.
-	 * </p>
-	 * 
-	 * @param anwender
-	 *            Anwenderobjekt
-	 * @return 
-	 * @throws IllegalArgumentException
-	 */
-	public Anwender speichern(Anwender anwender) throws IllegalArgumentException;
+	Anwender speichern(Anwender anwender);
 
 	/**
 	 * <p>

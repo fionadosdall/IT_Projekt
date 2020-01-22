@@ -304,7 +304,7 @@ public class KinoErstellenForm extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Kino result) {
-			if (result == null) {
+			if (result != null) {
 				Systemmeldung.anzeigen("Änderungen gespeichert.");
 				RootPanel.get("details").clear();
 				mkf = new MeineKinosForm();
@@ -355,19 +355,17 @@ public class KinoErstellenForm extends VerticalPanel {
 			if (result.size() != 0) {
 
 				for (Kinokette kk : result) {
-					Window.alert("counter anfang: " + counter);
-					Window.alert("Kinoketteid:" + kk.getId());
-					Window.alert("KinoketteidKino:" + kino.getId());
+			
 					kinokettenListBox.addItem(kk.getName());
 
 					if (kino != null) {
 						if (kk.getId() == kino.getKinokettenId()) {
 							indexSelected = counter;
-							Window.alert("counter: " + counter);
+				
 
 						} else {
 							counter++;
-							Window.alert("counter++ ");
+				
 
 						}
 					}

@@ -240,9 +240,11 @@ public interface KinoplanerAsync {
 
 	public void nameVerfuegbarKino(Kino name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarKinokette(Kinokette name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarKinokette(Kinokette name, AsyncCallback<Boolean> callback)
+			throws IllegalArgumentException;
 
-	public void nameVerfuegbarSpielplan(Spielplan name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarSpielplan(Spielplan name, AsyncCallback<Boolean> callback)
+			throws IllegalArgumentException;
 
 	public void nameVerfuegbarVorstellung(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
@@ -253,7 +255,8 @@ public interface KinoplanerAsync {
 
 	public void nameVerfuegbarFilm(Film name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarSpielzeit(Spielzeit name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarSpielzeit(Spielzeit name, AsyncCallback<Boolean> callback)
+			throws IllegalArgumentException;
 
 	public void nameVerfuegbarAuswahl(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 

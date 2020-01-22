@@ -60,10 +60,12 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	}
 
 	public SpielzeitErstellenForm(SpielplaneintragForm parent) {
+		super(true);
 		this.parent = parent;
 	}
 
 	public SpielzeitErstellenForm(SpielplaneintragForm parent, Spielzeit spielzeit) {
+		super(true);
 		this.parent = parent;
 		this.spielzeit = spielzeit;
 	}
@@ -88,10 +90,12 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		speichernButton.addStyleName("speichernButton");
 
 		dateBox.getElement().setPropertyString("placeholder", "Spielzeit auswählen");
+		
+		obenPanel.add(title);
 
 		if (spielzeit != null) {
 
-			obenPanel.add(spielzeitBearbeiten);
+			title.setText("Spielzeit bearbeiten");
 			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
 			String pattern = "EEEE dd.MM.yyyy HH:mm";
 			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
@@ -99,10 +103,10 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			spielzeitTB.setValue(dft.format(spielzeit.getZeit()));
 			dateBox.setValue(spielzeit.getZeit());
 
-		} else {
-			obenPanel.add(title);
-			clearFormular();
-		}
+		} 
+			
+			
+		
 
 		popupPanel.add(obenPanel);
 
@@ -124,7 +128,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			untenPanel.add(speichernButton);
 
 		} else {
-			clearFormular();
+			
 			untenPanel.add(speichernButton);
 		}
 
@@ -159,7 +163,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			};
 			String formatiert = dft.format(dateBox.getValue());
 
-			Window.alert("formatiert" + formatiert);
 
 			if (spielzeit == null) {
 
@@ -173,24 +176,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	}
 
-	private class EntfernenClickHandler implements ClickHandler {
 
-		@Override
-		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-
-			RootPanel.get("details").clear();
-
-		}
-
-	}
-
-	private void clearFormular() {
-		// TODO Auto-generated method stub
-
-		// dateBox.setTitle("");
-
-	}
 
 	/* Callback */
 
@@ -205,9 +191,10 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			if (result == null) {
+			if (result != null) {
 				Window.alert("Spielzeit bereits erstellt!");
 			} else {
+				Systemmeldung.anzeigen("Spielzeit wurde geupdatet.");
 				parent.spielzeitRefresh();
 				removeFromParent();
 				hide();
@@ -231,7 +218,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 				Window.alert("Spielzeit bereits erstellt!");
 			} else {
 
-				Window.alert("Spielzeit wurde erstellt");
+				Systemmeldung.anzeigen("Spielzeit wurde erstellt.");
 
 				parent.spielzeitRefresh();
 			}
