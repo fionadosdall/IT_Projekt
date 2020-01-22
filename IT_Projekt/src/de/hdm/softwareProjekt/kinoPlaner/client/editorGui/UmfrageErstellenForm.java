@@ -304,6 +304,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
+	 * des Films gefiltert wurden aus dem System zu bekommen
+	 */
 
 	private class FilterResultVorstellungenByFilm implements AsyncCallback<ArrayList<Vorstellung>> {
 
@@ -352,6 +356,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
+	 * des Kinos gefiltert wurden aus dem System zu bekommen
+	 *
+	 */
 
 	private class FilterResultVorstellungenByKinoCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
@@ -377,6 +387,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/***
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
+	 * der Kinokette  gefiltert wurden aus dem System zu bekommen
+	 *
+	 */
 
 	private class FilterResultVorstellungenByKinoketteCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
@@ -425,7 +441,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	/**
 	 * 
-	 * 
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
+	 * des Spielzeit gefiltert wurden aus dem System zu bekommen
 	 *
 	 */
 	private class FilterResultVorstellungenBySpielzeitCallback implements AsyncCallback<ArrayList<Vorstellung>> {
@@ -567,6 +584,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * private Klasse um alle Kinoketten-Instanzen in das System zu bekommen
+	 * @author fiona
+	 *
+	 */
 
 	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>> {
 
@@ -649,7 +672,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	 * Hier werden die Filme geladen, welche bei der Erstellung einer Umfrage
 	 * ausgewählt werden können
 	 * 
-	 * @author fiona
+	 * 
 	 *
 	 */
 
@@ -687,6 +710,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 	/*
+	 * Private Klasse um alle Gruppen-Instanzen, aufgrund eines Namens 
+	 * aus dem System zu bekommen
 	 * 
 	 */
 
@@ -722,6 +747,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
+	
+	/**
+	 * private Klasse um alle Umfrage-Instanzen aus dem System zu 
+	 * updaten, ist dies erfolgreich so gelagnen wir in die UmfrageAnzeigenForm-Klasse
+	 * 
+	 * 
+	 *
+	 */
 
 	private class updateUmfrageCallback implements AsyncCallback<Umfrage> {
 
@@ -748,6 +781,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 	/****
+	 * 
 	 * Callback wird benötigt um eine Umfrage zu erstellen
 	 * 
 	 *

@@ -43,6 +43,9 @@ public class UmfrageCell extends AbstractCell<Umfrage> {
 
 
 	}
+	/*****
+	 * Methoden wenn Ereignis im Broswer passiert
+	 */
 
 	@Override
 	public void onBrowserEvent(Context context, Element parent, Umfrage value, NativeEvent event,
