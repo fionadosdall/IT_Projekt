@@ -31,7 +31,7 @@ body {
 	grid-column-end: 5;
 	grid-row-start: 3;
 	grid-row-end: 4;
-	background: transparent;
+	background: #363636;
 }
 
 #navigator {
@@ -450,11 +450,10 @@ body {
 }
 
 .hinzufuegenButton.gwt-Button {
-	margin: 5px;
-	background: transparent;
+	background: #23d160;
 	border-color: #23d160;
-	color: #23d160;
-	border-radius: 2px;
+	color: #fff;
+	border-radius: 4px;
 	font-size: .75rem;
 	border-width: 1px;
 	cursor: pointer;
@@ -464,6 +463,7 @@ body {
 	padding-right: .75em;
 	padding-top: calc(.375em - 1px);
 	text-align: center;
+	align-items: center;
 }
 
 .entfernenButton.gwt-Button {

@@ -37,7 +37,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	private HomeBarAdmin hb = new HomeBarAdmin();
 	
 	private Label formHeaderLabel = new Label ("Dashboard");
-	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschten Spielplan anklicken.");
+	private Label bearbeitenLabel = new Label("Zum Bearbeiten gewünschten Spielplan anklicken.");
 	
 	private ArrayList <Spielplan> spielplaene;
 	private Kino kino;

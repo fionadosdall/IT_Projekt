@@ -33,7 +33,7 @@ public class MeineKinosForm extends VerticalPanel {
 	
 	private BusinessObjektView bov = new BusinessObjektView();
 	
-	
+	private Button kinoErstellenButton = new Button("Neues Kino erstellen");
 	
 	private ArrayList<Kino> kinos;
 	private KinoErstellenForm bearbeiten;
@@ -43,7 +43,7 @@ public class MeineKinosForm extends VerticalPanel {
 	private MeineKinosForm anzeigen;
 	private KinoErstellenForm erstellen;
 	private Label formHeaderLabel = new Label("Dashboard");
-	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschtes Kino anklicken.");
+	private Label bearbeitenLabel = new Label("Zum Bearbeiten gewünschtes Kino anklicken.");
 
 	
 	
@@ -83,6 +83,7 @@ public class MeineKinosForm extends VerticalPanel {
 		administration.getAllKinos(new SucheKinosByAnwenderCallback());
 		
 		inhaltPanel.add(bov);
+		
 		this.add(inhaltPanel);
 		
 		
@@ -122,7 +123,7 @@ public class MeineKinosForm extends VerticalPanel {
 		
 		//detailsboxInhalt.add(felder);*/
 		
-		untenPanel.add(bearbeitenLabel);
+		untenPanel.add(kinoErstellenButton);
 		this.add(untenPanel);
 		
 		
@@ -193,6 +194,7 @@ public class MeineKinosForm extends VerticalPanel {
 		public void onSuccess(ArrayList<Kino> result) {
 			bov.setKinos(result);
 			inhaltPanel.add(bov);
+			inhaltPanel.add(bearbeitenLabel);
 			
 		}
 		
