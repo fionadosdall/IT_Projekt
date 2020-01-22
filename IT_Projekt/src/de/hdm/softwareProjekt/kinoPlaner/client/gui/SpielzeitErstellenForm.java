@@ -20,6 +20,12 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
+/**
+ * Formular für das Anlegen einer neuen Spielzeit im Datenstamm
+ * 
+ * @author
+ *
+ */
 public class SpielzeitErstellenForm extends PopupPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -38,8 +44,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private DateBox dateBox = new DateBox();
 
 	private SpielplaneintragForm parent;
-
-
 
 	private Button loeschenButton = new Button("Löschen");
 	private Button speichernButton = new Button("Speichern");
@@ -72,7 +76,9 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	public void onLoad() {
 
-		/** Vergeben der Stylenames **/
+		/**
+		 * Vergeben der Stylenames
+		 */
 
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
@@ -89,8 +95,12 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		speichernButton.addStyleName("speichernButton");
 
+		/**
+		 * Zusammensetzen des Widgets
+		 */
+
 		dateBox.getElement().setPropertyString("placeholder", "Spielzeit auswählen");
-		
+
 		obenPanel.add(title);
 
 		if (spielzeit != null) {
@@ -103,10 +113,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			spielzeitTB.setValue(dft.format(spielzeit.getZeit()));
 			dateBox.setValue(spielzeit.getZeit());
 
-		} 
-			
-			
-		
+		}
 
 		popupPanel.add(obenPanel);
 
@@ -128,7 +135,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			untenPanel.add(speichernButton);
 
 		} else {
-			
+
 			untenPanel.add(speichernButton);
 		}
 
@@ -145,12 +152,20 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		 * hinzugefügt
 		 */
 
-		/**
+		/*****************
 		 * CLICKHANDLER
-		 */
+		 ***********************/
 
 	}
 
+	/**
+	 * ClickHandler, um Spielzeit entsprechend der vorgesehen Formatierung
+	 * yyyy-MM-dd und HH:mm:ss (DefaultDateTimeFormatInfo) zu speichern. Ist keine
+	 * Spielzeit eingegeben und der utzer drück trotzdem auf Speichern, wird er über
+	 * das SpielzeitErstellenCallback wieder zu einer neuen SpielzeitErstellenForm
+	 * weitergeleitet.
+	 *
+	 */
 	private class SpeichernClickHandler implements ClickHandler {
 
 		@Override
@@ -162,7 +177,6 @@ public class SpielzeitErstellenForm extends PopupPanel {
 			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
 			};
 			String formatiert = dft.format(dateBox.getValue());
-
 
 			if (spielzeit == null) {
 
@@ -176,10 +190,13 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	}
 
-
-
 	/* Callback */
 
+	/**
+	 * Callback wird durch SpeichernClickHandler aufgerufen. Neue Spielzeit wird gespeichert.
+	 * @author 
+	 *
+	 */
 	private class SpeichernCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
@@ -203,6 +220,11 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	}
 
+	/**
+	 * Callback wird durch SpeichernClickHandler aufgerufen. 
+	 * @author 
+	 *
+	 */
 	private class SpielzeitErstellenCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
