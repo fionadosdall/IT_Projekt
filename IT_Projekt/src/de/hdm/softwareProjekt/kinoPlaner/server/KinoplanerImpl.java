@@ -941,11 +941,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				this.loeschen(u);
 			}
 		}
-		
+
 		ArrayList<Anwender> gruppenmitglieder = this.getGruppenmitgliederByGruppe(gruppe);
-		
-		if(gruppenmitglieder.size() != 0) {
-			for(Anwender a : gruppenmitglieder) {
+
+		if (gruppenmitglieder.size() != 0) {
+			for (Anwender a : gruppenmitglieder) {
 				this.gruppenmitgliedEntfernen(a, gruppe);
 			}
 		}
@@ -2646,7 +2646,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Gruppe> ergebnisse = new ArrayList<Gruppe>();
 
-		// Text in Kleinbuchstaben umwandeln 
+		// Text in Kleinbuchstaben umwandeln
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
@@ -2654,11 +2654,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (gruppen != null) {
+		if (gruppen.size() != 0) {
 			for (Gruppe g : gruppen) {
 				String name = g.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(g);
+
+				} else {
+
 				}
 			}
 		}
@@ -2684,10 +2688,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (umfragen != null) {
+		if (umfragen.size() != 0) {
 			for (Umfrage u : umfragen) {
 				String name = u.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(u);
 				}
 			}
@@ -2713,10 +2717,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (closedUmfragen != null) {
+		if (closedUmfragen.size() != 0) {
 			for (Umfrage u : closedUmfragen) {
 				String name = u.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(u);
 				}
 			}
@@ -2744,10 +2748,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Kinoketten suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (mglKinoketten != null) {
+		if (mglKinoketten.size() != 0) {
 			for (Kinokette k : mglKinoketten) {
 				String name = k.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(k);
 				}
 			}
@@ -2775,10 +2779,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (kinos != null) {
+		if (kinos.size() != 0) {
 			for (Kino k : kinos) {
 				String name = k.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(k);
 				}
 			}
@@ -2806,10 +2810,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (spielplaene != null) {
+		if (spielplaene.size() != 0) {
 			for (Spielplan s : spielplaene) {
 				String name = s.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(s);
 				}
 			}
@@ -2837,10 +2841,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (spielzeiten != null) {
+		if (spielzeiten.size() != 0) {
 			for (Spielzeit s : spielzeiten) {
 				String name = s.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(s);
 				}
 			}
@@ -2868,10 +2872,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
-		if (filme != null) {
+		if (filme.size() != 0) {
 			for (Film f : filme) {
 				String name = f.getName().toLowerCase();
-				if (name.contains(textLowerCase)) {
+				if (name.contains(textLowerCase) == true) {
 					ergebnisse.add(f);
 				}
 			}

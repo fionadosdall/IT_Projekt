@@ -47,7 +47,7 @@ public class VolltextSucheForm extends FlowPanel {
 	private Grid umfragenGrid = new Grid(3, 2);
 	private Grid ergebnisseGrid = new Grid(3, 2);
 	
-	private static Boolean edit;
+	
 
 	public VolltextSucheForm(String text) {
 		this.suchText = text;
@@ -97,63 +97,13 @@ public class VolltextSucheForm extends FlowPanel {
 		detailsBoxUntenMitte.add(ergebnisseGrid);
 
 		kinoplaner.volltextSucheGruppen(suchText, new VolltextSucheGruppenCallback());
-		if (gruppen != null) {
-			gruppenGrid.resizeRows(gruppen.size());
-			int i = 0;
-			for (Gruppe g : gruppen) {
-				Label gruppenename = new Label(g.getName());
-				GruppeAuswaehlenClickHandler click = new GruppeAuswaehlenClickHandler();
-				click.setGruppe(g);
-				gruppenename.addDoubleClickHandler(click);
-				gruppenGrid.setWidget(i, 0, gruppenename);
-				i++;
-			}
-		} else {
-			gruppenGrid.setWidget(0, 0, new Label("Keine Gruppen gefunden."));
-			Button erstellenButton = new Button("Erstelle eine Gruppe!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
-
-			gruppenGrid.setWidget(1, 0, erstellenButton);
-		}
+		
 
 		kinoplaner.volltextSucheUmfragen(suchText, new VolltextSucheUmfrageCallback());
-		if (umfragen != null) {
-			umfragenGrid.resizeRows(umfragen.size());
-			int i = 0;
-			for (Umfrage u : umfragen) {
-				Label umfragename = new Label(u.getName());
-				UmfrageAuswaehlenClickHandler click = new UmfrageAuswaehlenClickHandler();
-				click.setUmfrage(u);
-				umfragename.addDoubleClickHandler(click);
-				umfragenGrid.setWidget(i, 0, umfragename);
-				i++;
-			}
-		} else {
-			umfragenGrid.setWidget(0, 0, new Label("Keine Umfragen gefunden."));
-			Button erstellenButton = new Button("Erstelle eine Umfrage!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
-
-			umfragenGrid.setWidget(1, 0, erstellenButton);
-		}
+		
 
 		kinoplaner.volltextSucheErgebnisse(suchText, new VolltextSucheErgebnisseCallback());
-		if (ergebnisse != null) {
-			ergebnisseGrid.resizeRows(ergebnisse.size());
-			int i = 0;
-			for (Umfrage e : ergebnisse) {
-				Label ergebnissename = new Label(e.getName());
-				ErgebnisAuswaehlenClickHandler click = new ErgebnisAuswaehlenClickHandler();
-				click.setErgebnis(e);
-				ergebnissename.addDoubleClickHandler(click);
-				ergebnisseGrid.setWidget(i, 0, ergebnissename);
-				i++;
-			}
-		} else {
-			ergebnisseGrid.setWidget(0, 0, new Label("Keine Ergebnisse gefunden."));
-
-		}
+		
 
 	}
 
@@ -247,6 +197,23 @@ public class VolltextSucheForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			ergebnisse = result;
+			
+			if (ergebnisse.size() !=0) {
+				ergebnisseGrid.resizeRows(ergebnisse.size()+2);
+				int i = 0;
+				for (Umfrage e : ergebnisse) {
+					Label ergebnissename = new Label(e.getName());
+					ErgebnisAuswaehlenClickHandler click = new ErgebnisAuswaehlenClickHandler();
+					click.setErgebnis(e);
+					ergebnissename.addDoubleClickHandler(click);
+					ergebnisseGrid.setWidget(i, 0, ergebnissename);
+					i++;
+				}
+				ergebnisseGrid.setWidget(i+1, 0, new Label("Doppelklicken um das Ergebniss anzuzeigen"));
+			} else {
+				ergebnisseGrid.setWidget(0, 0, new Label("Keine Ergebnisse gefunden."));
+
+			}
 
 		}
 
@@ -263,6 +230,27 @@ public class VolltextSucheForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			umfragen = result;
+			
+			if (umfragen.size() !=0) {
+				umfragenGrid.resizeRows(umfragen.size()+2);
+				int i = 0;
+				for (Umfrage u : umfragen) {
+					Label umfragename = new Label(u.getName());
+					UmfrageAuswaehlenClickHandler click = new UmfrageAuswaehlenClickHandler();
+					click.setUmfrage(u);
+					umfragename.addDoubleClickHandler(click);
+					umfragenGrid.setWidget(i, 0, umfragename);
+					i++;
+				}
+				umfragenGrid.setWidget(i+1, 0, new Label("Doppelklicken um die Umfrage anzuzeigen"));
+			} else {
+				umfragenGrid.setWidget(0, 0, new Label("Keine Umfragen gefunden."));
+				Button erstellenButton = new Button("Erstelle eine Umfrage!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
+
+				umfragenGrid.setWidget(1, 0, erstellenButton);
+			}
 
 		}
 
@@ -279,6 +267,27 @@ public class VolltextSucheForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
 			gruppen = result;
+			
+			if (gruppen.size() !=0) {
+				gruppenGrid.resizeRows(gruppen.size()+2);
+				int i = 0;
+				for (Gruppe g : gruppen) {
+					Label gruppenename = new Label(g.getName());
+					GruppeAuswaehlenClickHandler click = new GruppeAuswaehlenClickHandler();
+					click.setGruppe(g);
+					gruppenename.addDoubleClickHandler(click);
+					gruppenGrid.setWidget(i, 0, gruppenename);
+					i++;
+				}
+				gruppenGrid.setWidget(i+1, 0, new Label("Doppelklicken um die Gruppe anzuzeigen"));
+			} else {
+				gruppenGrid.setWidget(0, 0, new Label("Keine Gruppen gefunden."));
+				Button erstellenButton = new Button("Erstelle eine Gruppe!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new GruppeErstellenClickHandler());
+
+				gruppenGrid.setWidget(1, 0, erstellenButton);
+			}
 
 		}
 
