@@ -10,11 +10,13 @@ import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -159,29 +161,176 @@ public class SpielplaneintragForm extends PopupPanel {
 		administration.getAllSpielzeiten(new SpielzeitenCallback());
 
 	}
+	
+	private class FilmLoeschenDialogBox extends DialogBox {
+		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+		
+		private Label nachfrage = new Label ("Film endgültig löschen?");
+		
+		private Button jaButton = new Button ("Ja");
+		private Button neinButton = new Button ("Nein");
+		
+		// Konstruktor
+		
+		public FilmLoeschenDialogBox() {
+			
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
 
-	/*** Clickhandler ***/
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
 
+			this.add(verticalPanel);
+			
+			// ClickHandler für FilmLöschenDialogBox
+			
+			jaButton.addClickHandler(new LoeschenKlickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+			
+		}
+	}
+	
+	private class SpielzeitLoeschenDialogBox extends DialogBox {
+		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+		
+		private Label nachfrage = new Label ("Spielzeit endgültig löschen?");
+		
+		private Button jaButton = new Button ("Ja");
+		private Button neinButton = new Button ("Nein");
+		
+		// Konstruktor
+		
+		public SpielzeitLoeschenDialogBox() {
+			
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+			
+			// ClickHandler für SpielzeitLöschenDialogBox
+			
+			//jaButton.addClickHandler(new LoeschenKlickHandler(this));
+			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+			
+		}
+	}
+		
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmGetNameFueLoeschenCallback());
 
+			FilmLoeschenDialogBox filmLoeschenDB = new FilmLoeschenDialogBox();
+			filmLoeschenDB.center();
+			
 		}
 
 	}
-
-	private class SpielzeitLoeschenClickHandler implements ClickHandler {
+	
+	// Erstellen KlickHandler für Löschen- und AbbrechenClickHandler
+	
+	
+	//ClickHandler Film
+	
+	private class LoeschenKlickHandler implements ClickHandler {
+		
+		private FilmLoeschenDialogBox filmLoeschenDB;
+		
+		public LoeschenKlickHandler(FilmLoeschenDialogBox filmLoeschenDB) {
+			this.filmLoeschenDB = filmLoeschenDB;
+			
+		}
 
 		@Override
 		public void onClick(ClickEvent event) {
-			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
-					new SpielzeitByIdFuerLoeschenCallback());
+			filmLoeschenDB.hide();
+			//administration.loeschen(film, new FilmLoeschenCallback());
+			RootPanel.get("details").clear();
+			film = new FilmErstellenForm();
+			RootPanel.get("details").add(film);
+			
+		}
+		
+	}
+	
+	/*** Clickhandler für Spielzeit ***/
+
+
+	private class SpielzeitLoeschenClickHandler implements ClickHandler {
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			
+			SpielzeitLoeschenDialogBox spielzeitLoeschenDB = new SpielzeitLoeschenDialogBox();
+			spielzeitLoeschenDB.center();
 
 		}
 
 	}
+	
+	private class LoeschenClickHandler implements ClickHandler {
+		
+		private SpielzeitLoeschenDialogBox spielzeitLoeschenDB;
+		
+		public LoeschenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
+			this.spielzeitLoeschenDB = spielzeitLoeschenDB;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			spielzeitLoeschenDB.hide();
+			//administration.loeschen(spielzeit, new SpielzeitLoeschenCalback());
+			RootPanel.get("details").clear();
+			spielzeit = new SpielzeitErstellenForm();
+			RootPanel.get("details").add(spielzeit);
+			
+		}
+		
+	}
+	
+	
+	
+private class AbbrechenClickHandler implements ClickHandler {
+		
+		private FilmLoeschenDialogBox filmLoeschenDB;
+		private SpielzeitLoeschenDialogBox spielzeitLoeschenDB;
+		
+		public AbbrechenClickHandler(FilmLoeschenDialogBox filmLoeschenDB) {
+			this.filmLoeschenDB = filmLoeschenDB;
+			
+		}
+			
+			public AbbrechenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
+				this.spielzeitLoeschenDB = spielzeitLoeschenDB;
+			
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			filmLoeschenDB.hide();
+			spielzeitLoeschenDB.hide();
+			
+		}
+		
+	}
+	
+	
 
 	private class CloseClickHandler implements ClickHandler {
 
@@ -196,8 +345,8 @@ public class SpielplaneintragForm extends PopupPanel {
 	private class SpielzeitBearbeitenClickHandler implements ClickHandler {
 
 		@Override
-		public void onClick(ClickEvent event) {
-
+		public void onClick(ClickEvent event) {			
+			
 			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
 					new SpielzeitByIDCallback());
 
