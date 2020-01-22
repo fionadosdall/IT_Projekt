@@ -133,6 +133,10 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 	private ListDataProvider<UmfrageoptionInfo> dataProvider;
 	private List<UmfrageoptionInfo> list;
 
+	/** 
+	 * onLoad():
+	 * Beschreibt was passiert wenn das Widget der Seite hinzugefügt wird
+	 */
 	@Override
 	public void onLoad() {
 		
@@ -275,6 +279,11 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 
 	}
 
+	/*
+	 * Private Klasse um alle Umfrageoptionen-Instanzen, welche zu der Umfrage gehören
+	 * aus dem System bekommen
+	 *
+	 */
 	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
 
 		@Override
@@ -311,6 +320,13 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
+	
+	/**
+	 * privarte Klasse um alle Film-Instanzen, welche zur Umfrageoption gehören, 
+	 * aus dem System zu bekommen
+	 * 
+	 *
+	 */
 
 	private class FilmByUmfrageoptionCallback implements AsyncCallback<Film> {
 
@@ -337,6 +353,10 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
+	
+	/*
+	 * Private Klasse um alle Kino-instanzen aus dem System zu bekommen
+	 */
 
 	private class KinoCallback implements AsyncCallback<Kino> {
 
@@ -365,6 +385,13 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
+	
+	
+	/***
+	 * private Klasse um alle Spielzeit-Instanzen aus dem System zu bekommen
+	 * 
+	 *
+	 */
 
 	private class SpielzeitCallback implements AsyncCallback<Spielzeit> {
 
@@ -395,6 +422,13 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
+	
+	/**
+	 * private Klasse um alle Auswahl-Instanzen aus dem System zu bekommen
+	 * 
+	 * 
+	 *
+	 */
 
 	private class AuswahlCallback implements AsyncCallback<Integer> {
 
