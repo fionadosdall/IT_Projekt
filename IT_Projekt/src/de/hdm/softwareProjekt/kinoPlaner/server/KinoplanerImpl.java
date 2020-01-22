@@ -936,9 +936,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public void loeschen(Gruppe gruppe) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Umfragen
 		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner();
-		if (umfragen != null) {
+		if (umfragen.size() != 0) {
 			for (Umfrage u : umfragen) {
 				this.loeschen(u);
+			}
+		}
+		
+		ArrayList<Anwender> gruppenmitglieder = this.getGruppenmitgliederByGruppe(gruppe);
+		
+		if(gruppenmitglieder.size() != 0) {
+			for(Anwender a : gruppenmitglieder) {
+				this.gruppenmitgliedEntfernen(a, gruppe);
 			}
 		}
 
@@ -2344,6 +2352,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Umfrageoption u : resultSet) {
 				if (u.getId() == max.getId()) {
 					resultSet.remove(u);
+					break;
 				}
 			}
 
@@ -2433,6 +2442,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Umfrageoption u : resultSet) {
 				if (u.getId() == max.getId()) {
 					resultSet.remove(u);
+					break;
 				}
 			}
 

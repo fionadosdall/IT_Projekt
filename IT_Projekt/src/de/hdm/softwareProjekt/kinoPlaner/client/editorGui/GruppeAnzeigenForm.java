@@ -16,7 +16,9 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -119,45 +121,110 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
-		
+
 		this.add(detailsoben);
-//		this.add(detailslinks);
-//		this.add(detailsrechts);
+		// this.add(detailslinks);
+		// this.add(detailsrechts);
 		this.add(detailsunten);
 		detailsunten.add(detailsboxlöschen);
-		
 
 		detailsoben.add(hb);
 		detailsoben.add(title);
 		title.setText(gruppe.getName());
 		kinoplaner.getUmfragenByGruppe(gruppe, new SucheUmfrageByGruppeCallback());
-//		detailslinks.add(mitgliederLabel);
+		// detailslinks.add(mitgliederLabel);
 		detailsunten.add(mitgliederLabel);
 		gruppenmitgliederCellList = new CellList<Anwender>(gruppenmitgliederCell);
 		gruppenmitgliederCellList.setStyleName("");
 		gruppenmitgliederCellList.setPageSize(5);
 		dataProviderAnwender.addDataDisplay(gruppenmitgliederCellList);
-//		detailslinks.add(gruppenmitgliederCellList);
+		// detailslinks.add(gruppenmitgliederCellList);
 		detailsunten.add(gruppenmitgliederCellList);
 		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
 
-//		detailsrechts.add(umfrageLabel);
+		// detailsrechts.add(umfrageLabel);
 		detailsunten.add(umfrageLabel);
 		umfragenCellList = new CellList<Umfrage>(umfragenCell);
 		umfragenCellList.setStyleName("");
 		umfragenCellList.setPageSize(20);
 		dataProviderUmfrage.addDataDisplay(umfragenCellList);
-//		detailsrechts.add(umfragenCellList);
+		// detailsrechts.add(umfragenCellList);
 		detailsunten.add(umfragenCellList);
+
+		if (aktuellerAnwender.getAnwender().getId() == gruppe.getBesitzerId()) {
+			detailsunten.add(bearbeiten);
+			bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
+			papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
+			detailsboxlöschen.add(löschenImage);
+			löschenImage.add(papierkorb);
+
+			papierkorb.setUrl("/images/papierkorb.png");
+		}
+
+	}
+
+	private class GruppeLoeschenDialogBox extends DialogBox {
+
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label nachfrage = new Label("Gruppe endgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public GruppeLoeschenDialogBox() {
+
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für SpielzeitLöschenDialogBox
+
+			jaButton.addClickHandler(new GruppeLoeschenBestaetigenClickHandler(this));
+			neinButton.addClickHandler(new GruppeLoeschenAbbrechenClickHandler(this));
+
+		}
+	}
+
+	private class GruppeLoeschenBestaetigenClickHandler implements ClickHandler {
 		
-		if (aktuellerAnwender.getAnwender().getId()==gruppe.getBesitzerId()) {
-		detailsunten.add(bearbeiten);
-		bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
-		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
-		detailsboxlöschen.add(löschenImage);
-		löschenImage.add(papierkorb);
+		private GruppeLoeschenDialogBox gruppeLoeschenDB;
 		
-		papierkorb.setUrl("/images/papierkorb.png");
+		public GruppeLoeschenBestaetigenClickHandler(GruppeLoeschenDialogBox gruppeLoeschenDB) {
+			this.gruppeLoeschenDB=gruppeLoeschenDB;
+		}
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
+			gruppeLoeschenDB.hide();
+
+		}
+
+	}
+
+	private class GruppeLoeschenAbbrechenClickHandler implements ClickHandler {
+		
+		private GruppeLoeschenDialogBox gruppeLoeschenDB;
+		
+		public GruppeLoeschenAbbrechenClickHandler(GruppeLoeschenDialogBox gruppeLoeschenDB) {
+			this.gruppeLoeschenDB=gruppeLoeschenDB;
+			
+		}
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			gruppeLoeschenDB.hide();
 		}
 
 	}
@@ -166,7 +233,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
+			GruppeLoeschenDialogBox gruppeLoeschenDB = new GruppeLoeschenDialogBox();
+			gruppeLoeschenDB.center();
 
 		}
 
@@ -183,7 +251,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	private class UmfrageBearbeitenClickHandler implements ClickHandler {
 
 		@Override
@@ -200,7 +268,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
@@ -218,9 +287,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
 			caught.printStackTrace();
 
-		} 
+		}
 
 		@Override
 		public void onSuccess(ArrayList<Anwender> result) {
