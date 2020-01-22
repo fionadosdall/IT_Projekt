@@ -156,6 +156,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
 		detailsboxlöschen.add(löschenImage);
 		löschenImage.add(papierkorb);
+		
+		papierkorb.setUrl("/images/papierkorb.png");
 		}
 
 	}
