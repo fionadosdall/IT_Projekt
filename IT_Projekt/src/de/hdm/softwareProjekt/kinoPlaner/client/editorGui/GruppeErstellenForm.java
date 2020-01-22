@@ -6,9 +6,11 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -26,6 +28,8 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources.TableStyle;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
@@ -71,8 +75,19 @@ public class GruppeErstellenForm extends FlowPanel {
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button("Mitglied entfernen");
 	private Button speichernButton = new Button("Speichern");
+	
+	public interface CellTableResources extends CellTable.Resources {
 
-	private CellTable<Anwender> anwenderCellTable = new CellTable<Anwender>(KEY_PROVIDER);
+		@Source({ CellTable.Style.DEFAULT_CSS, "CellTable.css" })
+		TableStyle cellTableStyle();
+
+		interface TableStyle extends CellTable.Style {
+		}
+	}
+
+	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
+
+	private CellTable<Anwender> anwenderCellTable = new CellTable<Anwender>(100, tableRes, KEY_PROVIDER);
 
 	private ListDataProvider<Anwender> dataProvider = new ListDataProvider<Anwender>();
 	private ArrayList<Anwender> anwenderListe = new ArrayList<Anwender>();
