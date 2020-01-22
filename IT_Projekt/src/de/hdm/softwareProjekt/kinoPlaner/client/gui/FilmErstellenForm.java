@@ -36,6 +36,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
+/**
+ * Formular für das Anlegen einer neuen Gruppe im Datenstamm
+ *
+ */
 public class FilmErstellenForm extends PopupPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -56,7 +60,7 @@ public class FilmErstellenForm extends PopupPanel {
 	private TextBox bewertungTextBox = new TextBox();
 
 	private Grid filmGrid = new Grid(4, 2);
-	private Button speichernButton = new Button("Speichern");
+	private Button speichernButton = new Button("Änderungen speichern");
 	private Button loeschenButton = new Button("Löschen");
 
 	private Film film = null;
@@ -64,10 +68,13 @@ public class FilmErstellenForm extends PopupPanel {
 	private SpielplaneintragForm parent;
 
 	/*****
-	 * Bei der Instanzzierung wird der ClickHandler dem Button hinzugefügt
+	 * Bei der Instanziierung wird der ClickHandler dem Button hinzugefügt
 	 * 
 	 */
 
+	/**
+	 * Kontruktor
+	 */
 	public FilmErstellenForm() {
 
 		super(true);
@@ -145,15 +152,32 @@ public class FilmErstellenForm extends PopupPanel {
 		popupPanel.add(untenPanel);
 		untenPanel.add(speichernButton);
 
+		/**
+		 * ClickHandler für Speichern und Löschen der Filme
+		 */
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
 
 		this.add(popupPanel);
 	}
-	// CLICKHANDLER
 
+	/*********************************
+	 * CLICKHANDLER
+	 * 
+	 *
+	 ************************************/
+
+	/**
+	 * ClickHandler für den Speichern-Button, um Änderungen am Film zu speichern.
+	 *
+	 */
 	public class SpeichernClickHandler implements ClickHandler {
 
+		/**
+		 * OnClick-Methode: Ist kein Film zum Speichern vorhanden, wird ein
+		 * FilmErstellenCallback erstellt. Ansonsten wird der Film mit Name,
+		 * Beschreibung und Bewertung gespeichert
+		 */
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
@@ -186,7 +210,7 @@ public class FilmErstellenForm extends PopupPanel {
 
 					@Override
 					public void onSuccess(Film result) {
-						if (result == null) {
+						if (result != null) {
 							Window.alert("Film existiert bereits!");
 						} else {
 							Systemmeldung.anzeigen("Film wurde geupdatet");
@@ -214,8 +238,16 @@ public class FilmErstellenForm extends PopupPanel {
 
 	}
 
-	// Callback
+	/****************************
+	 * CALLBACKS
+	 * 
+	 *
+	 ******************************/
 
+	/**
+	 * Das FilmErstellenCallback wird durch den SpeichernClickhandler aufgerufen.
+	 *
+	 */
 	private class FilmErstellenCallback implements AsyncCallback<Film> {
 
 		@Override
@@ -227,16 +259,15 @@ public class FilmErstellenForm extends PopupPanel {
 		@Override
 		public void onSuccess(Film result) {
 			// TODO Auto-generated method stub
-			if(result == null) {
+			if (result == null) {
 				Window.alert("Film bereits verfügbar!");
-			}else {
-			Systemmeldung.anzeigen("Film wurde angelegt");
+			} else {
+				Systemmeldung.anzeigen("Film wurde angelegt");
 
+				// SpielplaneintragForm sef = new SpielplaneintragForm();
+				parent.refresh();
 
-			// SpielplaneintragForm sef = new SpielplaneintragForm();
-			parent.refresh();
-
-			Window.alert(result.getName());
+				Window.alert(result.getName());
 			}
 		}
 
@@ -270,6 +301,9 @@ public class FilmErstellenForm extends PopupPanel {
 
 	}
 
+	/**
+	 * Alle Eingaben in der FilmErstellenForm entfernen.
+	 */
 	public void clearForm() {
 		nameTextBox.setText("");
 		beschreibungTextBox.setText("");
