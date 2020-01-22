@@ -246,7 +246,7 @@ body {
 	white-space: nowrap;
 	-webkit-appearance: none;
 	align-items: center;
-	border-radius: 4px;
+	border-radius: 16px;
 	box-shadow: none;
 	display: inline-flex;
 	font-size: 1rem;
@@ -581,7 +581,7 @@ body {
 
 .detailsboxlöschen {
 	display: flex;
-	align-items: flex-end;
+	align-items: flex-start;
 	flex-direction: column;
 }
 
@@ -598,7 +598,7 @@ body {
 	border: 1px solid transparent;
 	display: inline-flex;
 	font-size: 1rem;
-	height: 2.25em;
+	height: 2.50em;
 	justify-content: flex-start;
 	line-height: 1.5;
 	padding-bottom: calc(.375em - 1px);
@@ -658,8 +658,6 @@ body {
 .löschenImage {
 	height: 32px;
 	width: 32px;
-	display: block;
-	position: relative;
 	cursor: pointer;
 	
 }
@@ -683,14 +681,14 @@ body {
 .detailsoben {
 	background: #d6d1d1;
 	text-align: center;
-	color: white;
+	color: black;
 	margin-bottom: 3px;
-	padding: 20px 0 20px 0;
+	padding: 25px 0 25px 0;
 }
 
 .detailsunten {
 	text-align: center;
-	color: white;
+	color: black;
 	background: #d6d1d1;
 }
 
