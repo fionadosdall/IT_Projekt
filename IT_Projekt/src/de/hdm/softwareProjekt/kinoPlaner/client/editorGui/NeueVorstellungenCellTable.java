@@ -155,7 +155,8 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenCellTable);
-		this.setSize("700px", "250px");
+//		this.setSize("100%", "250px");
+		this.setHeight("200px");
 		vorstellungenCellTable.setWidth("100%");
 	
 
@@ -257,6 +258,7 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 				return o1.getStadt().compareTo(o2.getStadt());
 			}
 		});
+		
 		kinoplaner.getAllVorstellungen(new VorstellungCallback());
 
 		if (umfrage != null) {

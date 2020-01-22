@@ -133,7 +133,7 @@ public class UmfrageCellTable extends ScrollPanel {
 
 	public void onLoad() {
 		
-		this.setSize("700px", "250px");
+		this.setSize("100%", "250px");
 
 		this.add(umfrageCellTable);
 		umfrageCellTable.setWidth("100%");

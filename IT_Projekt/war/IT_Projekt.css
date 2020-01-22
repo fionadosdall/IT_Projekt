@@ -418,10 +418,11 @@
 	border-color: #363636;
 	border-width: thin;
 	margin: 10px;
+	justify-content: center;
 }
 
 .speichernBox {
-	margin-top: 3%;
+
 }
 
 .detailsBoxMitte {
@@ -513,9 +514,24 @@
 	color: #363636;
 	font-weight: bold;
 }
+
+	
 .filternBox {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 5px;
+	flex-direction: row;
+}
+
+	
+@media only screen and (max-width: 600px) {
+	.filternBox {
+		flex-direction: column;
+	}
+}
+
+
+.filternBoxenGesamt {
+	
 }

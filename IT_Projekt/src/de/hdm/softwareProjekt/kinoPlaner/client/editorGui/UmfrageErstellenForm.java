@@ -48,6 +48,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private FlowPanel filternBoxLinks = new FlowPanel();
 	private FlowPanel filternBoxMitte = new FlowPanel();
 	private FlowPanel filternBoxRechts = new FlowPanel();
+	private FlowPanel detailsBoxFilternButton = new FlowPanel();
+	
+	private FlowPanel vorstellungPanel = new FlowPanel();
+	private FlowPanel umfragePanel = new FlowPanel();
 
 	private Label title = new Label("Umfrage erstellen");
 	private Label umfrageLabel = new Label("Umfrage");
@@ -129,13 +133,21 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsBoxUmfrage.addStyleName("detailsuntenBoxen");
 		detailsBoxFiltern.addStyleName("detailsuntenBoxen");
 		detailsBoxSpeichern.addStyleName("speichernBox");
+		detailsBoxFilternButton.addStyleName("detailsBoxMitte");
+		
+		detailsBoxFilternButton.add(filternButton);
 
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
 
 		filternBox.addStyleName("filternBox");
+		
+		filternBoxLinks.addStyleName("filternBoxenGesamt");
+		filternBoxRechts.addStyleName("filternBoxenGesamt");
+		filternBoxMitte.addStyleName("filternBoxenGesamt");
 
 		erstellenButton.addStyleName("speichernButton");
+		filternButton.addStyleName("hinzufuegenButton");
 
 		umfrageTextBox.addStyleName("gruppenameTB");
 
@@ -157,6 +169,23 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsMitteBox.add(gruppenLabel);
 		detailsMitteBox.add(detailsBoxMitteMitte);
 		detailsBoxMitteMitte.add(gruppenListBox);
+		
+		detailsunten.add(detailsBoxFiltern);
+		detailsBoxFiltern.add(filternLabel);
+		detailsBoxFiltern.add(filternBox);
+		
+		filternBox.add(filternBoxLinks);
+		filternBox.add(filternBoxMitte);
+		filternBox.add(filternBoxRechts);
+		
+		filternBoxLinks.add(kinoLabel);
+		filternBoxLinks.add(kinoListBox);
+		
+		filternBoxRechts.add(SpiezeitLabel);
+		filternBoxRechts.add(spielzeitListBox);
+		
+		filternBoxMitte.add(filmLabel);
+		filternBoxMitte.add(filmListBox);
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsBoxUmfrage.add(terminLabel);
@@ -171,26 +200,16 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 		uct = new UmfrageCellTable(n);
-
-		detailsBoxUmfrage.add(uct);
-		detailsBoxUmfrage.add(n);
-
-		detailsunten.add(detailsBoxFiltern);
-		detailsBoxFiltern.add(filternLabel);
-		detailsBoxFiltern.add(filternBox);
-		filternBox.add(filternBoxLinks);
-		filternBox.add(filternBoxMitte);
-		filternBox.add(filternBoxRechts);
-		filternBoxLinks.add(kinoLabel);
-		filternBoxLinks.add(kinoListBox);
-		filternBoxRechts.add(SpiezeitLabel);
-		filternBoxRechts.add(spielzeitListBox);
-		filternBoxMitte.add(filmLabel);
-		filternBoxMitte.add(filmListBox);
+		
+		detailsBoxUmfrage.add(vorstellungPanel);
+		detailsBoxUmfrage.add(umfragePanel);
+		
+		vorstellungPanel.add(n);
+		umfragePanel.add(uct);
 
 		detailsunten.add(detailsBoxSpeichern);
 		detailsBoxSpeichern.add(erstellenButton);
-		detailsBoxFiltern.add(filternButton);
+		detailsBoxFiltern.add(detailsBoxFilternButton);
 
 		kinoListBox.setSize("180px", "25px");
 		spielzeitListBox.setSize("180px", "25px");
