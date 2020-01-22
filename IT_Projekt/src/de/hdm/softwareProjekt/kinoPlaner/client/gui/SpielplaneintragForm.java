@@ -189,8 +189,8 @@ public class SpielplaneintragForm extends PopupPanel {
 			
 			// ClickHandler für FilmLöschenDialogBox
 			
-			jaButton.addClickHandler(new LoeschenKlickHandler(this));
-			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+			jaButton.addClickHandler(new FilmLoeschenBestaetigenClickHandler(this));
+			neinButton.addClickHandler(new FilmLoeschenAbbrechenCLickHandler(this));
 			
 		}
 	}
@@ -222,17 +222,20 @@ public class SpielplaneintragForm extends PopupPanel {
 			
 			// ClickHandler für SpielzeitLöschenDialogBox
 			
-			//jaButton.addClickHandler(new LoeschenKlickHandler(this));
-			neinButton.addClickHandler(new AbbrechenClickHandler(this));
+			jaButton.addClickHandler(new SpielzeitLoeschenBestaetigenClickHandler(this));
+			neinButton.addClickHandler(new SpielzeitLoeschenAbbrechenClickHandler(this));
 			
 		}
 	}
 		
+	
+	// Erstellen ClickHandler für Löschen- und AbbrechenClickHandler
+	
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmGetNameFueLoeschenCallback());
+			
 
 			FilmLoeschenDialogBox filmLoeschenDB = new FilmLoeschenDialogBox();
 			filmLoeschenDB.center();
@@ -241,33 +244,49 @@ public class SpielplaneintragForm extends PopupPanel {
 
 	}
 	
-	// Erstellen KlickHandler für Löschen- und AbbrechenClickHandler
+
 	
 	
-	//ClickHandler Film
+	//ClickHandler Film löschen DIalogBox
 	
-	private class LoeschenKlickHandler implements ClickHandler {
+	private class FilmLoeschenBestaetigenClickHandler implements ClickHandler {
 		
 		private FilmLoeschenDialogBox filmLoeschenDB;
 		
-		public LoeschenKlickHandler(FilmLoeschenDialogBox filmLoeschenDB) {
+		public FilmLoeschenBestaetigenClickHandler(FilmLoeschenDialogBox filmLoeschenDB) {
 			this.filmLoeschenDB = filmLoeschenDB;
 			
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
+			administration.getFilmByName(filmListBox.getSelectedValue(), new FilmGetNameFueLoeschenCallback());
 			filmLoeschenDB.hide();
-			//administration.loeschen(film, new FilmLoeschenCallback());
-			RootPanel.get("details").clear();
-			film = new FilmErstellenForm();
-			RootPanel.get("details").add(film);
+
 			
 		}
 		
 	}
 	
-	/*** Clickhandler für Spielzeit ***/
+	private class FilmLoeschenAbbrechenCLickHandler implements ClickHandler {
+		
+		private FilmLoeschenDialogBox filmLoeschenDB;
+
+		public FilmLoeschenAbbrechenCLickHandler(FilmLoeschenDialogBox filmLoeschenDialogBox) {
+			this.filmLoeschenDB = filmLoeschenDialogBox;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			filmLoeschenDB.hide();
+		}
+		
+	}
+	
+	
+	
+	/*** Clickhandler für Spielzeit löschen ***/
 
 
 	private class SpielzeitLoeschenClickHandler implements ClickHandler {
@@ -282,40 +301,35 @@ public class SpielplaneintragForm extends PopupPanel {
 
 	}
 	
-	private class LoeschenClickHandler implements ClickHandler {
+	/**ClickHandler für SpielzeitLöschen DialogBox **/
+	
+	private class SpielzeitLoeschenBestaetigenClickHandler implements ClickHandler {
 		
 		private SpielzeitLoeschenDialogBox spielzeitLoeschenDB;
 		
-		public LoeschenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
+		public SpielzeitLoeschenBestaetigenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
 			this.spielzeitLoeschenDB = spielzeitLoeschenDB;
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
+			administration.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
+					new SpielzeitByIdFuerLoeschenCallback());
 			spielzeitLoeschenDB.hide();
-			//administration.loeschen(spielzeit, new SpielzeitLoeschenCalback());
-			RootPanel.get("details").clear();
-			spielzeit = new SpielzeitErstellenForm();
-			RootPanel.get("details").add(spielzeit);
-			
 		}
 		
 	}
 	
 	
 	
-private class AbbrechenClickHandler implements ClickHandler {
+private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		
-		private FilmLoeschenDialogBox filmLoeschenDB;
 		private SpielzeitLoeschenDialogBox spielzeitLoeschenDB;
 		
-		public AbbrechenClickHandler(FilmLoeschenDialogBox filmLoeschenDB) {
-			this.filmLoeschenDB = filmLoeschenDB;
+	
 			
-		}
-			
-			public AbbrechenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
+			public SpielzeitLoeschenAbbrechenClickHandler(SpielzeitLoeschenDialogBox spielzeitLoeschenDB) {
 				this.spielzeitLoeschenDB = spielzeitLoeschenDB;
 			
 		}
@@ -323,12 +337,13 @@ private class AbbrechenClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			filmLoeschenDB.hide();
+			
 			spielzeitLoeschenDB.hide();
 			
 		}
 		
 	}
+
 	
 	
 
@@ -366,7 +381,11 @@ private class AbbrechenClickHandler implements ClickHandler {
 			} else {
 				administration.getFilmByName(filmListBox.getSelectedValue(), new GetFilmByNameCallback(vorstellung));
 			}
+			
+			SpielplaneintragForm.this.hide();
 		}
+		
+	
 
 	}
 
