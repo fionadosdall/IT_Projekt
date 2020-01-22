@@ -5,10 +5,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
@@ -121,6 +124,91 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	}
 
+	/**
+	 * Vor dem Löschen einer Umfrage soll der Nutzer über eine Dialogbox nochmal um
+	 * Bestätigung des Löschvorgangs gebeten werden.
+	 * 
+	 * @author
+	 *
+	 */
+	private class UmfrageLoeschenDialogBox extends DialogBox {
+
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label nachfrage = new Label("Umfrage endgültig löschen?");
+
+		private Button jaButton = new Button();
+		private Button neinButton = new Button();
+
+		/**
+		 * Konstruktor
+		 */
+
+		public UmfrageLoeschenDialogBox() {
+
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			/**
+			 * ClickHandler für die UmfrageLöschenDialogbox
+			 */
+
+			jaButton.addClickHandler(new UmfrageLoeschenBestaetigenClickHandler(this));
+			neinButton.addClickHandler(new UmfrageLoeschenAbbrechenClickHandler(this));
+
+		}
+	}
+
+	// ClickHandler zur Lösch-Bestätigung der Umfrage
+
+	private class UmfrageLoeschenBestaetigenClickHandler implements ClickHandler {
+
+		private UmfrageLoeschenDialogBox umfrageLoeschenDB;
+
+		/**
+		 * Konstruktor
+		 */
+		public UmfrageLoeschenBestaetigenClickHandler(UmfrageLoeschenDialogBox umfrageLoeschenDB) {
+			this.umfrageLoeschenDB = umfrageLoeschenDB;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(umfrage, new UmfrageLoeschenCallback());
+			umfrageLoeschenDB.hide();
+
+		}
+
+	}
+
+	// ClickHandler um Löschen der Umfrage abzubrechen.
+
+	private class UmfrageLoeschenAbbrechenClickHandler implements ClickHandler {
+
+		private UmfrageLoeschenDialogBox umfrageLoeschenDB;
+
+		public UmfrageLoeschenAbbrechenClickHandler(UmfrageLoeschenDialogBox umfrageLoeschenDB) {
+			this.umfrageLoeschenDB = umfrageLoeschenDB;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			umfrageLoeschenDB.hide();
+
+		}
+
+	}
+
 	/*
 	 * Konstruktor
 	 */
@@ -130,16 +218,18 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	}
 
 	/***********************************************
-	 * CLICKHANDLER *********************************************
+	 * CLICKHANDLER 
 	 * 
 	 *
-	 */
+	 **********************************************/
 
 	/**
-	 * Wenn der Nutzer, die angezeigte Umfrage löschen möchte, kann er dies mit
-	 * einem Click auf den UmfrageLöschenButton machen
+	 * Wenn der Nutzer, die angezeigte Umfrage löschen möchte, kann er dies über den
+	 * Löschen-Button tun. Automatisch öffnet sich die DialogBox machen. Diese
+	 * Dialogbox bittet den Nutzer darum, erneut zu bestätigen, dass er die Umfrage
+	 * löschen möchte.
 	 * 
-	 * @author fiona
+	 * @author 
 	 *
 	 */
 
@@ -147,7 +237,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(umfrage, new UmfrageLoeschenCallback());
+			UmfrageLoeschenDialogBox umfrageLoeschenDB = new UmfrageLoeschenDialogBox();
+			umfrageLoeschenDB.center();
 
 		}
 
