@@ -35,12 +35,18 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+/*
+ * Die Klasse stellt das Formular um Vorstellungen zu erstellen
+ */
 public class VorstellungErstellenForm extends FlowPanel {
 	
 	
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 	
+	/*
+	 * Erstellen der Widgets
+	 */
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel speichernBox = new FlowPanel();
@@ -69,6 +75,9 @@ public class VorstellungErstellenForm extends FlowPanel {
 	
 	private ArrayList<Film> film2TB = new ArrayList<Film>();
 	
+	/*
+	 * Erstellen der Buttons
+	 */
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button entfernenButton = new Button ("entfernen");
 	private Button speichernButton = new Button("Speichern");
@@ -94,8 +103,16 @@ public class VorstellungErstellenForm extends FlowPanel {
 	
 	private MeineVorstellungForm vorstellungF;
 	
+	/*
+	 * Die Widgets werden der Form hinzugefügt und formatiert
+	 *  (non-Javadoc)
+	 * @see com.google.gwt.user.client.ui.Widget#onLoad()
+	 */
 	public void onLoad( ) {
 		
+		/*
+		 * Style Namen vergeben
+		 */
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -279,7 +296,11 @@ public class VorstellungErstellenForm extends FlowPanel {
 	 * CLICKHANDLER
 	 */
 
-	
+	/*
+	 * Hier kann eine Film-Instanz bei der Erstellung einer
+	 * der Vorstellung hinzugefügt werden
+	 * 
+	 */
 	
 	private class FilmHinzufuegenClickHandler implements ClickHandler {
 
@@ -293,7 +314,9 @@ public class VorstellungErstellenForm extends FlowPanel {
 		}
 		
 	}
-	
+	/*
+	 * Hier kann die erstellte Vorstellungs-Instanz gespeichert werden
+	 */
 	private class SpeichernClickHandler implements ClickHandler {
 
 		@Override
@@ -307,10 +330,13 @@ public class VorstellungErstellenForm extends FlowPanel {
 		
 	}
 	
-	/****
+	/***********************************************************
 	 * CALLBACKS
-	 */
+	****************************************************** */
 	
+	/*
+	 * Private Klasse um alle Film-Instanzen aus dem System zu bekommen
+	*/
 	private class FilmCallback implements AsyncCallback<Film> {
 
 		@Override
@@ -342,6 +368,10 @@ public class VorstellungErstellenForm extends FlowPanel {
 	}
 		
 	
+	/*
+	 * Private Klasse um eine Film-Instanz aus dem System einer Vorstellung 
+	 * hinzuzufügen
+	 */
 	private class FilmHinzufuegenCallback implements AsyncCallback<Film> {
 
 		@Override
@@ -380,7 +410,9 @@ public class VorstellungErstellenForm extends FlowPanel {
 	 * CALLBACK
 	 */
 		
-	
+	/*
+	 * Private Klasse um eine Vorstellung im System zu erstellen
+	 */
 	private class VorstellungErstellenCallback implements AsyncCallback<Vorstellung>  {
 
 		@Override
