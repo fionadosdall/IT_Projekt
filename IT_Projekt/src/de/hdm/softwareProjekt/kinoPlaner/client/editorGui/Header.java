@@ -30,7 +30,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  * angezeigt. Der Header stellt dem Benutzer folgende Funktionen zur Verfügung:
  * Volltextsuche, Home-Button im zurück zum Dashboard (Startseite) zu gelangen,
  * Wechsel zwischen den beiden Clients Editor und Admin, User-Button um zu
- * dessen Profil zu gelangen.
+ * dessen Profil zu gelangen. Außerdem kann der Nutzer im Header ein Burger-Menü aufrufen, um schnell 
+ * zu diversen Aktionen zu gelangen.
  *
  */
 public class Header extends FlowPanel {

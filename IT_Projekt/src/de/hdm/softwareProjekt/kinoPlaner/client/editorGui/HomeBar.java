@@ -7,10 +7,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Auf der Startseite des Editors wird ihm ein Dashboard dargestellt. Die Klasse
- * HomeBar ermöglicht es ihm, auf diesem Dashboard zwischen seinen Gruppen,
- * (offenen) Umfragen und seinen Ergebnissen (der geschlossenen Umfragen) zu
- * navigieren.
+ * Auf der Startseite des Editors wird dem eingeloggten Nutzer ein Dashboard
+ * dargestellt. Die Klasse HomeBar ermöglicht es ihm, auf diesem Dashboard
+ * zwischen seinen Gruppen, (offenen) Umfragen und seinen Ergebnissen (der
+ * geschlossenen Umfragen) zu navigieren. Das wird durch die Verwendung von
+ * Anchors umgesetzt.
  *
  */
 public class HomeBar extends FlowPanel {
@@ -28,7 +29,8 @@ public class HomeBar extends FlowPanel {
 	private Anchor ergebnisse = new Anchor("Ergebnisse");
 
 	/**
-	 * onLoad()-Methode: Die ClickHandler werden dem HomeBar hinzugefügt.
+	 * onLoad()-Methode: Die ClickHandler werden dem HomeBar bzw. den Anchors
+	 * hinzugefügt.
 	 */
 	public void onLoad() {
 
@@ -48,13 +50,18 @@ public class HomeBar extends FlowPanel {
 		homeBarMitte.add(umfragen);
 		homeBarRechts.add(ergebnisse);
 
-		// Zusammenbauen
+		/**
+		 * Zusammenbauen - der linke, mittlere und rechte Homebar-Bereich werden dem
+		 * FlowPanel hinzugefügt.
+		 */
 
 		this.add(homeBarLinks);
 		this.add(homeBarMitte);
 		this.add(homeBarRechts);
 
-		// ClickHandler zu den Anchors hinzufügen.
+		/**
+		 * ClickHandler zu den Anchors hinzufügen.
+		 */
 
 		gruppen.addClickHandler(new GruppenAnzeigenClickHandler());
 		umfragen.addClickHandler(new UmfragenAnzeigenClickHandler());
