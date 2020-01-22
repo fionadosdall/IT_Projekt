@@ -2636,7 +2636,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Gruppe> ergebnisse = new ArrayList<Gruppe>();
 
-		// Text in Kleinbuchstaben umwandeln
+		// Text in Kleinbuchstaben umwandeln 
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen

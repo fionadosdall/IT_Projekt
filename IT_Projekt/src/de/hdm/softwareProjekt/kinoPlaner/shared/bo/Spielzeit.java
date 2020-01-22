@@ -2,7 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.shared.bo;
 
 import java.util.Date;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.DateFormaterSpielzeit;
+
 
 
 public class Spielzeit extends BesitzerBusinessObjekt{
@@ -55,8 +55,8 @@ public class Spielzeit extends BesitzerBusinessObjekt{
 
 	@Override
 	public String toString() {
-		DateFormaterSpielzeit dfs = new DateFormaterSpielzeit(zeit);
-		return dfs.toString();
+		
+		return zeit.toGMTString();
 	}
 	
 	
