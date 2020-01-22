@@ -9,7 +9,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -191,6 +191,76 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	public void closeSpielplaneintragForm() {
 		neuerSpielplaneintrag.hide();
 	}
+	
+	private class SpielplanLoeschenDialogBox extends DialogBox {
+		
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+		
+		private Label nachfrage = new Label ("Spielplan endgültig löschen?");
+		
+		private Button jaButton = new Button ("Ja");
+		private Button neinButton = new Button ("Nein");
+	
+	
+	//Konstruktor
+	
+	public SpielplanLoeschenDialogBox() {
+		
+		nachfrage.addStyleName("Abfrage");
+		jaButton.addStyleName("buttonAbfrage");
+		neinButton.addStyleName("buttonAbfrage");
+		
+		buttonPanel.add(jaButton);
+		buttonPanel.add(neinButton);
+		verticalPanel.add(nachfrage);
+		verticalPanel.add(buttonPanel);
+		
+		this.add(verticalPanel);
+		
+		
+		// ClickHandler für SpielplanLoeschenDialogBox
+		
+		jaButton.addClickHandler(new SpielplanLoeschenBestaetigenClickHandler(this));
+		neinButton.addClickHandler(new SpielplanLoeschenAbbrechenClickHandler(this));
+		
+		
+	}}
+	
+	
+	private class SpielplanLoeschenBestaetigenClickHandler implements ClickHandler {
+
+		private SpielplanLoeschenDialogBox spielplanLoeschenDB;
+		
+		public SpielplanLoeschenBestaetigenClickHandler (SpielplanLoeschenDialogBox spielplanLoeschenDBn) {
+			this.spielplanLoeschenDB = spielplanLoeschenDBn;
+			
+		}
+		
+		@Override
+		public void onClick(ClickEvent event) {
+			kinoplaner.loeschen(spielplan, new LoeschenSpielplanCallback());
+			spielplanLoeschenDB.hide();
+		}
+		
+	}
+	
+	private class SpielplanLoeschenAbbrechenClickHandler implements ClickHandler {
+
+		
+		private SpielplanLoeschenDialogBox spielplanLoeschenDB;
+		
+		
+		public SpielplanLoeschenAbbrechenClickHandler(SpielplanLoeschenDialogBox spielplanLoeschenDB) {
+			this.spielplanLoeschenDB = spielplanLoeschenDB;
+		}
+		@Override
+		public void onClick(ClickEvent event) {
+			spielplanLoeschenDB.hide();
+			
+		}
+		
+	}
 
 	/**************************
 	 * CLICKHANDLER
@@ -199,7 +269,8 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(spielplan, new LoeschenSpielplanCallback());
+			SpielplanLoeschenDialogBox spielplanLoeschenDB = new SpielplanLoeschenDialogBox();
+			spielplanLoeschenDB.center();
 			
 		}
 		
