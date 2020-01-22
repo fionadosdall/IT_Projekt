@@ -138,8 +138,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		private Label nachfrage = new Label("Umfrage endgültig löschen?");
 
-		private Button jaButton = new Button();
-		private Button neinButton = new Button();
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
 
 		/**
 		 * Konstruktor
