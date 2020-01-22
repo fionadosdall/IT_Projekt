@@ -42,6 +42,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 	private Grid felder = new Grid (2,1);
 	private HomeBarAdmin homebar = new HomeBarAdmin();
 	
+	private Button kinoketteErstellenButton = new Button("Neue Kinokette erstellen");
 	
 	private Boolean edit = true;
 	
@@ -55,7 +56,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 	
 	
 	private Label formHeaderLabel = new Label("Dashboard");
-	private Label bearbeitenLabel = new Label("Zum bearbeiten gewünschte Kinokette anklicken.");
+	private Label bearbeitenLabel = new Label("Zum Bearbeiten gewünschte Kinokette anklicken.");
 
 	
 	
@@ -118,7 +119,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		//untenPanel.add(loeschenButton);
-		untenPanel.add(bearbeitenLabel);
+		untenPanel.add(kinoketteErstellenButton);
 		this.add(untenPanel);
 		
 	}
@@ -226,6 +227,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 			// TODO Auto-generated method stub
 			bov.setKinoketten(result);
 			inhaltPanel.add(bov);
+			inhaltPanel.add(bearbeitenLabel);
 			
 		}
 		
