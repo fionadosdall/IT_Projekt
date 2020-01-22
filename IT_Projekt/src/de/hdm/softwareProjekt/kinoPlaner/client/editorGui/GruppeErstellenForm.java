@@ -191,7 +191,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		anwenderCellTable.setEmptyTableWidget(new Label("Es wurde noch kein Mitglied hinzugefügt"));
 
 		/**
-		 *  Click-Handler
+		 * Click-Handler
 		 */
 		hinzufuegenButton.addClickHandler(new MitgliedHinzufuegenClickHandler());
 		// entfernenButton.addClickHandler(new MitgliedEntfernenClickHandler());
@@ -297,7 +297,8 @@ public class GruppeErstellenForm extends FlowPanel {
 	 ***********************************************************************/
 
 	/*****************************
-	 * Hier wird der Gruppe ein neues Mitglied hinzugefügt
+	 * Hier wird der Gruppe ein neues Mitglied hinzugefügt und ein neues
+	 * AnwenderByNameCallback initialisiert.
 	 * 
 	 *
 	 */
@@ -314,8 +315,10 @@ public class GruppeErstellenForm extends FlowPanel {
 	}
 
 	/*******
-	 * Sobald das Textfeld ausgefüllt ist, wird eine neue Gruppe nach dem Klicken
-	 * des add-Buttons erstellt
+	 * Sobald das Textfeld mit einem Gruppenname ausgefüllt ist, wird eine neue
+	 * Gruppe nach dem Klicken des add-Buttons erstellt (-->
+	 * GruppeErstellenCallback). Wenn schon eine Gruppe vorhanden war, wird nur ihr
+	 * geänderter Name neu abgespeichert (--> UpdateGruppeCallback)
 	 * 
 	 *
 	 */
@@ -342,6 +345,14 @@ public class GruppeErstellenForm extends FlowPanel {
 	/***********************************************************************
 	 * CALLBACKS
 	 ***********************************************************************/
+
+	/**
+	 * Callback wird durch den SpeichernClickHandler aufgerufen. Der Name der Gruppe
+	 * wird geupdated. Ist dies erfolgreich geschehen, wird der User auf die
+	 * GruppenAnzeigenForm weitergeleitet und sieht eine Übersicht seiner Gruppen -
+	 * darunter die geupdatete Gruppe mit neuem Namen.
+	 *
+	 */
 	private class UpdateGruppeCallback implements AsyncCallback<Gruppe> {
 
 		@Override
@@ -398,7 +409,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	/********
 	 * Der String des Namens wird aus der SuggestBox rausgeholt und mit dem Callback
-	 * gesucht damit wird der passende Anwender zu dem Name zurückggeben um ihn der
+	 * gesucht. Damit wird der passende Anwender zu dem Name zurückggeben um ihn der
 	 * Gruppe hinzuzufügen
 	 * 
 	 * @author fiona
@@ -434,7 +445,8 @@ public class GruppeErstellenForm extends FlowPanel {
 	}
 
 	/******
-	 * Callback wird benötigt um eine Gruppe zu erstellen
+	 * Callback wird durch den SpeichernClickHandler aufgerufen. Wird benötigt, um
+	 * eine neue Gruppe zu erstellen. 
 	 * 
 	 *
 	 */

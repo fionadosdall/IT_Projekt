@@ -17,6 +17,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 /***
  * Die Klasse stellt das Formular um die Umfragen anzuzeigen
+ * 
  * @author fiona
  *
  */
@@ -25,7 +26,6 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
-	
 	/**
 	 * Erstellen der Widgets
 	 * 
@@ -58,11 +58,10 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	private Image papierkorb = new Image();
 
 	/**
-	 * onLoad()- Methode : Die Widgets werden der Form hinzugefügt
-	 * und formatiert
+	 * onLoad()- Methode : Die Widgets werden der Form hinzugefügt und formatiert
 	 */
 	public void onLoad() {
-		
+
 		/**
 		 * Stylenamen vergeben
 		 * 
@@ -129,18 +128,17 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		this.umfrage = umfrage;
 
 	}
-	
-	
+
 	/***********************************************
-	 * CLICKHANDLER
-	 * *********************************************
+	 * CLICKHANDLER *********************************************
 	 * 
 	 *
 	 */
-	
+
 	/**
-	 * Wenn der Nutzer, die Umfrage löschen möchte kann er dies mit einem Click
-	 * auf den Button machen
+	 * Wenn der Nutzer, die angezeigte Umfrage löschen möchte, kann er dies mit
+	 * einem Click auf den UmfrageLöschenButton machen
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -155,6 +153,14 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 	}
 
+	/**
+	 * Angezeigte Umfragen können gespeichert werden, solange sie noch offen sind.
+	 * Ist eine Umfrage abgeschlossen/geschlossen, gibt der ClickHandler eine
+	 * Meldung zurück. Denn die geschlossene Umfrage wird nicht mehr in der
+	 * UmfrageAnzeigenForm angezeigt, sondern in der ErgebnisAnzeigenForm.
+	 * 
+	 *
+	 */
 	private class SpeichernClickHandler implements ClickHandler {
 
 		@Override
@@ -164,31 +170,32 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 				@Override
 				public void onFailure(Throwable caught) {
 					// TODO Auto-generated method stub
-					
+
 				}
 
 				@Override
 				public void onSuccess(Umfrage result) {
-					if (result.isOpen()==true) {
+					if (result.isOpen() == true) {
 						uat.speichern();
-					}else {
+					} else {
 						Window.alert("Speichern nicht mehr möglich, die Umfrage wurde inzwischen abgeschlossen.");
 						RootPanel.get("details").clear();
 						ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(result);
 						RootPanel.get("details").add(anzeigen);
 					}
-					
+
 				}
 			});
-			
+
 		}
 
 	}
 
 	/***
-	 * Möchte der Nutzer sich die Votings in der Umfrage anzeien lassen,
-	 * so kann er dies mit einem Klick auf dem Button machen.
-	 *Der Nutzer gelangt zur Anzeigen-Form der Votings
+	 * Möchte der Nutzer sich die Votings in der Umfrage anzeigen lassen, so kann er
+	 * dies mit einem Klick auf dem Button machen. Der Nutzer gelangt zur
+	 * VotingAnzeigenForm der Votings
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -202,15 +209,16 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
-	 * Wenn der Nutzer die Umfrage bearbeiten möchte, gelangt er mit einem
-	 * Klick auf den Button in die Erstellen-Form der Umfrage in welcher 
-	 * die Umfrage bearbeitet werden kann.
+	 * Wenn der Nutzer die Umfrage bearbeiten möchte, gelangt er mit einem Klick auf
+	 * den Bearbeiten-Button in die UmfrageErstellenForm, in welcher die Umfrage
+	 * bearbeitet werden kann.
+	 * 
 	 * @author fiona
 	 *
 	 */
-	
+
 	private class UmfrageBearbeitenClickHandler implements ClickHandler {
 
 		@Override
@@ -223,11 +231,9 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
-	
+
 	/***************************************************
-	 * CALLBACKS
-	 * **********************************************
+	 * CALLBACKS **********************************************
 	 * 
 	 *
 	 */
@@ -236,17 +242,16 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			
 
 		}
-		
-		
+
 		/**
-		 * Bei Erfolg wird die Umfrage aus der UmfrageAnzeigenForm gelöscht
+		 * Bei erfolgreichem UmfrageLöschenCallback wird die Umfrage aus der
+		 * UmfrageAnzeigenForm gelöscht. Der Nutzer wird automatisch auf die
+		 * UmfrageAnzeigenForm weitergeleitet.
 		 * 
 		 */
-		
- 
+
 		@Override
 		public void onSuccess(Void result) {
 			RootPanel.get("details").clear();
