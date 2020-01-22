@@ -118,11 +118,9 @@ public class Header extends FlowPanel {
 		suchenImage.addClickHandler(new SuchenClickHandler());
 		suchenTextBox.addKeyPressHandler(new SuchenKeyPressHandler());
 
-		// kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
-
+		kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
 		kinoplaner.getUmfragenByAnwender(new GetUmfragenByAnwenderCallback());
-		// kinoplaner.anzeigenVonClosedUmfragen(new
-		// AnzeigenVonClosedUmfragenCallback());
+		kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
 
 	}
 

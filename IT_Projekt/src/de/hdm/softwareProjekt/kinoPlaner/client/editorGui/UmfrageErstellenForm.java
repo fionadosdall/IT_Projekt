@@ -1,9 +1,12 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -24,7 +27,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 /****
- * Formular für das Anlegen einer neuen Umfrage im  Datenstamm
+ * Formular für das Anlegen einer neuen Umfrage im Datenstamm
  * 
  *
  */
@@ -55,7 +58,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private Label SpiezeitLabel = new Label("Spielzeit");
 	private Label filmLabel = new Label("Filme");
 
-	
 	private TextBox umfrageTextBox = new TextBox();
 
 	private ListBox gruppenListBox = new ListBox();
@@ -65,6 +67,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	private Button erstellenButton = new Button("Umfrage starten");
 	private Button filternButton = new Button("Filtern");
+	
+	private HashMap<String, Integer> spielzeitenHastable = new HashMap<String, Integer>();
+	
 
 	private ArrayList<Gruppe> gruppen;
 	private ArrayList<Kino> kinos;
@@ -82,7 +87,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		this.umfrage = umfrage;
 	}
 
-	private NeueCellTable n;
+	private NeueVorstellungenCellTable n;
 	private UmfrageCellTable uct;
 
 	private class UmfrageInfo {
@@ -102,9 +107,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 	/****************************************************************
 	 * onLoad-Methode
 	 * 
-	 * **************************************************************/
+	 **************************************************************/
 	public void onLoad() {
-		
+
 		// Vergeben der Stylenames
 
 		this.addStyleName("detailscontainer");
@@ -158,11 +163,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		if (umfrage != null) {
 			title.setText("Umfrage bearbeiten");
-			n = new NeueCellTable(umfrage);
+			n = new NeueVorstellungenCellTable(umfrage);
 			umfrageTextBox.setText(umfrage.getName());
 			erstellenButton.setText("Umfrage aktualisieren");
 		} else {
-			n = new NeueCellTable();
+			n = new NeueVorstellungenCellTable();
 		}
 
 		uct = new UmfrageCellTable(n);
@@ -196,6 +201,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		kinoplaner.getAllKinos(new KinoCallback());
 
+		kinoplaner.getAllKinoketten(new KinokettenCallback());
+
 		kinoplaner.getAllSpielzeiten(new SpielzeitCallback());
 
 		kinoplaner.getAllFilme(new FilmeCalllback());
@@ -215,8 +222,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	 * 
 	 *
 	 */
-	
-	
+
 	private class FilternClickHandler implements ClickHandler {
 
 		@Override
@@ -239,11 +245,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 	/***
-	 * Hier findet der Erstellvorgang einer Umfrage statt.
-	 * Hierfür muss zuerst der gruppenname ausgewählt werden. Ist dieser 
-	 * vorhanden kann die Gruppe ausgewählt werden und die Umfrage dazu erstellt
-	 * werden. Ist kein Gruppenname eingegeben meldet dass System, dass zuerst
-	 * eine Gruppe aussgewählt werden soll
+	 * Hier findet der Erstellvorgang einer Umfrage statt. Hierfür muss zuerst der
+	 * gruppenname ausgewählt werden. Ist dieser vorhanden kann die Gruppe
+	 * ausgewählt werden und die Umfrage dazu erstellt werden. Ist kein Gruppenname
+	 * eingegeben meldet dass System, dass zuerst eine Gruppe aussgewählt werden
+	 * soll
 	 * 
 	 *
 	 */
@@ -272,10 +278,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
-	
 	/***
 	 * Wenn die Vorstellung anhand des Namens des Films gefilter wurde, wird diese
-	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
+	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler
+	 * ausgegeben
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -310,7 +317,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
 
-			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")) {
+			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")
+					|| kinoListBox.getSelectedValue().equals("----Kinos----")
+					|| kinoListBox.getSelectedValue().equals("--Kinoketten--")) {
 				kinoplaner.filterResultVorstellungenByKino(result, null, new FilterResultVorstellungenByKinoCallback());
 			} else {
 				resultSet = result;
@@ -320,11 +329,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
 	 * Wenn die Vorstellung anhand des Namens des Kinos gefilter wurde, wird diese
-	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
-	 * @
+	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler
+	 * ausgegeben @
 	 *
 	 */
 
@@ -355,7 +364,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Vorstellung> result) {
-			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")) {
+			if (kinoListBox.getSelectedValue().equals("Keine Auswahl")
+					|| kinoListBox.getSelectedValue().equals("----Kinos----")
+					|| kinoListBox.getSelectedValue().equals("--Kinoketten--")) {
 				kinoplaner.filterResultVorstellungenByKinokette(result, null,
 						new FilterResultVorstellungenByKinoketteCallback());
 			} else {
@@ -383,14 +394,15 @@ public class UmfrageErstellenForm extends FlowPanel {
 						new FilterResultVorstellungenBySpielzeitCallback());
 			} else {
 				resultSet = result;
-				kinoplaner.getSpielzeitByName(spielzeitListBox.getSelectedValue(), new GetSpielzeitByNameCallback());
+				kinoplaner.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()), new GetSpielzeitByIdCallback());
 			}
 		}
 
 	}
 	/*
-	 * Wenn die Vorstellung anhand des Namens der Kinokette gefilter wurde, wird diese
-	 * zurückgegeben. Ist dies nicht möglich so werden Client-& Serverseitefehler ausgegeben
+	 * Wenn die Vorstellung anhand des Namens der Kinokette gefilter wurde, wird
+	 * diese zurückgegeben. Ist dies nicht möglich so werden Client-&
+	 * Serverseitefehler ausgegeben
 	 */
 
 	private class GetKinoketteByNameCallback implements AsyncCallback<Kinokette> {
@@ -401,7 +413,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 			caught.printStackTrace();
 
 		}
-		
+
 		@Override
 		public void onSuccess(Kinokette result) {
 			kinoplaner.filterResultVorstellungenByKinokette(resultSet, result,
@@ -411,7 +423,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	}
 
-	
 	/**
 	 * 
 	 * 
@@ -434,14 +445,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/**
 	 * Hier wird die Vorstellung anhand der Spielzeit gefiltert, und zurückggegeben.
 	 * Ist dies nicht möglich so werden Clients- & Serverseitige Fehler ausgegeben.
 	 *
 	 */
 
-	private class GetSpielzeitByNameCallback implements AsyncCallback<Spielzeit> {
+	private class GetSpielzeitByIdCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -458,7 +469,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
 	 * Hier wird die Gruppe geladen für welche eine Umfrage erstellt werden soll
 	 * 
@@ -470,8 +481,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("Es können noch keine Gruppen geladen werden");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -514,10 +525,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
-	 * Hier wird das Kino geladen welches bei der Erstellung der Umfrage
-	 * ausgewählt werden kann
+	 * Hier wird das Kino geladen welches bei der Erstellung der Umfrage ausgewählt
+	 * werden kann
 	 * 
 	 *
 	 */
@@ -526,8 +537,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("Kinos konnten nicht geladen werden");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
@@ -537,8 +548,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 			kinos = result;
 
 			kinoListBox.addItem("Keine Auswahl");
+			kinoListBox.addItem("----Kinos----");
 
-			if (result != null) {
+			if (result.size() != 0) {
 
 				for (Kino k : result) {
 
@@ -548,24 +560,57 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 			} else {
 
-				kinoListBox.addItem("Keine Gruppen verfügbar");
-				kinoListBox.setEnabled(false);
+				// kinoListBox.addItem("Keine Kinos verfügbar");
+				// kinoListBox.setEnabled(false);
 
 			}
 		}
 
 	}
-	
+
+	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Kinokette> result) {
+			kinoListBox.addItem("--Kinoketten--");
+
+			if (result.size() != 0) {
+
+				for (Kinokette k : result) {
+
+					kinoListBox.addItem(k.getName());
+
+				}
+
+			} else {
+
+				// kinoListBox.addItem("Keine Gruppen verfügbar");
+				// kinoListBox.setEnabled(false);
+
+			}
+
+		}
+
+	}
+
 	/*
-	 * Hier wird die Spielzeit geladen, welche bei der Erstellung der Umfrage ausgewählt werden kann
+	 * Hier wird die Spielzeit geladen, welche bei der Erstellung der Umfrage
+	 * ausgewählt werden kann
 	 */
 
 	private class SpielzeitCallback implements AsyncCallback<ArrayList<Spielzeit>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("Spielzeiten konnten nicht geladen werden");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
@@ -576,16 +621,17 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 			spielzeitListBox.addItem("Keine Auswahl");
 
-			if (result != null) {
+			if (result.size() != 0) {
 
 				for (Spielzeit s : result) {
 
-					// DateFormaterSpielzeit date = new DateFormaterSpielzeit(s.getZeit());
-					//
-					// spielzeitListBox.addItem(date.toString());
+					DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+					String pattern = "dd.MM.yyyy HH:mm";
+					DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+					};
 
-					spielzeitListBox.addItem(s.getZeit().toGMTString());
-
+					spielzeitListBox.addItem(dft.format(s.getZeit()));
+					spielzeitenHastable.put(dft.format(s.getZeit()), s.getId());
 				}
 
 			} else {
@@ -598,10 +644,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
-	 * Hier werden die Filme geladen, welche bei der Erstellung einer Umfrage 
+	 * Hier werden die Filme geladen, welche bei der Erstellung einer Umfrage
 	 * ausgewählt werden können
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -610,8 +657,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("Filme konnten nicht geladen werden");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
@@ -638,7 +685,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*
 	 * 
 	 */
@@ -653,51 +700,51 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 
 		}
 
 		@Override
 		public void onSuccess(Gruppe result) {
 			// TODO Auto-generated method stub
-			if(umfrage!=null) {
+			if (umfrage != null) {
 				umfrage.setName(umfrageTextBox.getValue());
 				umfrage.setGruppenId(result.getId());
 				kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), new updateUmfrageCallback());
-				
-			}else {
-				
-			kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(),
-					new UmfrageErstellenCallback());
+
+			} else {
+
+				kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(),
+						new UmfrageErstellenCallback());
 			}
 
 		}
 
 	}
-	
+
 	private class updateUmfrageCallback implements AsyncCallback<Umfrage> {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
 		}
 
 		@Override
 		public void onSuccess(Umfrage result) {
-			
-			if(result!=null) {
-			RootPanel.get("details").clear();
-			UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 
+			if (result != null) {
+				RootPanel.get("details").clear();
+				UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 
-
-			RootPanel.get("details").add(uaf);
-			}else {
+				RootPanel.get("details").add(uaf);
+			} else {
 				Window.alert("Name bereits vergeben");
 			}
 		}
-		
+
 	}
 
 	/****
@@ -709,27 +756,23 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert("Umfrage erstellen hat NICHT funktioniert");
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
 		public void onSuccess(Umfrage result) {
 
-			if(result!=null) {
+			if (result != null) {
 				RootPanel.get("details").clear();
 				UmfrageAnzeigenForm uaf = new UmfrageAnzeigenForm(result);
 
-
-
 				RootPanel.get("details").add(uaf);
-				}else {
-					Window.alert("Name bereits vergeben");
-				}
+			} else {
+				Window.alert("Name bereits vergeben");
+			}
 
 		}
-
-		
 
 	}
 

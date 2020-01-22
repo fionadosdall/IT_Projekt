@@ -121,7 +121,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		popupPanel.add(spielzeitGrid);
 
 		if (spielzeit != null) {
-			//untenPanel.add(loeschenButton);
+			// untenPanel.add(loeschenButton);
 			untenPanel.add(speichernButton);
 
 		} else {
@@ -195,7 +195,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 	/* Callback */
 
-	private class SpeichernCallback implements AsyncCallback<Void> {
+	private class SpeichernCallback implements AsyncCallback<Spielzeit> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -205,11 +205,14 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		}
 
 		@Override
-		public void onSuccess(Void result) {
-
-			parent.spielzeitRefresh();
-			removeFromParent();
-			hide();
+		public void onSuccess(Spielzeit result) {
+			if (result == null) {
+				Window.alert("Spielzeit bereits erstellt!");
+			} else {
+				parent.spielzeitRefresh();
+				removeFromParent();
+				hide();
+			}
 		}
 
 	}
@@ -225,11 +228,14 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			// TODO Auto-generated method stub
+			if (result == null) {
+				Window.alert("Spielzeit bereits erstellt!");
+			} else {
 
-			Window.alert("Spielzeit wurde erstellt");
+				Window.alert("Spielzeit wurde erstellt");
 
-			parent.spielzeitRefresh();
+				parent.spielzeitRefresh();
+			}
 
 		}
 	}

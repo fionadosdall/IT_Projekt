@@ -2,6 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -158,7 +159,28 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			uat.speichern();
+			kinoplaner.getUmfrageById(umfrage.getId(), new AsyncCallback<Umfrage>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(Umfrage result) {
+					if (result.isOpen()==true) {
+						uat.speichern();
+					}else {
+						Window.alert("Speichern nicht mehr möglich, die Umfrage wurde inzwischen abgeschlossen.");
+						RootPanel.get("details").clear();
+						ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(result);
+						RootPanel.get("details").add(anzeigen);
+					}
+					
+				}
+			});
+			
 		}
 
 	}

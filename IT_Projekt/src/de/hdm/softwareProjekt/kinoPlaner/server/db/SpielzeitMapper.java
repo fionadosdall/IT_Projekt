@@ -58,7 +58,8 @@ public class SpielzeitMapper {
 	/**
 	 * Suche nach allen Spielzeiten über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Spielzeiten tragen
+	 * @param name
+	 *            den die gesuchten Spielzeiten tragen
 	 * @return Eine ArrayList, die alle gefundenen Spielzeiten enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -103,18 +104,20 @@ public class SpielzeitMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Spielzeit spielzeit) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT szName FROM Spielzeit" + " WHERE szName= '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT szName FROM Spielzeit" + " WHERE szName= '"
+					+ spielzeit.getName() + "' AND NOT szId= '" + spielzeit.getId() + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -129,7 +132,8 @@ public class SpielzeitMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Spielzeit-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param spielzeit bzw. das zu speichernde Objekt
+	 * @param spielzeit
+	 *            bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Spielzeit insert(Spielzeit spielzeit) {
@@ -147,10 +151,9 @@ public class SpielzeitMapper {
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate(
-						"INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" 
-								+ " VALUES(" + spielzeit.getId() + ", '" + spielzeit.getName() + "', '" 
-								+ spielzeit.dateToString() + "', " + spielzeit.getBesitzerId() + ")");
+				stmt.executeUpdate("INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" + " VALUES("
+						+ spielzeit.getId() + ", '" + spielzeit.getName() + "', '" + spielzeit.dateToString() + "', "
+						+ spielzeit.getBesitzerId() + ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -165,7 +168,8 @@ public class SpielzeitMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param spielzeit als das Objekt, das verändert werden soll.
+	 * @param spielzeit
+	 *            als das Objekt, das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Spielzeit update(Spielzeit spielzeit) {
@@ -177,9 +181,8 @@ public class SpielzeitMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
-					 + "spielzeit_anwender_Id= '"
-					+ spielzeit.getBesitzerId() + "' , " + "zeit= '" + spielzeit.dateToString() + "' WHERE szId="
-					+ spielzeit.getId());
+					+ "spielzeit_anwender_Id= '" + spielzeit.getBesitzerId() + "' , " + "zeit= '"
+					+ spielzeit.dateToString() + "' WHERE szId=" + spielzeit.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -193,7 +196,8 @@ public class SpielzeitMapper {
 	 * Mit dieser Methode kann ein Spielzeit-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param spielzeit Objekt, welches gelöscht werden soll.
+	 * @param spielzeit
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Spielzeit spielzeit) {
 		Connection con = DBConnection.connection();
@@ -250,8 +254,9 @@ public class SpielzeitMapper {
 	 * besondere Rechte in Bezug auf welche Spielzeiten hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Spielzeit-Objekte übereinstimmen soll.
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten
+	 *            Spielzeit-Objekte übereinstimmen soll.
 	 * @return Alle Spielzeit-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */
@@ -288,8 +293,9 @@ public class SpielzeitMapper {
 	/**
 	 * Suche nach einer Spielzeit mit vorgegebener Spielzeit-Id
 	 * 
-	 * @param id zugehörig zu einer Spielzeit, nach welcher gesucht werden soll,
-	 *           also der Primärschlüssel in der Datenbank.
+	 * @param id
+	 *            zugehörig zu einer Spielzeit, nach welcher gesucht werden soll,
+	 *            also der Primärschlüssel in der Datenbank.
 	 * @return Das Spielzeit-Objekt, das mit seiner Spielzeit-Id der übergebenen Id
 	 *         entspricht. Falls keine Spielzeit zur übergebenen Id gefunden wurde,
 	 *         wird null zurückgegeben.

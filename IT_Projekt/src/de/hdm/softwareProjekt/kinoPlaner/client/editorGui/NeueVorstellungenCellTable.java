@@ -9,11 +9,14 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -35,15 +38,15 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  *
  */
 
-public class NeueCellTable extends VerticalPanel {
+public class NeueVorstellungenCellTable extends ScrollPanel {
 
 	private UmfrageCellTable uct = null;
 
-	public NeueCellTable() {
+	public NeueVorstellungenCellTable() {
 
 	}
 
-	public NeueCellTable(Umfrage umfrage) {
+	public NeueVorstellungenCellTable(Umfrage umfrage) {
 		this.umfrage = umfrage;
 	}
 
@@ -152,6 +155,9 @@ public class NeueCellTable extends VerticalPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenCellTable);
+		this.setSize("700px", "250px");
+		vorstellungenCellTable.setWidth("100%");
+	
 
 		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(list);
 		vorstellungenCellTable.addColumnSortHandler(sortHandler);
@@ -444,8 +450,13 @@ public class NeueCellTable extends VerticalPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
+			
+			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+			String pattern = "EEEE dd.MM.yyyy HH:mm";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+			};
 
-			info.spielzeit = result.getZeit().toString();
+			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
 

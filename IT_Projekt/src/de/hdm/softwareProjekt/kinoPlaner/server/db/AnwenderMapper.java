@@ -55,7 +55,8 @@ public class AnwenderMapper {
 	/**
 	 * Suche nach allen Anwendern über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Anwender tragen
+	 * @param name
+	 *            den die gesuchten Anwender tragen
 	 * @return Eine ArrayList, die alle gefundenen Anwender enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -100,18 +101,20 @@ public class AnwenderMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Anwender anwender) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT aName FROM anwender" + " WHERE aName ='"
+					+ anwender.getName() + "' AND NOT aId= '" + anwender.getId() + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -126,7 +129,8 @@ public class AnwenderMapper {
 	/**
 	 * Die insert-Methode f�gt ein neues Anwender-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param anwender bzw. das zu speichernde Objekt
+	 * @param anwender
+	 *            bzw. das zu speichernde Objekt
 	 * @return Das bereits übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Anwender insert(Anwender anwender) {
@@ -167,7 +171,8 @@ public class AnwenderMapper {
 	/**
 	 * Das Objekt wird wiederholt, in geupdateter Form in die Datenbank eingetragen.
 	 * 
-	 * @param anwender bzw. Objekt, welches verändert werden soll.
+	 * @param anwender
+	 *            bzw. Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Paramter übergeben wurde.
 	 */
 	public Anwender update(Anwender anwender) {
@@ -194,7 +199,8 @@ public class AnwenderMapper {
 	 * Mit dieser Methode kann ein Anwender-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param anwender Objekt, welches gelöscht werden soll.
+	 * @param anwender
+	 *            Objekt, welches gelöscht werden soll.
 	 */
 	public void delete(Anwender anwender) {
 		Connection con = DBConnection.connection();
@@ -253,8 +259,9 @@ public class AnwenderMapper {
 	/**
 	 * Suche nach einem Anwender mit vorgegebener Anwender-Id
 	 * 
-	 * @param id zugeh�rig zu einem Anwender, nach welchem gesucht werden soll, also
-	 *           der Prim�rschl�ssel in der Datenbank.
+	 * @param id
+	 *            zugeh�rig zu einem Anwender, nach welchem gesucht werden soll,
+	 *            also der Prim�rschl�ssel in der Datenbank.
 	 * @return Das Anwender-Objekt, das mit seiner Anwender-id der �bergebenen Id
 	 *         entspricht. Falls kein Anwender zur �bergebenen Id gefunden wurde,
 	 *         wird null zur�ckgegeben.
@@ -283,7 +290,8 @@ public class AnwenderMapper {
 	/**
 	 * Suche nach einem Anwender mit vorgegebenem Namen.
 	 * 
-	 * @param name zu dem der dazugeh�rige Anwender gesucht werden soll.
+	 * @param name
+	 *            zu dem der dazugeh�rige Anwender gesucht werden soll.
 	 * @return Das Anwender-Objekt, das dem �bergebenen Namen entspricht. Falls kein
 	 *         Anwender zum �bergebenen Namen gefunden wurde, wird null
 	 *         zur�ckgegeben.
@@ -347,8 +355,9 @@ public class AnwenderMapper {
 	 * kann sich dadurch also die Gruppenmitglieder einer bestimmten Gruppe ausgeben
 	 * lassen.
 	 * 
-	 * @param gruppe zu welcher man alle dazugeh�rigen Anwender ausgegeben haben
-	 *               m�chte.
+	 * @param gruppe
+	 *            zu welcher man alle dazugeh�rigen Anwender ausgegeben haben
+	 *            m�chte.
 	 * @return Eine ArrayList, die alle gefundenen Anwender der Gruppe enth�lt.
 	 *         Falls eine Exception geworfen wird, kann es passieren, dass die
 	 *         ArrayList leer oder nur teilweise bef�llt zur�ck gegeben wird.

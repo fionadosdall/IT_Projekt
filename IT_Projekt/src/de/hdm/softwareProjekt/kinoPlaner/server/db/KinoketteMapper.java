@@ -56,7 +56,8 @@ public class KinoketteMapper {
 	/**
 	 * Suche nach allen Kinoketten über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Kinoketten tragen
+	 * @param name
+	 *            den die gesuchten Kinoketten tragen
 	 * @return Eine ArrayList, die alle gefundenen Kinoketten enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -103,18 +104,20 @@ public class KinoketteMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Kinokette kinokette) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT name FROM kinokette" + " WHERE kkName= '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT name FROM kinokette" + " WHERE kkName= '"
+					+ kinokette.getName() + "' AND NOT kkId= '" + kinokette.getId() + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -129,7 +132,8 @@ public class KinoketteMapper {
 	/**
 	 * Die insert-Methode f�gt ein neues Kinoketten-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param kinokette als das zu speichernde Objekt
+	 * @param kinokette
+	 *            als das zu speichernde Objekt
 	 * @return Das �bergeben Objekt, ggf. mit abge�nderter Id
 	 */
 	public Kinokette insert(Kinokette kinokette) {
@@ -175,7 +179,8 @@ public class KinoketteMapper {
 	 * Das Objekt wieder wiederholt, in upgedateter Form in die Datenbank
 	 * eingetragen.
 	 * 
-	 * @param kinokette als das Objekt das ver�ndert werden soll.
+	 * @param kinokette
+	 *            als das Objekt das ver�ndert werden soll.
 	 * @return Das Objekt, welches im Parameter �bergeben wurde.
 	 */
 	public Kinokette update(Kinokette kinokette) {
@@ -203,7 +208,8 @@ public class KinoketteMapper {
 	 * Mit dieser Methode kann ein Kinoketten-Objekt aus der Datenbank gelöscht
 	 * werden.
 	 * 
-	 * @param kinokette Objekt, welches gel�scht werden soll
+	 * @param kinokette
+	 *            Objekt, welches gel�scht werden soll
 	 */
 	public void delete(Kinokette kinokette) {
 		Connection con = DBConnection.connection();
@@ -240,7 +246,7 @@ public class KinoketteMapper {
 			while (resultset.next()) {
 				Kinokette kk = new Kinokette();
 				kk.setId(resultset.getInt("kkId"));
-				kk.setBesitzerId(resultset.getInt("kinokette:anwender_Id"));
+				kk.setBesitzerId(resultset.getInt("kinokette_anwender_Id"));
 				kk.setName(resultset.getString("kkName"));
 				kk.setSitz(resultset.getString("sitz"));
 				kk.setWebsite(resultset.getString("website"));
@@ -259,7 +265,8 @@ public class KinoketteMapper {
 	 * Suche nach einer bestimmten Kinokette (KK) mithilfe einer vorgegebenen
 	 * Kinoketten-Id
 	 * 
-	 * @param id der KK, nach welcher gesucht werden soll
+	 * @param id
+	 *            der KK, nach welcher gesucht werden soll
 	 * @return Das KK-Objekt, das mit seiner KK-Id der �bergebenen Id entspricht.
 	 *         Falls kein KK-Objekt zur �bergebenen Id gefunden wird, wird null
 	 *         zur�ckgegeben.
@@ -294,8 +301,9 @@ public class KinoketteMapper {
 	 * besondere Rechte in Bezug auf welche Kinoketten hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Kinokette-Objekte übereinstimmen soll
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten
+	 *            Kinokette-Objekte übereinstimmen soll
 	 * @return Alle Kinokette-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der DB eingetragen haben.
 	 */
@@ -337,9 +345,11 @@ public class KinoketteMapper {
 	 * Kinoketten-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Ver�nderungen vornehmen.
 	 * 
-	 * @param anwender  welcher als Besitzer der Kinokette in der Datenbank
-	 *                  eingetragen werden soll.
-	 * @param kinokette Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender
+	 *            welcher als Besitzer der Kinokette in der Datenbank eingetragen
+	 *            werden soll.
+	 * @param kinokette
+	 *            Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Kinokette kinokette) {
 		Connection con = DBConnection.connection();
@@ -359,8 +369,9 @@ public class KinoketteMapper {
 	 * zugewiesen und soll nun gel�scht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gel�scht.
 	 * 
-	 * @param kinokette Objekt bei welchem die BesitzerId in der Datenbank
-	 *                  zur�ckgesetzt werden soll.
+	 * @param kinokette
+	 *            Objekt bei welchem die BesitzerId in der Datenbank zur�ckgesetzt
+	 *            werden soll.
 	 */
 	public void deleteEigentumsstruktur(Kinokette kinokette) {
 		Connection con = DBConnection.connection();

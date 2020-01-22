@@ -2,7 +2,6 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
-
 
 /**
  * Das hier ist eine Mapper-Klasse, die Film-Objekte auf eine relationale DB
@@ -58,7 +56,8 @@ public class FilmMapper {
 	/**
 	 * Suche nach allen Film-Objekten über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Filme tragen
+	 * @param name
+	 *            den die gesuchten Filme tragen
 	 * @return Eine ArrayList, die alle gefundenen Film-Objekte enthält. Falls eine
 	 *         Exception geworfen wird, kann es passieren, dass die ArrayList leer
 	 *         oder nur teilweise befüllt zurück gegeben wird.
@@ -104,18 +103,20 @@ public class FilmMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Film film) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT fName FROM film" + " WHERE fName = '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT fName FROM film" + " WHERE fName = '" + film.getName()
+					+ "' AND NOT fId= '" + film.getId() + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -130,7 +131,8 @@ public class FilmMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Film-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param film Objekt welches gespeichert werden soll
+	 * @param film
+	 *            Objekt welches gespeichert werden soll
 	 * @return Das übergebene Objekt, ggf. mit abgeänderter Id.
 	 */
 
@@ -151,9 +153,9 @@ public class FilmMapper {
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
 
-					"INSERT INTO Film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)"
-							+ " VALUES(" + film.getId() + ", '" + film.getName() + "', '" + film.getBeschreibung() + "', '"
-									+ film.getBewertung() + "', " + film.getBesitzerId() + ")");
+						"INSERT INTO Film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)" + " VALUES("
+								+ film.getId() + ", '" + film.getName() + "', '" + film.getBeschreibung() + "', '"
+								+ film.getBewertung() + "', " + film.getBesitzerId() + ")");
 
 			}
 		} catch (SQLException e1) {
@@ -170,7 +172,8 @@ public class FilmMapper {
 	 * Das Objekt wieder wiederholt, in upgedateter Form in die Datenbank
 	 * eingetragen.
 	 * 
-	 * @param film Objekt, welches verändert werden soll.
+	 * @param film
+	 *            Objekt, welches verändert werden soll.
 	 * @return Das Objekt, welches im Parameter �bergeben wurde.
 	 */
 	public Film update(Film film) {
@@ -197,7 +200,8 @@ public class FilmMapper {
 	/**
 	 * Mit dieser Methode kann ein Film-Objekt aus der Datenbank gelöscht werden.
 	 * 
-	 * @param film Objekt, welches gel�scht werden soll
+	 * @param film
+	 *            Objekt, welches gel�scht werden soll
 	 */
 	public void delete(Film film) {
 		Connection con = DBConnection.connection();
@@ -215,7 +219,8 @@ public class FilmMapper {
 	/**
 	 * Suche nach einem bestimmten Film mithilfe einer vorgegebenen Film-Id
 	 * 
-	 * @param id des Films, nach welchem gesucht werden soll
+	 * @param id
+	 *            des Films, nach welchem gesucht werden soll
 	 * @return Das Film-Objekt, bei dem die FilmId mit der übergebenen Id
 	 *         übereinstimmt. Falls kein Film zur übergebenen Id gefunden wurde,
 	 *         wird null zur�ckgegeben.
@@ -286,8 +291,9 @@ public class FilmMapper {
 	 * besondere Rechte in Bezug auf welche Filme hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Film-Objekte übereinstimmen soll.
+	 * @param anwender
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Film-Objekte
+	 *            übereinstimmen soll.
 	 * @return Alle Film-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der Datenbank eingetragen haben.
 	 */

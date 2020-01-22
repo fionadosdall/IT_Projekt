@@ -107,13 +107,14 @@ public class GruppeMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Gruppe gruppe) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT gName FROM gruppe" + " WHERE gName= '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT gName FROM gruppe" + " WHERE gName= '" + gruppe.getName()
+					+ "' AND NOT gId= '" + gruppe.getId() + "'");
 
 			if (resultset.next()) {
 				return false;

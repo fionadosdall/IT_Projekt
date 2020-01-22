@@ -360,7 +360,7 @@ public class UserForm extends FlowPanel {
 
 	}
 
-	private class UpdateAnwenderCallback implements AsyncCallback<Void> {
+	private class UpdateAnwenderCallback implements AsyncCallback<Anwender> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -370,9 +370,13 @@ public class UserForm extends FlowPanel {
 		}
 
 		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
-			Window.alert("UpadteAnwenderCallback war erfolgreich");
+		public void onSuccess(Anwender result) {
+			if(result==null) {
+				Window.alert("Nickname bereits vergeben!");
+			}else {
+				Window.alert("UpadteAnwenderCallback war erfolgreich");
+			}
+			
 		}
 
 	}

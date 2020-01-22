@@ -113,13 +113,14 @@ public class SpielplanMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT spName FROM Spielplan" + " WHERE spName = '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT spName FROM Spielplan" + " WHERE spName = '"
+					+ spielplan.getName() + "' AND NOT spId= '" + spielplan.getId() + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -195,7 +196,7 @@ public class SpielplanMapper {
 		 */
 		return spielplan;
 	}
-	
+
 	public Spielplan insertKinokette(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
 		try {
@@ -215,8 +216,8 @@ public class SpielplanMapper {
 						"INSERT INTO Spielplan (spId, spName, spielplan_anwender_Id, spielplan_kino_Id, isKinokettenSpielplan, spielplan_kinokette_Id)"
 								+ " VALUES(" + spielplan.getId() + ", '" + spielplan.getName() + "', "
 								+ spielplan.getBesitzerId() + ", " + spielplan.getKinoId() + ", "
-								+ spielplan.iskinokettenSpielplanToTinyint() + ", "
-								+ spielplan.getKinokettenId() +")");
+								+ spielplan.iskinokettenSpielplanToTinyint() + ", " + spielplan.getKinokettenId()
+								+ ")");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

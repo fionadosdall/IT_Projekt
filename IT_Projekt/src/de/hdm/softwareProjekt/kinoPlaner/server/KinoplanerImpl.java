@@ -1,6 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueCellTable;
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -254,16 +254,20 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Anwender erstellenAnwender(String name, String gmail) throws IllegalArgumentException {
-		// Ein neues Anwender Objekt wird erstellt.
-		Anwender a = new Anwender();
+		if (anwenderMapper.findByName(name) == null) {
+			// Ein neues Anwender Objekt wird erstellt.
+			Anwender a = new Anwender();
 
-		// Die Attribute des Objekts werden mit Werten befüllt.
-		a.setName(name);
-		a.setGmail(gmail);
-		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			// Die Attribute des Objekts werden mit Werten befüllt.
+			a.setName(name);
+			a.setGmail(gmail);
+			a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.anwenderMapper.insert(a);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.anwenderMapper.insert(a);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -310,21 +314,25 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId)
 			throws IllegalArgumentException {
-		// Ein neues Kino Objekt wird erstellt.
-		Kino k = new Kino();
+		if (kinoMapper.findByName(name) == null) {
+			// Ein neues Kino Objekt wird erstellt.
+			Kino k = new Kino();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setName(name);
-		k.setBesitzerId(this.anwender.getId());
-		k.setPlz(plz);
-		k.setStadt(stadt);
-		k.setStrasse(strassse);
-		k.setHausnummer(hausnummer);
-		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		k.setKinokettenId(kinokettenId);
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			k.setName(name);
+			k.setBesitzerId(this.anwender.getId());
+			k.setPlz(plz);
+			k.setStadt(stadt);
+			k.setStrasse(strassse);
+			k.setHausnummer(hausnummer);
+			k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			k.setKinokettenId(kinokettenId);
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.kinoMapper.insert(k);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.kinoMapper.insert(k);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -336,21 +344,25 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer)
 			throws IllegalArgumentException {
-		// Ein neues Kino Objekt wird erstellt.
-		Kino k = new Kino();
+		if (kinoMapper.findByName(name) == null) {
+			// Ein neues Kino Objekt wird erstellt.
+			Kino k = new Kino();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setName(name);
-		k.setBesitzerId(this.anwender.getId());
-		k.setPlz(plz);
-		k.setStadt(stadt);
-		k.setStrasse(strassse);
-		k.setHausnummer(hausnummer);
-		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
-		k.setKinokettenId(0);
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			k.setName(name);
+			k.setBesitzerId(this.anwender.getId());
+			k.setPlz(plz);
+			k.setStadt(stadt);
+			k.setStrasse(strassse);
+			k.setHausnummer(hausnummer);
+			k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			k.setKinokettenId(0);
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.kinoMapper.insert(k);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.kinoMapper.insert(k);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -361,18 +373,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Kinokette erstellenKinokette(String name, String sitz, String website) throws IllegalArgumentException {
-		// Ein neues Kinokette Objekt wird erstellt.
-		Kinokette k = new Kinokette();
+		if (kinoketteMapper.findByName(name) == null) {
+			// Ein neues Kinokette Objekt wird erstellt.
+			Kinokette k = new Kinokette();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		k.setName(name);
-		k.setBesitzerId(this.anwender.getId());
-		k.setSitz(sitz);
-		k.setWebsite(website);
-		k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			k.setName(name);
+			k.setBesitzerId(this.anwender.getId());
+			k.setSitz(sitz);
+			k.setWebsite(website);
+			k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.kinoketteMapper.insert(k);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.kinoketteMapper.insert(k);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -466,9 +482,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Vorstellung v = new Vorstellung();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
-		String name = (getSpielplanById(spielplanId).getName() 
-				+ spielzeitId
-				+ filmId);
+		String name = (getSpielplanById(spielplanId).getName() + spielzeitId + filmId);
 		v.setName(name);
 		v.setSpielplanId(spielplanId);
 		v.setSpielzeitId(spielzeitId);
@@ -569,18 +583,22 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Film erstellenFilm(String name, String beschreibung, String bewertung) throws IllegalArgumentException {
-		// Ein neues Film Objekt wird erstellt.
-		Film f = new Film();
+		if (filmMapper.findByName(name) == null) {
+			// Ein neues Film Objekt wird erstellt.
+			Film f = new Film();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		f.setName(name);
-		f.setBesitzerId(this.anwender.getId());
-		f.setBeschreibung(beschreibung);
-		f.setBewertung(bewertung);
-		f.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			f.setName(name);
+			f.setBesitzerId(this.anwender.getId());
+			f.setBeschreibung(beschreibung);
+			f.setBewertung(bewertung);
+			f.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.filmMapper.insert(f);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.filmMapper.insert(f);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -590,17 +608,21 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Spielzeit erstellenSpielzeit(String name, String zeit) throws IllegalArgumentException {
-		// Ein neues Spielzeit Objekt wird erstellt.
-		Spielzeit s = new Spielzeit();
+		if (spielzeitMapper.findByName(name) == null) {
+			// Ein neues Spielzeit Objekt wird erstellt.
+			Spielzeit s = new Spielzeit();
 
-		// Die Attribute des Objekts werden mit Werten befuellt.
-		s.setName(name);
-		s.setBesitzerId(this.anwender.getId());
-		s.setDatetoString(zeit);
-		s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
+			// Die Attribute des Objekts werden mit Werten befuellt.
+			s.setName(name);
+			s.setBesitzerId(this.anwender.getId());
+			s.setDatetoString(zeit);
+			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
-		// Das Objekt wird in der Datenbank gespeichert und wiedergeben
-		return this.spielzeitMapper.insert(s);
+			// Das Objekt wird in der Datenbank gespeichert und wiedergeben
+			return this.spielzeitMapper.insert(s);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -640,8 +662,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Anwender anwender) throws IllegalArgumentException {
-		this.anwenderMapper.update(anwender);
+	public Anwender speichern(Anwender anwender) throws IllegalArgumentException {
+		if (nameVerfuegbarAnwender(anwender) == true) {
+			return this.anwenderMapper.update(anwender);
+		} else {
+			return null;
+		}
 
 	}
 
@@ -652,6 +678,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void speichern(Gruppe gruppe) throws IllegalArgumentException {
+
 		this.gruppeMapper.update(gruppe);
 
 	}
@@ -662,8 +689,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Kino kino) throws IllegalArgumentException {
-		this.kinoMapper.update(kino);
+	public Kino speichern(Kino kino) throws IllegalArgumentException {
+		if (nameVerfuegbarKino(kino) == true) {
+			return this.kinoMapper.update(kino);
+		} else {
+			return null;
+		}
 
 	}
 
@@ -673,8 +704,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Kinokette kinokette) throws IllegalArgumentException {
-		this.kinoketteMapper.update(kinokette);
+	public Kinokette speichern(Kinokette kinokette) throws IllegalArgumentException {
+		if (nameVerfuegbarKinokette(kinokette) == true) {
+			return this.kinoketteMapper.update(kinokette);
+		} else {
+			return null;
+		}
 
 	}
 
@@ -703,7 +738,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				s.setKinokettenId(spielplan.getKinokettenId());
 				s.setKinokettenSpielplan(true);
 				this.spielplanMapper.update(s);
-	
+
 			}
 		}
 		return this.spielplanMapper.update(spielplan);
@@ -749,8 +784,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Film film) throws IllegalArgumentException {
-		this.filmMapper.update(film);
+	public Film speichern(Film film) throws IllegalArgumentException {
+		if (nameVerfuegbarFilm(film) == true) {
+			return this.filmMapper.update(film);
+		} else {
+			return null;
+		}
 
 	}
 
@@ -760,9 +799,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Spielzeit spielzeit) throws IllegalArgumentException {
-		this.spielzeitMapper.update(spielzeit);
-
+	public Spielzeit speichern(Spielzeit spielzeit) throws IllegalArgumentException {
+		if (nameVerfuegbarSpielzeit(spielzeit) == true) {
+			return this.spielzeitMapper.update(spielzeit);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -1156,7 +1198,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarAnwender(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarAnwender(Anwender name) throws IllegalArgumentException {
 		return this.anwenderMapper.nameVerfügbar(name);
 	}
 
@@ -1166,7 +1208,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarGruppe(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarGruppe(Gruppe name) throws IllegalArgumentException {
 		return this.gruppeMapper.nameVerfügbar(name);
 	}
 
@@ -1176,7 +1218,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarKino(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarKino(Kino name) throws IllegalArgumentException {
 		return this.kinoMapper.nameVerfügbar(name);
 	}
 
@@ -1186,7 +1228,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarKinokette(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarKinokette(Kinokette name) throws IllegalArgumentException {
 		return this.kinoketteMapper.nameVerfügbar(name);
 	}
 
@@ -1196,7 +1238,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarSpielplan(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarSpielplan(Spielplan name) throws IllegalArgumentException {
 		return this.spielplanMapper.nameVerfügbar(name);
 	}
 
@@ -1216,8 +1258,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarUmfrage(String name) throws IllegalArgumentException {
-		return this.umfrageMapper.nameVerfügbar(name);
+	public boolean nameVerfuegbarUmfrage(Umfrage umfrage) throws IllegalArgumentException {
+		return this.umfrageMapper.nameVerfügbar(umfrage);
 	}
 
 	/**
@@ -1236,7 +1278,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarFilm(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarFilm(Film name) throws IllegalArgumentException {
 		return this.filmMapper.nameVerfügbar(name);
 	}
 
@@ -1246,7 +1288,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean nameVerfuegbarSpielzeit(String name) throws IllegalArgumentException {
+	public boolean nameVerfuegbarSpielzeit(Spielzeit name) throws IllegalArgumentException {
 		return this.spielzeitMapper.nameVerfügbar(name);
 	}
 
@@ -1880,7 +1922,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
-		if (gruppeMapper.findByName(gruppe.getName()) == null) {
+		if (gruppeMapper.nameVerfügbar(gruppe) == true) {
 			speichern(gruppe);
 			ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
 			alteGruppenmitglieder.remove(this.anwender);
@@ -1936,7 +1978,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen)
 			throws IllegalArgumentException {
-		if (umfrageMapper.findByName(umfrage.getName()) == null) {
+		if (umfrageMapper.nameVerfügbar(umfrage) == true) {
 			speichern(umfrage);
 			ArrayList<Umfrageoption> alteUmfrageoptionen = getUmfrageoptionenByUmfrage(umfrage);
 
@@ -2952,11 +2994,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan)
 			throws IllegalArgumentException {
-		
-		if (spielplanMapper.findByName(spielplan.getName()) == null||spielplanMapper.findById(spielplan.getId()) != null) {
-			
+
+		if (spielplanMapper.nameVerfügbar(spielplan) == true) {
+
 			Spielplan fertigSpielplan = speichern(spielplan);
-			
 
 			ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
 			ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
@@ -2990,7 +3031,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 						if (vGesamt.getId() == 0) {
 
-							erstellenVorstellung(fertigSpielplan.getId(), vGesamt.getSpielzeitId(), vGesamt.getFilmId());
+							erstellenVorstellung(fertigSpielplan.getId(), vGesamt.getSpielzeitId(),
+									vGesamt.getFilmId());
 
 						}
 

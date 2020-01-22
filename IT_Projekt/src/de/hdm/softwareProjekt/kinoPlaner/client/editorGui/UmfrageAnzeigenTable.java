@@ -9,6 +9,8 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -19,6 +21,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -40,7 +43,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
  * UmfragenAnzeigenForm anzuzeigen.
  *
  */
-public class UmfrageAnzeigenTable extends FlowPanel {
+public class UmfrageAnzeigenTable extends ScrollPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -142,6 +145,8 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 	 */
 	@Override
 	public void onLoad() {
+		this.setHeight("380px");
+		
 
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
@@ -458,8 +463,12 @@ public class UmfrageAnzeigenTable extends FlowPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
+			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+			String pattern = "EEEE dd.MM.yyyy HH:mm";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+			};
 
-			info.spielzeit = result.getZeit().toString();
+			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
 

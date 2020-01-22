@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -26,7 +29,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
  *
  */
 
-public class ErgebnisAnzeigenTable extends FlowPanel {
+public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -111,6 +114,9 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 	
 	@Override
 	public void onLoad() {
+		
+		this.setHeight("200px");
+		
 
 		
 		dataProvider = new ListDataProvider<ErgebnisInfo>();
@@ -332,8 +338,13 @@ public class ErgebnisAnzeigenTable extends FlowPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
+			
+			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+			String pattern = "EEEE dd.MM.yyyy HH:mm";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+			};
 
-			info.spielzeit = result.getZeit().toString();
+			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
 

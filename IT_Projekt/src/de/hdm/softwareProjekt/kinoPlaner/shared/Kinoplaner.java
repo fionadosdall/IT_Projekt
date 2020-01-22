@@ -341,9 +341,10 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param anwender
 	 *            Anwenderobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Anwender anwender) throws IllegalArgumentException;
+	public Anwender speichern(Anwender anwender) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -352,6 +353,7 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param gruppe
 	 *            Gruppeobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
 	public void speichern(Gruppe gruppe) throws IllegalArgumentException;
@@ -363,9 +365,10 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param kino
 	 *            Kinoobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Kino kino) throws IllegalArgumentException;
+	public Kino speichern(Kino kino) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -374,9 +377,10 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param kinokette
 	 *            Kinokettenobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Kinokette kinokette) throws IllegalArgumentException;
+	public Kinokette speichern(Kinokette kinokette) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -429,9 +433,10 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param film
 	 *            Filmobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Film film) throws IllegalArgumentException;
+	public Film speichern(Film film) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -440,9 +445,10 @@ public interface Kinoplaner extends RemoteService {
 	 * 
 	 * @param spielzeit
 	 *            Spielzeitobjekt
+	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Spielzeit spielzeit) throws IllegalArgumentException;
+	public Spielzeit speichern(Spielzeit spielzeit) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1171,7 +1177,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarAnwender(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarAnwender(Anwender name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1183,7 +1189,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarGruppe(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarGruppe(Gruppe name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1195,7 +1201,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarKino(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarKino(Kino name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1207,7 +1213,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarKinokette(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarKinokette(Kinokette name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1219,7 +1225,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarSpielplan(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarSpielplan(Spielplan name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1243,7 +1249,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarUmfrage(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarUmfrage(Umfrage name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1267,7 +1273,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarFilm(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarFilm(Film name) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -1279,7 +1285,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return Verfügbar (true), nicht Verfügbar (False)
 	 * @throws IllegalArgumentException
 	 */
-	public boolean nameVerfuegbarSpielzeit(String name) throws IllegalArgumentException;
+	public boolean nameVerfuegbarSpielzeit(Spielzeit name) throws IllegalArgumentException;
 
 	/**
 	 * <p>

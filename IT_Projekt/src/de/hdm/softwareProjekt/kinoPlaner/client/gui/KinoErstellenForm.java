@@ -22,64 +22,58 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 public class KinoErstellenForm extends VerticalPanel {
-	
+
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
-	
+
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
-	
+
 	private Label kinoFormLabel = new Label("Neues Kino");
 	private Label kinokBearbeitenFormLabel = new Label("Kino bearbeiten");
 	private Label nameLabel = new Label("Kinoname:");
-	private Label kinokettenLabel= new Label("Kinokette:");
+	private Label kinokettenLabel = new Label("Kinokette:");
 	private Label plzLabel = new Label("PLZ:");
 	private Label stadtLabel = new Label("Stadt:");
 	private Label strasseLabel = new Label("Straße:");
 	private Label hnrLabel = new Label("Hausnummer:");
-	
+
 	private TextBox nameTextBox = new TextBox();
 	private TextBox plzTextBox = new TextBox();
 	private TextBox stadtTextBox = new TextBox();
 	private TextBox strasseTextBox = new TextBox();
 	private TextBox hnrTextBox = new TextBox();
 	private ListBox kinokettenListBox = new ListBox();
-	
+
 	private Button speichernButton = new Button("Speichern");
 	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 	private Grid kinoGrid = new Grid(6, 2);
-	
+
 	private Boolean edit = false;
 	private MeineKinosForm mkf;
-	
+
 	private Kino kino;
 	private Kinokette kk;
-	
-	
+
 	/**
-	 * Bei der Instanziierung  wird der ClickHandler dem Button und dem Panel hinzugefügt
-	 */	
-	
+	 * Bei der Instanziierung wird der ClickHandler dem Button und dem Panel
+	 * hinzugefügt
+	 */
+
 	public KinoErstellenForm() {
-		
-		
-		
-		
+
 	}
-	
+
 	public KinoErstellenForm(Kino k) {
 		this.kino = k;
-		
+
 		setEdit(true);
 	}
-	
-	
 
 	public void onLoad() {
-		
-		
-		/*Vergeben der Style-Namen*/
-		
+
+		/* Vergeben der Style-Namen */
+
 		kinoFormLabel.addStyleName("formHeaderLabel");
 		kinokBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
@@ -100,25 +94,21 @@ public class KinoErstellenForm extends VerticalPanel {
 		stadtTextBox.addStyleName("formularTextBox");
 
 		kinokettenListBox.setSize("180px", "25px");
-		
+
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
-		
-		
-		
-		/*Zusammensetzen der Widgets */
-		
-		if(edit == true) {
+
+		/* Zusammensetzen der Widgets */
+
+		if (edit == true) {
 			obenPanel.add(kinokBearbeitenFormLabel);
 		} else {
 			obenPanel.add(kinoFormLabel);
-		
+
 		}
-		
-		
+
 		this.add(obenPanel);
-		
-		
+
 		kinoGrid.setWidget(0, 0, nameLabel);
 		kinoGrid.setWidget(0, 1, nameTextBox);
 		kinoGrid.setWidget(1, 0, kinokettenLabel);
@@ -133,28 +123,28 @@ public class KinoErstellenForm extends VerticalPanel {
 		kinoGrid.setWidget(5, 1, stadtTextBox);
 
 		this.add(kinoGrid);
-		
+
 		administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
-		
-		if(edit == true) {
+
+		if (edit == true) {
 			untenPanel.add(loeschenButton);
 			untenPanel.add(aenderungSpeichernButton);
 		} else {
-			
+
 			untenPanel.add(speichernButton);
 		}
-		
+
 		this.add(untenPanel);
-		
+
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new KinoLoeschenClickHandler());
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 		setBearbeiten(kino);
-		
+
 	}
-	
-private class KinoLoeschenDialogBox extends DialogBox{
-		
+
+	private class KinoLoeschenDialogBox extends DialogBox {
+
 		private VerticalPanel verticalPanel = new VerticalPanel();
 		private HorizontalPanel buttonPanel = new HorizontalPanel();
 
@@ -183,10 +173,8 @@ private class KinoLoeschenDialogBox extends DialogBox{
 			neinButton.addClickHandler(new AbbrechenClickHandler(this));
 		}
 	}
-	
-	
-	/* ClickHandler */
 
+	/* ClickHandler */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -194,32 +182,28 @@ private class KinoLoeschenDialogBox extends DialogBox{
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			String kinoketteName = kinokettenListBox.getSelectedValue();
-			
-			if(kinoketteName!="Keine Auswahl") {
-			administration.getKinoketteByName(kinoketteName,new KinoketteByNameCallback());
-			}else{ 
-				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
+
+			if (kinoketteName != "Keine Auswahl") {
+				administration.getKinoketteByName(kinoketteName, new KinoketteByNameCallback());
+			} else {
+				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
 						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0,
 						new KinoErstellenCallback());
 			}
-		
-				
-			
-			
-			
-		}		
-		
+
+		}
+
 	}
-	
-	private class AenderungSpeichernClickHandler implements ClickHandler{
+
+	private class AenderungSpeichernClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			
+
 			String kinoketteName = kinokettenListBox.getSelectedValue();
-			if(kinoketteName!="Keine Auswahl") {
-			administration.getKinoketteByName(kinoketteName,new AenderungKinoketteByNameCallback());
-			}else {
+			if (kinoketteName != "Keine Auswahl") {
+				administration.getKinoketteByName(kinoketteName, new AenderungKinoketteByNameCallback());
+			} else {
 				kino.setName(nameTextBox.getText());
 				kino.setKinokettenId(0);
 				kino.setStrasse(stadtTextBox.getText());
@@ -229,29 +213,29 @@ private class KinoLoeschenDialogBox extends DialogBox{
 				administration.speichern(kino, new KinoAendernCallback());
 			}
 		}
-		
+
 	}
-	
-	private class KinoLoeschenClickHandler implements ClickHandler{
+
+	private class KinoLoeschenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+
 			KinoLoeschenDialogBox kinoLoeschenDB = new KinoLoeschenDialogBox();
 			kinoLoeschenDB.center();
 		}
-		
-	}
-	
-private class LoeschenClickHandler implements ClickHandler{
 
-		
+	}
+
+	private class LoeschenClickHandler implements ClickHandler {
+
 		private KinoLoeschenDialogBox kinoloeschenDB;
-		
+
 		public LoeschenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
 			this.kinoloeschenDB = kinoloeschenDB;
 		}
+
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
@@ -261,31 +245,28 @@ private class LoeschenClickHandler implements ClickHandler{
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
 		}
-		
+
 	}
-	
-	private class AbbrechenClickHandler implements ClickHandler{
+
+	private class AbbrechenClickHandler implements ClickHandler {
 
 		private KinoLoeschenDialogBox kinoloeschenDB;
-		
+
 		public AbbrechenClickHandler(KinoLoeschenDialogBox kinoloeschenDB) {
 			this.kinoloeschenDB = kinoloeschenDB;
-			
+
 		}
+
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			kinoloeschenDB.hide();
 		}
-		
-	}
-	
-	
-	
 
-		
+	}
+
 	/* Callback */
-				
+
 	private class KinoErstellenCallback implements AsyncCallback<Kino> {
 
 		@Override
@@ -298,17 +279,20 @@ private class LoeschenClickHandler implements ClickHandler{
 
 		@Override
 		public void onSuccess(Kino result) {
-			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Kino wurde angelegt");
-			RootPanel.get("details").clear();
-			mkf = new MeineKinosForm();
-			RootPanel.get("details").add(mkf);
-		
+			if (result == null) {
+				Window.alert("Kinoname bereits verwendet!");
+			} else {
+				Systemmeldung.anzeigen("Kino wurde angelegt");
+				RootPanel.get("details").clear();
+				mkf = new MeineKinosForm();
+				RootPanel.get("details").add(mkf);
+			}
+
 		}
-		
+
 	}
-	
-	private class KinoAendernCallback implements AsyncCallback<Void> {
+
+	private class KinoAendernCallback implements AsyncCallback<Kino> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -319,19 +303,19 @@ private class LoeschenClickHandler implements ClickHandler{
 		}
 
 		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
-			Systemmeldung.anzeigen("Änderungen gespeichert.");
-			RootPanel.get("details").clear();
-			mkf = new MeineKinosForm();
-			RootPanel.get("details").add(mkf);
+		public void onSuccess(Kino result) {
+			if (result == null) {
+				Systemmeldung.anzeigen("Änderungen gespeichert.");
+				RootPanel.get("details").clear();
+				mkf = new MeineKinosForm();
+				RootPanel.get("details").add(mkf);
+			} else {
+				Window.alert("Kinoname bereits verwendet!");
+			}
 		}
-		
-		
-		
+
 	}
-	
-	
+
 	private class KinoLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -346,12 +330,12 @@ private class LoeschenClickHandler implements ClickHandler{
 		public void onSuccess(Void result) {
 			// TODO Auto-generated method stub
 			Systemmeldung.anzeigen("Kino wurde gelöscht.");
-			
+
 		}
-		
+
 	}
-	
-	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>>{
+
+	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -362,29 +346,29 @@ private class LoeschenClickHandler implements ClickHandler{
 
 		@Override
 		public void onSuccess(ArrayList<Kinokette> result) {
-			
+
 			int indexSelected = 0;
 			int counter = 1;
-			
+
 			kinokettenListBox.addItem("Keine Auswahl");
 
 			if (result.size() != 0) {
-			
+
 				for (Kinokette kk : result) {
-					Window.alert("counter anfang: "+counter);
-					Window.alert("Kinoketteid:"+ kk.getId());
-					Window.alert("KinoketteidKino:"+ kino.getId());
+					Window.alert("counter anfang: " + counter);
+					Window.alert("Kinoketteid:" + kk.getId());
+					Window.alert("KinoketteidKino:" + kino.getId());
 					kinokettenListBox.addItem(kk.getName());
 
 					if (kino != null) {
 						if (kk.getId() == kino.getKinokettenId()) {
 							indexSelected = counter;
-							Window.alert("counter: "+ counter);
+							Window.alert("counter: " + counter);
 
 						} else {
 							counter++;
 							Window.alert("counter++ ");
-							
+
 						}
 					}
 
@@ -399,12 +383,12 @@ private class LoeschenClickHandler implements ClickHandler{
 				kinokettenListBox.setEnabled(false);
 
 			}
-			
+
 		}
-		
+
 	}
-	
-	private class KinoketteByNameCallback implements AsyncCallback<Kinokette>{
+
+	private class KinoketteByNameCallback implements AsyncCallback<Kinokette> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -416,24 +400,23 @@ private class LoeschenClickHandler implements ClickHandler{
 		@Override
 		public void onSuccess(Kinokette result) {
 			// TODO Auto-generated method stub
-			
-			/*if(edit = false) {*/
-			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()), 
+
+			/* if(edit = false) { */
+			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
 					new KinoErstellenCallback());
-			
-			
+
 		}
-		
+
 	}
-	
-	private class AenderungKinoketteByNameCallback implements AsyncCallback<Kinokette>{
-		
-		public void onFailure(Throwable caught){
+
+	private class AenderungKinoketteByNameCallback implements AsyncCallback<Kinokette> {
+
+		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
 		}
-		
+
 		public void onSuccess(Kinokette result) {
 			kino.setName(nameTextBox.getText());
 			kino.setKinokettenId(result.getId());
@@ -442,17 +425,13 @@ private class LoeschenClickHandler implements ClickHandler{
 			kino.setPlz(Integer.parseInt(plzTextBox.getText()));
 			kino.setStadt(stadtTextBox.getText());
 			administration.speichern(kino, new KinoAendernCallback());
-			
-			
+
 		}
-		
-		
+
 	}
-	
-	
-	
-/**Methoden***/
-	
+
+	/** Methoden ***/
+
 	public Boolean getEdit() {
 		return edit;
 	}
@@ -461,28 +440,23 @@ private class LoeschenClickHandler implements ClickHandler{
 		this.edit = edit;
 	}
 
-	
 	public void setBearbeiten(Kino kino) {
-			
-			
-			
-			nameTextBox.setText(kino.getName());
-			plzTextBox.setText(Integer.toString(kino.getPlz()));
-			strasseTextBox.setText(kino.getStrasse());
-			hnrTextBox.setText(kino.getHausnummer());
-			stadtTextBox.setText(kino.getStadt());
-			
-		
-	} 
-	
+
+		nameTextBox.setText(kino.getName());
+		plzTextBox.setText(Integer.toString(kino.getPlz()));
+		strasseTextBox.setText(kino.getStrasse());
+		hnrTextBox.setText(kino.getHausnummer());
+		stadtTextBox.setText(kino.getStadt());
+
+	}
+
 	public void clearForm() {
 		nameTextBox.setText("");
 		plzTextBox.setText("");
 		strasseTextBox.setText("");
 		hnrTextBox.setText("");
 		stadtTextBox.setText("");
-		
+
 	}
-	
-	
+
 }

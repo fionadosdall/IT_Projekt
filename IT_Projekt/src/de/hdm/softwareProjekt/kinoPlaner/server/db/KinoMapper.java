@@ -113,13 +113,14 @@ public class KinoMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfügbar(Kino kino) {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT kName FROM Kino" + " WHERE kName = '" + name + "'");
+			ResultSet resultset = stmt.executeQuery("SELECT kName FROM Kino" + " WHERE kName = '" + kino.getName()
+					+ "' AND NOT kId= '" + kino.getId() + "'");
 
 			if (resultset.next()) {
 				return false;

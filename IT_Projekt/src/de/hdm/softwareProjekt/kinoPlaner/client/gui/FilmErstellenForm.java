@@ -36,12 +36,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
-
 public class FilmErstellenForm extends PopupPanel {
-	
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
-	
+
 	private VerticalPanel popupPanel = new VerticalPanel();
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
@@ -51,48 +49,42 @@ public class FilmErstellenForm extends PopupPanel {
 	private Label beschreibungLabel = new Label("Beschreibung:");
 	private Label bewertungLabel = new Label("Bewertung:");
 	private Label laengeLabel = new Label("Filmlänge");
-	private Label filme = new Label ("Alle Filme");
-	
-	
-	
+	private Label filme = new Label("Alle Filme");
+
 	private TextBox nameTextBox = new TextBox();
 	private TextBox beschreibungTextBox = new TextBox();
 	private TextBox bewertungTextBox = new TextBox();
-	
-	
-	
-	private Grid filmGrid = new Grid(4,2);
+
+	private Grid filmGrid = new Grid(4, 2);
 	private Button speichernButton = new Button("Speichern");
 	private Button loeschenButton = new Button("Löschen");
-	
 
 	private Film film = null;
-	
+
 	private SpielplaneintragForm parent;
-	
+
 	/*****
-	 * Bei der Instanzzierung wird der ClickHandler dem  Button hinzugefügt
+	 * Bei der Instanzzierung wird der ClickHandler dem Button hinzugefügt
 	 * 
 	 */
 
 	public FilmErstellenForm() {
-		
+
 		super(true);
-		
+
 	}
-	
-	public FilmErstellenForm (Film film) {
+
+	public FilmErstellenForm(Film film) {
 		super(true);
 		this.film = film;
-		
+
 	}
-	
-	
+
 	public FilmErstellenForm(SpielplaneintragForm parent) {
 		super(true);
 		this.parent = parent;
 	}
-	
+
 	public FilmErstellenForm(SpielplaneintragForm parent, Film film) {
 		super(true);
 		this.parent = parent;
@@ -100,14 +92,14 @@ public class FilmErstellenForm extends PopupPanel {
 	}
 
 	public void onLoad() {
-	
-	/* Setzen der Style Namen
-	 * 
-	 */
+
+		/*
+		 * Setzen der Style Namen
+		 * 
+		 */
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
 		this.addStyleName("popupPanel");
-
 
 		filmFormLabel.addStyleName("formHeaderLabel");
 		nameLabel.addStyleName("textLabel");
@@ -121,185 +113,168 @@ public class FilmErstellenForm extends PopupPanel {
 		nameTextBox.addStyleName("formularTextBox");
 		beschreibungTextBox.addStyleName("formularTextBox");
 		bewertungTextBox.addStyleName("formularTextBox");
-		
-		
-		
+
 		/******
 		 * Zusammensetzen der Widgets
 		 */
-		
-		
+
 		popupPanel.add(obenPanel);
 		obenPanel.add(filmFormLabel);
-		
+
 		filmGrid.setWidget(0, 0, nameLabel);
 		filmGrid.setWidget(0, 1, nameTextBox);
 		filmGrid.setWidget(1, 0, beschreibungLabel);
 		filmGrid.setWidget(1, 1, beschreibungTextBox);
 		filmGrid.setWidget(2, 0, bewertungLabel);
 		filmGrid.setWidget(2, 1, bewertungTextBox);
-		
-		
-		
+
 		popupPanel.add(filmGrid);
-		
-		
-		
-		if(film == null) {
+
+		if (film == null) {
 			nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 			beschreibungTextBox.getElement().setPropertyString("placeholder", "Beschreibung eingeben");
 			bewertungTextBox.getElement().setPropertyString("placeholder", "Bewertung eingeben");
-			
+
 		} else {
 			nameTextBox.setText(film.getName());
 			beschreibungTextBox.setText(film.getBeschreibung());
 			bewertungTextBox.setText(film.getBewertung());
 			filmFormLabel.setText("Film bearbeiten");
 		}
-		
-		
+
 		popupPanel.add(untenPanel);
 		untenPanel.add(speichernButton);
-		
+
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
-		
+
 		this.add(popupPanel);
 	}
-		//CLICKHANDLER 
-		
-		
+	// CLICKHANDLER
+
 	public class SpeichernClickHandler implements ClickHandler {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				
-				
-				if (film == null) {
-					Window.alert("hier");
-				
-				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(), bewertungTextBox.getValue(),
-						new FilmErstellenCallback());
-				
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+
+			if (film == null) {
+				Window.alert("hier");
+
+				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
+						bewertungTextBox.getValue(), new FilmErstellenCallback());
+
 				Window.alert(nameTextBox.getValue());
 				Window.alert(beschreibungTextBox.getValue());
 				Window.alert(bewertungTextBox.getValue());
-				
-				} else {
-					
-					Window.alert("hier 2");
-					film.setName(nameTextBox.getValue());
-					film.setBewertung(bewertungTextBox.getValue());
-					film.setBeschreibung(beschreibungTextBox.getValue());
-					
-					kinoplaner.speichern(film, new AsyncCallback<Void>() {
 
-						@Override
-						public void onFailure(Throwable caught) {
-							Window.alert(caught.getMessage());
-							caught.printStackTrace();
-							
-						}
+			} else {
 
-						@Override
-						public void onSuccess(Void result) {
+				Window.alert("hier 2");
+				film.setName(nameTextBox.getValue());
+				film.setBewertung(bewertungTextBox.getValue());
+				film.setBeschreibung(beschreibungTextBox.getValue());
+
+				kinoplaner.speichern(film, new AsyncCallback<Film>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert(caught.getMessage());
+						caught.printStackTrace();
+
+					}
+
+					@Override
+					public void onSuccess(Film result) {
+						if (result == null) {
+							Window.alert("Film existiert bereits!");
+						} else {
 							Systemmeldung.anzeigen("Film wurde geupdatet");
 							parent.refresh();
 							removeFromParent();
-							
 						}
-					});
-				}
 
+					}
+				});
 			}
-		
+
+		}
+
 	}
-	
+
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+
 			RootPanel.get("details").clear();
-			
-			
+
 		}
-		
+
 	}
-		
-		
- // Callback 
-	
-		private class FilmErstellenCallback implements AsyncCallback<Film> {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-				caught.printStackTrace();
-			}
+	// Callback
 
-			@Override
-			public void onSuccess(Film result) {
-				// TODO Auto-generated method stub
-				Systemmeldung.anzeigen("Film wurde angelegt");
-				
-				Window.alert(nameTextBox.getValue());
-				Window.alert(beschreibungTextBox.getValue());
-				Window.alert(bewertungTextBox.getValue());
+	private class FilmErstellenCallback implements AsyncCallback<Film> {
 
-				
-				//SpielplaneintragForm sef = new SpielplaneintragForm();
-				parent.refresh();
-			
-				Window.alert(result.getName());
-			}
-	
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
-		
-		
-		private class FilmLoeschenCallback implements AsyncCallback<Film>{
+		@Override
+		public void onSuccess(Film result) {
+			// TODO Auto-generated method stub
+			if(result == null) {
+				Window.alert("Film bereits verfügbar!");
+			}else {
+			Systemmeldung.anzeigen("Film wurde angelegt");
 
-			@Override
-			public void onFailure(Throwable caught) {
-				Window.alert(caught.getMessage());
-				caught.printStackTrace();
+
+			// SpielplaneintragForm sef = new SpielplaneintragForm();
+			parent.refresh();
+
+			Window.alert(result.getName());
 			}
+		}
 
-			@Override
-			public void onSuccess(Film result) {
-				// TODO Auto-generated method stub
-				Systemmeldung.anzeigen("Film wurde gelöscht");
-				
-			}}
-			
-		
-		
-		
-/*********
- * Methoden
- */
+	}
 
-	
+	private class FilmLoeschenCallback implements AsyncCallback<Film> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+		}
+
+		@Override
+		public void onSuccess(Film result) {
+			// TODO Auto-generated method stub
+			Systemmeldung.anzeigen("Film wurde gelöscht");
+
+		}
+	}
+
+	/*********
+	 * Methoden
+	 */
+
 	public void setBearbeiten() {
-		
+
 		nameTextBox.setText(film.getName());
 		beschreibungTextBox.setText(film.getBeschreibung());
 		bewertungTextBox.setText(film.getBewertung());
-		
-	}
-	
-	
-	
-		public void clearForm() {
-			nameTextBox.setText("");
-			beschreibungTextBox.setText("");
-			bewertungTextBox.setText("");
-	
-		}
-		
+
 	}
 
+	public void clearForm() {
+		nameTextBox.setText("");
+		beschreibungTextBox.setText("");
+		bewertungTextBox.setText("");
 
+	}
+
+}

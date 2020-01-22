@@ -71,13 +71,13 @@ public interface KinoplanerAsync {
 
 	public void isVoted(Auswahl auswahl, AsyncCallback<Void> callback);
 
-	public void speichern(Anwender anwender, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Anwender anwender, AsyncCallback<Anwender> callback) throws IllegalArgumentException;
 
 	public void speichern(Gruppe gruppe, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void speichern(Kino kino, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Kino kino, AsyncCallback<Kino> callback) throws IllegalArgumentException;
 
-	public void speichern(Kinokette kinokette, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Kinokette kinokette, AsyncCallback<Kinokette> callback) throws IllegalArgumentException;
 
 	public void speichern(Spielplan spielplan, AsyncCallback<Spielplan> callback) throws IllegalArgumentException;
 
@@ -87,9 +87,9 @@ public interface KinoplanerAsync {
 
 	public void speichern(Umfrageoption umfrageoption, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void speichern(Film film, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Film film, AsyncCallback<Film> callback) throws IllegalArgumentException;
 
-	public void speichern(Spielzeit spielzeit, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Spielzeit spielzeit, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
 
 	public void speichern(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -234,26 +234,26 @@ public interface KinoplanerAsync {
 	public void erstellenSpielplaeneKinokette(String name, int kinoketteId, ArrayList<Vorstellung> neueVorstellungen,
 			AsyncCallback<ArrayList<Spielplan>> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarAnwender(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarAnwender(Anwender name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarGruppe(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarGruppe(Gruppe name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarKino(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarKino(Kino name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarKinokette(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarKinokette(Kinokette name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarSpielplan(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarSpielplan(Spielplan name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	public void nameVerfuegbarVorstellung(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarUmfrage(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarUmfrage(Umfrage name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	public void nameVerfuegbarUmfrageoption(String name, AsyncCallback<Boolean> callback)
 			throws IllegalArgumentException;
 
-	public void nameVerfuegbarFilm(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarFilm(Film name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
-	public void nameVerfuegbarSpielzeit(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
+	public void nameVerfuegbarSpielzeit(Spielzeit name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 
 	public void nameVerfuegbarAuswahl(String name, AsyncCallback<Boolean> callback) throws IllegalArgumentException;
 

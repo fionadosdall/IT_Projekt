@@ -8,6 +8,8 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -30,7 +33,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
-public class VotingsAnzeigenTable extends FlowPanel{
+public class VotingsAnzeigenTable extends ScrollPanel{
 	
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -132,6 +135,9 @@ public class VotingsAnzeigenTable extends FlowPanel{
 
 	@Override
 	public void onLoad() {
+		
+		this.setHeight("380px");
+		
 
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
@@ -377,8 +383,12 @@ public class VotingsAnzeigenTable extends FlowPanel{
 
 		@Override
 		public void onSuccess(Spielzeit result) {
+			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
+			String pattern = "EEEE dd.MM.yyyy HH:mm";
+			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
+			};
 
-			info.spielzeit = result.getZeit().toString();
+			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
 

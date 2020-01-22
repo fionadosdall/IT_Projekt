@@ -50,6 +50,8 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 	
 	@Override
 	protected void onLoad() {
+		
+		
 
 		super.onLoad();
 		kinoplaner = ClientsideSettings.getKinoplaner();
