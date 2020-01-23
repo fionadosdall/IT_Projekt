@@ -18,6 +18,14 @@ import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
+/**
+ * Klasse dient zur Darstellung des User-Profils eines eingeloggten Users.
+ * Übersicht über Name und E-Mail, Funktionen um Name zu ändern, speichern, User
+ * löschen und User abmelden.
+ * 
+ * @author
+ *
+ */
 public class UserForm extends FlowPanel {
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -49,18 +57,22 @@ public class UserForm extends FlowPanel {
 	private Image papierkorb = new Image();
 
 	String logoutUrl;
-	
+
+	/**
+	 * Konstruktor
+	 * 
+	 * @param anwender
+	 */
 	public UserForm(Anwender anwender) {
-		this.anwender=anwender;
+		this.anwender = anwender;
 	}
 
 	public void onLoad() {
-		
 
 		// Vergeben der Stylenames
 
 		this.addStyleName("detailscontainer");
-		//this.addStyleName("center");
+		// this.addStyleName("center");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
@@ -117,31 +129,44 @@ public class UserForm extends FlowPanel {
 
 		detailsboxAbmelden.add(abmeldenButton);
 
-
-		// Click-Handler
+		/**
+		 * Click-Handler zum Speicher-, Abmelden- und Papierkorb-Button hinzufügen
+		 */
 		speichernButton.addClickHandler(new AnwenderSpeichernClickHandler());
 		abmeldenButton.addClickHandler(new AbmeldenClickHandler());
-		
+
 		papierkorb.addClickHandler(new BenutzerLoeschenClickHandler());
-		
+
 		if (anwender == null) {
 			emailAnzeigenLabel.setText("Es ist noch keine Mailadresse vorhanden");
 		} else {
-			
+
 			emailAnzeigenLabel.setText(anwender.getGmail());
-			
+
 		}
-		
-		if (anwender == null) { 
+
+		if (anwender == null) {
 			nameTextBox.getElement().setPropertyString("placeholder", "Es ist noch kein Name vorhanden");
 		} else {
-			
+
 			nameTextBox.getElement().setPropertyString("placeholder", anwender.getName());
 		}
-				
-	//	Window.alert(""+aktuellerAnwender.getAnwender().getId());
+
+		// Window.alert(""+aktuellerAnwender.getAnwender().getId());
 	}
 
+	/******************************
+	 * Löschen-Dialogbox
+	 * 
+	 *
+	 ******************************/
+
+	/**
+	 * Clickhandler, um den Benutzer zu löschen. Durch Klick auf den Löschen-Button
+	 * wird eine Dialogbox zur Bestätigung des Löschvorgangs aufgerufen.
+	 * 
+	 *
+	 */
 	private class BenutzerLoeschenClickHandler implements ClickHandler {
 
 		@Override
@@ -154,6 +179,12 @@ public class UserForm extends FlowPanel {
 
 	}
 
+	/**
+	 * Vor dem Löschen seines Users wird der Nutzer über eine Dialogbox nochmal um
+	 * Bestätigung des Löschvorgangs gebeten.
+	 * 
+	 *
+	 */
 	private class LoeschenUserBox extends DialogBox {
 
 		private VerticalPanel verticalPanel = new VerticalPanel();
@@ -164,7 +195,7 @@ public class UserForm extends FlowPanel {
 		private Button jaButton = new Button("Ja");
 		private Button neinButton = new Button("Nein");
 
-		// Konstruktor
+		// Konstruktor der Löschen-Dialogbox
 
 		public LoeschenUserBox() {
 
@@ -179,8 +210,9 @@ public class UserForm extends FlowPanel {
 
 			this.add(verticalPanel);
 
-			// ClickHandler für die DailogBox
-			jaButton.addClickHandler(new LoeschenClickHanlder(this));
+			// ClickHandler zu den Ja- und Nein-Buttons hinzufügen, Buttons befinden sich in
+			// der LoeschenUserBox
+			jaButton.addClickHandler(new LoeschenClickHandler(this));
 			neinButton.addClickHandler(new AbbrechenClickHandler(this));
 		}
 
@@ -189,13 +221,19 @@ public class UserForm extends FlowPanel {
 	/***********************************************************************
 	 * CLICKHANDLER
 	 ***********************************************************************/
-	
-	
-	private class LoeschenClickHanlder implements ClickHandler {
+
+	/**
+	 * ClickHandler für Klick auf den Löschen-Button: Neue LöschenUserBox zur
+	 * Bestätigung des Löschvorgangs wird erstellt. Nach Bestätigung wird der
+	 * User/Anwender durch LogoutUrl gelöscht, neues LoeschenAnwenderCallback
+	 * 
+	 *
+	 */
+	private class LoeschenClickHandler implements ClickHandler {
 
 		private LoeschenUserBox loeschenUserBox;
 
-		public LoeschenClickHanlder(LoeschenUserBox loeschenUserBox) {
+		public LoeschenClickHandler(LoeschenUserBox loeschenUserBox) {
 			this.loeschenUserBox = loeschenUserBox;
 		}
 
@@ -206,11 +244,19 @@ public class UserForm extends FlowPanel {
 			anwender.setLogoutUrl(anwender.getLogoutUrl());
 			Window.open(anwender.getLogoutUrl(), "_self", "");
 
-			 kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
+			kinoplaner.loeschen(anwender, new LoeschenAnwenderCallback());
 		}
 
 	}
 
+	/**
+	 * Wenn der Nutzer auf den Löschen-Button klickt, wird er in einer Dialogbox
+	 * nochmal gefragt, ob er das Objekt wirklich löschen will. Hier besteht die
+	 * Möglichkeit, den Löschvorgang durch Klick auf den Nein-Button abzubrechen,
+	 * dann greift diese AbbrechenClickHandler-Klasse.
+	 * 
+	 *
+	 */
 	private class AbbrechenClickHandler implements ClickHandler {
 
 		private LoeschenUserBox loeschenUserBox;
@@ -227,25 +273,38 @@ public class UserForm extends FlowPanel {
 
 	}
 
+	/**
+	 * ClickHandler um Änderungen am User zu speichern, z.B. wenn der Name des Users
+	 * geändert wurde. Der AnwenderSpeichernClickHandler initialisiert ein neues
+	 * SpeichernUserBox-Objekt. In dieser Dialogbox wird der User gefragt, ob er den
+	 * neuen Namen speichern will.
+	 * 
+	 *
+	 */
 	private class AnwenderSpeichernClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			
+
 			if (nameTextBox.getValue() == "") {
 				Window.alert("Es wurde kein neuer Name eingegeben");
-				
+
 			} else {
-			SpeichernUserBox speichernUB = new SpeichernUserBox();
-			speichernUB.center();
-			
+				SpeichernUserBox speichernUB = new SpeichernUserBox();
+				speichernUB.center();
+
 			}
 
 		}
 
 	}
 
+	/**
+	 * SpeichernUserBox: Dialogbox, die den User vor dem Speichern einer Änderung
+	 * fragt, ob er seine Änderung wirklich speichern will.
+	 *
+	 */
 	private class SpeichernUserBox extends DialogBox {
 
 		private VerticalPanel verticalPanel = new VerticalPanel();
@@ -256,7 +315,9 @@ public class UserForm extends FlowPanel {
 		private Button yesButton = new Button("Ja");
 		private Button noButton = new Button("Nein");
 
-		// Konstruktor
+		/**
+		 * Konstruktor der SpeichernUserBox
+		 */
 
 		public SpeichernUserBox() {
 
@@ -271,13 +332,20 @@ public class UserForm extends FlowPanel {
 
 			this.add(verticalPanel);
 
-			// ClickHandler für die DailogBox
+			// ClickHandler für die Ja- und Nein-Buttons der DailogBox
 			yesButton.addClickHandler(new SpeichernClickHanlder(this));
 			noButton.addClickHandler(new SpeichernAbbrechenClickHandler(this));
 
 		}
 	}
 
+	/**
+	 * SpeichernClickHandler ruft die Dialogbox SpeichernUserBox auf. Dadurch wird
+	 * der User zur Bestätigung des Speichervorgangs gebeten. Nach Bestätigung wird
+	 * der neue Name des Users gespeichert, neues UpdateAnwenderCallback
+	 * 
+	 *
+	 */
 	private class SpeichernClickHanlder implements ClickHandler {
 
 		private SpeichernUserBox speichernUserBox;
@@ -307,6 +375,15 @@ public class UserForm extends FlowPanel {
 
 	}
 
+	/**
+	 * Der User kann seinen Namen ändern, anschließend muss er die Änderung
+	 * speichern. Zuvor wird er durch eine Dialogbox um Bestätigung des
+	 * Speichervorgangs gebeten. Dieser Speichervorgang kann mit Klick auf den
+	 * Nein-Button in der Dialogbox abgebrochen werde. Dann greift diese
+	 * SpeichernAbbrechenClickHandler-Klasse.
+	 * 
+	 *
+	 */
 	private class SpeichernAbbrechenClickHandler implements ClickHandler {
 
 		private SpeichernUserBox speichernUserBox;
@@ -325,6 +402,14 @@ public class UserForm extends FlowPanel {
 
 	}
 
+	/**
+	 * Über den AbmeldenClickHandler kann sich der User temporär aus der Anwendung
+	 * ausloggen, über einen LogoutUrl. (Nicht zu verwechseln mit User löschen, dort
+	 * wird der User dauerhaft aus der Kinoplaner-DB gelöscht.)
+	 * 
+	 * 
+	 *
+	 */
 	private class AbmeldenClickHandler implements ClickHandler {
 
 		@Override
@@ -341,12 +426,13 @@ public class UserForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
+	
 	private class LoeschenAnwenderCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Window.alert("Dein Profil könnte  nicht gelöscht werden");
+			Window.alert("Dein Profil konnte nicht gelöscht werden");
 
 		}
 
@@ -371,12 +457,12 @@ public class UserForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Anwender result) {
-			if(result==null) {
+			if (result == null) {
 				Window.alert("Nickname bereits vergeben!");
-			}else {
+			} else {
 				Window.alert("UpadteAnwenderCallback war erfolgreich");
 			}
-			
+
 		}
 
 	}
