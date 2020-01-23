@@ -26,6 +26,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+
+/*
+ * Klasse stellt das Formular um ein Spielplaneintrag zu erstellen
+ */
 public class SpielplaneintragForm extends PopupPanel {
 
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
@@ -161,6 +165,10 @@ public class SpielplaneintragForm extends PopupPanel {
 		administration.getAllSpielzeiten(new SpielzeitenCallback());
 
 	}
+	/*
+	 * Vor dem Löschen eines Films, soll der Nutzer über eine Dialbox noch einmal
+	 * um Bestätigung des Löschvorgangs gebeten werden
+	 */
 	
 	private class FilmLoeschenDialogBox extends DialogBox {
 		
@@ -195,6 +203,11 @@ public class SpielplaneintragForm extends PopupPanel {
 		}
 	}
 	
+	
+	/*Vor dem Löschen der Spielzeit, soll der Nutzer über eine Dialbox noch einmal
+	 * um Bestätigung des Löschvorgangs gebeten werden
+	*/
+
 	private class SpielzeitLoeschenDialogBox extends DialogBox {
 		
 		private VerticalPanel verticalPanel = new VerticalPanel();
@@ -231,6 +244,12 @@ public class SpielplaneintragForm extends PopupPanel {
 	
 	// Erstellen ClickHandler für Löschen- und AbbrechenClickHandler
 	
+	/*
+	 * Wenn der Nutzer den angezeigten Film löschen möchte, kann er dies über den
+	 * Lösch-Button tun. Dabei öffent sich automatisch die DialogBox. Diese
+	 * bittent den Nutzer, erneut zu bestätigen, dass er den Film löschen möchte
+	 */
+	
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
@@ -247,7 +266,11 @@ public class SpielplaneintragForm extends PopupPanel {
 
 	
 	
+	
 	//ClickHandler Film löschen DIalogBox
+	/*
+	 * ClickHandler zur Lösch-Bestätigung des Films
+	 */
 	
 	private class FilmLoeschenBestaetigenClickHandler implements ClickHandler {
 		
@@ -268,6 +291,10 @@ public class SpielplaneintragForm extends PopupPanel {
 		
 	}
 	
+	/*
+	 * ClickHandler um das Löschen des Films abzubrechen
+	 */
+	
 	private class FilmLoeschenAbbrechenCLickHandler implements ClickHandler {
 		
 		private FilmLoeschenDialogBox filmLoeschenDB;
@@ -287,7 +314,13 @@ public class SpielplaneintragForm extends PopupPanel {
 	
 	
 	/*** Clickhandler für Spielzeit löschen ***/
-
+	
+	
+/*
+ * Wenn der Nutzer die angezeigte Spielzeit löschen möchte, kann er dies
+ * über den Lösch-Button tun. Dabei öffnet sich automatisch die DialogBox. Diese
+ * bittet den Nutzer erneut zu bestätigen, dass er die Spielzeit löschen möchte
+ */
 
 	private class SpielzeitLoeschenClickHandler implements ClickHandler {
 		
@@ -302,6 +335,9 @@ public class SpielplaneintragForm extends PopupPanel {
 	}
 	
 	/**ClickHandler für SpielzeitLöschen DialogBox **/
+	/*
+	 * ClickHandler zur Lösch-Bestätigung der Spielzeit
+	*/
 	
 	private class SpielzeitLoeschenBestaetigenClickHandler implements ClickHandler {
 		
@@ -321,7 +357,9 @@ public class SpielplaneintragForm extends PopupPanel {
 		
 	}
 	
-	
+	/*
+	 * ClickHandler um das Löschen der Spielzeit abzubrechen
+	 */
 	
 private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		
@@ -344,7 +382,9 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		
 	}
 
-	
+	/* 
+	 * ClickHandler um das Fenster des Spielplaneintrags zu schließen
+	 */
 	
 
 	private class CloseClickHandler implements ClickHandler {
@@ -357,6 +397,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 
 	}
 
+	
+	/*
+	 *ClickHandler um die Spielzeit zu bearbeiten 
+	 */
 	private class SpielzeitBearbeitenClickHandler implements ClickHandler {
 
 		@Override
@@ -368,6 +412,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * ClickHandler  um den Spielplaneintrag zu speichern
+	 */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -388,6 +436,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 	
 
 	}
+	
+	/*
+	 * ClickHandler um einen neuen Film in Spielplaneintrag anzulegen
+	 */
 
 	private class NeuerFilmClickHandler implements ClickHandler {
 
@@ -401,6 +453,9 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 
 	}
 
+	/*
+	 * ClickHandler um den Film des Spielplaneintrags zu bearbeiten
+	 */
 	private class FilmBearbeitenClickHandler implements ClickHandler {
 
 		@Override
@@ -416,6 +471,11 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 	public void hideFilmPopup() {
 		film.hide();
 	}
+	
+	
+	/*
+	 * ClickHandler um eine neue Spielzeit im Spielplaneintrag anzulegenn
+	 */
 
 	private class NeueSpielzeitClickHandler implements ClickHandler {
 
@@ -429,7 +489,16 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 
 	}
 
-	/*** Callbacks ***/
+	/*** *******************************************************
+	 * Callbacks
+	 * ********************************************
+	 *  ***/
+	
+	
+	/*
+	 * Callback Klasse zur Abfrage des ausgewählten Spielzeit Objekts mit der ID, um dann
+	 * die Spielzeit zu löschen
+	 */
 
 	private class SpielzeitByIdFuerLoeschenCallback implements AsyncCallback<Spielzeit> {
 
@@ -446,6 +515,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback Klasse zur Löschung einer Spielzeit-Instanz im System
+	 */
 
 	private class SpielzeitLoeschenCalback implements AsyncCallback<Boolean> {
 
@@ -468,6 +541,13 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback Klasse zur Abfrage des ausgewählen Filmobjekts mit dem Namen,
+	 * um dann den Film zu löschen
+	 */
+	
+	
 
 	private class FilmGetNameFueLoeschenCallback implements AsyncCallback<Film> {
 
@@ -507,6 +587,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback um alle Film-Instanzen aus dem System aufzurufen
+	 */
 
 	private class FilmeCallback implements AsyncCallback<ArrayList<Film>> {
 
@@ -553,6 +637,11 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback Klasse um SpielzeitObjekte, anhand der ID aus dem System
+	 * aufzurufen
+	 */
 
 	private class SpielzeitByIDCallback implements AsyncCallback<Spielzeit> {
 
@@ -574,6 +663,11 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback Abfrage um FilmObjekte anhand des Names aus dem System 
+	 * abzufragen
+	 */
 
 	private class FilmByNameCallback implements AsyncCallback<Film> {
 
@@ -598,6 +692,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback um Spielzeiten aus dem System abzufragen
+	 */
 
 	private class SpielzeitenCallback implements AsyncCallback<ArrayList<Spielzeit>> {
 
@@ -648,6 +746,11 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback abfrage um FilmObjekte aufgrund des Namens aus dem System
+	 * abzufragen
+	 */
 
 	private class GetFilmByNameCallback implements AsyncCallback<Film> {
 
@@ -675,6 +778,11 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		}
 
 	}
+	
+	/*
+	 * Callback um SpielzeitObjekte augrund der Id aus dem
+	 * System abzufragen
+	 */
 
 	private class GetSpielzeitByIdCallback implements AsyncCallback<Spielzeit> {
 

@@ -25,6 +25,10 @@ public class HomeBar extends HorizontalPanel {
 	
 	public void onLoad () {
 		
+		/*
+		 * Style Widgets hinzufügen
+		 */
+		
 		this.addStyleName("homeBar");
 		
 		homeBarLinks.addStyleName("homeBarItem");
@@ -46,6 +50,9 @@ public class HomeBar extends HorizontalPanel {
 	}
 	
 	
+	/*
+	 * ClickHandler um eine Kinokette anzulegen
+	 */
 	private class MeineKinoKettenClickHandler implements ClickHandler {
 		
 		public void onClick (ClickEvent event) {
@@ -57,6 +64,9 @@ public class HomeBar extends HorizontalPanel {
 		}
 	}
 	
+	/*
+	 * ClickHandler um ein Kino anzulegen
+	 */
 	
 	private class MeineKinosClickHandler implements ClickHandler {
 		
@@ -68,7 +78,9 @@ public class HomeBar extends HorizontalPanel {
 		}
 	}
 	
-	
+	/*
+	 * CLickHandler um ein Spielplan anzulegen
+	 */
 	private class MeineSpielplaeneClickHandler implements ClickHandler {
 		
 		public void onClick (ClickEvent event) {
