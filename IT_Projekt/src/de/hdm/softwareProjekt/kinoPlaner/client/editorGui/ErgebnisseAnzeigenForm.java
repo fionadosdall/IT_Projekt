@@ -33,7 +33,8 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
-	
+	private FlowPanel detialsbox = new FlowPanel();
+	private FlowPanel detailsboxinhalt = new FlowPanel();
 	/** 
 	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt und formatiert
 	 */
@@ -46,13 +47,18 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		
+		detialsbox.addStyleName("detailsbox");
+		detailsboxinhalt.addStyleName("detailsboxInahlt");
+		
 
 		// Zusammenbauen der Widgets
 		this.add(detailsoben);
 		this.add(detailsunten);
 
 		detailsoben.add(hb);
-		detailsunten.add(p);
+		detailsunten.add(detialsbox);
+		detialsbox.add(p);
 		
 		p.add(bov);
 		

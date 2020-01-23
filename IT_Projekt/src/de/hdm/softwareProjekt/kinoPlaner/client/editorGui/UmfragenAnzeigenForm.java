@@ -38,6 +38,8 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	private FlowPanel detialsbox = new FlowPanel();
+	private FlowPanel detailsboxinhalt = new FlowPanel();
 	
 	/*
 	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt
@@ -54,17 +56,23 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		
+		detialsbox.addStyleName("detailsbox");
+		detailsboxinhalt.addStyleName("detailsboxInahlt");
+		
 
 		// Zusammenbauen der Widgets
 		this.add(detailsoben);
 		this.add(detailsunten);
 
 		detailsoben.add(hb);
+		
+		detailsunten.add(detialsbox);
+		detialsbox.add(p);
 
 		p.setStyleName("");
 		bov.setTitel("Meine Umfragen");
 		p.add(bov);
-		detailsunten.add(p);
 
 		kinoplaner.getOpenUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
 

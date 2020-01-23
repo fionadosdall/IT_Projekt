@@ -38,6 +38,8 @@ public class GruppenAnzeigenForm extends FlowPanel {
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	private FlowPanel detialsbox = new FlowPanel();
+	private FlowPanel detailsboxinhalt = new FlowPanel();
 
 	/*
 	 * Button erstellen
@@ -57,15 +59,20 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 		gruppeErstellen.addStyleName(".speichernButton.gwt-Button");
-
+		
+		detialsbox.addStyleName("detailsbox");
+		detailsboxinhalt.addStyleName("detailsboxInahlt");
+		
 		/*
 		 * Zusammenbauen der Widgets
 		 */
 		this.add(detailsoben);
 		this.add(detailsunten);
+		
+		detailsunten.add(detialsbox);
+		detialsbox.add(p);
 
 		detailsoben.add(hb);
-		detailsunten.add(p);
 
 		p.setStyleName("");
 		bov.setTitel("Meine Gruppen");
