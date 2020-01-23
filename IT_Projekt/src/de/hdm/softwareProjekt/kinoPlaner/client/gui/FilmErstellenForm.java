@@ -60,7 +60,8 @@ public class FilmErstellenForm extends PopupPanel {
 	private TextBox bewertungTextBox = new TextBox();
 
 	private Grid filmGrid = new Grid(4, 2);
-	private Button speichernButton = new Button("Änderungen speichern");
+	private Button speichernButton = new Button("speichern");
+	private Button aenderungSpeichernButton = new Button("Änderungen speichern");
 	private Button loeschenButton = new Button("Löschen");
 
 	private Film film = null;
@@ -114,6 +115,7 @@ public class FilmErstellenForm extends PopupPanel {
 		bewertungLabel.addStyleName("textLabel");
 		laengeLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("popupObenPanel");
 		untenPanel.addStyleName("popupUntenPanel");
@@ -141,21 +143,24 @@ public class FilmErstellenForm extends PopupPanel {
 			nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 			beschreibungTextBox.getElement().setPropertyString("placeholder", "Beschreibung eingeben");
 			bewertungTextBox.getElement().setPropertyString("placeholder", "Bewertung eingeben");
-
+			untenPanel.add(speichernButton);
 		} else {
 			nameTextBox.setText(film.getName());
 			beschreibungTextBox.setText(film.getBeschreibung());
 			bewertungTextBox.setText(film.getBewertung());
 			filmFormLabel.setText("Film bearbeiten");
+			untenPanel.add(aenderungSpeichernButton);
 		}
 
+		
 		popupPanel.add(untenPanel);
-		untenPanel.add(speichernButton);
+		
 
 		/**
 		 * ClickHandler für Speichern und Löschen der Filme
 		 */
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
 
 		this.add(popupPanel);
