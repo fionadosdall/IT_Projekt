@@ -536,32 +536,6 @@ body {
 	cursor: pointer;	
 }
 
-.bearbeitenButton.gwt-Button{
-	margin: 5px;
-	border-radius: 290486px;
-	padding-left: 1em;
-	padding-right: 1em;
-	background: #595959;
-	border-color: transparent;
-	color: #fff;
-	border-width: 1px;
-	justify-content: center;
-	padding-bottom: calc(.375em - 1px);
-	padding-top: calc(.375em - 1px);
-	text-align: center;
-	white-space: nowrap;
-	-webkit-appearance: none;
-	align-items: center;
-	border: 1px solid transparent;
-	box-shadow: none;
-	display: inline-flex;
-	font-size: 1rem;
-	height: 2.25em;
-	line-height: 1.5;
-	position: relative;
-	vertical-align: top;
-	cursor: pointer;	
-}
 
 
 /** Styling der UserForm*/
@@ -782,6 +756,7 @@ body {
 	color: white;
 	background: #ffffff;
 	border-top: solid;
+	border-bottom: solid;
 	border-color: grey;
 	border-width: thin;
 	margin-top: 5%;
@@ -799,7 +774,74 @@ body {
 	border-color: grey;
 	border-width: thin;
 	width: 100%;
-}	
+}
+
+/*Styling SpielplaneintragButtons*/	
+
+.bearbeitenButton.gwt-Button{
+	width: 100%;
+	margin: 5px;
+	padding-left: 1em;
+	padding-right: 1em;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;	
+}
+
+.spielplaneintragSpeichernButton.gwt-Button {
+	width: 100%;
+	padding-left: 1em;
+	padding-right: 1em;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.spielplaneintragLoeschenButton.gwt-Button{
+	width: 100%;
+	margin: 5px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background: #ff3860;
+	color: #fff;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;
+
 
 
 }

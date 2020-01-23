@@ -98,7 +98,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		stadtTextBox.addStyleName("formularTextBox");
 
 		kinokettenListBox.setSize("180px", "25px");
-
+		
+		nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
+		strasseTextBox.getElement().setPropertyString("placeholder", "Straße eingeben");
+		hnrTextBox.getElement().setPropertyString("placeholder", "Hausnummer eingeben");
+		plzTextBox.getElement().setPropertyString("placeholder", "PLZ eingeben");
+		stadtTextBox.getElement().setPropertyString("placeholder", "Stadt eingeben");
+		
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
 
