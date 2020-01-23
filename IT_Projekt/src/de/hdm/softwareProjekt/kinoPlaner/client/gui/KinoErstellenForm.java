@@ -204,7 +204,7 @@ public class KinoErstellenForm extends VerticalPanel {
 			// TODO Auto-generated method stub
 			String kinoketteName = kinokettenListBox.getSelectedValue();
 
-			if (kinoketteName != "Keine Auswahl") {
+			if (kinoketteName.equals("Keine Auswahl")) {
 				administration.getKinoketteByName(kinoketteName, new KinoketteByNameCallback());
 			} else {
 				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
@@ -226,7 +226,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 
 			String kinoketteName = kinokettenListBox.getSelectedValue();
-			if (kinoketteName != "Keine Auswahl") {
+			if (kinoketteName.equals("Keine Auswahl")) {
 				administration.getKinoketteByName(kinoketteName, new AenderungKinoketteByNameCallback());
 			} else {
 				kino.setName(nameTextBox.getText());

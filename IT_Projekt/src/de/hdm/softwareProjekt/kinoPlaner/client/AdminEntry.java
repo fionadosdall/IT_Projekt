@@ -23,7 +23,7 @@ public class AdminEntry implements EntryPoint {
 	
 	
 	Header header = new Header();
-	Navigator navigator = new Navigator();
+
 	Footer footer = new Footer();
 	AdminDashboardForm home = new AdminDashboardForm();
 	
@@ -51,8 +51,8 @@ public class AdminEntry implements EntryPoint {
 		 */
 		@Override
 		public void onFailure(Throwable caught) {
-			kinoplaner.erstellenAnwender("Hansi Test", "testmail@test.de", new AnwenderErstellenCallback());
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 		
 		
@@ -64,7 +64,7 @@ public class AdminEntry implements EntryPoint {
 
 		@Override
 		public void onSuccess(Anwender result) {
-			if (result.getId() == 1) {
+			if (result != null) {
 				kinoplaner.setAnwender(result, new SetAnwenderCallback());
 				aktuellerAnwender.setAnwender(result);
 			}else {
@@ -80,7 +80,8 @@ public class AdminEntry implements EntryPoint {
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert("Initilanwender konnte nicht erstellt werden" + caught.getMessage());
-			
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 		}
 
 		@Override
@@ -97,7 +98,8 @@ public class AdminEntry implements EntryPoint {
 
 		@Override
 		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
 			
 		}
 		
@@ -110,7 +112,6 @@ public class AdminEntry implements EntryPoint {
 			RootPanel.get("header").add(header);
 			RootPanel.get("details").add(home);
 			RootPanel.get("footer").add(footer);
-			
 		}
 		
 	}

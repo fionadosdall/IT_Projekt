@@ -74,7 +74,7 @@ public class UmfrageoptionMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
-							+ "FROM Umfrageoption" + " WHERE uoName = '" + name + "' ORDER BY uoName");
+							+ "FROM umfrageoption" + " WHERE uoName = '" + name + "' ORDER BY uoName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt
@@ -118,7 +118,7 @@ public class UmfrageoptionMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT uoName FROM Umfrageoption" + " WHERE uoName = '" + name + "'");
+					.executeQuery("SELECT uoName FROM umfrageoption" + " WHERE uoName = '" + name + "'");
 
 			if (resultset.next()) {
 				return false;
@@ -145,7 +145,7 @@ public class UmfrageoptionMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Umfrageoptionen ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(uoId) AS maxId " + "FROM Umfrageoption");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(uoId) AS maxId " + "FROM umfrageoption");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				umfrageoption.setId(resultset.getInt("maxId") + 1);
@@ -153,7 +153,7 @@ public class UmfrageoptionMapper {
 
 				// Jetzt wird die Id tatsächlich eingefügt:
 				stmt.executeUpdate(
-						"INSERT INTO Umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, voteErgebnis)"
+						"INSERT INTO umfrageoption (uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, voteErgebnis)"
 								+ " VALUES(" + umfrageoption.getId() + ", '" + umfrageoption.getName() + "', "
 								+ umfrageoption.getUmfrageId() + ", " + umfrageoption.getVorstellungsId() + ","
 								+ umfrageoption.getVoteErgebnis() + ")");
@@ -183,7 +183,7 @@ public class UmfrageoptionMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Umfrageoption SET " + "uoName= '" + umfrageoption.getName() + "', "
+			stmt.executeUpdate("UPDATE umfrageoption SET " + "uoName= '" + umfrageoption.getName() + "', "
 					+ "umfrageoption_vorstellung_Id='" + umfrageoption.getVorstellungsId() + "',"
 					+ "voteErgebnis='" + umfrageoption.getVoteErgebnis() + "' WHERE uoId="
 					+ umfrageoption.getId());
@@ -210,7 +210,7 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Umfrageoption " + "WHERE uoId=" + umfrageoption.getId());
+			stmt.executeUpdate("DELETE FROM umfrageoption " + "WHERE uoId=" + umfrageoption.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -240,7 +240,7 @@ public class UmfrageoptionMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
-							+ "FROM Umfrageoption" + " WHERE umfrageoption_umfrage_Id=" + umfrage.getId()
+							+ "FROM umfrageoption" + " WHERE umfrageoption_umfrage_Id=" + umfrage.getId()
 							+ " ORDER BY uoName");
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Umfrageoption-Objekt
@@ -279,7 +279,7 @@ public class UmfrageoptionMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum FROM Umfrageoption"
+					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum FROM umfrageoption"
 							+ " WHERE uoId=" + id + " ORDER BY umfrageoption_vorstellung_Id");
 			// Prüfe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -320,7 +320,7 @@ public class UmfrageoptionMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT uoId, uoName, umfrageoption_umfrage_Id, umfrageoption_vorstellung_Id, erstellDatum "
-							+ "FROM Umfrageoption" + " WHERE umfrageoption_vorstellung_Id=" + vorstellung.getId()
+							+ "FROM umfrageoption" + " WHERE umfrageoption_vorstellung_Id=" + vorstellung.getId()
 							+ " ORDER BY uoName");
 
 			while (resultset.next()) {

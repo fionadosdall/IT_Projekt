@@ -2,6 +2,8 @@ package de.hdm.softwareProjekt.kinoPlaner.server.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import com.google.appengine.api.utils.SystemProperty;
 /**
  * Hier wird die Verbindung zu unserer Datenbank verwaltet. Es kann nur auf
  * unsere festgelegte Datenbank zugegriffen werden (Singleton-Eigenschaft)
@@ -22,9 +24,10 @@ import java.sql.DriverManager;
 	 * ansprechen können.
 	 */
 	
-		//	private static String googleURL = "jdbc:google:mysql://34.89.183.164:3306/itprojekt?user=projekt_19&password=";
-		private static String localURL = "jdbc:mysql://localhost:3306/itprojekt?user=root&password=H1lfig3r!";
-	
+		private static String googleURL = "jdbc:google:mysql://it-projekt-2020:europe-west3:info-projekt/itProjektDB?user=projekt_19&password=password";
+		private static String localURL = "jdbc:mysql://127.0.0.1:3307/itprojekt?user=root&password=MyNewPass";
+
+
 	/**
 	 * Diese statische Methode wird von allen Mappern aufgerufen:
 	 * <code>DBConnection.connection()</code>. Diese Methode ist Grund für die
@@ -43,18 +46,18 @@ import java.sql.DriverManager;
 		if (con == null) {
 			String url = null;
 			try {
-	/**			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+			if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
                     // Load the class that provides the new
                     // "jdbc:google:mysql://" prefix.
                     Class.forName("com.mysql.jdbc.GoogleDriver");
                    url = googleURL;
 				} else {
-	*/		
+	
 					// Local MySQL instance to use during development.
 						Class.forName("com.mysql.jdbc.Driver");
 						url = localURL; 
 					
-						
+				}	
 				
 		/**
 		 * Jetzt kann der DriverManager die Verbindung mit Hilfe der beiden angegebenen 

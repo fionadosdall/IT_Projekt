@@ -153,7 +153,7 @@ public class FilmMapper {
 				// Jetzt wird die Id tats�chlich eingef�gt:
 				stmt.executeUpdate(
 
-						"INSERT INTO Film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)" + " VALUES("
+						"INSERT INTO film (fId, fName, fBeschreibung, bewertung, film_anwender_Id)" + " VALUES("
 								+ film.getId() + ", '" + film.getName() + "', '" + film.getBeschreibung() + "', '"
 								+ film.getBewertung() + "', " + film.getBesitzerId() + ")");
 

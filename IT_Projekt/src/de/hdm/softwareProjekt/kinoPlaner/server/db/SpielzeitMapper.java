@@ -73,7 +73,7 @@ public class SpielzeitMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum"
-					+ "FROM Spielzeit" + " WHERE szName = '" + name + "' ORDER BY szName");
+					+ "FROM spielzeit" + " WHERE szName = '" + name + "' ORDER BY szName");
 
 			/**
 			 * Für jeden Eintrag im Suchergebnis wird jetzt ein Spielzeit-Objekt erstellt
@@ -116,7 +116,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet resultset = stmt.executeQuery("SELECT szName FROM Spielzeit" + " WHERE szName= '"
+			ResultSet resultset = stmt.executeQuery("SELECT szName FROM spielzeit" + " WHERE szName= '"
 					+ spielzeit.getName() + "' AND NOT szId= '" + spielzeit.getId() + "'");
 
 			if (resultset.next()) {
@@ -144,14 +144,14 @@ public class SpielzeitMapper {
 			 * Im Folgenden: Überprüfung, welches die höchste Id der schon bestehenden
 			 * Spielzeiten ist.
 			 */
-			ResultSet resultset = stmt.executeQuery("SELECT MAX(szId) AS maxId " + "FROM Spielzeit");
+			ResultSet resultset = stmt.executeQuery("SELECT MAX(szId) AS maxId " + "FROM spielzeit");
 			if (resultset.next()) {
 				// Wenn die höchste Id gefunden wurde, wird eine neue Id mit +1 höher erstellt
 				spielzeit.setId(resultset.getInt("maxId") + 1);
 				stmt = con.createStatement();
 
 				// Jetzt wird die Id tatsächlich eingefügt:
-				stmt.executeUpdate("INSERT INTO Spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" + " VALUES("
+				stmt.executeUpdate("INSERT INTO spielzeit (szId, szName, Zeit, spielzeit_anwender_Id)" + " VALUES("
 						+ spielzeit.getId() + ", '" + spielzeit.getName() + "', '" + spielzeit.dateToString() + "', "
 						+ spielzeit.getBesitzerId() + ")");
 			}
@@ -180,7 +180,7 @@ public class SpielzeitMapper {
 			/**
 			 * Update wird in die Datenbank eingetragen.
 			 */
-			stmt.executeUpdate("UPDATE Spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
+			stmt.executeUpdate("UPDATE spielzeit SET " + "szName= '" + spielzeit.getName() + "' , "
 					+ "spielzeit_anwender_Id= '" + spielzeit.getBesitzerId() + "' , " + "zeit= '"
 					+ spielzeit.dateToString() + "' WHERE szId=" + spielzeit.getId());
 		} catch (SQLException e2) {
@@ -205,7 +205,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM Spielzeit " + "WHERE szId=" + spielzeit.getId());
+			stmt.executeUpdate("DELETE FROM spielzeit " + "WHERE szId=" + spielzeit.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -228,7 +228,7 @@ public class SpielzeitMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt.executeQuery(
-					"SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit" + " ORDER BY zeit");
+					"SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit" + " ORDER BY zeit");
 
 			while (resultset.next()) {
 				Spielzeit sz = new Spielzeit();
@@ -269,7 +269,7 @@ public class SpielzeitMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet resultset = stmt
-					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit"
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit"
 							+ " WHERE spielzeit_anwender_Id=" + anwender.getId() + " ORDER BY zeit");
 
 			while (resultset.next()) {
@@ -305,7 +305,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit"
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit"
 							+ " WHERE szId=" + id + " ORDER BY zeit");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
@@ -329,7 +329,7 @@ public class SpielzeitMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet resultset = stmt
-					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM Spielzeit"
+					.executeQuery("SELECT szId, szName, spielzeit_anwender_Id, zeit, erstellDatum FROM spielzeit"
 							+ " WHERE szName='" + name + "' ORDER BY zeit");
 			// Pr�fe ob das geklappt hat, also ob ein Ergebnis vorhanden ist:
 			if (resultset.next()) {
