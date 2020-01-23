@@ -26,6 +26,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
+
+/*
+ * Klasse stellt das Formular um die Kinoketten anzuzeigen bereit
+ */
 public class MeineKinokettenForm extends VerticalPanel{
 	
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
@@ -127,6 +131,10 @@ public class MeineKinokettenForm extends VerticalPanel{
 
 	/*** CLickHandler ***/
 	
+	/*
+	 * CLickHandler um eine Kinokette auszuwählen
+	 */ 
+	
 private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	
 
@@ -150,6 +158,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 }
 
 	
+/*
+ * ClickHandler um eine Kinokette zu erstellen
+ */
 
 	private class KinoketteErstellenClickHandler implements DoubleClickHandler {
 
@@ -163,6 +174,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		
 }
 	
+	/*
+	 * ClickHandler um eine Kinokette zu bearbeiten
+	 */
 	private class KinoketteBearbeitenClickHandler implements ClickHandler{
 
 		@Override
@@ -179,6 +193,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		
 	}
 	
+	/*
+	 * ClickHandler um eine Kinokette zu löschen
+	 */
 	
 	private class KinoketteLoeschenClickHandler implements ClickHandler{
 
@@ -195,7 +212,9 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 	
 	/***Callbacks***/
 	
-	
+	/*
+	 * Callback für die Abfrage ob die Kinoketten-Instanz zu löschen
+	 */
 	
 	private class KinoketteLoeschenCallback implements AsyncCallback<Void> {
 
@@ -213,6 +232,10 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		
 	}
 	
+	/*
+	 * Callback für die Abfrae das ausgewählte KinokettenObjekt mit dem Namen zu sucehn
+	 * 
+	 */
 	
 	private class SucheKinokettenByAnwenderCallback implements AsyncCallback<ArrayList<Kinokette>>{
 

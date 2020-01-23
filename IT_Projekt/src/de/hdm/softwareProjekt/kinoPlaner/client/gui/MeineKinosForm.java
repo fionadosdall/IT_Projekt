@@ -22,6 +22,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
+
+/*
+ * Klasse stellt das Formular bereit um die Kinos anzuzeigen
+ */
 public class MeineKinosForm extends VerticalPanel {
 	
 	
@@ -134,6 +138,10 @@ public class MeineKinosForm extends VerticalPanel {
 	/*CLickHandler*/
 	
 	
+	
+	/*
+	 * ClickHandler um ein Kino auzuwählen
+	 */
 	private class KinoAuswaehlenClickHandler implements DoubleClickHandler {
 		private Kino kino;
 
@@ -151,6 +159,10 @@ public class MeineKinosForm extends VerticalPanel {
 		
 	}
 	
+	/*
+	 * ClickHandler um ein Kino zu erstellen
+	 */
+	
 	private class KinoErstellenClickHandler implements DoubleClickHandler {
 
 		@Override
@@ -163,6 +175,10 @@ public class MeineKinosForm extends VerticalPanel {
 		
 		
 	}
+	
+	/*
+	 * ClickHandler um ein Kino zu bearbeiten
+	 */
 	
 	private class KinoBearbeitenClickHandler implements ClickHandler{
 
@@ -182,6 +198,13 @@ public class MeineKinosForm extends VerticalPanel {
 	
 	/*Callbacks*/
 	
+	
+	/**
+	 * Callback für Abfrage ein ausgewähltes Kino-Objekt mit dem Anwender
+	 * @author fiona
+	 *
+	 */
+	
 	private class SucheKinosByAnwenderCallback  implements AsyncCallback <ArrayList<Kino>> {
 
 		@Override
@@ -200,6 +223,10 @@ public class MeineKinosForm extends VerticalPanel {
 		
 	}
 	
+	
+	/*
+	 * Callback zur Abfrage eines Kinoketten-Objekts mit der Id dess KinokettenObjekts
+	 */
 	private class KinoketteByIdCallback implements AsyncCallback<Kinokette> {
 
 		@Override
@@ -214,6 +241,9 @@ public class MeineKinosForm extends VerticalPanel {
 		
 	}
 	
+	/*
+	 * Abfrage um eine Kino-Instanz aus dem System zu löschen
+	 */
 	private class KinoLoeschenCallback implements AsyncCallback<Kinokette> {
 
 		@Override

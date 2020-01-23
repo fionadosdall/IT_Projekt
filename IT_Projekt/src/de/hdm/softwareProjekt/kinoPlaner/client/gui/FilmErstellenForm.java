@@ -225,7 +225,9 @@ public class FilmErstellenForm extends PopupPanel {
 		}
 
 	}
-
+/*
+ * ClickHandler um eine Film Instanz zu löschen
+ */
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
@@ -273,6 +275,10 @@ public class FilmErstellenForm extends PopupPanel {
 
 	}
 
+	
+	/*
+	 * Callback um eine Film-Instanz aus dem System zu löschen
+	 */
 	private class FilmLoeschenCallback implements AsyncCallback<Film> {
 
 		@Override

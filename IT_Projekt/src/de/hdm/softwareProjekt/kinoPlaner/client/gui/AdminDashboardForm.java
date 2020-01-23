@@ -8,6 +8,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+
+/*
+ * Klasse dient der Darstellung des Dashboards des Admins
+ */
 public class AdminDashboardForm extends VerticalPanel {
 	
 	
@@ -65,7 +69,9 @@ public class AdminDashboardForm extends VerticalPanel {
 		
 		/*ClickHandler */
 		
-		
+		/*
+		 * ClickHandler um die Auswahl zu löschen
+		 */
 		class AuswahlLoeschenClickHandler implements ClickHandler {
 
 			@Override
@@ -77,6 +83,9 @@ public class AdminDashboardForm extends VerticalPanel {
 			
 			
 		}
+		/*
+		 * ClickHandler um die Auswahl zu bearbeiten
+		 */
 		
 		private class AuswahlBearbeitenClickHandler implements ClickHandler {
 

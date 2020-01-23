@@ -32,6 +32,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+/*
+ * Die Klasse stellt das Formular für das Anzeigen einer Gruppe
+ */
 public class GruppeAnzeigenForm extends FlowPanel {
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -104,11 +107,18 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	private CellList<Umfrage> umfragenCellList;
 	private ListDataProvider<Umfrage> dataProviderUmfrage = new ListDataProvider<Umfrage>();
 
+	/*
+	 * Konstruktor
+	 */
 	public GruppeAnzeigenForm(Gruppe gruppe) {
 		this.gruppe = gruppe;
 	}
 
 	public void onLoad() {
+		
+		/*
+		 * Style Namen vergeben
+		 */
 
 		this.addStyleName("detailscontainer");
 		detailsboxlöschen.addStyleName("detailsboxlöschen");

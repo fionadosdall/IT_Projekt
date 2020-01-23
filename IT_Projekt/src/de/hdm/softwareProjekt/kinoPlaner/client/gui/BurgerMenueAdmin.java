@@ -80,7 +80,9 @@ public class BurgerMenueAdmin extends FlowPanel{
 
 	}
 
-	
+	/*
+	 * ClickHandler um ein Kino zu erstellen
+	 */
 	private class KinoErstellenClickHandler implements ClickHandler {
 
 		@Override
@@ -94,6 +96,10 @@ public class BurgerMenueAdmin extends FlowPanel{
 		}
 
 	}
+	
+	/*
+	 * ClickHandler um eine Kinokette zu erstellen
+	 */
 
 	private class KinoketteErstellenClickHandler implements ClickHandler {
 
@@ -109,6 +115,9 @@ public class BurgerMenueAdmin extends FlowPanel{
 
 	}
 	
+	/*
+	 * ClickHandler um einen Spielplan zu erstellen
+	 */
 	
 	private class SpielplanErstellenClickHandler implements ClickHandler {
 
