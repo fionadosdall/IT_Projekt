@@ -83,6 +83,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		nameTextBox.addStyleName("formularTextBox");
 		sitzTextBox.addStyleName("formularTextBox");
 		websiteTextBox.addStyleName("formularTextBox");
+		
+		nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
+		sitzTextBox.getElement().setPropertyString("placeholder", "Sitz eingeben");
+		websiteTextBox.getElement().setPropertyString("placeholder", "Website eingeben");
 
 		/* Zusammensetzen der Widgets */
 

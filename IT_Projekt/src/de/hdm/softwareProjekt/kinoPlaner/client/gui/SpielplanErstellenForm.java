@@ -64,6 +64,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	private Button hinzufuegenButton = new Button("Vorstellung Hinzufügen");
 	private Button entfernenButton = new Button("Vorstellung entfernen");
 	private Button speichernButton = new Button("Speichern");
+	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button loeschenButton = new Button("Löschen");
 
 	private ArrayList<Kino> kinos = new ArrayList<Kino>();
@@ -119,12 +120,12 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		inhaltObenPanel.addStyleName("inhaltSpielplanPanel");
 		inhaltUntenPanel.addStyleName("inhaltSpielplanPanel");
 		administrationPanel.addStyleName("detailsunten");
-		// inhaltUntenLinksPanel.addStyleName("splitPanel");
-		// inhaltUntenRechtsPanel.addStyleName("splitPanel");
+		
 
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		spielplanformLabel.addStyleName("formHeaderLabel");
 		spielplanBearbeitenFormLabel.addStyleName("formHeaderLabel");
 		spielplanNameLabel.addStyleName("textLabel");
@@ -175,18 +176,20 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		inhaltUntenPanel.add(vorstellungenCellTable);
 		this.add(inhaltUntenPanel);
 
-		detailsunten.add(speichernButton);
-		this.add(detailsunten);
-		
 		if(spielplan!=null) {
 			detailsunten.add(loeschenButton);
-			
+			detailsunten.add(aenderungSpeichernButton);	
+		}else {
+			detailsunten.add(speichernButton);	
 		}
-			
+		
+		this.add(detailsunten);
+
 
 
 		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new LoeschenClickHandler());
 
 	}

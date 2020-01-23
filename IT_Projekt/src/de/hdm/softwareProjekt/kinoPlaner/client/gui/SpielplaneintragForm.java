@@ -42,6 +42,7 @@ public class SpielplaneintragForm extends PopupPanel {
 	private Label spielzeitLabel = new Label("Spielzeit");
 
 	private Button speichernButton = new Button("Speichern");
+	private Button aenderungSpeichernButton = new Button("Änderung speichern");
 	private Button closeButton = new Button("Schließen");
 	private Button filmErstellenButton = new Button("Neuen Film erstellen");
 	private Button spielzeitErstellenButton = new Button("Neue Spielzeit erstellen");
@@ -105,9 +106,14 @@ public class SpielplaneintragForm extends PopupPanel {
 		obenPanel.addStyleName("popupObenPanel");
 		untenPanel.addStyleName("popupUntenPanel");
 		speichernButton.addStyleName("speichernButton");
+		aenderungSpeichernButton.addStyleName("speichernButton");
 		closeButton.addStyleName("entfernenButton");
-		filmLoeschenButton.addStyleName("entfernenButton");
-		spielzeitLoeschenButton.addStyleName("entfernenButton");
+		filmLoeschenButton.addStyleName("spielplaneintragLoeschenButton");
+		spielzeitLoeschenButton.addStyleName("spielplaneintragLoeschenButton");
+		filmErstellenButton.addStyleName("spielplaneintragSpeichernButton");
+		filmBearbeitenButton.addStyleName("bearbeitenButton");
+		spielzeitErstellenButton.addStyleName("spielplaneintragSpeichernButton");
+		spielzeitBearbeitenButton.addStyleName("bearbeitenButton");
 
 		spielzeitListBox.setSize("180px", "25px");
 		filmListBox.setSize("180px", "25px");
@@ -140,12 +146,18 @@ public class SpielplaneintragForm extends PopupPanel {
 
 		popupPanel.add(spielplaneintragGrid);
 
-		untenPanel.add(speichernButton);
+		if(vorstellung != null) {
+			untenPanel.add(aenderungSpeichernButton);
+		}else {
+			untenPanel.add(speichernButton);
+		}
+		
 
 		popupPanel.add(untenPanel);
 
 		closeButton.addClickHandler(new CloseClickHandler());
 		speichernButton.addClickHandler(new SpeichernClickHandler());
+		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		filmErstellenButton.addClickHandler(new NeuerFilmClickHandler());
 		spielzeitErstellenButton.addClickHandler(new NeueSpielzeitClickHandler());
 		filmBearbeitenButton.addClickHandler(new FilmBearbeitenClickHandler());
