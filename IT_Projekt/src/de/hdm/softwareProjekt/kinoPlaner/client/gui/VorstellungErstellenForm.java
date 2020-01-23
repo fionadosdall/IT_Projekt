@@ -292,9 +292,9 @@ public class VorstellungErstellenForm extends FlowPanel {
 	}
 	
 	
-	/****
+	/*********************************************************
 	 * CLICKHANDLER
-	 */
+	 *******************************************************/
 
 	/*
 	 * Hier kann eine Film-Instanz bei der Erstellung einer

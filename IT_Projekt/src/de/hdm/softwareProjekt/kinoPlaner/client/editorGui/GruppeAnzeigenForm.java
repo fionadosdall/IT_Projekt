@@ -162,6 +162,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * Vor dem Löschen einer Gruppe, soll der Nutzer über eine Dialogbox
+	 * noch einmal um Bestätigung des Löschvorgangs gebeten werden
+	 */
 
 	private class GruppeLoeschenDialogBox extends DialogBox {
 
@@ -196,6 +200,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 	}
 
+	/*
+	 * ClickHandler zur Lösch-Bestätigung der Gruppe
+	 */
 	private class GruppeLoeschenBestaetigenClickHandler implements ClickHandler {
 		
 		private GruppeLoeschenDialogBox gruppeLoeschenDB;
@@ -212,6 +219,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * ClickHandler um das Löschen der Gruppe abzubrechen
+	 */
 
 	private class GruppeLoeschenAbbrechenClickHandler implements ClickHandler {
 		
@@ -228,6 +238,12 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * Wenn der Nutzer die angezeigte Gruppe löschen möchte, kann er dies über
+	 * den Lösch-button tun. Dabei öffnet sich automatisch die DialogBox. Die DialogBox bitten den 
+	 * Nutzer erneut zu bestätigten, dass er die Gruppe löschen möchte.
+	 */ 
 
 	private class GruppeLoeschenClickHandler implements ClickHandler {
 
@@ -239,6 +255,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	/*
+	 * ClickHandler um eine Umfrage zu erstellen
+	 */
 
 	private class UmfrageErstellenClickHandler implements ClickHandler {
 
@@ -251,6 +270,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * CLickHandler um eine Umfrage zu bearbeiten
+	 */
 
 	private class UmfrageBearbeitenClickHandler implements ClickHandler {
 
@@ -263,6 +286,17 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/******************************************************
+	 * CALLBACKS
+	 * *****************************************************
+	 * 
+	 *
+	 */
+	
+	/*
+	 * Private Instanz um eine Gruppen-Instanz aus dem System zu bekommen
+	 */
 
 	private class GruppeLoeschenCallback implements AsyncCallback<Void> {
 
@@ -282,6 +316,11 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * Private Klasse um alle Gruppenitglieder-Instanzen, aufgrund der 
+	* der Gruppe aus dem System zu bekommen
+	 */
 
 	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
 
@@ -302,6 +341,11 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
+	
+	/*
+	 * Private Klasse um alle Umfragen-Instanzen, aufgrund der Gruppe
+	 * aus dem System zu bekommen
+	 */
 
 	private class SucheUmfrageByGruppeCallback implements AsyncCallback<ArrayList<Umfrage>> {
 

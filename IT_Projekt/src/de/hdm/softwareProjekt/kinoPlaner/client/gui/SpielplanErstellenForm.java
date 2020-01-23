@@ -192,6 +192,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		neuerSpielplaneintrag.hide();
 	}
 	
+	/*
+	 * Vor dem Löschen eines Spielplans soll der Nutzer über eine Dialogbox
+	 * nochmal um Bestätigung des Löschvorgangs gebeten werden
+	 */ 
 	private class SpielplanLoeschenDialogBox extends DialogBox {
 		
 		private VerticalPanel verticalPanel = new VerticalPanel();
@@ -227,6 +231,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		
 	}}
 	
+	/*
+	 * ClickHandler zur Lösch-Bestätigung des Spielplans
+	 */
+	
 	
 	private class SpielplanLoeschenBestaetigenClickHandler implements ClickHandler {
 
@@ -244,6 +252,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 		
 	}
+	
+	/*
+	 * ClickHandler um das Löschen des Spielplans abzubrechen
+	 */
 	
 	private class SpielplanLoeschenAbbrechenClickHandler implements ClickHandler {
 
@@ -264,6 +276,14 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	/**************************
 	 * CLICKHANDLER
+	 * 
+	 ****************************************************
+	 */
+	
+	/*
+	 * Wenn der Nutzer den angezeigten Spielplan löschen möchte, kann er dies über den
+	 * Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Die Dialogbox bittet
+	 * den Nutzer, erneut zu bestätigten, dass er die Umfrage löschen möchte 
 	 */
 	private class LoeschenClickHandler implements ClickHandler {
 
@@ -276,6 +296,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		
 	}
 	
+	/*
+	 * Hier kann eine Spielplaneintrags-Instanz dem Spielplan hinzugefügt
+	 * werden
+	 */
 	
 	private class SpielplaneintragHinzufuegenClickHandler implements ClickHandler {
 
@@ -290,6 +314,11 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * Hier kann die erstellte Spielplan-Instanz gespeichert werden
+	 * 
+	 */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -302,8 +331,16 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 
-	/*****
+	/****************************************
 	 * CALLBACKS
+	 * ********************************************
+	 */
+	
+	
+	/*
+	 * Private Klasse um alle Kino-Instanzen, aufgrund eines Namens 
+	 * aus dem System zu bekommen. Ist bei der SpielplanErstellung der Name des Kinos
+	 * bereits vergeben, so gibt das System eine Fehlermeldung aus
 	 */
 
 	private class GetKinoByNameCallback implements AsyncCallback<Kino> {
@@ -381,6 +418,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 	
+	/*
+	 * Pprivate Klasse um  eine ausgewählte Spielplan-Instanz zu löschen
+	 */
+	
 	private class LoeschenSpielplanCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -400,6 +441,9 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		}
 		
 	}
+	/*
+	 * Private Klasse um alle Kino-Instanzen aus dem System zu bekommen
+	 */
 
 	private class KinoCallback implements AsyncCallback<ArrayList<Kino>> {
 
@@ -448,7 +492,9 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	}
 
 
-
+/*
+ * Private Klasse um einen Spielplan im System zu erstellen
+ */
 
 	public class ErstellenSpielplanKinoCallback implements AsyncCallback<Spielplan> {
 
