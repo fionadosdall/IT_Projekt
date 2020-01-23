@@ -128,12 +128,15 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	
 	
 	/***CLickHandler***/
+/*
+ * ClickHandler um einen Spielplan auszuwählen
+ */
 	
-	private class SpielplanAuswaehlenClickHandler implements DoubleClickHandler {
+	class SpielplanAuswaehlenClickHandler implements ClickHandler {
 		private Spielplan spielplan;
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			anzeigen = new MeineSpielplaeneForm();
 			RootPanel.get("details").add(anzeigen);
@@ -150,6 +153,10 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	
 	}
 	
+	/*
+	 * ClickHandler um einen Spielplan zu erstellen
+	 */
+	
 	private class SpielplanErstellenClickHandler implements ClickHandler {
 
 		@Override
@@ -165,6 +172,10 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	}
 	
 	
+	/*
+	 * ClickHandler um einen Spielplan zu bearbeiten
+	 */
+	
 	private class SpielplanBearbeitenClickHandler implements ClickHandler{
 
 		@Override
@@ -178,7 +189,14 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		
 	}
 	
-	/***Callbacks***/
+	/****************************************************
+	 * Callbacks
+	 * ***************************************/
+	
+	/*
+	 * private Klasse um alle Spielplan-Instanzen des Nutzers aus dem System
+	 * zu bekommen
+	 */
 	
 	private class GetSpielplaeneByAnwenderOwnerCallback implements AsyncCallback<ArrayList<Spielplan>> {
 
