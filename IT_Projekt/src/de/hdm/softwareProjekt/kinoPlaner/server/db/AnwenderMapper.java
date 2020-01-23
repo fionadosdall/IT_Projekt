@@ -184,8 +184,7 @@ public class AnwenderMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE anwender SET " + "aName= '" + anwender.getName() + "', " + "gMail= '"
-					+ anwender.getGmail() + "' ," + "erstellDatum= '" + anwender.getErstellDatum() + "' WHERE aId="
-					+ anwender.getId());
+					+ anwender.getGmail()+ "' WHERE aId=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

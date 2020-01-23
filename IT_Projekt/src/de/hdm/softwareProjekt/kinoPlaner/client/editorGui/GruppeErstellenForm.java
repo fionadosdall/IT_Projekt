@@ -73,7 +73,6 @@ public class GruppeErstellenForm extends FlowPanel {
 	private ArrayList<Anwender> anwenderTB = new ArrayList<Anwender>();
 
 	private Button hinzufuegenButton = new Button("Hinzufügen");
-	private Button entfernenButton = new Button("Mitglied entfernen");
 	private Button speichernButton = new Button("Speichern");
 	
 	public interface CellTableResources extends CellTable.Resources {
@@ -161,7 +160,6 @@ public class GruppeErstellenForm extends FlowPanel {
 		mitgliedTB.addStyleName("nameTextBox");
 
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
-		entfernenButton.addStyleName("entfernenButton");
 		speichernButton.addStyleName("speichernButton");
 
 		if (gruppe == null) {
@@ -198,7 +196,6 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsUntenBox.add(detailsBoxUntenMitte);
 		detailsBoxUntenMitte.add(anwenderCellTable);
 		detailsUntenBox.add(detailsBoxUnten);
-		detailsBoxUnten.add(entfernenButton);
 
 		detailsunten.add(speichernBox);
 		speichernBox.add(speichernButton);
