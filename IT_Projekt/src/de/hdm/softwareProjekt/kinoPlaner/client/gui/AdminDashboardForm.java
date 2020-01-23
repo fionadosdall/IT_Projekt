@@ -6,24 +6,27 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class AdminDashboardForm extends VerticalPanel {
 	
 	
-	private HorizontalPanel dashboardboardPanel = new HorizontalPanel();
-	private HorizontalPanel hbPanel = new HorizontalPanel();
+	private VerticalPanel dashboardPanel = new VerticalPanel();
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
 	
-	private HomeBarAdmin hb = new HomeBarAdmin();
-	private MeineKinokettenForm mkkf = new MeineKinokettenForm();
-	private MeineKinosForm mkf = new MeineKinosForm();
-	private MeineSpielplaeneForm mspf = new MeineSpielplaeneForm();
+	private MeineKinokettenForm mkkf;
+	private MeineKinosForm mkf;
+	private MeineSpielplaeneForm mspf;
 	
 	private Label dashboardFormLabel = new Label("Dashboard");
-	private Button loeschenButton = new Button(" Auswahl löschen");
-	private Button bearbeitenButton = new Button("Auswahl bearbeiten");
+	
+	private Button meineKinokettenButton = new Button("Meine Kinoketten verwalten");
+	private Button meineKinosButton = new Button("Meine Kinos verwalten");
+	private Button meineSpielplaeneButton = new Button("Meine Spielpläne verwalten");
+	
+	
 	
 	public void onLoad() {
 		
@@ -33,32 +36,27 @@ public class AdminDashboardForm extends VerticalPanel {
 		this.addStyleName("detailscontainer");
 		
 		dashboardFormLabel.addStyleName("formHeaderLabel");
-		hbPanel.addStyleName("hbPanel");
 		untenPanel.addStyleName("untenPanel");
 		obenPanel.addStyleName("obenPanel");
-			
-		
-		
+		meineKinokettenButton.addStyleName("dashboardButton");
+		meineKinosButton.addStyleName("dashboardButton");
+		meineSpielplaeneButton.addStyleName("dashboardButton");
+		dashboardPanel.addStyleName("dashboardKachelnPanel");
 		
 		/* Widgets werden zusammengebaut */
 		
 		obenPanel.add(dashboardFormLabel);
 		this.add(obenPanel);
-		hbPanel.add(hb);
-		this.add(hbPanel);
 		
-		//dashboardboardPanel.add(mkkf);
-		//dashboardboardPanel.add(mkf);
-		//dashboardboardPanel.add(mspf);
-		//this.add(dashboardboardPanel);
+		dashboardPanel.add(meineKinokettenButton);
+		dashboardPanel.add(meineKinosButton);
+		dashboardPanel.add(meineSpielplaeneButton);
+		this.add(dashboardPanel);
+	
+		meineKinokettenButton.addClickHandler(new MeineKinokettenClickHandler());
+		meineKinosButton.addClickHandler(new MeineKinosClickHandler());
+		meineSpielplaeneButton.addClickHandler(new MeineSpielplaeneClickHandler());
 		
-		//untenPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		//untenPanel.add(loeschenButton);
-		//untenPanel.add(bearbeitenButton);
-		//this.add(untenPanel);
-		
-		loeschenButton.addClickHandler(new AuswahlLoeschenClickHandler());
-		bearbeitenButton.addClickHandler(new AuswahlBearbeitenClickHandler());
 		
 	}
 	
@@ -66,27 +64,43 @@ public class AdminDashboardForm extends VerticalPanel {
 		/*ClickHandler */
 		
 		
-		class AuswahlLoeschenClickHandler implements ClickHandler {
+		private class MeineKinokettenClickHandler implements ClickHandler {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				RootPanel.get("details").clear();
+				mkkf = new MeineKinokettenForm();
+				RootPanel.get("details").add(mkkf);
 			}
 
 			
 			
 		}
 		
-		private class AuswahlBearbeitenClickHandler implements ClickHandler {
+		private class MeineKinosClickHandler implements ClickHandler {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				
+				RootPanel.get("details").clear();
+				mkf = new MeineKinosForm();
+				RootPanel.get("details").add(mkf);
 			}
 
 			
+			
+		}
+		
+		private class MeineSpielplaeneClickHandler implements ClickHandler {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				RootPanel.get("details").clear();
+				mspf = new MeineSpielplaeneForm();
+				RootPanel.get("details").add(mspf);
+			}
 			
 		}
 		
