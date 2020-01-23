@@ -287,7 +287,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	 * dies mit einem Klick auf dem Button machen. Der Nutzer gelangt zur
 	 * VotingAnzeigenForm der Votings
 	 * 
-	 * @author fiona
+	 * 
 	 *
 	 */
 	private class VotingsAnzeigenClickHandler implements ClickHandler {
@@ -327,6 +327,10 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	 * CALLBACKS **********************************************
 	 * 
 	 *
+	 */
+	
+	/*
+	 * private Klasse um eine Umfrage-Instanz zu löschen
 	 */
 
 	private class UmfrageLoeschenCallback implements AsyncCallback<Void> {

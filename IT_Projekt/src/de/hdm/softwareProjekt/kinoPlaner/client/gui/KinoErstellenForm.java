@@ -143,6 +143,11 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/*
+	 * Vor dem Löschen eines Spielplans soll der Nutzer über eine Dialogbox noch
+	 * einmal um Bestätigung des Löschvorgangs gebeten werden
+	 */
+
 	private class KinoLoeschenDialogBox extends DialogBox {
 
 		private VerticalPanel verticalPanel = new VerticalPanel();
@@ -174,7 +179,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 	}
 
-	/* ClickHandler */
+	/**********************************************
+	 * ClickHandler ***************************************************
+	 */
+
+	/*
+	 * ClickHandler um erstellte Kino-Instanz zu speichern
+	 */
 
 	private class SpeichernClickHandler implements ClickHandler {
 
@@ -194,6 +205,10 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 	}
+
+	/*
+	 * ClickHandler um die Änderungen einer Kino-Instanz zu speichern
+	 */
 
 	private class AenderungSpeichernClickHandler implements ClickHandler {
 
@@ -216,6 +231,14 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/***
+	 * Wenn der Nutzer das angezeigte Kino löschen möchte, kann er dies über den
+	 * Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Diese bitten
+	 * den Nutzer, erneut zu bestätigen, dass er die Umfrage löschen möchte
+	 * 
+	 *
+	 */
+
 	private class KinoLoeschenClickHandler implements ClickHandler {
 
 		@Override
@@ -227,6 +250,10 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 	}
+
+	/*
+	 * ClickHandler zur Lösch-Bestätigung des Spielplans
+	 */
 
 	private class LoeschenClickHandler implements ClickHandler {
 
@@ -248,6 +275,9 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/*
+	 * ClickHandler um das Löschen des Kinos abzubrechen
+	 */
 	private class AbbrechenClickHandler implements ClickHandler {
 
 		private KinoLoeschenDialogBox kinoloeschenDB;
@@ -265,7 +295,15 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
-	/* Callback */
+	/*
+	 * *******************************************************
+	 * 
+	 * Callback *************************************************
+	 */
+
+	/*
+	 * private Klasse um eeine Kino-Instanz im System zu erstellen
+	 */
 
 	private class KinoErstellenCallback implements AsyncCallback<Kino> {
 
@@ -292,6 +330,13 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/**
+	 * private Klasse um eine Kino-Instanz zu bearbeiten
+	 * 
+	 * @author fiona
+	 *
+	 */
+
 	private class KinoAendernCallback implements AsyncCallback<Kino> {
 
 		@Override
@@ -316,6 +361,10 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/*
+	 * private Klasse um eine Kino-Instanz aus em System zu löschen
+	 */
+
 	private class KinoLoeschenCallback implements AsyncCallback<Void> {
 
 		@Override
@@ -335,6 +384,9 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/*
+	 * private Klasse um alle Kinoketten aus dem System zu bekommen
+	 */
 	private class KinokettenCallback implements AsyncCallback<ArrayList<Kinokette>> {
 
 		@Override
@@ -355,17 +407,15 @@ public class KinoErstellenForm extends VerticalPanel {
 			if (result.size() != 0) {
 
 				for (Kinokette kk : result) {
-			
+
 					kinokettenListBox.addItem(kk.getName());
 
 					if (kino != null) {
 						if (kk.getId() == kino.getKinokettenId()) {
 							indexSelected = counter;
-				
 
 						} else {
 							counter++;
-				
 
 						}
 					}
@@ -385,6 +435,11 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 	}
+
+	/*
+	 * private KLasse um alle Kinoketten-Instanzen aufgrund des Names der Kinokette,
+	 * aus dem System zu bekommen
+	 */
 
 	private class KinoketteByNameCallback implements AsyncCallback<Kinokette> {
 
@@ -408,6 +463,12 @@ public class KinoErstellenForm extends VerticalPanel {
 
 	}
 
+	/*
+	 * Callback Klasse zur Abfrage des ausgewählten Kinokettenonjekts mit dem Namen,
+	 * um dann am Kino änderungen vorzunehmen und dabei die richtige Kinokettenid zu
+	 * verwenden
+	 */
+
 	private class AenderungKinoketteByNameCallback implements AsyncCallback<Kinokette> {
 
 		public void onFailure(Throwable caught) {
@@ -416,8 +477,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		}
 
 		public void onSuccess(Kinokette result) {
+			if (result != null) {
+				kino.setKinokettenId(result.getId());
+			} else {
+				kino.setKinokettenId(0);
+			}
 			kino.setName(nameTextBox.getText());
-			kino.setKinokettenId(result.getId());
+
 			kino.setStrasse(stadtTextBox.getText());
 			kino.setHausnummer(hnrTextBox.getText());
 			kino.setPlz(Integer.parseInt(plzTextBox.getText()));
