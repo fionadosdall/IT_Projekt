@@ -14,6 +14,10 @@ import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
+
+/*
+ * Klasse stellt das Formular um Einstellungen zu bearbeiten
+ */
 public class EinstellungenBearbeitenForm extends VerticalPanel {
 	
 	private HorizontalPanel obenPanel = new HorizontalPanel();
@@ -33,6 +37,10 @@ public class EinstellungenBearbeitenForm extends VerticalPanel {
 	private Grid einstellungenGrid = new Grid(2, 2);
 	
 public void onLoad() {
+	
+	/*
+	 * Vergeben der Style-Namen
+	 */
 		
 		einstellungenFormLabel.setStylePrimaryName("FormHeaderLabel");
 		nicknameLabel.setStylePrimaryName("textLabel");
@@ -56,6 +64,11 @@ public void onLoad() {
 		this.add(untenPanel);
 	}
 	
+
+/*
+ * ClickHandler um die Einstellungen wie Nickname, Email etc des Anwenders zu s
+ * speichern
+ */
 private class SpeichernClickHandler implements ClickHandler {
 
 	@Override
@@ -69,19 +82,23 @@ private class SpeichernClickHandler implements ClickHandler {
 
 	
 /* Callback */
+
+/*
+ * Callback um die Einstellungen des Anwenders zu bearbeiten 
+ */
 			
 private class EinstellungenBearbeitenCallback implements AsyncCallback<Anwender> {
 
 	@Override
 	public void onFailure(Throwable caught) {
 		// TODO Auto-generated method stub
-		Systemmeldung.anzeigen("Die Änderungen konnten leider nicht gespeichert werden.");
+		Systemmeldung.anzeigen("Die Aenderungen konnten leider nicht gespeichert werden.");
 	}
 
 	@Override
 	public void onSuccess(Anwender result) {
 		// TODO Auto-generated method stub
-		Systemmeldung.anzeigen("A&auml;nderungen gespeichert.");
+		Systemmeldung.anzeigen("Aenderungen gespeichert.");
 	}
 	
 }

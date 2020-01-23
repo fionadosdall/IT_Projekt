@@ -21,6 +21,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
+
+/*
+ * Klasse stellt das Formular um ein Kino zu erstellen bereit
+ */
 public class KinoErstellenForm extends VerticalPanel {
 
 	private HorizontalPanel obenPanel = new HorizontalPanel();
@@ -144,7 +148,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 
 	/*
-	 * Vor dem Löschen eines Spielplans soll der Nutzer über eine Dialogbox noch
+	 * Vor dem Löschen eines Kinos soll der Nutzer über eine Dialogbox noch
 	 * einmal um Bestätigung des Löschvorgangs gebeten werden
 	 */
 
@@ -234,7 +238,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	/***
 	 * Wenn der Nutzer das angezeigte Kino löschen möchte, kann er dies über den
 	 * Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Diese bitten
-	 * den Nutzer, erneut zu bestätigen, dass er die Umfrage löschen möchte
+	 * den Nutzer, erneut zu bestätigen, dass er das Kino löschen möchte
 	 * 
 	 *
 	 */
@@ -252,7 +256,7 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 
 	/*
-	 * ClickHandler zur Lösch-Bestätigung des Spielplans
+	 * ClickHandler zur Lösch-Bestätigung des Kinos
 	 */
 
 	private class LoeschenClickHandler implements ClickHandler {

@@ -18,6 +18,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
+/*
+ * Klasse stellt das Formular um eine Kinokette zu erstellen bereit
+ */
 public class KinoketteErstellenForm extends VerticalPanel {
 
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
@@ -117,6 +120,11 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 		setBearbeiten(kk);
 	}
+	
+	/*
+	 * Vor dem Löschen einer Kinokette, soll der Nutzer über eine Dialogbox
+	 * noch einmal um Bestätigung des Löschvorgangs gebenten werden
+	 */
 
 	private class KinoketteLoeschenDialogBox extends DialogBox {
 
@@ -149,7 +157,14 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 	}
 
-	/*** ClickHandler ***/
+	/***************************************** 
+	 * ClickHandler
+	 * ****************************************
+	 *  ***/
+	
+	/*
+	 * CLickHandler um eine Kinoketten-Instanz zu speichern
+	 */
 
 	public class SpeichernClickHandler implements ClickHandler {
 
@@ -162,6 +177,13 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * Wenn der Nutzer die angezeigte Kinokette löschen möchte, kann er dies über
+	 * den Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Diese
+	 * bittet den Nutzer, erneut zu bestätigen, dass er die Kinokette löschen 
+	 * möchte
+	 */
 
 	private class KinoketteLoeschenClickHandler implements ClickHandler {
 
@@ -173,6 +195,9 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	/*
+	 * ClickHnalder zur Lösch-Bestätigung der Kinokette
+	 */
 
 	private class LoeschenClickHandler implements ClickHandler {
 
@@ -193,6 +218,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * ClickHandler, um das Löschen der Kinokette abzubrechen
+	 */
 
 	private class AbbrechenClickHandler implements ClickHandler {
 
@@ -210,6 +239,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * ClickHandler um Änderungen einer Kinoketten-instanz zu speichern
+	 */
 
 	private class AenderungSpeichernClickHandler implements ClickHandler {
 
@@ -227,7 +260,15 @@ public class KinoketteErstellenForm extends VerticalPanel {
 
 	}
 
-	/* Callback */
+	/**********************************************************
+	 *  Callback 
+	 *  **********************************************
+	 *  */
+	
+	
+	/*
+	 * Callback um eine Kinoketten-Instanz im System zu erstellen
+	 */
 
 	private class KinoketteErstellenCallback implements AsyncCallback<Kinokette> {
 
@@ -251,6 +292,11 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * Callback um  Kinoketten-Instanz zu bearbeiten, und diese Änderugnen im System
+	 * zu speichern
+	 */
 
 	private class AenderungSpeichernCallback implements AsyncCallback<Kinokette> {
 
@@ -273,6 +319,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
+	
+	/*
+	 * Callbakc um eine Kinoketten-Instanz aus dem System zu löschen
+	 */
 
 	private class KinoketteLoeschenCallback implements AsyncCallback<Void> {
 

@@ -28,6 +28,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+/*
+ * Klasse stellt das Formular bereit um einen Spielplan zu erstellen und zu bearbeiten
+ */
 public class SpielplanErstellenForm extends VerticalPanel {
 
 	private int kinoId;
