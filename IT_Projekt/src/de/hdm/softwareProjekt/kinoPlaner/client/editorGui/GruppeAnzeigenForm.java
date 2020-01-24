@@ -36,6 +36,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  * Die Klasse stellt das Formular für das Anzeigen einer Gruppe
  */
 public class GruppeAnzeigenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -223,7 +225,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
+			kinoplaner.loeschen(gruppe, aktuellerAnwender, new GruppeLoeschenCallback());
 			gruppeLoeschenDB.hide();
 
 		}

@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
@@ -35,6 +36,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  *
  */
 public class Header extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -119,9 +122,9 @@ public class Header extends FlowPanel {
 		suchenImage.addClickHandler(new SuchenClickHandler());
 		suchenTextBox.addKeyPressHandler(new SuchenKeyPressHandler());
 
-		kinoplaner.getGruppenByAnwender(new GetGruppenByAnwenderCallback());
-		kinoplaner.getUmfragenByAnwender(new GetUmfragenByAnwenderCallback());
-		kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
+		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new GetGruppenByAnwenderCallback());
+		kinoplaner.getUmfragenByAnwender(aktuellerAnwender, new GetUmfragenByAnwenderCallback());
+		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
 
 	}
 

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 /***
@@ -25,6 +26,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  *
  */
 public class UmfrageAnzeigenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
+	
 	private Umfrage umfrage = null;
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -183,7 +187,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(umfrage, new UmfrageLoeschenCallback());
+			kinoplaner.loeschen(umfrage, aktuellerAnwender, new UmfrageLoeschenCallback());
 			umfrageLoeschenDB.hide();
 
 		}

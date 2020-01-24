@@ -14,7 +14,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 /* Die Klasse stellt das Formular um die Umfragen anzuzeigen
@@ -22,6 +24,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  */
 
 public class ErgebnisseAnzeigenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 	
 	/* 
 	 * Erstellen der Widgets
@@ -65,7 +69,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		p.setStyleName("");
 		bov.setTitel("Meine Ergebnisse");
 
-		kinoplaner.anzeigenVonClosedUmfragen(new AnzeigenVonClosedUmfragenCallback());
+		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
 
 	}
 	

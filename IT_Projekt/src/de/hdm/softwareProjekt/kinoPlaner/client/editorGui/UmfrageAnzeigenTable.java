@@ -29,8 +29,9 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -44,6 +45,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
  *
  */
 public class UmfrageAnzeigenTable extends ScrollPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -145,9 +148,9 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 	 */
 	@Override
 	public void onLoad() {
+		
 		this.setHeight("380px");
 		
-
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
 
@@ -328,7 +331,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 		}
 
 		kinoplaner.auswahlenErstellen(umfrageoptionAuswahlArray, alteAuswahlen, umfrageoptionAuswahlArray.size(),
-				umfrage, new AuswahlErstellenCallback());
+				umfrage, aktuellerAnwender, new AuswahlErstellenCallback());
 
 	}
 
@@ -366,7 +369,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 					list.add(uI);
 					umfraoptionArray.add(uI);
 
-					kinoplaner.getAuswahlByAnwenderAndUmfrageoption(u, new AuswahlCallback(uI));
+					kinoplaner.getAuswahlByAnwenderAndUmfrageoption(u, aktuellerAnwender, new AuswahlCallback(uI));
 					kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(uI));
 					kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(uI));
 					kinoplaner.getSpielzeitByUmfrageoption(u, new SpielzeitCallback(uI));

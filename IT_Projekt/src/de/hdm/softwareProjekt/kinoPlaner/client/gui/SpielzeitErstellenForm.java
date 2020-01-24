@@ -17,7 +17,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 
 /**
@@ -27,6 +29,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
  *
  */
 public class SpielzeitErstellenForm extends PopupPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -186,7 +190,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 			if (spielzeit == null) {
 
-				kinoplaner.erstellenSpielzeit(formatiert, formatiert, new SpielzeitErstellenCallback());
+				kinoplaner.erstellenSpielzeit(formatiert, formatiert, aktuellerAnwender, new SpielzeitErstellenCallback());
 			} else {
 				spielzeit.setDatetoString(formatiert);
 				kinoplaner.speichern(spielzeit, new SpeichernCallback());

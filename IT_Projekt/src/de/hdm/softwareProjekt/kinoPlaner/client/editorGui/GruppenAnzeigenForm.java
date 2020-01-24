@@ -14,7 +14,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 
 /*
@@ -22,6 +24,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
  */
 
 public class GruppenAnzeigenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	/*
 	 * BusinessObjectView = Vorlage um die Ansicht von Business Objekten zu
@@ -78,7 +82,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		bov.setTitel("Meine Gruppen");
 		p.add(bov);
 
-		kinoplaner.getGruppenByAnwender(new SucheGruppenByAnwenderCallback());
+		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new SucheGruppenByAnwenderCallback());
 
 	}
 

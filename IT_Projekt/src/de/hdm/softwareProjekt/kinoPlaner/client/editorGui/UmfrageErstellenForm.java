@@ -17,7 +17,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -32,6 +34,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  *
  */
 public class UmfrageErstellenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -216,7 +220,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		filmListBox.setSize("180px", "25px");
 		gruppenListBox.setSize("200px", "25px");
 
-		kinoplaner.getGruppenByAnwender(new GruppenCallback());
+		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new GruppenCallback());
 
 		kinoplaner.getAllKinos(new KinoCallback());
 
@@ -755,11 +759,11 @@ public class UmfrageErstellenForm extends FlowPanel {
 			if (umfrage != null) {
 				umfrage.setName(umfrageTextBox.getValue());
 				umfrage.setGruppenId(result.getId());
-				kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), new updateUmfrageCallback());
+				kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), aktuellerAnwender, new updateUmfrageCallback());
 
 			} else {
 
-				kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(),
+				kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(), aktuellerAnwender,
 						new UmfrageErstellenCallback());
 			}
 

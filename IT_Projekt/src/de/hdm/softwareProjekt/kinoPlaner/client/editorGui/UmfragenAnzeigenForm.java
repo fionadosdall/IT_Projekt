@@ -13,7 +13,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 
@@ -22,6 +24,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  * 
  */
 public class UmfragenAnzeigenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 	
 	/*
 	 * BusinessObjectView = Vorlage um die Ansicht von Business Object
@@ -74,7 +78,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		bov.setTitel("Meine Umfragen");
 		p.add(bov);
 
-		kinoplaner.getOpenUmfragenByAnwender(new SucheUmfragenByAnwenderCallback());
+		kinoplaner.getOpenUmfragenByAnwender(aktuellerAnwender, new SucheUmfragenByAnwenderCallback());
 
 	}
 	

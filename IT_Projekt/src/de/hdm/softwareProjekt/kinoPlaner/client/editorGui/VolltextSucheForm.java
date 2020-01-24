@@ -14,7 +14,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
@@ -27,6 +29,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  *
  */
 public class VolltextSucheForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
+	
 	private String suchText;
 	private ArrayList<Gruppe> gruppen;
 	private ArrayList<Umfrage> umfragen;
@@ -118,11 +123,11 @@ public class VolltextSucheForm extends FlowPanel {
 		 * Hinzufügen der Suche-Callbacks von Gruppe, Umfrage und Ergebnis
 		 */
 
-		kinoplaner.volltextSucheGruppen(suchText, new VolltextSucheGruppenCallback());
+		kinoplaner.volltextSucheGruppen(suchText, aktuellerAnwender, new VolltextSucheGruppenCallback());
 
-		kinoplaner.volltextSucheUmfragen(suchText, new VolltextSucheUmfrageCallback());
+		kinoplaner.volltextSucheUmfragen(suchText, aktuellerAnwender, new VolltextSucheUmfrageCallback());
 
-		kinoplaner.volltextSucheErgebnisse(suchText, new VolltextSucheErgebnisseCallback());
+		kinoplaner.volltextSucheErgebnisse(suchText, aktuellerAnwender, new VolltextSucheErgebnisseCallback());
 
 	}
 

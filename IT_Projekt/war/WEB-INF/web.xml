@@ -32,6 +32,7 @@
   <servlet-mapping>
     <servlet-name>LoginService</servlet-name>
     <url-pattern>/it_projekt/login</url-pattern>
+    <url-pattern>/Admin/login</url-pattern>
   </servlet-mapping>
   
 

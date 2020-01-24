@@ -10,7 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
@@ -28,8 +27,6 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources.TableStyle;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
@@ -41,6 +38,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
  *
  */
 public class GruppeErstellenForm extends FlowPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -233,7 +232,8 @@ public class GruppeErstellenForm extends FlowPanel {
 
 		/***********************************************************************
 		 * CELL TABLE
-		 ***********************************************************************/
+		 **
+		 *********************************************************************/
 
 		TextCell namenTextCell = new TextCell();
 
@@ -347,10 +347,10 @@ public class GruppeErstellenForm extends FlowPanel {
 			}
 
 			if (gruppe == null) {
-				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, new GruppeErstellenCallback());
+				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, aktuellerAnwender, new GruppeErstellenCallback());
 			} else {
 				gruppe.setName(gruppenameTB.getValue());
-				kinoplaner.updateGruppe(gruppe, anwenderListe, new UpdateGruppeCallback());
+				kinoplaner.updateGruppe(gruppe, anwenderListe, aktuellerAnwender, new UpdateGruppeCallback());
 			}
 
 		}

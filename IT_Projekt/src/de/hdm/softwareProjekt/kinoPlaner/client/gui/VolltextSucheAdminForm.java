@@ -14,9 +14,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -25,6 +26,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
 public class VolltextSucheAdminForm extends FlowPanel{
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 	
 	private String suchText;
 	private ArrayList<Kinokette> kinoketten;
@@ -112,7 +115,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		detailsBoxUntenMitte.add(spielplaeneGrid);
 		
 		
-		kinoplaner.volltextSucheKinoketten(suchText, new VolltextSucheKinokettenCallback());
+		kinoplaner.volltextSucheKinoketten(suchText, aktuellerAnwender, new VolltextSucheKinokettenCallback());
 		if (kinoketten != null) {
 			kinokettenGrid.resizeRows(kinoketten.size());
 			int i = 0;
@@ -133,7 +136,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			kinokettenGrid.setWidget(1, 0, erstellenButton);
 		}
 
-		kinoplaner.volltextSucheKinos(suchText, new VolltextSucheKinoCallback());
+		kinoplaner.volltextSucheKinos(suchText, aktuellerAnwender, new VolltextSucheKinoCallback());
 		if (kinos != null) {
 			kinosGrid.resizeRows(kinos.size());
 			int i = 0;
@@ -154,7 +157,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			kinosGrid.setWidget(1, 0, erstellenButton);
 		}
 
-		kinoplaner.volltextSucheSpielplaene(suchText, new VolltextSucheSpielplaeneCallback());
+		kinoplaner.volltextSucheSpielplaene(suchText, aktuellerAnwender, new VolltextSucheSpielplaeneCallback());
 		if (spielplaene != null) {
 			spielplaeneGrid.resizeRows(spielplaene.size());
 			int i = 0;
