@@ -63,6 +63,7 @@ public class FilmErstellenForm extends PopupPanel {
 	private Button speichernButton = new Button("speichern");
 	private Button aenderungSpeichernButton = new Button("Änderungen speichern");
 	private Button loeschenButton = new Button("Löschen");
+	private Button abbrechenButton = new Button("abbrechen");
 
 	private Film film = null;
 
@@ -116,6 +117,7 @@ public class FilmErstellenForm extends PopupPanel {
 		laengeLabel.addStyleName("textLabel");
 		speichernButton.addStyleName("speichernButton");
 		aenderungSpeichernButton.addStyleName("speichernButton");
+		abbrechenButton.addStyleName("abbrechenButton");
 		loeschenButton.addStyleName("loeschenButton");
 		obenPanel.addStyleName("popupObenPanel");
 		untenPanel.addStyleName("popupUntenPanel");
@@ -138,7 +140,8 @@ public class FilmErstellenForm extends PopupPanel {
 		filmGrid.setWidget(2, 1, bewertungTextBox);
 
 		popupPanel.add(filmGrid);
-
+		untenPanel.add(abbrechenButton);
+		
 		if (film == null) {
 			nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 			beschreibungTextBox.getElement().setPropertyString("placeholder", "Beschreibung eingeben");
@@ -152,7 +155,6 @@ public class FilmErstellenForm extends PopupPanel {
 			untenPanel.add(aenderungSpeichernButton);
 		}
 
-		
 		popupPanel.add(untenPanel);
 		
 
@@ -162,6 +164,7 @@ public class FilmErstellenForm extends PopupPanel {
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
+		abbrechenButton.addClickHandler(new AbbrechenClickHandler());
 
 		this.add(popupPanel);
 		popupPanel.setHeight("200px");
@@ -247,6 +250,13 @@ public class FilmErstellenForm extends PopupPanel {
 
 		}
 
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+		
+		public void onClick(ClickEvent event) {
+			FilmErstellenForm.this.hide();
+		}
 	}
 
 	/****************************

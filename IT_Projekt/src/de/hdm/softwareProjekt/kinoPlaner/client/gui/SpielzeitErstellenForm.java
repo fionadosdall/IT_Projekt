@@ -48,6 +48,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	private Button loeschenButton = new Button("Löschen");
 	private Button speichernButton = new Button("Speichern");
 	private Button aenderungSpeichernButton = new Button("Änderung speichern");
+	private Button abbrechenButton = new Button("abbrechen");
 
 	private Grid spielzeitGrid = new Grid(3, 2);
 
@@ -96,6 +97,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		speichernButton.addStyleName("speichernButton");
 		aenderungSpeichernButton.addStyleName("speichernButton");
+		abbrechenButton.addStyleName("abbrechenButton");
 
 		/**
 		 * Zusammensetzen des Widgets
@@ -132,6 +134,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		popupPanel.add(spielzeitGrid);
 
+		untenPanel.add(abbrechenButton);
 		if (spielzeit != null) {
 			
 			untenPanel.add(aenderungSpeichernButton);
@@ -142,13 +145,13 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		}
 
 		popupPanel.add(untenPanel);
-
 		this.add(popupPanel);
 
 		/* ClickHandler */
 
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
+		abbrechenButton.addClickHandler(new AbbrechenClickHandler());
 
 		/**
 		 * Bei der Instanziierung wird der ClickHandler dem Button und dem Panel
@@ -191,6 +194,13 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		}
 
+	}
+	
+	private class AbbrechenClickHandler implements ClickHandler{
+		
+		public void onClick(ClickEvent event) {
+			SpielzeitErstellenForm.this.hide();
+		}
 	}
 
 	/* Callback */
