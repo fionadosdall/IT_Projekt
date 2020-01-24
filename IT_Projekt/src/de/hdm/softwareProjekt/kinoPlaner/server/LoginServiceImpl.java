@@ -1,10 +1,11 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
-import de.hdm.softwareProjekt.kinoPlaner.shared.LoginServiceAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.LoginService;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
 /** 
@@ -19,23 +20,27 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
  *
  */
 
-public class LoginServiceImpl extends RemoteServiceServlet implements LoginServiceAsync {
+public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
+	
+	
 
 	private static final long serialVersionUID = 1L;
-	
+
+	@Override
 	public Anwender login(String requestUri) {
-	/**
-		AnwenderService anwenderService = AnwenderServiceFactory.getAnwenderService();
-		com.google.appengine.api.users.Users googleUser = AnwenderService.getCurrentAnwender();
+		// TODO Auto-generated method stub
+		UserService userService = UserServiceFactory.getUserService();
+		com.google.appengine.api.users.User googleUser = userService.getCurrentUser(); 
 		
 		Anwender anwender = new Anwender();
+		
 		
 		
 		/**
 		 * Wenn der <code>User</code> mit seinem Gooogle Account eingeloggt ist, wird überprüft,
 		 * ob dieser unserem System bekannt ist
 		 */
-	/**
+
 		if (googleUser != null) {
 			
 			Anwender existA = AnwenderMapper.anwenderMapper().findByGmail(googleUser.getEmail());
@@ -44,11 +49,11 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		/**
 		 * Falls der User dem System bekannt ist, wird dieser eingeloggt
 		 */
-		/**
+
 		if (existA != null) {
 			
 			existA.setIstEingeloggt(true);
-			existA.setLogoutUrl(anwenderService.creatLogoutURL(requestUri));
+			existA.setLogoutUrl(userService.createLogoutURL(requestUri));
 			
 			
 			return existA;
@@ -58,23 +63,21 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		 * Falls der <code>User</code> sich zum ersten Mal im System anmeldet
 		 * wird ein neuer Datensatz in dei Datenbank geschrieben
 		 */
-		/**
+
 		anwender.setIstEingeloggt(true);
-		anwender.setLogoutUrl(anwenderService.createLogoutURL(requestUri));
+		anwender.setLogoutUrl(userService.createLogoutURL(requestUri));
 		anwender.setGmail(googleUser.getEmail());
+		anwender.setName("Null");
 		AnwenderMapper.anwenderMapper().insert(anwender);
 		}
 		
-	anwender.setLoginUrl(anwenderService.createLoginURL(requestUri));
+		anwender.setLoginUrl(userService.createLoginURL(requestUri));
 	
 	return anwender;
-	**/
-		return null;
-	}
 
-	@Override
-	public void login(String requestUri, AsyncCallback<Anwender> asyncCallback) {
-		// TODO Auto-generated method stub
+
 		
 	}
+
 }
+

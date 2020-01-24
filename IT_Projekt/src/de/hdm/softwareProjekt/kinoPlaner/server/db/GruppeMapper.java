@@ -360,7 +360,7 @@ public class GruppeMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppID =" + gruppe.getId() + " AND anwendID="
+			stmt.executeUpdate("DELETE FROM gruppenmitglieder " + "WHERE gruppID=" + gruppe.getId() + " AND anwendID="
 					+ anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();

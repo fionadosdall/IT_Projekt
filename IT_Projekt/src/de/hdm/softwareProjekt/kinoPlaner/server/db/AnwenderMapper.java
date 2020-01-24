@@ -324,7 +324,7 @@ public class AnwenderMapper {
 	public Anwender findByGmail(String gmail) {
 
 		Connection con = DBConnection.connection();
-		String sql = "SELECT * FROM anwender WHERE gMail= ' " + gmail + " ' ";
+		String sql = "SELECT * FROM anwender WHERE gMail= '" + gmail + "' ";
 
 		try {
 
