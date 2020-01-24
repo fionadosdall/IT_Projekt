@@ -130,7 +130,7 @@ public class MeineKinosForm extends VerticalPanel {
 		untenPanel.add(kinoErstellenButton);
 		this.add(untenPanel);
 		
-		
+		kinoErstellenButton.addClickHandler(new KinoErstellenClickHandler());
 
 	}
 	
@@ -163,10 +163,10 @@ public class MeineKinosForm extends VerticalPanel {
 	 * ClickHandler um ein Kino zu erstellen
 	 */
 	
-	private class KinoErstellenClickHandler implements DoubleClickHandler {
+	private class KinoErstellenClickHandler implements ClickHandler {
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			RootPanel.get("details").clear();
 			erstellen = new KinoErstellenForm();
 			RootPanel.get("details").add(erstellen);

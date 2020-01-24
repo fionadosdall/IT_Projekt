@@ -459,7 +459,10 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 		public void onClick(ClickEvent event) {
 
 			film = new FilmErstellenForm(eigeneForm);
+			film.setHeight("500px");
+			film.setWidth("500px");
 			film.show();
+			//film.center();
 
 		}
 

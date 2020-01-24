@@ -117,7 +117,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		bearbeitenButton.addClickHandler(new KinoketteBearbeitenClickHandler());
 		loeschenButton.addClickHandler(new KinoketteLoeschenClickHandler());
-		
+		kinoketteErstellenButton.addClickHandler(new KinoketteErstellenClickHandler());
 	
 		
 		
@@ -162,10 +162,10 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
  * ClickHandler um eine Kinokette zu erstellen
  */
 
-	private class KinoketteErstellenClickHandler implements DoubleClickHandler {
+	private class KinoketteErstellenClickHandler implements ClickHandler {
 
 		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
+		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
 			erstellen = new KinoketteErstellenForm();

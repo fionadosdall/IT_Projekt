@@ -690,6 +690,7 @@ body {
 	text-align: center;
 	color: black;
 	background: #d6d1d1;
+	
 }
 
 .detailsuntenBoxen {
@@ -735,6 +736,8 @@ body {
 .popupPanel{
 	margin: 20%;
 	padding: 10%;
+	width: 500px;
+	height: 400px;
 	
 }
 	
@@ -845,5 +848,7 @@ body {
 
 
 }
+
+
 
 
