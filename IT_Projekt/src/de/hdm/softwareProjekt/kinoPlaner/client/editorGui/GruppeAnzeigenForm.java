@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
@@ -161,7 +161,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		// detailsrechts.add(umfragenCellList);
 		detailsunten.add(umfragenCellList);
 
-		if (aktuellerAnwender.getAnwender().getId() == gruppe.getBesitzerId()) {
+		if (AktuellerAnwender.getAnwender().getId() == gruppe.getBesitzerId()) {
 			detailsunten.add(bearbeiten);
 			bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
 			papierkorb.addClickHandler(new GruppeLoeschenClickHandler());

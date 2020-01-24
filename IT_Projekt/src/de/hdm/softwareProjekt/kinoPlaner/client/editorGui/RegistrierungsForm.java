@@ -1,5 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -11,7 +12,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.aktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
@@ -88,12 +91,14 @@ public class RegistrierungsForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-
+			if(nameTextbox.getText().equals("")) {
+				Window.alert("Bitte namen eingeben!");
+			}else {
 			String name = nameTextbox.getText();
 			anwender.setName(name);
 
-			kinoplaner.erstellenAnwender(name, anwender.getGmail(), new ErstelleAnwenderCallback());
-
+			kinoplaner.speichern(anwender, new ErstelleAnwenderCallback());
+			}
 		}
 
 	}
@@ -121,9 +126,32 @@ public class RegistrierungsForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Anwender result) {
-			// TODO Auto-generated method stub
+			if(result==null) {
+				Window.alert("Name bereits verwendet!");
+			}else {
+				
+			AktuellerAnwender.setAnwender(result);
+			
+			kinoplaner.setAnwender(result, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert(caught.getMessage());
+					caught.printStackTrace();
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					Window.open(destinationUrl.getHref(), "_self", "");
+					
+				}
+			});
+			
+			Window.alert(result.getName());
 			anwender = result;
-			Window.open(destinationUrl.getHref(), "_self", "");
+			
+			}
 
 		}
 

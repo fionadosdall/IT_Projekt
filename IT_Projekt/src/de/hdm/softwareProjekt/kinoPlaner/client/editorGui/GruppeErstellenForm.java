@@ -27,7 +27,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable.CellTableResources.TableStyle;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -219,7 +219,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 			public void onSuccess(ArrayList<Anwender> result) {
 				for (Anwender u : result) {
-					if (aktuellerAnwender.getAnwender().getId() != u.getId()) {
+					if (AktuellerAnwender.getAnwender().getId() != u.getId()) {
 						anwenderTB.add(u);
 						alleAnwenderOracle.add(u.getName());
 					}
@@ -408,7 +408,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Anwender> result) {
 			for (Anwender a : result) {
-				if (a.equals(aktuellerAnwender.getAnwender())) {
+				if (a.equals(AktuellerAnwender.getAnwender())) {
 
 				} else {
 					dataProvider.getList().add(a);

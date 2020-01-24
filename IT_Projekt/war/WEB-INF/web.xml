@@ -23,18 +23,18 @@
   </servlet-mapping>
   
   
-   <!--  
+
   <servlet>
-    <servlet-name>loginService</servlet-name>
+    <servlet-name>LoginService</servlet-name>
     <servlet-class>de.hdm.softwareProjekt.kinoPlaner.server.LoginServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>loginService</servlet-name>
-    <url-pattern>/kinoplaner/login</url-pattern>
+    <servlet-name>LoginService</servlet-name>
+    <url-pattern>/it_projekt/login</url-pattern>
   </servlet-mapping>
   
-  -->
+
   
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.aktuellerAnwender;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
@@ -105,7 +105,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		detailsoben.add(title);
 		title.setText("Umfrage: " + umfrage.getName());
-		if (umfrage.getBesitzerId() == aktuellerAnwender.getAnwender().getId())
+		if (umfrage.getBesitzerId() == AktuellerAnwender.getAnwender().getId())
 			detailsunten.add(detailsboxlöschen);
 
 		detailsunten.add(detailsBoxUmfrage);
@@ -114,7 +114,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		detailsBoxUmfrage.add(uat);
 		detailsboxInhalt.add(speichern);
 		detailsboxInhalt.add(votingsAnzeigen);
-		if (umfrage.getBesitzerId() == aktuellerAnwender.getAnwender().getId())
+		if (umfrage.getBesitzerId() == AktuellerAnwender.getAnwender().getId())
 			detailsboxInhalt.add(bearbeiten);
 		detailsboxlöschen.add(löschenImage);
 
