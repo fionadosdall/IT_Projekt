@@ -451,7 +451,7 @@ public class UserForm extends FlowPanel {
 		@Override
 		public void onFailure(Throwable caught) {
 			// TODO Auto-generated method stub
-			Window.alert("UpadteAnwenderCallback hat nicht funktioniert");
+			Window.alert("UpdateAnwenderCallback hat nicht funktioniert");
 
 		}
 
@@ -460,7 +460,7 @@ public class UserForm extends FlowPanel {
 			if (result == null) {
 				Window.alert("Nickname bereits vergeben!");
 			} else {
-				Window.alert("UpadteAnwenderCallback war erfolgreich");
+				Window.alert("UpdateAnwenderCallback war erfolgreich");
 			}
 
 		}
