@@ -164,6 +164,8 @@ public class FilmErstellenForm extends PopupPanel {
 		loeschenButton.addClickHandler(new FilmLoeschenClickHandler());
 
 		this.add(popupPanel);
+		popupPanel.setHeight("200px");
+		popupPanel.setWidth("100%");
 	}
 
 	/*********************************
