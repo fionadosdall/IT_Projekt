@@ -221,7 +221,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			if (result != null) {
+			if (result == null) {
 				Window.alert("Spielzeit bereits erstellt!");
 			} else {
 				Systemmeldung.anzeigen("Spielzeit wurde geupdatet.");

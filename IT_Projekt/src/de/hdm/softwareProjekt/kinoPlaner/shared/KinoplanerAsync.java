@@ -73,7 +73,7 @@ public interface KinoplanerAsync {
 
 	public void speichern(Anwender anwender, AsyncCallback<Anwender> callback) throws IllegalArgumentException;
 
-	public void speichern(Gruppe gruppe, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Gruppe gruppe, AsyncCallback<Gruppe> callback) throws IllegalArgumentException;
 
 	public void speichern(Kino kino, AsyncCallback<Kino> callback) throws IllegalArgumentException;
 
@@ -83,7 +83,7 @@ public interface KinoplanerAsync {
 
 	public void speichern(Vorstellung vorstellung, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
-	public void speichern(Umfrage umfrage, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	public void speichern(Umfrage umfrage, AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
 
 	public void speichern(Umfrageoption umfrageoption, AsyncCallback<Void> callback) throws IllegalArgumentException;
 

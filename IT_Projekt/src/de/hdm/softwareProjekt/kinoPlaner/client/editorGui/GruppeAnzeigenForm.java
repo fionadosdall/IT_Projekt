@@ -115,7 +115,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	}
 
 	public void onLoad() {
-		
+
 		/*
 		 * Style Namen vergeben
 		 */
@@ -173,8 +173,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 	}
 	/*
-	 * Vor dem Löschen einer Gruppe, soll der Nutzer über eine Dialogbox
-	 * noch einmal um Bestätigung des Löschvorgangs gebeten werden
+	 * Vor dem Löschen einer Gruppe, soll der Nutzer über eine Dialogbox noch einmal
+	 * um Bestätigung des Löschvorgangs gebeten werden
 	 */
 
 	private class GruppeLoeschenDialogBox extends DialogBox {
@@ -214,13 +214,13 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	 * ClickHandler zur Lösch-Bestätigung der Gruppe
 	 */
 	private class GruppeLoeschenBestaetigenClickHandler implements ClickHandler {
-		
+
 		private GruppeLoeschenDialogBox gruppeLoeschenDB;
-		
+
 		public GruppeLoeschenBestaetigenClickHandler(GruppeLoeschenDialogBox gruppeLoeschenDB) {
-			this.gruppeLoeschenDB=gruppeLoeschenDB;
+			this.gruppeLoeschenDB = gruppeLoeschenDB;
 		}
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			kinoplaner.loeschen(gruppe, new GruppeLoeschenCallback());
@@ -234,26 +234,26 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	 */
 
 	private class GruppeLoeschenAbbrechenClickHandler implements ClickHandler {
-		
+
 		private GruppeLoeschenDialogBox gruppeLoeschenDB;
-		
+
 		public GruppeLoeschenAbbrechenClickHandler(GruppeLoeschenDialogBox gruppeLoeschenDB) {
-			this.gruppeLoeschenDB=gruppeLoeschenDB;
-			
+			this.gruppeLoeschenDB = gruppeLoeschenDB;
+
 		}
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			gruppeLoeschenDB.hide();
 		}
 
 	}
-	
+
 	/*
-	 * Wenn der Nutzer die angezeigte Gruppe löschen möchte, kann er dies über
-	 * den Lösch-button tun. Dabei öffnet sich automatisch die DialogBox. Die DialogBox bitten den 
-	 * Nutzer erneut zu bestätigten, dass er die Gruppe löschen möchte.
-	 */ 
+	 * Wenn der Nutzer die angezeigte Gruppe löschen möchte, kann er dies über den
+	 * Lösch-button tun. Dabei öffnet sich automatisch die DialogBox. Die DialogBox
+	 * bitten den Nutzer erneut zu bestätigten, dass er die Gruppe löschen möchte.
+	 */
 
 	private class GruppeLoeschenClickHandler implements ClickHandler {
 
@@ -280,7 +280,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*
 	 * CLickHandler um eine Umfrage zu bearbeiten
 	 */
@@ -296,14 +296,13 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/******************************************************
-	 * CALLBACKS
-	 * *****************************************************
+	 * CALLBACKS *****************************************************
 	 * 
 	 *
 	 */
-	
+
 	/*
 	 * Private Instanz um eine Gruppen-Instanz aus dem System zu bekommen
 	 */
@@ -326,10 +325,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*
-	 * Private Klasse um alle Gruppenitglieder-Instanzen, aufgrund der 
-	* der Gruppe aus dem System zu bekommen
+	 * Private Klasse um alle Gruppenitglieder-Instanzen, aufgrund der der Gruppe
+	 * aus dem System zu bekommen
 	 */
 
 	private class SucheGruppenmitgliederByGruppeCallback implements AsyncCallback<ArrayList<Anwender>> {
@@ -351,10 +350,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/*
-	 * Private Klasse um alle Umfragen-Instanzen, aufgrund der Gruppe
-	 * aus dem System zu bekommen
+	 * Private Klasse um alle Umfragen-Instanzen, aufgrund der Gruppe aus dem System
+	 * zu bekommen
 	 */
 
 	private class SucheUmfrageByGruppeCallback implements AsyncCallback<ArrayList<Umfrage>> {
@@ -377,7 +376,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 			} else {
 				for (Umfrage u : result) {
-					dataProviderUmfrage.getList().add(u);
+					if (u.isOpen() == true) {
+						dataProviderUmfrage.getList().add(u);
+					}
 				}
 				dataProviderUmfrage.refresh();
 

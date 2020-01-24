@@ -21,7 +21,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
-
 /*
  * Klasse stellt das Formular um ein Kino zu erstellen bereit
  */
@@ -98,13 +97,13 @@ public class KinoErstellenForm extends VerticalPanel {
 		stadtTextBox.addStyleName("formularTextBox");
 
 		kinokettenListBox.setSize("180px", "25px");
-		
+
 		nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 		strasseTextBox.getElement().setPropertyString("placeholder", "Straße eingeben");
 		hnrTextBox.getElement().setPropertyString("placeholder", "Hausnummer eingeben");
 		plzTextBox.getElement().setPropertyString("placeholder", "PLZ eingeben");
 		stadtTextBox.getElement().setPropertyString("placeholder", "Stadt eingeben");
-		
+
 		this.addStyleName("center");
 		this.addStyleName("detailscontainer");
 
@@ -154,8 +153,8 @@ public class KinoErstellenForm extends VerticalPanel {
 	}
 
 	/*
-	 * Vor dem Löschen eines Kinos soll der Nutzer über eine Dialogbox noch
-	 * einmal um Bestätigung des Löschvorgangs gebeten werden
+	 * Vor dem Löschen eines Kinos soll der Nutzer über eine Dialogbox noch einmal
+	 * um Bestätigung des Löschvorgangs gebeten werden
 	 */
 
 	private class KinoLoeschenDialogBox extends DialogBox {
@@ -204,29 +203,26 @@ public class KinoErstellenForm extends VerticalPanel {
 			// TODO Auto-generated method stub
 			String kinoketteName = kinokettenListBox.getSelectedValue();
 
-			if (kinoketteName.equals("Keine Auswahl")) {
+			if (!kinoketteName.equals("Keine Auswahl")) {
 				administration.getKinoketteByName(kinoketteName, new KinoketteByNameCallback());
 			} else {
 				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
 						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0,
 						new KinoErstellenCallback());
 			}
-
 		}
-
 	}
 
 	/*
 	 * ClickHandler um die Änderungen einer Kino-Instanz zu speichern
 	 */
-
 	private class AenderungSpeichernClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
 
 			String kinoketteName = kinokettenListBox.getSelectedValue();
-			if (kinoketteName.equals("Keine Auswahl")) {
+			if (!kinoketteName.equals("Keine Auswahl")) {
 				administration.getKinoketteByName(kinoketteName, new AenderungKinoketteByNameCallback());
 			} else {
 				kino.setName(nameTextBox.getText());

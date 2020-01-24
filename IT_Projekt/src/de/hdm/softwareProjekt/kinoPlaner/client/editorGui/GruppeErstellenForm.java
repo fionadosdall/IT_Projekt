@@ -74,7 +74,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	private Button hinzufuegenButton = new Button("Hinzufügen");
 	private Button speichernButton = new Button("Speichern");
-	
+
 	public interface CellTableResources extends CellTable.Resources {
 
 		@Source({ CellTable.Style.DEFAULT_CSS, "CellTable.css" })
@@ -219,8 +219,10 @@ public class GruppeErstellenForm extends FlowPanel {
 
 			public void onSuccess(ArrayList<Anwender> result) {
 				for (Anwender u : result) {
-					anwenderTB.add(u);
-					alleAnwenderOracle.add(u.getName());
+					if (aktuellerAnwender.getAnwender().getId() != u.getId()) {
+						anwenderTB.add(u);
+						alleAnwenderOracle.add(u.getName());
+					}
 				}
 
 			}
@@ -458,7 +460,7 @@ public class GruppeErstellenForm extends FlowPanel {
 
 	/******
 	 * Callback wird durch den SpeichernClickHandler aufgerufen. Wird benötigt, um
-	 * eine neue Gruppe zu erstellen. 
+	 * eine neue Gruppe zu erstellen.
 	 * 
 	 *
 	 */

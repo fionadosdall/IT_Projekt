@@ -334,7 +334,7 @@ public interface Kinoplaner extends RemoteService {
 	 */
 	public void isVoted(Auswahl auswahl);
 
-	Anwender speichern(Anwender anwender);
+	public Anwender speichern(Anwender anwender);
 
 	/**
 	 * <p>
@@ -346,7 +346,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return 
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Gruppe gruppe) throws IllegalArgumentException;
+	public Gruppe speichern(Gruppe gruppe) throws IllegalArgumentException;
 
 	/**
 	 * <p>
@@ -403,7 +403,7 @@ public interface Kinoplaner extends RemoteService {
 	 *            Umfrageobjekt
 	 * @throws IllegalArgumentException
 	 */
-	public void speichern(Umfrage umfrage) throws IllegalArgumentException;
+	public Umfrage speichern(Umfrage umfrage) throws IllegalArgumentException;
 
 	/**
 	 * <p>

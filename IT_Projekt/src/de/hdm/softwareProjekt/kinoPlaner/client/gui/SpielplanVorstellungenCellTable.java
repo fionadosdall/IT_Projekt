@@ -23,6 +23,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.resources.client.ClientBundle.Source;
@@ -39,7 +41,10 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -51,6 +56,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class SpielplanVorstellungenCellTable extends VerticalPanel {
@@ -80,13 +86,11 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	private CellTable<VorstellungInfo> vorstellungenTable = new CellTable<VorstellungInfo>(100, tableRes);
 
 	private ButtonCell buttonCell = new ButtonCell();
-	
-	private VorstellungBearbeitenCell bearbeitenCell;
-	
-	private Image image = new Image();
-	
 
-    
+	private VorstellungBearbeitenCell bearbeitenCell;
+
+	private Image image = new Image();
+
 	private TextCell filmCell = new TextCell();
 	private TextCell spielzeitCell = new TextCell();
 
@@ -152,8 +156,6 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		}
 
 	}
-	
-	
 
 	public ArrayList<Vorstellung> getVorstellungenArray() {
 		return neueVorstellungen;
@@ -168,9 +170,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenTable);
-		
+
 		bearbeitenCell = new VorstellungBearbeitenCell(vorstellung, this);
-		
+
 		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(vorstellungList);
 		vorstellungenTable.addColumnSortHandler(sortHandler);
 
@@ -199,8 +201,8 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 					if (v.getId() == 0) {
 						if (v.getFilmId() == object.getVorstellung().getFilmId()
 								&& v.getSpielzeitId() == object.getVorstellung().getSpielzeitId()) {
-							neueVorstellungen.remove(count);
-
+							administration.getUmfrageoptionenByVorstellung(vorstellung,
+									new GetUmfrageoptionenByVorstellungCallback(count));
 							break;
 
 						}
@@ -217,8 +219,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 			}
 		});
-		
-		Column<VorstellungInfo, Vorstellung> bearbeitenColumn = new Column<VorstellungInfo, Vorstellung>(bearbeitenCell){
+
+		Column<VorstellungInfo, Vorstellung> bearbeitenColumn = new Column<VorstellungInfo, Vorstellung>(
+				bearbeitenCell) {
 
 			@Override
 			public Vorstellung getValue(VorstellungInfo object) {
@@ -228,7 +231,6 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		};
 
 		vorstellungenTable.addColumn(bearbeitenColumn, "Bearbeiten");
-
 
 		Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
@@ -279,18 +281,18 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	}
 
 	/* Methoden */
-	
-	public void updateVorstellung(Vorstellung bearbeiteteVorstellung, SpielplaneintragForm root ) {
-		
-		for(VorstellungInfo v : vorstellungList) {
-			if(v.getVorstellung()==bearbeiteteVorstellung) {
+
+	public void updateVorstellung(Vorstellung bearbeiteteVorstellung, SpielplaneintragForm root) {
+
+		for (VorstellungInfo v : vorstellungList) {
+			if (v.getVorstellung() == bearbeiteteVorstellung) {
 				administration.getFilmById(bearbeiteteVorstellung.getFilmId(), new FilmByIdCallback(v));
 				administration.getSpielzeitById(bearbeiteteVorstellung.getSpielzeitId(), new SpielzeitCallback(v));
 			}
 		}
-		
+
 		root.hide();
-		
+
 	}
 
 	public void addVorstellung(Vorstellung neueVorstellung) {
@@ -313,6 +315,103 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	}
 
 	/* Callbacks */
+	private class GetUmfrageoptionenByVorstellungCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
+
+		int count = 0;
+
+		public GetUmfrageoptionenByVorstellungCallback(int count) {
+			this.count = count;
+		}
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert(caught.getMessage());
+			caught.printStackTrace();
+
+		}
+
+		@Override
+		public void onSuccess(ArrayList<Umfrageoption> result) {
+			if (result.size() != 0) {
+				VorstellungLoeschenDialogBox vldb = new VorstellungLoeschenDialogBox(count);
+				vldb.center();
+			} else {
+				neueVorstellungen.remove(count);
+			}
+
+		}
+	}
+
+	private class VorstellungLoeschenDialogBox extends DialogBox {
+
+		private VerticalPanel verticalPanel = new VerticalPanel();
+		private HorizontalPanel buttonPanel = new HorizontalPanel();
+
+		private Label nachfrage = new Label(
+				"Vorstellung endgültig löschen, obwohl sie bereits in Umfragen verwendet wird?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public VorstellungLoeschenDialogBox(int counter) {
+
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für SpielplanLoeschenDialogBox
+
+			jaButton.addClickHandler(new VorstellungLoeschenBestaetigenClickHandler(this, counter));
+			neinButton.addClickHandler(new VorstellungLoeschenAbbrechenClickHandler(this));
+
+		}
+	}
+
+	private class VorstellungLoeschenBestaetigenClickHandler implements ClickHandler {
+		private VorstellungLoeschenDialogBox vorstellungLoeschenDB;
+		private int counter;
+
+		public VorstellungLoeschenBestaetigenClickHandler (VorstellungLoeschenDialogBox vorstellungLoeschenDBn,int counter) {
+			this.vorstellungLoeschenDB = vorstellungLoeschenDBn;
+			this.counter=counter;
+			
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+			neueVorstellungen.remove(counter);
+			vorstellungLoeschenDB.hide();
+		}
+
+	}
+	
+	private class VorstellungLoeschenAbbrechenClickHandler implements ClickHandler {
+		private VorstellungLoeschenDialogBox vorstellungLoeschenDB;
+		
+
+		public VorstellungLoeschenAbbrechenClickHandler (VorstellungLoeschenDialogBox vorstellungLoeschenDBn) {
+			this.vorstellungLoeschenDB = vorstellungLoeschenDBn;
+		
+			
+		}
+
+		@Override
+		public void onClick(ClickEvent event) {
+	
+			vorstellungLoeschenDB.hide();
+		}
+
+	}
+
 
 	private class GetVorstellungenBySpielplanCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 
@@ -404,7 +503,5 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		}
 
 	}
-
-
 
 }

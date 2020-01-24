@@ -193,18 +193,15 @@ public class FilmErstellenForm extends PopupPanel {
 			// TODO Auto-generated method stub
 
 			if (film == null) {
-				Window.alert("hier");
+			
 
 				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
 						bewertungTextBox.getValue(), new FilmErstellenCallback());
 
-				Window.alert(nameTextBox.getValue());
-				Window.alert(beschreibungTextBox.getValue());
-				Window.alert(bewertungTextBox.getValue());
 
 			} else {
 
-				Window.alert("hier 2");
+			
 				film.setName(nameTextBox.getValue());
 				film.setBewertung(bewertungTextBox.getValue());
 				film.setBeschreibung(beschreibungTextBox.getValue());

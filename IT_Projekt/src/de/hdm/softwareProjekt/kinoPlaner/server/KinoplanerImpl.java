@@ -677,9 +677,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Gruppe gruppe) throws IllegalArgumentException {
+	public Gruppe speichern(Gruppe gruppe) throws IllegalArgumentException {
 
-		this.gruppeMapper.update(gruppe);
+		return this.gruppeMapper.update(gruppe);
 
 	}
 
@@ -762,8 +762,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void speichern(Umfrage umfrage) throws IllegalArgumentException {
-		this.umfrageMapper.update(umfrage);
+	public Umfrage speichern(Umfrage umfrage) throws IllegalArgumentException {
+		return this.umfrageMapper.update(umfrage);
 
 	}
 
@@ -1931,14 +1931,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
 		if (gruppeMapper.nameVerfügbar(gruppe) == true) {
-			speichern(gruppe);
+			Gruppe fertigeGruppe = speichern(gruppe);
 			ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
 			alteGruppenmitglieder.remove(this.anwender);
 
 			ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
 
 			for (Anwender a : alteGruppenmitglieder) {
-				if (gruppenmitglieder != null) {
+				if (gruppenmitglieder.size() != 0) {
 					int counter = 0;
 
 					for (Anwender aNeu : gruppenmitglieder) {
@@ -1949,30 +1949,35 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 							counter++;
 						}
 						if (counter == gruppenmitglieder.size()) {
-							gruppenmitgliedEntfernen(a, gruppe);
+							gruppenmitgliedEntfernen(a, fertigeGruppe);
 							counter = 0;
 						}
 					}
 				} else {
-					gruppenmitgliedEntfernen(a, gruppe);
+					gruppenmitgliedEntfernen(a, fertigeGruppe);
 				}
 			}
-
-			for (Anwender aNeu : gruppenmitglieder) {
-				int counter = 0;
-				for (Anwender aFertig : fertigeGruppenmitglieder) {
-					if (aNeu.equals(aFertig)) {
-						break;
+			if (gruppenmitglieder.size() != 0) {
+				for (Anwender aNeu : gruppenmitglieder) {
+					int counter = 0;
+					if (fertigeGruppenmitglieder.size() != 0) {
+						for (Anwender aFertig : fertigeGruppenmitglieder) {
+							if (aNeu.equals(aFertig)) {
+								break;
+							} else {
+								counter++;
+							}
+							if (counter == fertigeGruppenmitglieder.size()) {
+								gruppenmitgliedHinzufuegen(aNeu, fertigeGruppe);
+								counter = 0;
+							}
+						}
 					} else {
-						counter++;
-					}
-					if (counter == fertigeGruppenmitglieder.size()) {
 						gruppenmitgliedHinzufuegen(aNeu, gruppe);
-						counter = 0;
 					}
 				}
 			}
-			return gruppe;
+			return fertigeGruppe;
 
 		}
 		return null;
@@ -1987,16 +1992,18 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen)
 			throws IllegalArgumentException {
 		if (umfrageMapper.nameVerfügbar(umfrage) == true) {
-			speichern(umfrage);
+			Umfrage fertigeUmfrage = speichern(umfrage);
 			ArrayList<Umfrageoption> alteUmfrageoptionen = getUmfrageoptionenByUmfrage(umfrage);
 
 			ArrayList<Umfrageoption> fertigeUmfrageoptionen = new ArrayList<Umfrageoption>();
 
 			for (Umfrageoption u : alteUmfrageoptionen) {
-				if (umfrageoptionen != null) {
+				if (umfrageoptionen.size() != 0) {
 					int counter = 0;
 					for (Vorstellung uNeu : umfrageoptionen) {
 						if (u.getVorstellungsId() == uNeu.getId()) {
+							u.setName(fertigeUmfrage.getName());
+							speichern(u);
 							fertigeUmfrageoptionen.add(u);
 							break;
 						} else {
@@ -2011,22 +2018,28 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 					loeschen(u);
 				}
 			}
-
-			for (Vorstellung uNeu : umfrageoptionen) {
-				int counter = 0;
-				for (Umfrageoption uFertig : fertigeUmfrageoptionen) {
-					if (uNeu.getId() == uFertig.getVorstellungsId()) {
-						break;
+			if (umfrageoptionen.size() != 0) {
+				for (Vorstellung uNeu : umfrageoptionen) {
+					int counter = 0;
+					if (fertigeUmfrageoptionen.size() != 0) {
+						for (Umfrageoption uFertig : fertigeUmfrageoptionen) {
+							if (uNeu.getId() == uFertig.getVorstellungsId()) {
+								break;
+							} else {
+								counter++;
+							}
+							if (counter == fertigeUmfrageoptionen.size()) {
+								erstellenUmfrageoption(fertigeUmfrage.getName(), umfrage.getId(), uNeu.getId());
+								counter = 0;
+							}
+						}
 					} else {
-						counter++;
-					}
-					if (counter == fertigeUmfrageoptionen.size()) {
-						erstellenUmfrageoption(umfrage.getName(), umfrage.getId(), uNeu.getId());
-						counter = 0;
+						erstellenUmfrageoption(fertigeUmfrage.getName(), umfrage.getId(), uNeu.getId());
+
 					}
 				}
 			}
-			return umfrage;
+			return fertigeUmfrage;
 
 		}
 		return null;
