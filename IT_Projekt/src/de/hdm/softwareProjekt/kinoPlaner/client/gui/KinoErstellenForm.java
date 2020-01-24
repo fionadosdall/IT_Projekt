@@ -17,7 +17,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
@@ -25,6 +27,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
  * Klasse stellt das Formular um ein Kino zu erstellen bereit
  */
 public class KinoErstellenForm extends VerticalPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private HorizontalPanel obenPanel = new HorizontalPanel();
 	private HorizontalPanel untenPanel = new HorizontalPanel();
@@ -133,7 +137,7 @@ public class KinoErstellenForm extends VerticalPanel {
 
 		this.add(kinoGrid);
 
-		administration.getKinokettenByAnwenderOwner(new KinokettenCallback());
+		administration.getKinokettenByAnwenderOwner(aktuellerAnwender, new KinokettenCallback());
 
 		if (edit == true) {
 			untenPanel.add(loeschenButton);
@@ -207,7 +211,7 @@ public class KinoErstellenForm extends VerticalPanel {
 				administration.getKinoketteByName(kinoketteName, new KinoketteByNameCallback());
 			} else {
 				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
-						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0,
+						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0, aktuellerAnwender, 
 						new KinoErstellenCallback());
 			}
 		}
@@ -273,7 +277,7 @@ public class KinoErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			kinoloeschenDB.hide();
-			administration.loeschen(kino, new KinoLoeschenCallback());
+			administration.loeschen(kino, aktuellerAnwender, new KinoLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkf = new MeineKinosForm();
 			RootPanel.get("details").add(mkf);
@@ -463,7 +467,7 @@ public class KinoErstellenForm extends VerticalPanel {
 			/* if(edit = false) { */
 			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
 					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
-					new KinoErstellenCallback());
+					aktuellerAnwender, new KinoErstellenCallback());
 
 		}
 

@@ -126,30 +126,21 @@ public class RegistrierungsForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Anwender result) {
+			
+			anwender = result;
+			
 			if(result==null) {
+				
 				Window.alert("Name bereits verwendet!");
-			}else {
+				
+			} else {
 				
 			AktuellerAnwender.setAnwender(result);
-			
-			kinoplaner.setAnwender(result, new AsyncCallback<Void>() {
-
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert(caught.getMessage());
-					caught.printStackTrace();
-					
-				}
-
-				@Override
-				public void onSuccess(Void result) {
-					Window.open(destinationUrl.getHref(), "_self", "");
-					
-				}
-			});
-			
 			Window.alert(result.getName());
-			anwender = result;
+		
+			Window.open(destinationUrl.getHref(), "_self", "");
+		
+
 			
 			}
 

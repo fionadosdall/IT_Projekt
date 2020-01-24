@@ -29,10 +29,12 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 //import de.hdm.softwareProjekt.kinoPlaner.client.gui.FilmBearbeiten.FilmHinzufuegenClickHandler;
 //import de.hdm.softwareProjekt.kinoPlaner.client.gui.FilmBearbeiten.FilmLoeschenClickHandler;
 //import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielzeitErstellenForm.SpeichernClickHandler;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
@@ -41,6 +43,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
  *
  */
 public class FilmErstellenForm extends PopupPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -196,7 +200,7 @@ public class FilmErstellenForm extends PopupPanel {
 			
 
 				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
-						bewertungTextBox.getValue(), new FilmErstellenCallback());
+						bewertungTextBox.getValue(), aktuellerAnwender, new FilmErstellenCallback());
 
 
 			} else {

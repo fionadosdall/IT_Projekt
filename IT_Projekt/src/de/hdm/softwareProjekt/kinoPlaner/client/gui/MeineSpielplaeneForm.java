@@ -16,16 +16,19 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.GruppeAnzeigenForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.HomeBar;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 
 public class MeineSpielplaeneForm extends VerticalPanel {
 
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 	
 	/* Erstellen der Widgets*/ 
 	private HorizontalPanel obenPanel = new HorizontalPanel();
@@ -95,7 +98,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		
 		spielplanErstellenButton.addClickHandler(new SpielplanErstellenClickHandler());
 		
-		kinoplaner.getSpielplaeneByAnwenderOwner(new GetSpielplaeneByAnwenderOwnerCallback());
+		kinoplaner.getSpielplaeneByAnwenderOwner(aktuellerAnwender, new GetSpielplaeneByAnwenderOwnerCallback());
 		
 		
 		/*if (spielplaene != null) {

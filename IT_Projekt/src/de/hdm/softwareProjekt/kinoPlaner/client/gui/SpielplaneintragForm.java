@@ -19,9 +19,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
@@ -31,6 +33,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * Klasse stellt das Formular um ein Spielplaneintrag zu erstellen
  */
 public class SpielplaneintragForm extends PopupPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 
@@ -522,7 +526,7 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			administration.loeschen(result, new SpielzeitLoeschenCalback());
+			administration.loeschen(result, aktuellerAnwender, new SpielzeitLoeschenCalback());
 
 		}
 
@@ -572,7 +576,7 @@ private class SpielzeitLoeschenAbbrechenClickHandler implements ClickHandler {
 
 		@Override
 		public void onSuccess(Film result) {
-			administration.loeschen(result, new FilmLoeschenCallback());
+			administration.loeschen(result, aktuellerAnwender, new FilmLoeschenCallback());
 
 		}
 

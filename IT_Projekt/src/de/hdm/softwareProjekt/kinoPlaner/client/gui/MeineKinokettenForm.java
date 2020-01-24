@@ -18,10 +18,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
-
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -31,6 +32,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
  * Klasse stellt das Formular um die Kinoketten anzuzeigen bereit
  */
 public class MeineKinokettenForm extends VerticalPanel{
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 	
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 	
@@ -110,7 +113,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		
 		
 		bov.setTitel("Meine Kinoketten");
-		administration.getKinokettenByAnwenderOwner(new SucheKinokettenByAnwenderCallback());
+		administration.getKinokettenByAnwenderOwner(aktuellerAnwender, new SucheKinokettenByAnwenderCallback());
 		inhaltPanel.add(bov);
 		this.add(inhaltPanel);
 		
@@ -203,7 +206,7 @@ private class KinoketteAuswaehlenClickHandler implements DoubleClickHandler {
 		public void onClick(ClickEvent event) {
 			
 			
-			administration.loeschenKinoketteById(kinokette.getId(), new KinoketteLoeschenCallback());
+			administration.loeschenKinoketteById(kinokette.getId(), aktuellerAnwender, new KinoketteLoeschenCallback());
 			
 		}
 		

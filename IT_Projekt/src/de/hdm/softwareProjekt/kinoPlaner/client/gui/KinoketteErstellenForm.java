@@ -14,14 +14,18 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.Kinoplaner;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
 /*
  * Klasse stellt das Formular um eine Kinokette zu erstellen bereit
  */
 public class KinoketteErstellenForm extends VerticalPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
 
@@ -176,7 +180,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 
 			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(), websiteTextBox.getText(),
-					new KinoketteErstellenCallback());
+					aktuellerAnwender, new KinoketteErstellenCallback());
 
 		}
 
@@ -215,7 +219,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			kinoketteloeschenDB.hide();
-			administration.loeschenKinoketteById(kk.getId(), new KinoketteLoeschenCallback());
+			administration.loeschenKinoketteById(kk.getId(), aktuellerAnwender, new KinoketteLoeschenCallback());
 			RootPanel.get("details").clear();
 			mkkf = new MeineKinokettenForm();
 			RootPanel.get("details").add(mkkf);

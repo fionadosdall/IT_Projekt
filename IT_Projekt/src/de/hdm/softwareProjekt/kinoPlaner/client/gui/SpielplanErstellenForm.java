@@ -21,9 +21,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
-
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
+import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
@@ -32,6 +33,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * Klasse stellt das Formular bereit um einen Spielplan zu erstellen und zu bearbeiten
  */
 public class SpielplanErstellenForm extends VerticalPanel {
+	
+	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private int kinoId;
 
@@ -155,7 +158,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		spielplanGrid.setWidget(0, 0, spielplanNameLabel);
 		spielplanGrid.setWidget(0, 1, spielplannameTextBox);
 
-		kinoplaner.getKinosByAnwenderOwner(new KinoCallback());
+		kinoplaner.getKinosByAnwenderOwner(aktuellerAnwender, new KinoCallback());
 
 		spielplanGrid.setWidget(1, 0, kinoLabel);
 		spielplanGrid.setWidget(1, 1, kinoListBox);
@@ -253,7 +256,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		
 		@Override
 		public void onClick(ClickEvent event) {
-			kinoplaner.loeschen(spielplan, new LoeschenSpielplanCallback());
+			kinoplaner.loeschen(spielplan, aktuellerAnwender, new LoeschenSpielplanCallback());
 			spielplanLoeschenDB.hide();
 		}
 		
@@ -382,7 +385,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 				ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
 				vorstellungen = vorstellungenCellTable.getVorstellungenArray();
 				
-				kinoplaner.updateSpielplanKino(vorstellungen, spielplan, new AsyncCallback<Spielplan>() {
+				kinoplaner.updateSpielplanKino(vorstellungen, spielplan, aktuellerAnwender, new AsyncCallback<Spielplan>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -417,7 +420,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 					//}
 				//} else {
 					kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
-							vorstellungenCellTable.getVorstellungenArray(), new ErstellenSpielplanKinoCallback());
+							vorstellungenCellTable.getVorstellungenArray(), aktuellerAnwender, new ErstellenSpielplanKinoCallback());
 				//}
 			}
 		}
