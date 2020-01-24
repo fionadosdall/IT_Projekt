@@ -216,11 +216,13 @@ public class FilmErstellenForm extends PopupPanel {
 					@Override
 					public void onSuccess(Film result) {
 						if (result != null) {
-							Window.alert("Film existiert bereits!");
-						} else {
 							Systemmeldung.anzeigen("Film wurde geupdatet");
 							parent.refresh();
 							removeFromParent();
+						
+						} else {
+							Window.alert("Film existiert bereits!");
+						
 						}
 
 					}
