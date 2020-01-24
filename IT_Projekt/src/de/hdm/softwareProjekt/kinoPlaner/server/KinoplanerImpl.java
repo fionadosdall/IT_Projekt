@@ -1,6 +1,5 @@
 package de.hdm.softwareProjekt.kinoPlaner.server;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.NeueVorstellungenCellTable;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AnwenderMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.AuswahlMapper;
 import de.hdm.softwareProjekt.kinoPlaner.server.db.FilmMapper;
@@ -79,14 +78,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * Abschnitt: ATTRIBUTE
 	 * *****************************************************************************
 	 */
-
-	/**
-	 * <p>
-	 * Hier wird der Anwender gespeichert, in dessen Ansicht die Website momentan
-	 * ausgefuehrt wird.
-	 * </p>
-	 */
-	private Anwender anwender = null;
 
 	/**
 	 * <p>
@@ -276,7 +267,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Gruppe erstellenGruppe(String name, ArrayList<Anwender> list) throws IllegalArgumentException {
+	public Gruppe erstellenGruppe(String name, ArrayList<Anwender> list, Anwender besitzer)
+			throws IllegalArgumentException {
 
 		if (gruppeMapper.findByName(name) == null) {
 			// Ein neues Gruppe Objekt wird erstellt.
@@ -285,11 +277,11 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			// Die Attribute des Objekts werden mit Werten befuellt.
 
 			g.setName(name);
-			g.setBesitzerId(this.anwender.getId());
+			g.setBesitzerId(besitzer.getId());
 			g.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
 			Gruppe gFertig = this.gruppeMapper.insert(g);
-			this.gruppenmitgliedHinzufuegen(anwender, gFertig);
+			this.gruppenmitgliedHinzufuegen(besitzer, gFertig);
 			// Pruefen ob noch Gruppenmitglieder hinzugefuegt werden muessen und dies tun
 			if (list != null) {
 				for (Anwender a : list) {
@@ -312,15 +304,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId)
-			throws IllegalArgumentException {
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId,
+			Anwender besitzer) throws IllegalArgumentException {
 		if (kinoMapper.findByName(name) == null) {
 			// Ein neues Kino Objekt wird erstellt.
 			Kino k = new Kino();
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			k.setName(name);
-			k.setBesitzerId(this.anwender.getId());
+			k.setBesitzerId(besitzer.getId());
 			k.setPlz(plz);
 			k.setStadt(stadt);
 			k.setStrasse(strassse);
@@ -342,7 +334,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer)
+	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, Anwender besitzer)
 			throws IllegalArgumentException {
 		if (kinoMapper.findByName(name) == null) {
 			// Ein neues Kino Objekt wird erstellt.
@@ -350,7 +342,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			k.setName(name);
-			k.setBesitzerId(this.anwender.getId());
+			k.setBesitzerId(besitzer.getId());
 			k.setPlz(plz);
 			k.setStadt(stadt);
 			k.setStrasse(strassse);
@@ -372,14 +364,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Kinokette erstellenKinokette(String name, String sitz, String website) throws IllegalArgumentException {
+	public Kinokette erstellenKinokette(String name, String sitz, String website, Anwender besitzer)
+			throws IllegalArgumentException {
 		if (kinoketteMapper.findByName(name) == null) {
 			// Ein neues Kinokette Objekt wird erstellt.
 			Kinokette k = new Kinokette();
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			k.setName(name);
-			k.setBesitzerId(this.anwender.getId());
+			k.setBesitzerId(besitzer.getId());
 			k.setSitz(sitz);
 			k.setWebsite(website);
 			k.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -398,8 +391,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen)
-			throws IllegalArgumentException {
+	public Spielplan erstellenSpielplanKino(String name, int kinoId, ArrayList<Vorstellung> neueVorstellungen,
+			Anwender besitzer) throws IllegalArgumentException {
 
 		if (spielplanMapper.findByName(name) == null) {
 			// Ein neues Spielplan Objekt wird erstellt.
@@ -407,7 +400,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			s.setName(name);
-			s.setBesitzerId(this.anwender.getId());
+			s.setBesitzerId(besitzer.getId());
 			s.setKinoId(kinoId);
 			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 			s.setKinokettenSpielplan(false);
@@ -435,7 +428,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Spielplan> erstellenSpielplaeneKinokette(String name, int kinoketteId,
-			ArrayList<Vorstellung> neueVorstellungen) throws IllegalArgumentException {
+			ArrayList<Vorstellung> neueVorstellungen, Anwender besitzer) throws IllegalArgumentException {
 
 		if (spielplanMapper.findByName(name) == null) {
 			ArrayList<Kino> kinos = this.getKinosByKinoketteId(kinoketteId);
@@ -447,7 +440,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 				// Die Attribute des Objekts werden mit Werten befuellt.
 				s.setName(name);
-				s.setBesitzerId(this.anwender.getId());
+				s.setBesitzerId(besitzer.getId());
 				s.setKinoId(k.getId());
 				s.setKinokettenId(kinoketteId);
 				s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -500,7 +493,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId)
+	public Umfrage erstellenUmfrage(String name, ArrayList<Vorstellung> list, int gruppenId, Anwender besitzer)
 			throws IllegalArgumentException {
 		if (umfrageMapper.findByName(name) == null) {
 			// Ein neues Umfrage Objekt wird erstellt.
@@ -508,7 +501,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			u.setName(name);
-			u.setBesitzerId(this.anwender.getId());
+			u.setBesitzerId(besitzer.getId());
 			u.setGruppenId(gruppenId);
 			u.setOpen(true);
 			u.setVoted(false);
@@ -536,13 +529,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage erstellenStichwahl(String name, int gruppenId) throws IllegalArgumentException {
+	public Umfrage erstellenStichwahl(String name, int gruppenId, Anwender besitzer) throws IllegalArgumentException {
 		// Ein neues Umfrage Objekt wird erstellt.
 		Umfrage u = new Umfrage();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
 		u.setName(name);
-		u.setBesitzerId(this.anwender.getId());
+		u.setBesitzerId(besitzer.getId());
 		u.setGruppenId(gruppenId);
 		u.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 		u.setOpen(true);
@@ -582,14 +575,15 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Film erstellenFilm(String name, String beschreibung, String bewertung) throws IllegalArgumentException {
+	public Film erstellenFilm(String name, String beschreibung, String bewertung, Anwender besitzer)
+			throws IllegalArgumentException {
 		if (filmMapper.findByName(name) == null) {
 			// Ein neues Film Objekt wird erstellt.
 			Film f = new Film();
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			f.setName(name);
-			f.setBesitzerId(this.anwender.getId());
+			f.setBesitzerId(besitzer.getId());
 			f.setBeschreibung(beschreibung);
 			f.setBewertung(bewertung);
 			f.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -607,14 +601,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielzeit erstellenSpielzeit(String name, String zeit) throws IllegalArgumentException {
+	public Spielzeit erstellenSpielzeit(String name, String zeit, Anwender besitzer) throws IllegalArgumentException {
 		if (spielzeitMapper.findByName(name) == null) {
 			// Ein neues Spielzeit Objekt wird erstellt.
 			Spielzeit s = new Spielzeit();
 
 			// Die Attribute des Objekts werden mit Werten befuellt.
 			s.setName(name);
-			s.setBesitzerId(this.anwender.getId());
+			s.setBesitzerId(besitzer.getId());
 			s.setDatetoString(zeit);
 			s.setErstellDatum(new Timestamp(System.currentTimeMillis()));
 
@@ -632,13 +626,14 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Auswahl erstellenAuswahl(String name, int voting, int umfrageoptionId) throws IllegalArgumentException {
+	public Auswahl erstellenAuswahl(String name, int voting, int umfrageoptionId, Anwender besitzer)
+			throws IllegalArgumentException {
 		// Ein neues Auswahl Objekt wird erstellt.
 		Auswahl a = new Auswahl();
 
 		// Die Attribute des Objekts werden mit Werten befuellt.
 		a.setName(name);
-		a.setBesitzerId(this.anwender.getId());
+		a.setBesitzerId(besitzer.getId());
 		a.setVoting(voting);
 		a.setUmfrageoptionId(umfrageoptionId);
 		a.setErstellDatum(new Timestamp(System.currentTimeMillis()));
@@ -650,7 +645,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		Auswahl object = this.auswahlMapper.insert(a);
 
 		// Die Umfrage gegebenfalls schließen
-		this.isClosedSetzen(a);
+		this.isClosedSetzen(a, besitzer);
 
 		return object;
 
@@ -719,13 +714,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielplan speichern(Spielplan spielplan) throws IllegalArgumentException {
+	public Spielplan speichern(Spielplan spielplan, Anwender anwender) throws IllegalArgumentException {
 		ArrayList<Spielplan> spielpl = this.spielplanMapper.findAllByName(spielplan.getName());
 		if (spielplan.isKinokettenSpielplan() == false) {
 			if (spielpl.size() > 1) {
 				for (Spielplan sp : spielpl) {
 					if (sp.getId() != spielplan.getId()) {
-						this.loeschen(sp);
+						this.loeschen(sp, anwender);
 					}
 				}
 			}
@@ -826,55 +821,55 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public void loeschen(Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Spielplaene
-		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner();
+		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner(anwender);
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.loeschen(s);
+				this.loeschen(s, anwender);
 			}
 		}
 
 		// Loeschen aller zugehoerigen Filme
-		ArrayList<Film> filme = this.getFilmeByAnwenderOwner();
+		ArrayList<Film> filme = this.getFilmeByAnwenderOwner(anwender);
 		if (filme != null) {
 			for (Film f : filme) {
-				this.loeschen(f);
+				this.loeschen(f, anwender);
 			}
 		}
 
 		// Loeschen aller zugehoerigen Spielzeiten
-		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner();
+		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner(anwender);
 		if (spielzeiten != null) {
 			for (Spielzeit s : spielzeiten) {
-				this.loeschen(s);
+				this.loeschen(s, anwender);
 			}
 		}
 
 		// Loeschen aller zugehoerigen Kinos
-		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner();
+		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner(anwender);
 		if (kinos != null) {
 			for (Kino k : kinos) {
-				this.loeschen(k);
+				this.loeschen(k, anwender);
 			}
 		}
 
 		// Loeschen aller zugehoerigen Kinoketten
-		ArrayList<Kinokette> kinoketten = this.getKinokettenByAnwenderOwner();
+		ArrayList<Kinokette> kinoketten = this.getKinokettenByAnwenderOwner(anwender);
 		if (kinoketten != null) {
 			for (Kinokette k : kinoketten) {
-				this.loeschen(k);
+				this.loeschen(k, anwender);
 			}
 		}
 
 		// Loeschen aller zugehoerigen Auswahlen
-		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner();
+		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner(anwender);
 		if (auswahlen != null) {
 			for (Auswahl a : auswahlen) {
-				this.loeschen(a);
+				this.loeschen(a, anwender);
 			}
 		}
 
 		// Weitergabe des Gruppenbesitz an anderes Gruppenmitglied
-		ArrayList<Gruppe> gruppen = this.getGruppenByAnwenderOwner();
+		ArrayList<Gruppe> gruppen = this.getGruppenByAnwenderOwner(anwender);
 		if (gruppen != null) {
 			for (Gruppe g : gruppen) {
 				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper.findAllByGruppe(g);
@@ -883,19 +878,19 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 						if (gruppenmitglieder.get(1) != null) {
 							g.setBesitzerId(gruppenmitglieder.get(1).getId());
 						} else {
-							this.loeschen(g);
+							this.loeschen(g, anwender);
 						}
 					} else {
 						g.setBesitzerId(gruppenmitglieder.get(0).getId());
 					}
 				} else {
-					this.loeschen(g);
+					this.loeschen(g, anwender);
 				}
 			}
 		}
 
 		// Weitergabe des Umfragebesitz an ein anderes Gruppenmitlgied
-		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner();
+		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
 		if (umfragen != null) {
 			for (Umfrage u : umfragen) {
 				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper
@@ -905,13 +900,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 						if (gruppenmitglieder.get(1) != null) {
 							u.setBesitzerId(gruppenmitglieder.get(1).getId());
 						} else {
-							this.loeschen(u);
+							this.loeschen(u, anwender);
 						}
 					} else {
 						u.setBesitzerId(gruppenmitglieder.get(0).getId());
 					}
 				} else {
-					this.loeschen(u);
+					this.loeschen(u, anwender);
 				}
 			}
 		}
@@ -933,12 +928,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Gruppe gruppe) throws IllegalArgumentException {
+	public void loeschen(Gruppe gruppe, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Umfragen
-		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner();
+		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
 		if (umfragen.size() != 0) {
 			for (Umfrage u : umfragen) {
-				this.loeschen(u);
+				this.loeschen(u, anwender);
 			}
 		}
 
@@ -961,12 +956,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Kino kino) throws IllegalArgumentException {
+	public void loeschen(Kino kino, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKino(kino);
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.loeschen(s);
+				this.loeschen(s, anwender);
 			}
 		}
 
@@ -981,12 +976,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Kinokette kinokette) throws IllegalArgumentException {
+	public void loeschen(Kinokette kinokette, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKinokette(kinokette);
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.loeschen(s);
+				this.loeschen(s, anwender);
 			}
 		}
 
@@ -1009,7 +1004,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Spielplan spielplan) throws IllegalArgumentException {
+	public void loeschen(Spielplan spielplan, Anwender anwender) throws IllegalArgumentException {
 		ArrayList<Spielplan> spielpl = this.spielplanMapper.findAllByName(spielplan.getName());
 
 		// Loeschen aller zugehoerigen Vorstellungen
@@ -1017,7 +1012,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			ArrayList<Vorstellung> vorstellungen = this.getVorstellungenBySpielplan(sp);
 			if (vorstellungen != null) {
 				for (Vorstellung v : vorstellungen) {
-					this.loeschen(v);
+					this.loeschen(v, anwender);
 				}
 			}
 		}
@@ -1035,12 +1030,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Vorstellung vorstellung) throws IllegalArgumentException {
+	public void loeschen(Vorstellung vorstellung, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Umfrageoptionen
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByVorstellung(vorstellung);
 		if (umfrageoptionen != null) {
 			for (Umfrageoption u : umfrageoptionen) {
-				this.loeschen(u);
+				this.loeschen(u, anwender);
 			}
 		}
 
@@ -1055,12 +1050,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Umfrage umfrage) throws IllegalArgumentException {
+	public void loeschen(Umfrage umfrage, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Umfrageoptionen
 		ArrayList<Umfrageoption> umfrageoptionen = this.getUmfrageoptionenByUmfrage(umfrage);
 		if (umfrageoptionen != null) {
 			for (Umfrageoption u : umfrageoptionen) {
-				this.loeschen(u);
+				this.loeschen(u, anwender);
 			}
 		}
 
@@ -1075,12 +1070,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Umfrageoption umfrageoption) throws IllegalArgumentException {
+	public void loeschen(Umfrageoption umfrageoption, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Auswahlen
 		ArrayList<Auswahl> auswahlen = this.getAuswahlenByUmfrageoption(umfrageoption);
 		if (auswahlen != null) {
 			for (Auswahl a : auswahlen) {
-				this.loeschen(a);
+				this.loeschen(a, anwender);
 			}
 		}
 
@@ -1096,7 +1091,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean loeschen(Film film) throws IllegalArgumentException {
+	public boolean loeschen(Film film, Anwender anwender) throws IllegalArgumentException {
 		// Alle Vorstellungen mit dem Film zuruekgeben
 		ArrayList<Vorstellung> vorstellungen = this.vorstellungMapper.findByFilm(film);
 
@@ -1107,7 +1102,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			if (vorstellungen.size() == 1) {
 
 				// Dann loesche die zugehörige Vorstellung
-				this.loeschen(vorstellungen.get(0));
+				this.loeschen(vorstellungen.get(0), anwender);
 			}
 
 			// Dannach loesche die Spielzeit
@@ -1129,7 +1124,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public boolean loeschen(Spielzeit spielzeit) throws IllegalArgumentException {
+	public boolean loeschen(Spielzeit spielzeit, Anwender anwender) throws IllegalArgumentException {
 		// Alle Vorstellungen mit der Spielzeit zuruekgeben
 		ArrayList<Vorstellung> spielzeiten = this.vorstellungMapper.findBySpielzeit(spielzeit);
 
@@ -1140,7 +1135,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			if (spielzeiten.size() == 1) {
 
 				// Dann loesche die zugehörige Vorstellung
-				this.loeschen(spielzeiten.get(0));
+				this.loeschen(spielzeiten.get(0), anwender);
 			}
 			// Dannach loesche die Spielzeit
 			this.spielzeitMapper.delete(spielzeit);
@@ -1160,7 +1155,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschen(Auswahl auswahl) throws IllegalArgumentException {
+	public void loeschen(Auswahl auswahl, Anwender anwender) throws IllegalArgumentException {
 
 		// Prüfen ob die Umfrage noch gevotet ist
 		this.isVotedEntfernen(auswahl);
@@ -1169,7 +1164,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		this.auswahlMapper.delete(auswahl);
 
 		// Die Umfrage ggegebenfalls oeffnen
-		this.isClosedEntfernen(auswahl);
+		this.isClosedEntfernen(auswahl, anwender);
 
 	}
 
@@ -1179,12 +1174,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void loeschenKinoketteById(int id) throws IllegalArgumentException {
+	public void loeschenKinoketteById(int id, Anwender anwender) throws IllegalArgumentException {
 		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByKinokette(this.kinoketteMapper.findById(id));
 		if (spielplaene != null) {
 			for (Spielplan s : spielplaene) {
-				this.loeschen(s);
+				this.loeschen(s, anwender);
 			}
 		}
 
@@ -1313,38 +1308,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	/**
 	 * **************************************************************************
 	 * Abschnitt Ende: ERSTELLEN, LOESCHEN SPEICHERN VON BOS
-	 * **************************************************************************
-	 */
-
-	/**
-	 * **************************************************************************
-	 * Abschnitt: GETTER UND SETTER
-	 * **************************************************************************
-	 */
-
-	/**
-	 * <p>
-	 * Rueckgabe des Anwenders, in dessen Ansicht die Website ausgefuehrt wird.
-	 * </p>
-	 */
-	@Override
-	public Anwender getAnwender() throws IllegalArgumentException {
-		return this.anwender;
-	}
-
-	/**
-	 * <p>
-	 * Setzen des Anwenders, in dessen Ansicht die Website ausgefuehrt wird.
-	 * </p>
-	 */
-	@Override
-	public void setAnwender(Anwender anwender) throws IllegalArgumentException {
-		this.anwender = anwender;
-	}
-
-	/**
-	 * **************************************************************************
-	 * Abschnitt Ende: GETTER UND SETTER
 	 * **************************************************************************
 	 */
 
@@ -1482,8 +1445,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Gruppe> getGruppenByAnwender() throws IllegalArgumentException {
-		return this.gruppeMapper.findAllByAnwender(this.anwender);
+	public ArrayList<Gruppe> getGruppenByAnwender(Anwender anwender) throws IllegalArgumentException {
+		return this.gruppeMapper.findAllByAnwender(anwender);
 	}
 
 	/**
@@ -1492,8 +1455,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Gruppe> getGruppenByAnwenderOwner() throws IllegalArgumentException {
-		return this.gruppeMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Gruppe> getGruppenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.gruppeMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1502,8 +1465,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> getUmfragenByAnwender() throws IllegalArgumentException {
-		return this.umfrageMapper.findAllByAnwender(this.anwender);
+	public ArrayList<Umfrage> getUmfragenByAnwender(Anwender anwender) throws IllegalArgumentException {
+		return this.umfrageMapper.findAllByAnwender(anwender);
 	}
 
 	/**
@@ -1512,8 +1475,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> getUmfragenByAnwenderOwner() throws IllegalArgumentException {
-		return this.umfrageMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Umfrage> getUmfragenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.umfrageMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1588,8 +1551,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> getClosedUmfragenByAnwender() {
-		return this.umfrageMapper.findAllClosedByAnwender(this.anwender);
+	public ArrayList<Umfrage> getClosedUmfragenByAnwender(Anwender anwender) {
+		return this.umfrageMapper.findAllClosedByAnwender(anwender);
 	}
 
 	/**
@@ -1598,8 +1561,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> getOpenUmfragenByAnwender() {
-		return this.umfrageMapper.findAllOpenByAnwender(this.anwender);
+	public ArrayList<Umfrage> getOpenUmfragenByAnwender(Anwender anwender) {
+		return this.umfrageMapper.findAllOpenByAnwender(anwender);
 	}
 
 	/**
@@ -1608,8 +1571,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kinokette> getKinokettenByAnwenderOwner() throws IllegalArgumentException {
-		return this.kinoketteMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Kinokette> getKinokettenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.kinoketteMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1618,8 +1581,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kino> getKinosByAnwenderOwner() throws IllegalArgumentException {
-		return this.kinoMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Kino> getKinosByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.kinoMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1649,9 +1612,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner() throws IllegalArgumentException {
+	public ArrayList<Spielplan> getSpielplaeneByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
 		ArrayList<Spielplan> array = new ArrayList<Spielplan>();
-		array = this.spielplanMapper.findAllByAnwenderOwner(this.anwender);
+		array = this.spielplanMapper.findAllByAnwenderOwner(anwender);
 
 		return array;
 	}
@@ -1682,8 +1645,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Film> getFilmeByAnwenderOwner() throws IllegalArgumentException {
-		return this.filmMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Film> getFilmeByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.filmMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1692,8 +1655,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielzeit> getSpielzeitenByAnwenderOwner() throws IllegalArgumentException {
-		return this.spielzeitMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Spielzeit> getSpielzeitenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.spielzeitMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/**
@@ -1864,8 +1827,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption) throws IllegalArgumentException {
-		return this.auswahlMapper.findByAnwenderAndUmfrageoption(this.anwender, umfrageoption);
+	public Auswahl getAuswahlByAnwenderAndUmfrageoption(Umfrageoption umfrageoption, Anwender anwender)
+			throws IllegalArgumentException {
+		return this.auswahlMapper.findByAnwenderAndUmfrageoption(anwender, umfrageoption);
 	}
 
 	/**
@@ -1874,8 +1838,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner() throws IllegalArgumentException {
-		return this.auswahlMapper.findAllByAnwenderOwner(this.anwender);
+	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
+		return this.auswahlMapper.findAllByAnwenderOwner(anwender);
 	}
 
 	/*
@@ -1916,9 +1880,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Vorstellung umfrageoptionEntfernen(Umfrageoption umfrageoption, Umfrage umfrageFertig)
+	public Vorstellung umfrageoptionEntfernen(Umfrageoption umfrageoption, Umfrage umfrageFertig, Anwender anwender)
 			throws IllegalArgumentException {
-		this.loeschen(umfrageoption);
+		this.loeschen(umfrageoption, anwender);
 		return this.vorstellungMapper.findById(umfrageoption.getVorstellungsId());
 
 	}
@@ -1929,11 +1893,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder) throws IllegalArgumentException {
+	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder, Anwender anwender)
+			throws IllegalArgumentException {
 		if (gruppeMapper.nameVerfügbar(gruppe) == true) {
 			Gruppe fertigeGruppe = speichern(gruppe);
 			ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
-			alteGruppenmitglieder.remove(this.anwender);
+			alteGruppenmitglieder.remove(anwender);
 
 			ArrayList<Anwender> fertigeGruppenmitglieder = new ArrayList<Anwender>();
 
@@ -1989,7 +1954,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * Updaten einer Umfrage mitsamt der Veränderungen der Umfrageoptionen
 	 * </p>
 	 */
-	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen)
+	@Override
+	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, Anwender anwender)
 			throws IllegalArgumentException {
 		if (umfrageMapper.nameVerfügbar(umfrage) == true) {
 			Umfrage fertigeUmfrage = speichern(umfrage);
@@ -2010,12 +1976,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 							counter++;
 						}
 						if (counter == umfrageoptionen.size()) {
-							loeschen(u);
+							loeschen(u, anwender);
 							counter = 0;
 						}
 					}
 				} else {
-					loeschen(u);
+					loeschen(u, anwender);
 				}
 			}
 			if (umfrageoptionen.size() != 0) {
@@ -2478,13 +2444,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Umfrage stichwahlStarten(Umfrage umfrage) throws IllegalArgumentException {
+	public Umfrage stichwahlStarten(Umfrage umfrage, Anwender anwender) throws IllegalArgumentException {
 
 		// Umfragename erstellen
 		String name = "Stichwahl " + umfrage.getName();
 
 		// Umfrage für die Stichwahl erstellen
-		Umfrage u = this.erstellenStichwahl(name, umfrage.getGruppenId());
+		Umfrage u = this.erstellenStichwahl(name, umfrage.getGruppenId(), anwender);
 		u.setBesitzerId(umfrage.getBesitzerId());
 		Umfrage fertigeUmfrage = this.umfrageMapper.insert(u);
 
@@ -2509,7 +2475,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void isClosedSetzen(Auswahl auswahl) {
+	public void isClosedSetzen(Auswahl auswahl, Anwender anwender) {
 		// Suchen der Umfrage zur Auswahl
 		Umfrage umfrage = this.umfrageMapper
 				.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
@@ -2558,7 +2524,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 		// Dann wird geprüft ob eine Stichwahl oder ein Ergebnis vorliegt
 		if (ergebnisGefunden(umfrage) == false) {
-			this.stichwahlStarten(umfrage);
+			this.stichwahlStarten(umfrage, anwender);
 		}
 	}
 
@@ -2568,7 +2534,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public void isClosedEntfernen(Auswahl auswahl) {
+	public void isClosedEntfernen(Auswahl auswahl, Anwender anwender) {
 		// Suchen der Umfrage zur Auswahl
 		Umfrage umfrage = this.umfrageMapper
 				.findById((this.umfrageoptionMapper.findById(auswahl.getUmfrageoptionId()).getUmfrageId()));
@@ -2611,10 +2577,10 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		umfrageMapper.update(umfrage);
 
 		// Dann wird geprüft ob eine Stichwahl gestartet wurde
-		ArrayList<Umfrage> stichwahlen = this.volltextSucheUmfragen("Stichwahl " + umfrage.getName());
+		ArrayList<Umfrage> stichwahlen = this.volltextSucheUmfragen("Stichwahl " + umfrage.getName(), anwender);
 		if (stichwahlen != null) {
 			for (Umfrage u : stichwahlen) {
-				this.loeschen(u);
+				this.loeschen(u, anwender);
 			}
 		}
 
@@ -2626,9 +2592,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> anzeigenVonClosedUmfragen() throws IllegalArgumentException {
+	public ArrayList<Umfrage> anzeigenVonClosedUmfragen(Anwender anwender) throws IllegalArgumentException {
 		// Alle geschlossenen Umfragen fuer den Anwender suchen
-		ArrayList<Umfrage> umfragen = this.getClosedUmfragenByAnwender();
+		ArrayList<Umfrage> umfragen = this.getClosedUmfragenByAnwender(anwender);
 
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Umfrage> zeitgueltigeUmfragen = new ArrayList<Umfrage>();
@@ -2655,7 +2621,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Gruppe> volltextSucheGruppen(String text) throws IllegalArgumentException {
+	public ArrayList<Gruppe> volltextSucheGruppen(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Gruppe> ergebnisse = new ArrayList<Gruppe>();
 
@@ -2663,7 +2629,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Gruppe> gruppen = this.gruppeMapper.findAllByAnwender(this.getAnwender());
+		ArrayList<Gruppe> gruppen = this.gruppeMapper.findAllByAnwender(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2689,7 +2655,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> volltextSucheUmfragen(String text) throws IllegalArgumentException {
+	public ArrayList<Umfrage> volltextSucheUmfragen(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Umfrage> ergebnisse = new ArrayList<Umfrage>();
 
@@ -2697,7 +2663,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Umfrage> umfragen = this.umfrageMapper.findAllByAnwender(this.getAnwender());
+		ArrayList<Umfrage> umfragen = this.umfrageMapper.findAllByAnwender(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2718,7 +2684,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Umfrage> volltextSucheErgebnisse(String text) throws IllegalArgumentException {
+	public ArrayList<Umfrage> volltextSucheErgebnisse(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Umfrage> ergebnisse = new ArrayList<Umfrage>();
 
@@ -2726,7 +2692,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Umfrage> closedUmfragen = this.anzeigenVonClosedUmfragen();
+		ArrayList<Umfrage> closedUmfragen = this.anzeigenVonClosedUmfragen(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2749,7 +2715,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kinokette> volltextSucheKinoketten(String text) throws IllegalArgumentException {
+	public ArrayList<Kinokette> volltextSucheKinoketten(String text, Anwender anwender)
+			throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Kinokette> ergebnisse = new ArrayList<Kinokette>();
 
@@ -2757,7 +2724,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Kinoketten abrufen
-		ArrayList<Kinokette> mglKinoketten = this.getKinokettenByAnwenderOwner();
+		ArrayList<Kinokette> mglKinoketten = this.getKinokettenByAnwenderOwner(anwender);
 
 		// Nach Kinoketten suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2780,7 +2747,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Kino> volltextSucheKinos(String text) throws IllegalArgumentException {
+	public ArrayList<Kino> volltextSucheKinos(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Kino> ergebnisse = new ArrayList<Kino>();
 
@@ -2788,7 +2755,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner();
+		ArrayList<Kino> kinos = this.getKinosByAnwenderOwner(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2811,7 +2778,8 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielplan> volltextSucheSpielplaene(String text) throws IllegalArgumentException {
+	public ArrayList<Spielplan> volltextSucheSpielplaene(String text, Anwender anwender)
+			throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Spielplan> ergebnisse = new ArrayList<Spielplan>();
 
@@ -2819,7 +2787,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner();
+		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2842,7 +2810,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Spielzeit> volltextSucheSpielzeit(String text) throws IllegalArgumentException {
+	public ArrayList<Spielzeit> volltextSucheSpielzeit(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Spielzeit> ergebnisse = new ArrayList<Spielzeit>();
 
@@ -2850,7 +2818,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner();
+		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2873,7 +2841,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public ArrayList<Film> volltextSucheFilm(String text) throws IllegalArgumentException {
+	public ArrayList<Film> volltextSucheFilm(String text, Anwender anwender) throws IllegalArgumentException {
 		// Leeres Ergebnissarray anlegen
 		ArrayList<Film> ergebnisse = new ArrayList<Film>();
 
@@ -2881,7 +2849,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		String textLowerCase = text.toLowerCase();
 
 		// Mögliche Ergebnisse abrufen
-		ArrayList<Film> filme = this.getFilmeByAnwenderOwner();
+		ArrayList<Film> filme = this.getFilmeByAnwenderOwner(anwender);
 
 		// Nach Ergebnissen suchen, die den Text im Namen enthalten und diese dem
 		// Ergebnissarray hinzufügen
@@ -2906,7 +2874,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public Umfrage auswahlenErstellen(ArrayList<Auswahl> zuErstellendeAuswahlen, ArrayList<Auswahl> alteAuswahlen,
-			int size, Umfrage umfrage) throws IllegalArgumentException {
+			int size, Umfrage umfrage, Anwender anwender) throws IllegalArgumentException {
 
 		ArrayList<Auswahl> fertigeAuswahlen = new ArrayList<Auswahl>();
 
@@ -2923,12 +2891,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 						counter++;
 					}
 					if (counter == zuErstellendeAuswahlen.size()) {
-						loeschen(a);
+						loeschen(a, anwender);
 						counter = 0;
 					}
 				}
 			} else {
-				loeschen(a);
+				loeschen(a, anwender);
 			}
 		}
 
@@ -2943,12 +2911,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 							counter++;
 						}
 						if (counter == fertigeAuswahlen.size()) {
-							erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+							erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId(),
+									anwender);
 							counter = 0;
 						}
 					}
 				} else {
-					erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId());
+					erstellenAuswahl(aGesamt.getName(), aGesamt.getVoting(), aGesamt.getUmfrageoptionId(), anwender);
 				}
 			}
 		}
@@ -2964,9 +2933,9 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Spielplan> updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen,
-			Spielplan spielplan) throws IllegalArgumentException {
+			Spielplan spielplan, Anwender anwender) throws IllegalArgumentException {
 
-		speichern(spielplan);
+		speichern(spielplan, anwender);
 
 		ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
 		ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
@@ -2984,12 +2953,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 						counter++;
 					}
 					if (counter == zuErstellendeVorstellungen.size()) {
-						loeschen(v);
+						loeschen(v, anwender);
 						counter = 0;
 					}
 				}
 			} else {
-				loeschen(v);
+				loeschen(v, anwender);
 			}
 		}
 
@@ -3019,12 +2988,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 * </p>
 	 */
 	@Override
-	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan)
-			throws IllegalArgumentException {
+	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan,
+			Anwender anwender) throws IllegalArgumentException {
 
 		if (spielplanMapper.nameVerfügbar(spielplan) == true) {
 
-			Spielplan fertigSpielplan = speichern(spielplan);
+			Spielplan fertigSpielplan = speichern(spielplan, anwender);
 
 			ArrayList<Vorstellung> fertigeVorstellungen = new ArrayList<Vorstellung>();
 			ArrayList<Vorstellung> alteVorstellungen = new ArrayList<Vorstellung>();
@@ -3042,12 +3011,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 							counter++;
 						}
 						if (counter == zuErstellendeVorstellungen.size()) {
-							loeschen(v);
+							loeschen(v, anwender);
 							counter = 0;
 						}
 					}
 				} else {
-					loeschen(v);
+					loeschen(v, anwender);
 				}
 			}
 
@@ -3090,5 +3059,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// TODO Auto-generated method stub
 		return this.filmMapper.findByName(name);
 	}
+
+
 
 }
