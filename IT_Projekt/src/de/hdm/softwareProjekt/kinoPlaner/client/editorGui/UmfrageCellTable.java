@@ -1,6 +1,7 @@
 package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -11,11 +12,10 @@ import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
@@ -23,7 +23,6 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 public class UmfrageCellTable extends ScrollPanel {
@@ -106,7 +105,7 @@ public class UmfrageCellTable extends ScrollPanel {
 		this.umfrageList = umfrageList;
 	}
 
-	private ArrayList<Umfrageoption> umfragen = null;
+	
 
 	private ButtonCell buttonCell = new ButtonCell();
 	private TextCell filmCell = new TextCell();
@@ -115,10 +114,10 @@ public class UmfrageCellTable extends ScrollPanel {
 	private TextCell stadtCell = new TextCell();
 
 	private VorstellungInfo uI;
-	private Umfrageoption umfrageoption;
+
 	private Vorstellung vorstellung;
 
-	private ArrayList<Vorstellung> neueUmfrageoptionen = null;
+	private ArrayList<Vorstellung> neueUmfrageoptionen = new ArrayList<Vorstellung>();
 
 	private NeueVorstellungenCellTable nct = null;
 
@@ -137,6 +136,9 @@ public class UmfrageCellTable extends ScrollPanel {
 
 		this.add(umfrageCellTable);
 		umfrageCellTable.setWidth("100%");
+		
+		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(umfrageList);
+		umfrageCellTable.addColumnSortHandler(sortHandler);
 
 		Column<VorstellungInfo, String> buttonColumn = new Column<VorstellungInfo, String>(buttonCell) {
 
@@ -165,6 +167,7 @@ public class UmfrageCellTable extends ScrollPanel {
 
 			}
 		});
+		
 
 		Column<VorstellungInfo, String> filmColumn = new Column<VorstellungInfo, String>(filmCell) {
 
@@ -176,6 +179,14 @@ public class UmfrageCellTable extends ScrollPanel {
 
 			}
 		};
+		
+		filmColumn.setSortable(true);
+
+		sortHandler.setComparator(filmColumn, new Comparator<VorstellungInfo>() {
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getFilmName().compareTo(o2.getFilmName());
+			}
+		});
 
 		umfrageCellTable.addColumn(filmColumn, "Film");
 
@@ -189,6 +200,14 @@ public class UmfrageCellTable extends ScrollPanel {
 
 			}
 		};
+		
+		kinoColumn.setSortable(true);
+
+		sortHandler.setComparator(kinoColumn, new Comparator<VorstellungInfo>() {
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getKinoName().compareTo(o2.getKinoName());
+			}
+		});
 
 		umfrageCellTable.addColumn(kinoColumn, "Kino");
 
@@ -204,6 +223,16 @@ public class UmfrageCellTable extends ScrollPanel {
 		};
 
 		umfrageCellTable.addColumn(speilzeitColumn, "Spielzeit");
+		
+		speilzeitColumn.setSortable(true);
+
+		sortHandler.setComparator(speilzeitColumn, new Comparator<VorstellungInfo>() {
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getSpielzeit().compareTo(o2.getSpielzeit());
+			}
+		});
+
+		
 
 		Column<VorstellungInfo, String> stadtColumn = new Column<VorstellungInfo, String>(stadtCell) {
 
@@ -217,6 +246,14 @@ public class UmfrageCellTable extends ScrollPanel {
 		};
 
 		umfrageCellTable.addColumn(stadtColumn, "Ort");
+		
+		stadtColumn.setSortable(true);
+
+		sortHandler.setComparator(stadtColumn, new Comparator<VorstellungInfo>() {
+			public int compare(VorstellungInfo o1, VorstellungInfo o2) {
+				return o1.getStadt().compareTo(o2.getStadt());
+			}
+		});
 
 		dataProviderUmfrage.addDataDisplay(umfrageCellTable);
 
@@ -229,7 +266,7 @@ public class UmfrageCellTable extends ScrollPanel {
 
 		this.neueUmfrageoptionen = nct.getUmfrageOptionen();
 
-		if (this.neueUmfrageoptionen != null) {
+		if (this.neueUmfrageoptionen.size() != 0) {
 			
 			umfrageList.clear();
 

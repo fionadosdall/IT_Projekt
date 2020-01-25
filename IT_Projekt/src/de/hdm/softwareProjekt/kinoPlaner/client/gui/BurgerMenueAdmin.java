@@ -17,8 +17,7 @@ public class BurgerMenueAdmin extends FlowPanel{
 	VerticalPanel fl = new VerticalPanel();
 	FlowPanel detailsOben = new FlowPanel();
 	VerticalPanel dropdown = new  VerticalPanel();
-	
-	private Boolean edit = false;
+
 
 	@Override
 	protected void onLoad() {

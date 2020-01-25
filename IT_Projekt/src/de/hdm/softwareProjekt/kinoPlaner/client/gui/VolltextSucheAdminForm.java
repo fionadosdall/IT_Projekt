@@ -116,68 +116,13 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		
 		
 		kinoplaner.volltextSucheKinoketten(suchText, aktuellerAnwender, new VolltextSucheKinokettenCallback());
-		if (kinoketten != null) {
-			kinokettenGrid.resizeRows(kinoketten.size());
-			int i = 0;
-			for (Kinokette g : kinoketten) {
-				Label kinokettenename = new Label(g.getName());
-				KinoketteBearbeitenClickHandler click = new KinoketteBearbeitenClickHandler();
-				click.setKinokette(g);
-				kinokettenename.addDoubleClickHandler(click);
-				kinokettenGrid.setWidget(i, 0, kinokettenename);
-				i++;
-			}
-		} else {
-			kinokettenGrid.setWidget(0, 0, new Label("Keine kinoketten gefunden."));
-			Button erstellenButton = new Button("Erstelle eine Kinokette!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new KinoketteErstellenClickHandler());
-
-			kinokettenGrid.setWidget(1, 0, erstellenButton);
-		}
+		
 
 		kinoplaner.volltextSucheKinos(suchText, aktuellerAnwender, new VolltextSucheKinoCallback());
-		if (kinos != null) {
-			kinosGrid.resizeRows(kinos.size());
-			int i = 0;
-			for (Kino u : kinos) {
-				Label kinosname = new Label(u.getName());
-				KinoBearbeitenClickHandler click = new KinoBearbeitenClickHandler();
-				click.setKino(u);
-				kinosname.addDoubleClickHandler(click);
-				kinosGrid.setWidget(i, 0, kinosname);
-				i++;
-			}
-		} else {
-			kinosGrid.setWidget(0, 0, new Label("Keine Kinos gefunden."));
-			Button erstellenButton = new Button("Erstelle eine Kino!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new KinoErstellenClickHandler());
 
-			kinosGrid.setWidget(1, 0, erstellenButton);
-		}
 
 		kinoplaner.volltextSucheSpielplaene(suchText, aktuellerAnwender, new VolltextSucheSpielplaeneCallback());
-		if (spielplaene != null) {
-			spielplaeneGrid.resizeRows(spielplaene.size());
-			int i = 0;
-			for (Spielplan sp : spielplaene) {
-				Label spielplaenename = new Label(sp.getName());
-				SpielplanBearbeitenClickHandler click = new SpielplanBearbeitenClickHandler();
-				click.setSpielplan(sp);
-				spielplaenename.addDoubleClickHandler(click);
-				spielplaeneGrid.setWidget(i, 0, spielplaenename);
-				i++;
-			}
-		} else {
-			spielplaeneGrid.setWidget(0, 0, new Label("Keine Spielpläne gefunden."));
-			Button erstellenButton = new Button("Erstelle einen Spielplan!");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addClickHandler(new SpielplanErstellenClickHandler());
 
-			spielplaeneGrid.setWidget(1, 0, erstellenButton);
-
-		}
 
 		
 	}
@@ -310,7 +255,25 @@ public class VolltextSucheAdminForm extends FlowPanel{
 
 		@Override
 		public void onSuccess(ArrayList<Kinokette> result) {
-			kinoketten = result;
+			if (result.size() != 0) {
+				kinokettenGrid.resizeRows(result.size());
+				int i = 0;
+				for (Kinokette g : result) {
+					Label kinokettenename = new Label(g.getName());
+					KinoketteBearbeitenClickHandler click = new KinoketteBearbeitenClickHandler();
+					click.setKinokette(g);
+					kinokettenename.addDoubleClickHandler(click);
+					kinokettenGrid.setWidget(i, 0, kinokettenename);
+					i++;
+				}
+			} else {
+				kinokettenGrid.setWidget(0, 0, new Label("Keine kinoketten gefunden."));
+				Button erstellenButton = new Button("Erstelle eine Kinokette!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new KinoketteErstellenClickHandler());
+
+				kinokettenGrid.setWidget(1, 0, erstellenButton);
+			}
 
 		}
 
@@ -326,7 +289,25 @@ public class VolltextSucheAdminForm extends FlowPanel{
 
 		@Override
 		public void onSuccess(ArrayList<Kino> result) {
-			kinos = result;
+			if (result.size() != 0) {
+				kinosGrid.resizeRows(result.size());
+				int i = 0;
+				for (Kino u : result) {
+					Label kinosname = new Label(u.getName());
+					KinoBearbeitenClickHandler click = new KinoBearbeitenClickHandler();
+					click.setKino(u);
+					kinosname.addDoubleClickHandler(click);
+					kinosGrid.setWidget(i, 0, kinosname);
+					i++;
+				}
+			} else {
+				kinosGrid.setWidget(0, 0, new Label("Keine Kinos gefunden."));
+				Button erstellenButton = new Button("Erstelle eine Kino!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new KinoErstellenClickHandler());
+
+				kinosGrid.setWidget(1, 0, erstellenButton);
+			}
 
 		}
 
@@ -342,7 +323,26 @@ public class VolltextSucheAdminForm extends FlowPanel{
 
 		@Override
 		public void onSuccess(ArrayList<Spielplan> result) {
-			spielplaene = result;
+			if (result.size() != 0) {
+				spielplaeneGrid.resizeRows(result.size());
+				int i = 0;
+				for (Spielplan sp : result) {
+					Label spielplaenename = new Label(sp.getName());
+					SpielplanBearbeitenClickHandler click = new SpielplanBearbeitenClickHandler();
+					click.setSpielplan(sp);
+					spielplaenename.addDoubleClickHandler(click);
+					spielplaeneGrid.setWidget(i, 0, spielplaenename);
+					i++;
+				}
+			} else {
+				spielplaeneGrid.setWidget(0, 0, new Label("Keine Spielpläne gefunden."));
+				Button erstellenButton = new Button("Erstelle einen Spielplan!");
+				erstellenButton.setStyleName("navButton");
+				erstellenButton.addClickHandler(new SpielplanErstellenClickHandler());
+
+				spielplaeneGrid.setWidget(1, 0, erstellenButton);
+
+			}
 
 		}
 

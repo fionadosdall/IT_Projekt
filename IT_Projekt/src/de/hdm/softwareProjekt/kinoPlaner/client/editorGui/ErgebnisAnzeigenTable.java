@@ -10,7 +10,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.view.client.ListDataProvider;
@@ -221,7 +220,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 		@Override
 		public void onSuccess(ArrayList<Umfrageoption> result) {
 
-			if (result == null) {
+			if (result.size()==0) {
 
 				ergebnisCellTable.setEmptyTableWidget(new Label("Keine Umfrageoptionen verfügbar!"));
 

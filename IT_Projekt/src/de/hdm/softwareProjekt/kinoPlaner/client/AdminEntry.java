@@ -17,7 +17,6 @@ import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.RegistrierungsForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.AdminDashboardForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Footer;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.Header;
-import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.LoginServiceAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 

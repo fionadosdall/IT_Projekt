@@ -17,7 +17,6 @@ import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
 /* Die Klasse stellt das Formular um die Ergebnisse anzuzeigen
  * 

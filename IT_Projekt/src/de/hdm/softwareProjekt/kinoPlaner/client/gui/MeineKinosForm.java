@@ -90,43 +90,6 @@ public class MeineKinosForm extends VerticalPanel {
 		
 		this.add(inhaltPanel);
 		
-		
-		
-		
-		
-		
-		
-		
-		/*kinoplaner.getKinosByAnwenderOwner(new SucheKinosByAnwenderCallback());
-		
-	
-		
-		if (kinos != null) {
-			felder.resizeRows(kinos.size() +1 );
-			int i= 1;
-			
-			
-			for (Kino kino : kinos) {
-				Label kinoname = new Label (kino.getName());
-				KinoAuswaehlenClickHandler click  = new KinoAuswaehlenClickHandler();
-				click.setKino(kino);
-				kinoname.addDoubleClickHandler(click);
-				felder.setWidget(i, 0,kinoname);
-				i++;
-				
-				
-				
-			}
-		} else {
-			felder.setWidget(1,0, new Label("Keine Kinos verfügbar"));
-			Button erstellenButton = new Button ("Erstelle dein erstes Kino");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addDoubleClickHandler(new KinoErstellenClickHandler());
-			felder.setWidget(2, 0,  erstellenButton);
-		}
-		
-		//detailsboxInhalt.add(felder);*/
-		
 		untenPanel.add(kinoErstellenButton);
 		this.add(untenPanel);
 		
@@ -137,27 +100,6 @@ public class MeineKinosForm extends VerticalPanel {
 	
 	/*CLickHandler*/
 	
-	
-	
-	/*
-	 * ClickHandler um ein Kino auzuwählen
-	 */
-	private class KinoAuswaehlenClickHandler implements DoubleClickHandler {
-		private Kino kino;
-
-		@Override
-		public void onDoubleClick(DoubleClickEvent event) {
-			RootPanel.get("details").clear();
-			anzeigen = new MeineKinosForm();
-			RootPanel.get("details").add(anzeigen);
-			
-		}
-		
-		public void setKino(Kino kino) {
-			this.kino = kino;
-		}
-		
-	}
 	
 	/*
 	 * ClickHandler um ein Kino zu erstellen

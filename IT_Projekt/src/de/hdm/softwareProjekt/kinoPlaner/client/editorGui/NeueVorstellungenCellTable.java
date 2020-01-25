@@ -67,7 +67,7 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
 
-	private int i = 0;
+
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 

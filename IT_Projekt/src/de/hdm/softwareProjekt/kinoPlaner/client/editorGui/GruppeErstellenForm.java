@@ -117,7 +117,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	private Gruppe gruppe = null;
 
 	public Gruppe getGruppe() {
-		return gruppe;
+		return gruppe; 
 	}
 
 	public void setGruppe(Gruppe gruppe) {
@@ -443,8 +443,10 @@ public class GruppeErstellenForm extends FlowPanel {
 			if (result == null) {
 				Window.alert("Kein gültiger Anwender ausgewählt!");
 				return;
-			}
-
+			}else {
+				if(result.getId()!=AktuellerAnwender.getAnwender().getId()) {
+					
+				
 			// Updaten des DataProviders
 
 			dataProvider.getList().add(result);
@@ -453,6 +455,10 @@ public class GruppeErstellenForm extends FlowPanel {
 			// Update der AnwenderListe
 
 			anwenderListe.add(result);
+				}else {
+					Window.alert("Du bist bereits in der Gruppe!");
+				}
+			}
 
 		}
 

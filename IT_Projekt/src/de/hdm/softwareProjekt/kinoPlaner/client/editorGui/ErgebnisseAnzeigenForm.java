@@ -104,7 +104,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 //				Window.alert(u.getName());
 //			}
 			
-			if (result != null) {
+			if (result.size() != 0) {
 				bov.setErgebnisse(result);
 			} else {
 				Label labelT = new Label();

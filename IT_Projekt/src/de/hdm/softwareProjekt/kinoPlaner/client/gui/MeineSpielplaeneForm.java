@@ -100,32 +100,6 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		
 		kinoplaner.getSpielplaeneByAnwenderOwner(aktuellerAnwender, new GetSpielplaeneByAnwenderOwnerCallback());
 		
-		
-		/*if (spielplaene != null) {
-			felder.resizeRows(spielplaene.size()+1);
-			int i=1;
-			
-			
-			for (Spielplan spielplan : spielplaene) {
-				Label spielplanname = new Label(spielplan.getName());
-				SpielplanAuswaehlenClickHandler click = new SpielplanAuswaehlenClickHandler();
-				click.setSpielplan(spielplan);
-				spielplanname.addDoubleClickHandler(click);
-				felder.setWidget(i, 0, spielplanname);
-				i++;
-				
-	
-				
-			}
-		} else {
-			felder.setWidget(1, 0, new Label("Keine Spielpläne verfügbar."));
-			Button erstellenButton = new Button ("Erstelle deinen ersten Spielplan");
-			erstellenButton.setStyleName("navButton");
-			erstellenButton.addDoubleClickHandler(new SpielplanErstellenClickHandler());
-			felder.setWidget(2, 0, erstellenButton);
-		}
-		detailsboxInhalt.add(felder);
-		bearbeitenButton.addClickHandler(new SpielplanBearbeitenClickHandler());*/
 
 	}
 	
@@ -174,23 +148,7 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 		
 	}
 	
-	
-	/*
-	 * ClickHandler um einen Spielplan zu bearbeiten
-	 */
-	
-	private class SpielplanBearbeitenClickHandler implements ClickHandler{
 
-		@Override
-		public void onClick(ClickEvent event) {
-			// TODO Auto-generated method stub
-			RootPanel.get("details").clear();
-			
-			bearbeiten = new SpielplanErstellenForm();
-			RootPanel.get("details").add(bearbeiten);
-		}
-		
-	}
 	
 	/****************************************************
 	 * Callbacks

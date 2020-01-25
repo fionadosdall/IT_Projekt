@@ -332,7 +332,7 @@ public class AuswahlMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate(
-					"UPDATE auswahl SET " + "auswahl_anwender_Id= " + null + "\"" + " WHERE awId=" + auswahl.getId());
+					"UPDATE auswahl SET " + "auswahl_anwender_Id= " + 0 + "\"" + " WHERE awId=" + auswahl.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

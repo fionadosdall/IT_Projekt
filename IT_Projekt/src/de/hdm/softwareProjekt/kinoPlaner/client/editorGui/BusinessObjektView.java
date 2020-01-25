@@ -2,29 +2,18 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
-import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinoCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.KinokettenCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanCell;
 import de.hdm.softwareProjekt.kinoPlaner.client.gui.SpielplanEintragCell;
-import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
@@ -49,7 +38,7 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Kinokette> listKinokette;
 	private CellList<Spielplan> listSpielplan;
 	private CellList<Vorstellung> listVorstellung;
-	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
+
 	
 	
 	//onLoad()- Methode, fügt die Panels, nach Laden der Seite hinzu.

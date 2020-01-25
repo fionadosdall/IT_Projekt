@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
@@ -54,6 +55,8 @@ public class UserForm extends FlowPanel {
 	private TextBox nameTextBox = new TextBox();
 
 	private Image papierkorb = new Image();
+	
+	private String alterName;
 
 	String logoutUrl;
 
@@ -363,6 +366,7 @@ public class UserForm extends FlowPanel {
 			if (neuerName.isEmpty()) {
 				Window.alert("Der Name ist leer");
 			} else {
+				alterName = anwender.getName();
 				anwender.setName(neuerName);
 			}
 
@@ -458,8 +462,10 @@ public class UserForm extends FlowPanel {
 		public void onSuccess(Anwender result) {
 			if (result == null) {
 				Window.alert("Nickname bereits vergeben!");
+				anwender.setName(alterName);
 			} else {
-				Window.alert("UpdateAnwenderCallback war erfolgreich");
+				AktuellerAnwender.setAnwender(anwender);
+				de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender.setAnwender(anwender);
 			}
 
 		}

@@ -125,7 +125,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
-			if (result != null) {
+			if (result.size() != 0) {
 				bov.setGruppen(result);
 			} else {
 				Label labelT = new Label();

@@ -78,14 +78,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	
 	private HashMap<String, Integer> spielzeitenHastable = new HashMap<String, Integer>();
 	
-
-	private ArrayList<Gruppe> gruppen;
-	private ArrayList<Kino> kinos;
-	private ArrayList<Spielzeit> spielzeiten;
-	private ArrayList<Film> filme;
 	private ArrayList<Vorstellung> resultSet = new ArrayList<Vorstellung>();
-
-	private Vorstellung v;
 
 	private UmfrageInfo uI;
 
@@ -223,8 +216,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new GruppenCallback());
 
 		kinoplaner.getAllKinos(new KinoCallback());
-
-		kinoplaner.getAllKinoketten(new KinokettenCallback());
 
 		kinoplaner.getAllSpielzeiten(new SpielzeitCallback());
 
@@ -528,11 +519,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Gruppe> result) {
 
-			gruppen = result;
 			int indexSelected = 0;
 			int counter = 0;
 
-			if (result != null) {
+			if (result.size() != 0) {
 
 				for (Gruppe g : result) {
 
@@ -584,8 +574,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Kino> result) {
-			// TODO Auto-generated method stub
-			kinos = result;
 
 			kinoListBox.addItem("Keine Auswahl");
 			kinoListBox.addItem("----Kinos----");
@@ -604,6 +592,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 				// kinoListBox.setEnabled(false);
 
 			}
+			kinoplaner.getAllKinoketten(new KinokettenCallback());
 		}
 
 	}
@@ -662,8 +651,6 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Spielzeit> result) {
-			// TODO Auto-generated method stub
-			spielzeiten = result;
 
 			spielzeitListBox.addItem("Keine Auswahl");
 
@@ -710,11 +697,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Film> result) {
-			// TODO Auto-generated method stub
-			filme = result;
 			filmListBox.addItem("Keine Auswahl");
 
-			if (result != null) {
+			if (result.size() != 0) {
 
 				for (Film f : result) {
 
