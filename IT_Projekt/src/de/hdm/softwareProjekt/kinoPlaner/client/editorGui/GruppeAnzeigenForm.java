@@ -133,6 +133,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
+		
+		/*
+		 * Widgets zusammensetzen
+		 */
 
 		this.add(detailsoben);
 		// this.add(detailslinks);

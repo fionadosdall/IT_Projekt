@@ -6,7 +6,6 @@
 	grid-template-columns: 25% 25% 25% 25%;
 	grid-auto-flow: column;
 	height: 100vh;
-	  
 }
 
 #header {
@@ -14,7 +13,6 @@
 	grid-column-end: 5;
 	grid-row-start: 1;
 	grid-row-end: 2;
-
 }
 
 #details {
@@ -48,6 +46,7 @@
 	margin-left: 60px;
 	margin-right: 5px;
 }
+
 .detailsrechts {
 	width: 50%;
 	margin-top: 5%;
@@ -62,7 +61,7 @@
 	margin-right: 30%;
 }
 
-.dropdownGesamt{
+.dropdownGesamt {
 	background-color: transparent;
 	min-height: 3.25rem;
 	align-items: right;
@@ -70,7 +69,6 @@
 	position: relative;
 	justify-content: flex-end;
 	z-index: 40;
-	
 }
 
 .dropdownButton {
@@ -98,7 +96,6 @@
 	vertical-align: top;
 	border: 1px solid;
 	margin-top: 1px;
-
 }
 
 .menueBar {
@@ -108,7 +105,6 @@
 	right: 200px;
 	z-index: 40;
 	align-items: right;
-	
 }
 /** Styling des Headers*/
 .headerGesamt {
@@ -117,11 +113,11 @@
 	min-height: 3.5rem;
 	align-items: stretch;
 	display: flex;
-	position: relative;	
+	position: relative;
 	box-sizing: inherit;
 	flex-direction: row;
-
 }
+
 @media only screen and (max-width: 700px) {
 	.headerGesamt {
 		flex-direction: column;
@@ -275,7 +271,6 @@
 	border-width: thin;
 	margin-bottom: 5%;
 	padding: 10px;
-	
 }
 
 .detailsboxlöschen {
@@ -337,6 +332,7 @@
 	vertical-align: top;
 	cursor: pointer;
 }
+
 .abbrechenButton.gwt-Button {
 	border-radius: 290486px;
 	padding-left: 1em;
@@ -361,10 +357,7 @@
 	position: relative;
 	vertical-align: top;
 	cursor: pointer;
-
-	
-
-	}
+}
 
 .mailLabel {
 	margin-bottom: .5em;
@@ -386,8 +379,6 @@
 	height: 32px;
 	width: 32px;
 	cursor: pointer;
-
-	
 }
 
 .papierkorb {
@@ -403,6 +394,7 @@
 	background-color: white;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 }
 
 .detailsoben {
@@ -430,7 +422,7 @@
 }
 
 .speichernBox {
-
+	
 }
 
 .detailsBoxMitte {
@@ -447,11 +439,14 @@
 .detailsboxLabels {
 	font-size: 1.25rem;
 	margin-bottom: .5em;
-	color:#363636;
+	color: #363636;
 	display: block;
 	font-weight: 700;
 }
-/** Styling der GruppeErstellenForm*/
+
+
+
+/** Styling der GruppeErstellenForm*/ 
 .gruppenameTB {
 	background-color: #fff;
 	border-color: #dbdbdb;
@@ -508,22 +503,23 @@
 	text-align: center;
 	align-items: center;
 }
+
 .homeBar {
 	display: flex;
 	width: 100%;
 	justify-content: center;
-	
 }
+
 .homeBarItem {
 	margin-left: 10px;
-	margin-right:10px;
+	margin-right: 10px;
 }
+
 .homeBarAnchor.gwt-Anchor {
 	color: #363636;
 	font-weight: bold;
 }
 
-	
 .filternBox {
 	display: flex;
 	align-items: center;
@@ -532,19 +528,17 @@
 	flex-direction: row;
 }
 
-	
 @media only screen and (max-width: 600px) {
 	.filternBox {
 		flex-direction: column;
 	}
 }
 
-
 .filternBoxenGesamt {
 	
 }
 
-.dashboardKachelnPanel{
+.dashboardKachelnPanel {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -560,7 +554,6 @@
 	}
 }
 
-
 .obenPanel {
 	width: 100%;
 	background: #d6d1d1;
@@ -571,7 +564,7 @@
 	padding: 10px;
 }
 
-.dashboardButton.gwt-Button{
+.dashboardButton.gwt-Button {
 	background: #209cee;
 	color: white;
 	margin-top: 30px;
@@ -583,15 +576,17 @@
 	border-radius: 6px;
 	padding: 0px;
 }
+
 .formHeaderLabel {
 	color: #363636;
 	font-size: 2rem;
 	font-weight: 600;
 	line-height: 1.125;
-	word-break: break-word;	
+	word-break: break-word;
 	text-align: center;
 	align-items: center;
 }
+
 .center {
 	align-items: center;
 	text-align: center;
@@ -599,3 +594,35 @@
 	margin-right: 20%;
 }
 
+/** Styling der GruppeAnzeigenForm */
+.title {
+	background-color: #fff;
+	border-color: #dbdbdb;
+	color: #363636;
+	box-shadow: inset 0 1px 2px rgba(10, 10, 10, .1);
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 18px;
+	display: inline-flex;
+	font-size: 1rem;
+	height: 2.25em;
+	justify-content: flex-start;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-left: calc(.625em - 1px);
+	padding-right: calc(.625em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+
+.detailsBoxLabels {
+	font-size: 1.25rem;
+	margin-bottom: .5em;
+	color: #363636;
+	display: block;
+	font-weight: 700;
+	align-items: center
+}
