@@ -13,6 +13,12 @@ import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UmfrageAnzeigenForm;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
+
+/*
+ * Klasse KinoCell dient zur Darstellung der KIiono-BO's
+ *in der  BO-View (--> render) alle Klassen die auf .....Celll enden;
+ *sind abgewandelte/ veränderte Abstract Cells. 
+ */
 public class KinoCell extends AbstractCell<Kino>{
 	
 	private static Boolean edit = true;
@@ -35,7 +41,11 @@ public class KinoCell extends AbstractCell<Kino>{
 	        super("click");
 	      }
 
-
+/*
+ * Methode wenn Ereignis im Browser passiert
+ * (non-Javadoc)
+ * @see com.google.gwt.cell.client.AbstractCell#onBrowserEvent(com.google.gwt.cell.client.Cell.Context, com.google.gwt.dom.client.Element, java.lang.Object, com.google.gwt.dom.client.NativeEvent, com.google.gwt.cell.client.ValueUpdater)
+ */
 	      @Override
 	      public void onBrowserEvent(Context context, Element parent, Kino value, NativeEvent event,
 	          ValueUpdater<Kino> valueUpdater) {
