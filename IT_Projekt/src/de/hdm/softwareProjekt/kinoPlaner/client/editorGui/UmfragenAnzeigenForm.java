@@ -64,7 +64,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 		
-		detialsbox.addStyleName("detailsbox");
+		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
 		
 		erstellenButton.setStyleName("speichernButton");

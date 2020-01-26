@@ -56,7 +56,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		
 		erstellenButton.setStyleName("speichernButton");
 		
-		detialsbox.addStyleName("detailsbox");
+		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
 		
 

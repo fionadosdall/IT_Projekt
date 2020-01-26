@@ -384,6 +384,7 @@
 .papierkorb {
 	height: auto;
 	max-width: 100%;
+	cursor: pointer;
 }
 /** Styling der DialogBox*/
 .Abfrage {
@@ -593,8 +594,45 @@
 	margin-left: 20%;
 	margin-right: 20%;
 }
+.detailsBox {
+    margin-top: 5%;
+    margin-left: 41%;
+    margin-right: 30%;
+   
+}
+.umfrageWidgets {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	
+}
 
-/** Styling der GruppeAnzeigenForm */
+.bearbeitenButton.gwt-Button{
+	background: red;
+	color: white;
+	margin: 5px;
+	padding-left: 1em;
+	padding-right: 1em;
+	border-width: 1px;
+	justify-content: center;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	text-align: center;
+	white-space: nowrap;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	box-shadow: none;
+	display: inline-flex;
+	line-height: 1.5;
+	position: relative;
+	vertical-align: top;
+	cursor: pointer;	
+}
+
+/** Styling der GruppeAnzeigenForm 
 .title {
 	background-color: #fff;
 	border-color: #dbdbdb;
@@ -626,3 +664,4 @@
 	font-weight: 700;
 	align-items: center
 }
+*/
