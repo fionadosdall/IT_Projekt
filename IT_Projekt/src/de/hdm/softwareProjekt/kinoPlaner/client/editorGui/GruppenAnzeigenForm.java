@@ -64,7 +64,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		detailsunten.addStyleName("detailsunten");
 		gruppeErstellen.addStyleName("speichernButton");
 		
-		detialsbox.addStyleName("detailsbox");
+		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
 		
 		/*

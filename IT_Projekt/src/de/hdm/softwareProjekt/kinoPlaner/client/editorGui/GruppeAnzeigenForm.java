@@ -51,12 +51,11 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		this.gruppe = gruppe;
 	}
 
-	HomeBar hb = new HomeBar();
-
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsrechts = new FlowPanel();
 	private FlowPanel detailslinks = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
+	private FlowPanel umfrageWidgets = new FlowPanel();
 	private FlowPanel detailsboxlöschen = new FlowPanel();
 	private FlowPanel löschenImage = new FlowPanel();
 
@@ -66,7 +65,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 	private Image papierkorb = new Image();
 
-	private Button bearbeiten = new Button("Bearbeiten");
+	private Button bearbeiten = new Button("Gruppe bearbeiten");
 	private Button umfrageErstellen = new Button("Umfrage erstellen");
 
 	private AnwenderCell gruppenmitgliederCell = new AnwenderCell();
@@ -124,15 +123,19 @@ public class GruppeAnzeigenForm extends FlowPanel {
 
 		this.addStyleName("detailscontainer");
 		detailsboxlöschen.addStyleName("detailsboxlöschen");
+		umfrageWidgets.addStyleName("umfrageWidgets");
 		detailsoben.addStyleName("detailsoben");
 		detailslinks.addStyleName("detailslinks");
 		detailsrechts.addStyleName("detailsrechts");
 		detailsunten.addStyleName("detailsunten");
+		bearbeiten.addStyleName("bearbeitenButton");
 
 		title.addStyleName("title");
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
 		löschenImage.addStyleName("löschenImage");
+		
+		umfrageErstellen.addStyleName("speichernButton");
 		
 		/*
 		 * Widgets zusammensetzen
@@ -144,7 +147,6 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		this.add(detailsunten);
 		detailsunten.add(detailsboxlöschen);
 
-		detailsoben.add(hb);
 		detailsoben.add(title);
 		title.setText(gruppe.getName());
 		kinoplaner.getUmfragenByGruppe(gruppe, new SucheUmfrageByGruppeCallback());
@@ -159,7 +161,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		kinoplaner.getGruppenmitgliederByGruppe(gruppe, new SucheGruppenmitgliederByGruppeCallback());
 
 		// detailsrechts.add(umfrageLabel);
-		detailsunten.add(umfrageLabel);
+		detailsunten.add(umfrageWidgets);
+		umfrageWidgets.add(umfrageLabel);
 		umfragenCellList = new CellList<Umfrage>(umfragenCell);
 		umfragenCellList.setStyleName("");
 		umfragenCellList.setPageSize(20);
@@ -171,8 +174,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			detailsunten.add(bearbeiten);
 			bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
 			papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
-			detailsboxlöschen.add(löschenImage);
-			löschenImage.add(papierkorb);
+			detailsboxlöschen.add(papierkorb);
+//			löschenImage.add(papierkorb);
 
 			papierkorb.setUrl("/images/papierkorb.png");
 		}
@@ -374,11 +377,12 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
 			if (result.size() == 0) {
-				VerticalPanel vp = new VerticalPanel();
-				vp.add(new Label("Keine Umfrage verfügbar!"));
+				umfrageWidgets.add(new Label("Noch keine Umfrage verfügbar!"));
 				umfrageErstellen.addClickHandler(new UmfrageErstellenClickHandler());
-				vp.add(umfrageErstellen);
-				umfragenCellList.setEmptyListWidget(vp);
+		
+				umfrageWidgets.add(umfrageErstellen);
+				umfragenCellList.setEmptyListWidget(umfrageWidgets);
+				
 
 			} else {
 				for (Umfrage u : result) {
