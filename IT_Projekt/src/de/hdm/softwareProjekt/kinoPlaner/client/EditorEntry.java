@@ -13,10 +13,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.EditorDashboardForm;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Footer;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.Header;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.RegistrierungsForm;
-import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UmfragenAnzeigenForm;
 import de.hdm.softwareProjekt.kinoPlaner.shared.LoginServiceAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
@@ -63,12 +63,11 @@ public class EditorEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Anwender result) {
 			// TODO Auto-generated method stub
-			Window.alert("onSucess");
 
 			AktuellerAnwender.setAnwender(result);
 
 			if (result.isIstEingeloggt()) {
-				Window.alert("hier");
+	
 				if (result.getName().equals("Null")) {
 					Anchor kinoplanerEditorLink = new Anchor();
 					kinoplanerEditorLink.setHref(GWT.getHostPageBaseURL() + "IT_Projekt.html");
@@ -76,13 +75,12 @@ public class EditorEntry implements EntryPoint {
 					RootPanel.get("details").add(new RegistrierungsForm(kinoplanerEditorLink, result));
 
 				} else {
-					Window.alert("onSucess else");
 
 					RootPanel.get("header").add(header);
 					RootPanel.get("footer").add(footer);
 
-					UmfragenAnzeigenForm uaf = new UmfragenAnzeigenForm();
-					RootPanel.get("details").add(uaf);
+					EditorDashboardForm edf = new EditorDashboardForm();
+					RootPanel.get("details").add(edf);
 
 				}
 

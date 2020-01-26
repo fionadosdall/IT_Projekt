@@ -59,7 +59,7 @@ public class Header extends FlowPanel {
 	private Button userButton = new Button("USER");
 	private BurgerMenue burgerMenue = new BurgerMenue();
 
-	private Home home;
+	private EditorDashboardForm home;
 	private UserForm uf;
 	private VolltextSucheForm vsf;
 
@@ -160,7 +160,7 @@ public class Header extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			home = new Home();
+			home = new EditorDashboardForm();
 			RootPanel.get("details").add(home);
 
 		}

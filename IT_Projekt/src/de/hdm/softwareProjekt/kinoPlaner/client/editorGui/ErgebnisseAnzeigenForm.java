@@ -39,6 +39,8 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detialsbox = new FlowPanel();
 	private FlowPanel detailsboxinhalt = new FlowPanel();
+	
+	private Button erstellenButton = new Button("Umfrage erstellen!");
 	/** 
 	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt und formatiert
 	 */
@@ -51,6 +53,8 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
+		
+		erstellenButton.setStyleName("speichernButton");
 		
 		detialsbox.addStyleName("detailsbox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
@@ -111,8 +115,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 				labelT.setText("Keine Ergebnisse verfügbar!");
 				detailsunten.add(labelT);
 			}
-			Button erstellenButton = new Button("Umfrage erstellen!");
-			erstellenButton.setStyleName("speichernButton");
+	
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 			detailsunten.add(erstellenButton);
 
