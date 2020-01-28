@@ -12,6 +12,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
 
+/**
+ * Klasse KinokettenCell dient zur Darstellung der Kinoketten-BusinessObjekte in der
+ * BusinessObject-View. (--> rendern). Alle Klassen, die auf ...Cell enden, sind
+ * abgewandeltete/veränderte AbstractCells.
+ *
+ */
 public class KinokettenCell extends AbstractCell<Kinokette>{
 	
 	private static Boolean edit = true;

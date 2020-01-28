@@ -10,6 +10,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
+
+/**
+ * Klasse SpielplaneintragCell dient zur Darstellung der Spielplaneintrag-BusinessObjekte in der
+ * BusinessObject-View. (--> rendern). Alle Klassen, die auf ...Cell enden, sind
+ * abgewandeltete/veränderte AbstractCells.
+ *
+ */
 public class SpielplanEintragCell extends AbstractCell<Vorstellung> {
 
 	
