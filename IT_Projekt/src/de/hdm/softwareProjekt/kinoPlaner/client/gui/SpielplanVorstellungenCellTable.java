@@ -54,6 +54,12 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 	private ArrayList<Vorstellung> neueVorstellungen = new ArrayList<Vorstellung>();
 
+	/**
+	 * ListDataProvider kümmert sich darum, dass die Daten dargestellt werden und wo
+	 * sie dargestellt werden (in der CellTable). Später kann dem ListDataProvider
+	 * den kompletten Datensatz übergeben und er kümmert sich automatisch darum.
+	 * 
+	 */
 	private ListDataProvider<VorstellungInfo> dataProvider = new ListDataProvider<VorstellungInfo>();
 	private List<VorstellungInfo> vorstellungList = dataProvider.getList();
 
@@ -96,6 +102,18 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		this.vorstellungList = vorstellungList;
 	}
 
+
+	/*
+	 * /**
+	 * Das zugrundeliegende Objekt der SpielplanVorstellungenTable sind Vorstellungen. Jedoch
+	 * speichert das gewöhnliche BusinessObject Vorstellung seine Attribute nicht in
+	 * Klarnamen. Aufgrund dessen erstellen wir hier für die CellTable das Objekt
+	 * VorstellungInfo. Dort werden die Attribute filmName und spielzeit und
+	 * stadt in Klarnamen gespeichert. Inklusive Getter und Setter.
+	 * 
+	 *
+	 */
+	 
 	private class VorstellungInfo {
 
 		Vorstellung vorstellung;
@@ -137,7 +155,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	public void setVorstellungArray(ArrayList<Vorstellung> vorstellungenInfo) {
 		this.neueVorstellungen = vorstellungenInfo;
 	}
-
+/*******************************************************
+ * OnLoad()-Methode
+ **********************************/
 	@Override
 	public void onLoad() {
 
@@ -151,6 +171,11 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		vorstellungenTable.setWidth("100%");
 		vorstellungenTable.setEmptyTableWidget(new Label("Keine Vorstellungen hinzugefügt."));
 
+		/**
+		 * Eine neue Spalte soll erstellt werden. Sie beinhaltet zwei Datentypen:
+		 * VorstellungInfo ist das der CellTable zugrundeliegende Objekt, String ist der
+		 * Datentyp, welcher in dieser Spalte dargestellt wird.
+		 */
 		Column<VorstellungInfo, String> buttonColumn = new Column<VorstellungInfo, String>(buttonCell) {
 
 			@Override
@@ -160,11 +185,30 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 			}
 
 		};
+		
+		/**
+		 * Nun muss die neu erstellte Spalte der VorstellungTable hinzugefügt werden.
+		 * Unter Angabe der Bezeichnung der Spalte und ihrer Überschrift. Hinweis: In
+		 * der Reihenfolge, in der die Spalten der CellTable hinzugefügt werden, werden
+		 * sie auch später für den Nutzer angezeigt.
+		 */
 
 		vorstellungenTable.addColumn(buttonColumn, "Entfernen");
 
+		/**
+		 * Spalten kann ein FieldUpdater hinzugefügt werden. FieldUpdater schaut, ob
+		 * sich etwas in der Spalte verändert hat und updatet entsprechend. Dazu müssen
+		 * dem FieldUpdater die selben Datentypen zugewiesen werden, wie der Spalte
+		 * selbst.
+		 */
 		buttonColumn.setFieldUpdater(new FieldUpdater<VorstellungInfo, String>() {
 
+			/**
+			 * FieldUpdater (Interface) fordert, dass Methode update() überschrieben wird
+			 * (Annotation Override). Methode update() beschreibt was gemacht werden soll, wenn der Nutzer
+			 * auf den CellButton drückt. Hier: Es handelt sich um Entfernen-Button, also .remove(object)
+			 * 
+			 */
 			@Override
 			public void update(int index, VorstellungInfo object, String value) {
 
@@ -192,6 +236,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 			}
 		});
 
+		/*
+		 * Erstellen zweite Column
+		 */
 		Column<VorstellungInfo, Vorstellung> bearbeitenColumn = new Column<VorstellungInfo, Vorstellung>(
 				bearbeitenCell) {
 
@@ -217,6 +264,10 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 		vorstellungenTable.addColumn(filmColumn, "Film");
 
+		/**
+		 * Spalte soll die Möglichkeit zu Sortieren bieten. Spalten werden durch einen
+		 * Vergleichsmechanismus sortiert.
+		 */
 		filmColumn.setSortable(true);
 
 		sortHandler.setComparator(filmColumn, new Comparator<VorstellungInfo>() {
@@ -224,6 +275,10 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 				return o1.getFilmName().compareTo(o2.getFilmName());
 			}
 		});
+		
+		/*
+		 * Erstellen der dritten Column
+		 */
 
 		Column<VorstellungInfo, String> spielzeitColumn = new Column<VorstellungInfo, String>(spielzeitCell) {
 
