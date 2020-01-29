@@ -89,7 +89,7 @@ public class Header extends FlowPanel {
 
 		suchenImage.setUrl("/images/suchen.png");
 
-		suchenTextBox.addStyleName("nameTextBox");
+		suchenTextBox.addStyleName("headerTextBox");
 
 		suchenTextBox.getElement().setPropertyString("placeholder", "Suchen...");
 

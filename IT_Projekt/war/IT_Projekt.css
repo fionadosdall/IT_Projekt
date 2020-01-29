@@ -117,20 +117,28 @@
 	box-sizing: inherit;
 	flex-direction: row;
 }
-
 @media only screen and (max-width: 700px) {
 	.headerGesamt {
 		flex-direction: column;
+
 	}
 }
 
 .headerLinks {
 	justify-content: flex-start;
-	margin-right: auto;
 	align-items: stretch;
 	display: flex;
 	box-sizing: inherit;
 }
+
+@media only screen and (max-width: 700px) {
+	.headerLinks {
+	align-items: center;
+	justify-content: center;
+
+	}
+}
+
 
 .headerLogo {
 	align-items: stretch;
@@ -157,6 +165,7 @@
 	align-items: stretch;
 	display: flex;
 	box-sizing: inherit;
+	flex-direction: row;
 }
 
 .headerRechtsElement {
@@ -171,7 +180,34 @@
 	padding: .5rem .75rem;
 	position: relative;
 	box-sizing: inherit;
+	flex-direction: row;
 }
+
+.headerTextBox {
+	border-radius: 290486px;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: #fff;
+	border-color: #dbdbdb;
+	max-width: 100%;
+	width: 100%;
+	-webkit-appearance: none;
+	align-items: center;
+	border: 1px solid transparent;
+	font-size: 1rem;
+	height: 2.50em;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+	position: relative;
+	vertical-align: top;
+}
+@media only screen and (max-width: 700px) {
+	.headerTextBox {
+	}
+}
+
+
 
 .headerImage {
 	height: 16px;
