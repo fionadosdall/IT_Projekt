@@ -38,7 +38,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 	/*
 	 * Erstellen der Widgets
 	 */
-	VerticalPanel p = new VerticalPanel();
+	//VerticalPanel p = new VerticalPanel();
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
@@ -73,14 +73,15 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		this.add(detailsoben);
 		this.add(detailsunten);
 		
-		detailsunten.add(detialsbox);
-		detialsbox.add(p);
-
 		detailsoben.add(hb);
+		
+		detailsunten.add(detialsbox);
+		detialsbox.add(bov);
 
-		p.setStyleName("");
+
+//		p.setStyleName("");
 		bov.setTitel("Meine Gruppen");
-		p.add(bov);
+//		p.add(bov);
 
 		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new SucheGruppenByAnwenderCallback());
 
