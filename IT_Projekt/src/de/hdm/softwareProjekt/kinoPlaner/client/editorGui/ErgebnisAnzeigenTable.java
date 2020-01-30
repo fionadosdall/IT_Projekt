@@ -233,10 +233,9 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 					list.add(eI);
 
-					kinoplaner.berechneAuswahlenByUmfrageoption(u, new AuswahlCallback(eI));
-					kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(eI));
-					kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(eI));
-					kinoplaner.getSpielzeitByUmfrageoption(u, new SpielzeitCallback(eI));
+					kinoplaner.berechneAuswahlenByUmfrageoption(u, new AuswahlCallback(eI, u));
+					
+			
 
 				}
 
@@ -258,9 +257,11 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private class FilmByUmfrageoptionCallback implements AsyncCallback<Film> {
 
 		ErgebnisInfo info = null;
+		Umfrageoption u = null;
 
-		FilmByUmfrageoptionCallback(ErgebnisInfo info) {
+		FilmByUmfrageoptionCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
+			this.u=u;
 		}
 
 		@Override
@@ -276,6 +277,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.filmName = result.getName();
 
 			dataProvider.refresh();
+			
+			kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(info, u));
 
 		}
 
@@ -291,9 +294,11 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private class KinoCallback implements AsyncCallback<Kino> {
 
 		ErgebnisInfo info = null;
+		Umfrageoption u=null;
 
-		KinoCallback(ErgebnisInfo info) {
+		KinoCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
+			this.u=u;
 		}
 
 		@Override
@@ -311,6 +316,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.stadt = result.getStadt();
 
 			dataProvider.refresh();
+			
+			kinoplaner.getSpielzeitByUmfrageoption(u, new SpielzeitCallback(info));
 
 		}
 
@@ -346,6 +353,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
+			
+			eaf.suchGewinner();
 
 		}
 
@@ -360,9 +369,11 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private class AuswahlCallback implements AsyncCallback<Integer> {
 
 		ErgebnisInfo info = null;
+		Umfrageoption u = null;
 
-		AuswahlCallback(ErgebnisInfo info) {
+		AuswahlCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
+			this.u=u;
 		}
 
 		@Override
@@ -378,6 +389,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.setErgebnis(result);
 
 			dataProvider.refresh();
+			
+			kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(info, u));
 
 		}
 

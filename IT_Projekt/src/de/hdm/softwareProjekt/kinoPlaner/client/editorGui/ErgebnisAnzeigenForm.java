@@ -83,7 +83,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		detailsunten.add(txt);
 
-		kinoplaner.ergebnisGefunden(umfrage, new ErgebnisGefundenCallback());
+		
 
 	}
 
@@ -179,6 +179,10 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		}
 
+	}
+	
+	public void suchGewinner() {
+		kinoplaner.ergebnisGefunden(umfrage, new ErgebnisGefundenCallback());
 	}
 	
 	// Die Methode setGewinner(), gibt die erfolgreich durchgeführte Umfrage oder Stichwahl aus

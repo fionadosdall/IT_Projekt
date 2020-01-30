@@ -33,7 +33,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * Klasse stellt das Formular bereit um einen Spielplan zu erstellen und zu bearbeiten
  */
 public class SpielplanErstellenForm extends VerticalPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private int kinoId;
@@ -123,7 +123,6 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		inhaltObenPanel.addStyleName("inhaltSpielplanPanel");
 		inhaltUntenPanel.addStyleName("inhaltSpielplanPanel");
 		administrationPanel.addStyleName("detailsunten");
-		
 
 		hinzufuegenButton.addStyleName("hinzufuegenButton");
 		entfernenButton.addStyleName("entfernenButton");
@@ -147,10 +146,10 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 			detailsoben.add(spielplanBearbeitenFormLabel);
 			spielplannameTextBox.setText(spielplan.getName());
-			
+
 		} else {
 			detailsoben.add(spielplanformLabel);
-			
+
 		}
 
 		this.add(detailsoben);
@@ -164,7 +163,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		spielplanGrid.setWidget(1, 1, kinoListBox);
 
 		inhaltObenPanel.add(spielplanGrid);
-		//inhaltObenPanel.add(kinokettenCheckBox);
+		// inhaltObenPanel.add(kinokettenCheckBox);
 		this.add(inhaltObenPanel);
 
 		// TODO kinoplaner.getVorstellungenBySpielplan(spielplan, new
@@ -172,25 +171,22 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		// inhaltUntenLinksPanel.add(vorstellungenCellTable);
 
 		administrationPanel.add(hinzufuegenButton);
-		//administrationPanel.add(entfernenButton);
+		// administrationPanel.add(entfernenButton);
 		this.add(administrationPanel);
 		hinzufuegenButton.addClickHandler(new SpielplaneintragHinzufuegenClickHandler());
 
 		inhaltUntenPanel.add(vorstellungenCellTable);
 		this.add(inhaltUntenPanel);
 
-		if(spielplan!=null) {
+		if (spielplan != null) {
 			detailsunten.add(loeschenButton);
-			detailsunten.add(aenderungSpeichernButton);	
-		}else {
-			detailsunten.add(speichernButton);	
+			detailsunten.add(aenderungSpeichernButton);
+		} else {
+			detailsunten.add(speichernButton);
 		}
-		
+
 		this.add(detailsunten);
 
-
-
-		
 		speichernButton.addClickHandler(new SpeichernClickHandler());
 		aenderungSpeichernButton.addClickHandler(new SpeichernClickHandler());
 		loeschenButton.addClickHandler(new LoeschenClickHandler());
@@ -200,87 +196,83 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	public void closeSpielplaneintragForm() {
 		neuerSpielplaneintrag.hide();
 	}
-	
+
 	/*
-	 * Vor dem Löschen eines Spielplans soll der Nutzer über eine Dialogbox
-	 * nochmal um Bestätigung des Löschvorgangs gebeten werden
-	 */ 
+	 * Vor dem Löschen eines Spielplans soll der Nutzer über eine Dialogbox nochmal
+	 * um Bestätigung des Löschvorgangs gebeten werden
+	 */
 	private class SpielplanLoeschenDialogBox extends DialogBox {
-		
+
 		private VerticalPanel verticalPanel = new VerticalPanel();
 		private HorizontalPanel buttonPanel = new HorizontalPanel();
-		
-		private Label nachfrage = new Label ("Spielplan endgültig löschen?");
-		
-		private Button jaButton = new Button ("Ja");
-		private Button neinButton = new Button ("Nein");
-	
-	
-	//Konstruktor
-	
-	public SpielplanLoeschenDialogBox() {
-		
-		nachfrage.addStyleName("Abfrage");
-		jaButton.addStyleName("buttonAbfrage");
-		neinButton.addStyleName("buttonAbfrage");
-		
-		buttonPanel.add(jaButton);
-		buttonPanel.add(neinButton);
-		verticalPanel.add(nachfrage);
-		verticalPanel.add(buttonPanel);
-		
-		this.add(verticalPanel);
-		
-		
-		// ClickHandler für SpielplanLoeschenDialogBox
-		
-		jaButton.addClickHandler(new SpielplanLoeschenBestaetigenClickHandler(this));
-		neinButton.addClickHandler(new SpielplanLoeschenAbbrechenClickHandler(this));
-		
-		
-	}}
-	
+
+		private Label nachfrage = new Label("Spielplan endgültig löschen?");
+
+		private Button jaButton = new Button("Ja");
+		private Button neinButton = new Button("Nein");
+
+		// Konstruktor
+
+		public SpielplanLoeschenDialogBox() {
+
+			nachfrage.addStyleName("Abfrage");
+			jaButton.addStyleName("buttonAbfrage");
+			neinButton.addStyleName("buttonAbfrage");
+
+			buttonPanel.add(jaButton);
+			buttonPanel.add(neinButton);
+			verticalPanel.add(nachfrage);
+			verticalPanel.add(buttonPanel);
+
+			this.add(verticalPanel);
+
+			// ClickHandler für SpielplanLoeschenDialogBox
+
+			jaButton.addClickHandler(new SpielplanLoeschenBestaetigenClickHandler(this));
+			neinButton.addClickHandler(new SpielplanLoeschenAbbrechenClickHandler(this));
+
+		}
+	}
+
 	/*
 	 * ClickHandler zur Lösch-Bestätigung des Spielplans
 	 */
-	
-	
+
 	private class SpielplanLoeschenBestaetigenClickHandler implements ClickHandler {
 
 		private SpielplanLoeschenDialogBox spielplanLoeschenDB;
-		
-		public SpielplanLoeschenBestaetigenClickHandler (SpielplanLoeschenDialogBox spielplanLoeschenDBn) {
+
+		public SpielplanLoeschenBestaetigenClickHandler(SpielplanLoeschenDialogBox spielplanLoeschenDBn) {
 			this.spielplanLoeschenDB = spielplanLoeschenDBn;
-			
+
 		}
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			kinoplaner.loeschen(spielplan, aktuellerAnwender, new LoeschenSpielplanCallback());
 			spielplanLoeschenDB.hide();
 		}
-		
+
 	}
-	
+
 	/*
 	 * ClickHandler um das Löschen des Spielplans abzubrechen
 	 */
-	
+
 	private class SpielplanLoeschenAbbrechenClickHandler implements ClickHandler {
 
-		
 		private SpielplanLoeschenDialogBox spielplanLoeschenDB;
-		
-		
+
 		public SpielplanLoeschenAbbrechenClickHandler(SpielplanLoeschenDialogBox spielplanLoeschenDB) {
 			this.spielplanLoeschenDB = spielplanLoeschenDB;
 		}
+
 		@Override
 		public void onClick(ClickEvent event) {
 			spielplanLoeschenDB.hide();
-			
+
 		}
-		
+
 	}
 
 	/**************************
@@ -288,11 +280,12 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	 * 
 	 ****************************************************
 	 */
-	
+
 	/*
-	 * Wenn der Nutzer den angezeigten Spielplan löschen möchte, kann er dies über den
-	 * Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Die Dialogbox bittet
-	 * den Nutzer, erneut zu bestätigten, dass er die Umfrage löschen möchte 
+	 * Wenn der Nutzer den angezeigten Spielplan löschen möchte, kann er dies über
+	 * den Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Die
+	 * Dialogbox bittet den Nutzer, erneut zu bestätigten, dass er die Umfrage
+	 * löschen möchte
 	 */
 	private class LoeschenClickHandler implements ClickHandler {
 
@@ -300,30 +293,27 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		public void onClick(ClickEvent event) {
 			SpielplanLoeschenDialogBox spielplanLoeschenDB = new SpielplanLoeschenDialogBox();
 			spielplanLoeschenDB.center();
-			
+
 		}
-		
+
 	}
-	
+
 	/*
-	 * Hier kann eine Spielplaneintrags-Instanz dem Spielplan hinzugefügt
-	 * werden
+	 * Hier kann eine Spielplaneintrags-Instanz dem Spielplan hinzugefügt werden
 	 */
-	
+
 	private class SpielplaneintragHinzufuegenClickHandler implements ClickHandler {
 
 		@Override
 		public void onClick(ClickEvent event) {
-		
 
 			neuerSpielplaneintrag = new SpielplaneintragForm(vorstellungenCellTable);
 			neuerSpielplaneintrag.show();
-		
 
 		}
 
 	}
-	
+
 	/*
 	 * Hier kann die erstellte Spielplan-Instanz gespeichert werden
 	 * 
@@ -341,15 +331,13 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	}
 
 	/****************************************
-	 * CALLBACKS
-	 * ********************************************
+	 * CALLBACKS ********************************************
 	 */
-	
-	
+
 	/*
-	 * Private Klasse um alle Kino-Instanzen, aufgrund eines Namens 
-	 * aus dem System zu bekommen. Ist bei der SpielplanErstellung der Name des Kinos
-	 * bereits vergeben, so gibt das System eine Fehlermeldung aus
+	 * Private Klasse um alle Kino-Instanzen, aufgrund eines Namens aus dem System
+	 * zu bekommen. Ist bei der SpielplanErstellung der Name des Kinos bereits
+	 * vergeben, so gibt das System eine Fehlermeldung aus
 	 */
 
 	private class GetKinoByNameCallback implements AsyncCallback<Kino> {
@@ -364,80 +352,84 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		@Override
 		public void onSuccess(Kino result) {
 			if (spielplan != null) {
-			//	if (kinokettenCheckBox.getValue() == true) {
+				// if (kinokettenCheckBox.getValue() == true) {
 
-					////if (result.getKinokettenId() != 0) {
-						//if (spielplan.isKinokettenSpielplan() == true) {
+				//// if (result.getKinokettenId() != 0) {
+				// if (spielplan.isKinokettenSpielplan() == true) {
 
-						//} else {
+				// } else {
 
-						//}
-					//} else {
-						//Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
-					//}
-					//if (spielplan.isKinokettenSpielplan() == true) {
+				// }
+				// } else {
+				// Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
+				// }
+				// if (spielplan.isKinokettenSpielplan() == true) {
 
-					//} else {
-			
-				spielplan.setName(spielplannameTextBox.getValue());
-				spielplan.setKinoId(result.getId());
-				
-				ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
-				vorstellungen = vorstellungenCellTable.getVorstellungenArray();
-				
-				kinoplaner.updateSpielplanKino(vorstellungen, spielplan, aktuellerAnwender, new AsyncCallback<Spielplan>() {
+				// } else {
+				if (spielplannameTextBox.getValue().equals("")) {
+					Window.alert("Kein Name eingegeben");
+				} else {
+					spielplan.setName(spielplannameTextBox.getValue());
+					spielplan.setKinoId(result.getId());
 
-					@Override
-					public void onFailure(Throwable caught) {
-						Window.alert(caught.getMessage());
-						caught.printStackTrace();
-						
-					}
+					ArrayList<Vorstellung> vorstellungen = new ArrayList<Vorstellung>();
+					vorstellungen = vorstellungenCellTable.getVorstellungenArray();
 
-					@Override
-					public void onSuccess(Spielplan result) {
-						if (result == null) {
-							Window.alert("Name bereits vergeben!");
-						} else {
-							RootPanel.get("details").clear();
-							spielplaeneF = new MeineSpielplaeneForm();
-							RootPanel.get("details").add(spielplaeneF);
-						}
-						
-					}
-				});
-					//}
-				//}
+					kinoplaner.updateSpielplanKino(vorstellungen, spielplan, aktuellerAnwender,
+							new AsyncCallback<Spielplan>() {
 
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert(caught.getMessage());
+									caught.printStackTrace();
+
+								}
+
+								@Override
+								public void onSuccess(Spielplan result) {
+									if (result == null) {
+										Window.alert("Name bereits vergeben!");
+									} else {
+										RootPanel.get("details").clear();
+										spielplaeneF = new MeineSpielplaeneForm();
+										RootPanel.get("details").add(spielplaeneF);
+									}
+
+								}
+							});
+					// }
+					// }
+				}
 			} else {
-				//if (kinokettenCheckBox.getValue() == true) {
-					//if (result.getKinokettenId() != 0) {
-					//	kinoplaner.erstellenSpielplaeneKinokette(spielplannameTextBox.getValue(),
-							//	result.getKinokettenId(), vorstellungenCellTable.getVorstellungenArray(),
-							//	new ErstellenSpielplaeneKinoketteCallback());
-					//} else {
-					//	Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
-					//}
-				//} else {
-					kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
-							vorstellungenCellTable.getVorstellungenArray(), aktuellerAnwender, new ErstellenSpielplanKinoCallback());
-				//}
+				// if (kinokettenCheckBox.getValue() == true) {
+				// if (result.getKinokettenId() != 0) {
+				// kinoplaner.erstellenSpielplaeneKinokette(spielplannameTextBox.getValue(),
+				// result.getKinokettenId(), vorstellungenCellTable.getVorstellungenArray(),
+				// new ErstellenSpielplaeneKinoketteCallback());
+				// } else {
+				// Window.alert("Das Kino " + result.getName() + " hat keine Kinokette!");
+				// }
+				// } else {
+				kinoplaner.erstellenSpielplanKino(spielplannameTextBox.getValue(), result.getId(),
+						vorstellungenCellTable.getVorstellungenArray(), aktuellerAnwender,
+						new ErstellenSpielplanKinoCallback());
+				// }
 			}
 		}
 
 	}
-	
+
 	/*
-	 * Pprivate Klasse um  eine ausgewählte Spielplan-Instanz zu löschen
+	 * Pprivate Klasse um eine ausgewählte Spielplan-Instanz zu löschen
 	 */
-	
+
 	private class LoeschenSpielplanCallback implements AsyncCallback<Void> {
 
 		@Override
 		public void onFailure(Throwable caught) {
 			Window.alert(caught.getMessage());
 			caught.printStackTrace();
-			
+
 		}
 
 		@Override
@@ -446,9 +438,9 @@ public class SpielplanErstellenForm extends VerticalPanel {
 			RootPanel.get("details").clear();
 			spielplaeneF = new MeineSpielplaeneForm();
 			RootPanel.get("details").add(spielplaeneF);
-			
+
 		}
-		
+
 	}
 	/*
 	 * Private Klasse um alle Kino-Instanzen aus dem System zu bekommen
@@ -500,10 +492,9 @@ public class SpielplanErstellenForm extends VerticalPanel {
 
 	}
 
-
-/*
- * Private Klasse um einen Spielplan im System zu erstellen
- */
+	/*
+	 * Private Klasse um einen Spielplan im System zu erstellen
+	 */
 
 	public class ErstellenSpielplanKinoCallback implements AsyncCallback<Spielplan> {
 

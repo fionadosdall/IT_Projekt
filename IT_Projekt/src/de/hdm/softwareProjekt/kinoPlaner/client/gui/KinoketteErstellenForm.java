@@ -24,7 +24,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
  * Klasse stellt das Formular um eine Kinokette zu erstellen bereit
  */
 public class KinoketteErstellenForm extends VerticalPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync administration = ClientsideSettings.getKinoplaner();
@@ -87,7 +87,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		nameTextBox.addStyleName("formularTextBox");
 		sitzTextBox.addStyleName("formularTextBox");
 		websiteTextBox.addStyleName("formularTextBox");
-		
+
 		nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 		sitzTextBox.getElement().setPropertyString("placeholder", "Sitz eingeben");
 		websiteTextBox.getElement().setPropertyString("placeholder", "Website eingeben");
@@ -128,10 +128,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		aenderungSpeichernButton.addClickHandler(new AenderungSpeichernClickHandler());
 		setBearbeiten(kk);
 	}
-	
+
 	/*
-	 * Vor dem Löschen einer Kinokette, soll der Nutzer über eine Dialogbox
-	 * noch einmal um Bestätigung des Löschvorgangs gebenten werden
+	 * Vor dem Löschen einer Kinokette, soll der Nutzer über eine Dialogbox noch
+	 * einmal um Bestätigung des Löschvorgangs gebenten werden
 	 */
 
 	private class KinoketteLoeschenDialogBox extends DialogBox {
@@ -165,11 +165,10 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 	}
 
-	/***************************************** 
-	 * ClickHandler
-	 * ****************************************
-	 *  ***/
-	
+	/*****************************************
+	 * ClickHandler ****************************************
+	 ***/
+
 	/*
 	 * CLickHandler um eine Kinoketten-Instanz zu speichern
 	 */
@@ -178,19 +177,22 @@ public class KinoketteErstellenForm extends VerticalPanel {
 
 		@Override
 		public void onClick(ClickEvent event) {
+			if (nameTextBox.getText().equals("")) {
+				Window.alert("Kein Name eingegeben");
+			} else {
 
-			administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(), websiteTextBox.getText(),
-					aktuellerAnwender, new KinoketteErstellenCallback());
+				administration.erstellenKinokette(nameTextBox.getText(), sitzTextBox.getText(),
+						websiteTextBox.getText(), aktuellerAnwender, new KinoketteErstellenCallback());
+			}
 
 		}
 
 	}
-	
+
 	/*
 	 * Wenn der Nutzer die angezeigte Kinokette löschen möchte, kann er dies über
 	 * den Löschen-Button tun. Dabei öffnet sich automatisch die DialogBox. Diese
-	 * bittet den Nutzer, erneut zu bestätigen, dass er die Kinokette löschen 
-	 * möchte
+	 * bittet den Nutzer, erneut zu bestätigen, dass er die Kinokette löschen möchte
 	 */
 
 	private class KinoketteLoeschenClickHandler implements ClickHandler {
@@ -226,7 +228,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/*
 	 * ClickHandler, um das Löschen der Kinokette abzubrechen
 	 */
@@ -247,7 +249,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/*
 	 * ClickHandler um Änderungen einer Kinoketten-instanz zu speichern
 	 */
@@ -269,11 +271,9 @@ public class KinoketteErstellenForm extends VerticalPanel {
 	}
 
 	/**********************************************************
-	 *  Callback 
-	 *  **********************************************
-	 *  */
-	
-	
+	 * Callback **********************************************
+	 */
+
 	/*
 	 * Callback um eine Kinoketten-Instanz im System zu erstellen
 	 */
@@ -300,9 +300,9 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/*
-	 * Callback um  Kinoketten-Instanz zu bearbeiten, und diese Änderugnen im System
+	 * Callback um Kinoketten-Instanz zu bearbeiten, und diese Änderugnen im System
 	 * zu speichern
 	 */
 
@@ -327,7 +327,7 @@ public class KinoketteErstellenForm extends VerticalPanel {
 		}
 
 	}
-	
+
 	/*
 	 * Callbakc um eine Kinoketten-Instanz aus dem System zu löschen
 	 */

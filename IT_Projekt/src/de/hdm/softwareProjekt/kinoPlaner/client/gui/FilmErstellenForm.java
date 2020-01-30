@@ -198,9 +198,12 @@ public class FilmErstellenForm extends PopupPanel {
 
 			if (film == null) {
 			
-
+				if (nameTextBox.getValue().equals("")) {
+					Window.alert("Bitte Namen eintragen");
+				}else {
 				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
 						bewertungTextBox.getValue(), aktuellerAnwender, new FilmErstellenCallback());
+				}
 
 
 			} else {

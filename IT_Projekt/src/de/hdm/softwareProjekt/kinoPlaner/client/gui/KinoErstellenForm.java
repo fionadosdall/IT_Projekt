@@ -27,7 +27,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kinokette;
  * Klasse stellt das Formular um ein Kino zu erstellen bereit
  */
 public class KinoErstellenForm extends VerticalPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private HorizontalPanel obenPanel = new HorizontalPanel();
@@ -210,9 +210,13 @@ public class KinoErstellenForm extends VerticalPanel {
 			if (!kinoketteName.equals("Keine Auswahl")) {
 				administration.getKinoketteByName(kinoketteName, new KinoketteByNameCallback());
 			} else {
-				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
-						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0, aktuellerAnwender, 
-						new KinoErstellenCallback());
+				if (nameTextBox.getText().equals("")) {
+					Window.alert("Kein Name eingegeben");
+				} else {
+					administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
+							stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), 0,
+							aktuellerAnwender, new KinoErstellenCallback());
+				}
 			}
 		}
 	}
@@ -465,9 +469,13 @@ public class KinoErstellenForm extends VerticalPanel {
 			// TODO Auto-generated method stub
 
 			/* if(edit = false) { */
-			administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
-					stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
-					aktuellerAnwender, new KinoErstellenCallback());
+			if (nameTextBox.getText().equals("")) {
+				Window.alert("Kein Name eingegeben");
+			} else {
+				administration.erstellenKino(nameTextBox.getText(), Integer.parseInt(plzTextBox.getText()),
+						stadtTextBox.getText(), strasseTextBox.getText(), hnrTextBox.getText(), result.getId(),
+						aktuellerAnwender, new KinoErstellenCallback());
+			}
 
 		}
 

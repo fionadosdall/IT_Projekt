@@ -306,7 +306,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId,
 			Anwender besitzer) throws IllegalArgumentException {
-		if (kinoMapper.findByName(name) == null) {
+		if (kinoMapper.findByName(name) == null&&kinoketteMapper.findByName(name)==null) {
 			// Ein neues Kino Objekt wird erstellt.
 			Kino k = new Kino();
 
@@ -366,7 +366,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kinokette erstellenKinokette(String name, String sitz, String website, Anwender besitzer)
 			throws IllegalArgumentException {
-		if (kinoketteMapper.findByName(name) == null) {
+		if (kinoMapper.findByName(name) == null&&kinoketteMapper.findByName(name)==null) {
 			// Ein neues Kinokette Objekt wird erstellt.
 			Kinokette k = new Kinokette();
 
