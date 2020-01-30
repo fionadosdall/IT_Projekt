@@ -21,8 +21,11 @@ import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.UserForm;
 public class Header extends FlowPanel{
 	
 	private FlowPanel headerLinks = new FlowPanel();
+	private FlowPanel headerMitte = new FlowPanel();
 	private FlowPanel headerRechts = new FlowPanel();
 	private FlowPanel headerLogo = new FlowPanel();
+	private FlowPanel headerRechtsEins = new FlowPanel();
+	private FlowPanel headerRechtsZwei = new FlowPanel();	
 	private FlowPanel headerRechtsElementSuchen = new FlowPanel();
 	private FlowPanel headerRechtsElementLupe = new FlowPanel();
 	private FlowPanel headerRechtsElementHome = new FlowPanel();
@@ -58,12 +61,14 @@ public class Header extends FlowPanel{
 		headerLogo.addStyleName("headerLogo");
 		headerLogoInput.addStyleName("headerLogoInput");
 
+		
 		headerRechts.addStyleName("headerRechts");
-		headerRechtsElementSuchen.addStyleName("headerRechtsElement");
+		headerRechtsEins.addStyleName("headerRechtsEins");
+		headerRechtsZwei.addStyleName("headerRechtsZwei");
+		headerRechtsElementSuchen.addStyleName("headerRechtsElementSuchen");
 		headerRechtsElementLupe.addStyleName("headerRechtsElement");
 		headerRechtsElementHome.addStyleName("headerRechtsElement");
 		headerRechtsElementUser.addStyleName("headerRechtsElement");
-		headerRechtsElementEinstellungen.addStyleName("headerRechtsElement");
 
 		headerImage.addStyleName("headerImage");
 		suchenImage.addStyleName("suchenImage");
@@ -74,7 +79,7 @@ public class Header extends FlowPanel{
 		suchenImage.setUrl("/images/suchen.png");
 		
 
-		suchenTextBox.addStyleName("nameTextBox");
+		suchenTextBox.addStyleName("headerTextBox");
 
 		suchenTextBox.getElement().setPropertyString("placeholder", "Suchen...");
 
@@ -82,23 +87,29 @@ public class Header extends FlowPanel{
 
 		this.add(headerLinks);
 		this.add(headerRechts);
+		
+		headerRechts.add(headerRechtsEins);
+		headerRechts.add(headerRechtsZwei);
 
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
+		
+		headerRechtsEins.add(headerRechtsElementHome);
+		headerRechtsEins.add(headerRechtsElementUser);
+		headerRechtsEins.add(headerRechtsElementSuchen);
 
-		headerRechts.add(headerRechtsElementSuchen);
-		headerRechts.add(headerRechtsElementLupe);
-		headerRechts.add(headerRechtsElementHome);
-		headerRechts.add(headerRechtsElementUser);
-		headerRechts.add(headerRechtsElementEinstellungen);
 
 		headerRechtsElementSuchen.add(suchenTextBox);
 		headerRechtsElementLupe.add(headerImage);
 		headerImage.add(suchenImage);
-
+		
 		headerRechtsElementHome.add(homeAnchor);
 		headerRechtsElementHome.add(clientAnchor);
 		headerRechtsElementUser.add(einstellungenButton);
+		headerRechtsElementSuchen.add(suchenTextBox);
+		headerRechtsElementSuchen.add(headerImage);
+		headerImage.add(suchenImage);
+
 		headerRechts.add(burgerMenueAdmin);
 		
 

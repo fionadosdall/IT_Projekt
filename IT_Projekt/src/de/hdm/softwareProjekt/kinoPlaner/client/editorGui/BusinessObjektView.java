@@ -28,7 +28,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 public class BusinessObjektView extends VerticalPanel {
 
 	private HorizontalPanel head = new HorizontalPanel();
-	private HorizontalPanel actions = new HorizontalPanel();
+	private VerticalPanel actions = new VerticalPanel();
 	private ScrollPanel cellList = new ScrollPanel();
 	private Label titel = new Label();
 	private CellList<Gruppe> listGruppe;
@@ -51,7 +51,7 @@ public class BusinessObjektView extends VerticalPanel {
 		head.add(titel);
 		head.add(actions);
 		this.add(head);
-		cellList.setSize("375px", "300px");
+		cellList.setSize("250px", "300px");
 		this.add(cellList);
 
 	}

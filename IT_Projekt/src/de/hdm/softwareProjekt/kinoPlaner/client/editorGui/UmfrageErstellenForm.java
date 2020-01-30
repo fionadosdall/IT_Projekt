@@ -137,7 +137,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsBoxFilternButton.add(filternButton);
 
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
-		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
+		detailsBoxMitteMitte.addStyleName("filternBox");
 
 		filternBox.addStyleName("filternBox");
 
@@ -199,10 +199,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 		uct = new UmfrageCellTable(n);
-		detailsBoxUmfrage.add(new Label("Dücke auf + um Vorstellungen zur Umfrage hinzuzufügen"));
+		detailsBoxUmfrage.add(new Label("Drücke auf + um Vorstellungen zur Umfrage hinzuzufügen"));
 		detailsBoxUmfrage.add(vorstellungPanel);
 		detailsBoxUmfrage.add(umfrageoptionenLabel);
-		detailsBoxUmfrage.add(new Label("Dücke auf - um Umfrageoptionen weder zu entfernen"));
+		detailsBoxUmfrage.add(new Label("Drücke auf - um Umfrageoptionen weder zu entfernen"));
 		detailsBoxUmfrage.add(umfragePanel);
 
 		vorstellungPanel.add(n);

@@ -62,16 +62,32 @@ body {
 	align-items: stretch;
 	display: flex;
 	position: relative;
-	z-index: 30;
 	box-sizing: inherit;
+	flex-direction: row;
+}
+@media only screen and (max-width: 700px) {
+	.headerGesamt {
+		flex-direction: column;
+
+	}
 }
 
 .headerLinks {
 	justify-content: flex-start;
-	margin-right: auto;
 	align-items: stretch;
+	margin-right: auto;
 	display: flex;
 	box-sizing: inherit;
+}
+
+@media only screen and (max-width: 700px) {
+	.headerLinks {
+	margin-left: auto;
+	align-items: center;
+    display: flex;
+    justify-content: center;
+
+	}
 }
 
 .headerLogo {
@@ -95,15 +111,19 @@ body {
 
 .headerRechts {
 	justify-content: flex-end;
-	margin-left: auto;
 	align-items: stretch;
 	display: flex;
 	box-sizing: inherit;
+	flex-direction: row;
 }
 
-.headerRechtsElement {
-	cursor: pointer;
-	display: flex;
+@media only screen and (max-width: 700px) {
+	.headerRechts {
+	flex-direction: column;
+
+	}
+}
+.headerRechtsEins{
 	align-items: center;
 	display: flex;
 	flex-grow: 0;
@@ -113,6 +133,50 @@ body {
 	padding: .5rem .75rem;
 	position: relative;
 	box-sizing: inherit;
+	flex-direction: row;
+}
+@media only screen and (max-width: 700px) {
+	.headerRechtsEins {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+
+	}
+}
+.headerRechtsZwei {
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
+	flex-direction: row;
+	
+}
+@media only screen and (max-width: 700px) {
+	.headerRechtsZwei {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+
+	}
+}
+
+.headerRechtsElement {
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
+	flex-direction: row;
 }
 
 .headerImage {
@@ -120,6 +184,23 @@ body {
 	width: 16px;
 	display: block;
 	position: relative;
+}
+.headerTextBox {
+	border-radius: 290486px;
+	background-color: #fff;
+	border-color: #dbdbdb;
+	align-items: center;
+	border: 1px solid transparent;
+	font-size: 1rem;
+	height: 2.50em;
+	width: 5rem;
+	line-height: 1.5;
+	padding-bottom: calc(.375em - 1px);
+	padding-top: calc(.375em - 1px);
+}
+@media only screen and (max-width: 700px) {
+	.headerTextBox {
+	}
 }
 
 .suchenImage {
@@ -294,11 +375,18 @@ body {
 }
 
 .dashboardKachelnPanel{
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 	align-items: center;
-	text-align: center;
 	align: center;
 	padding: 0px;
+	background: #d6d1d1;
+}
+@media only screen and (max-width: 700px) {
+	.dashboardKachelnPanel {
+		flex-direction: column;
+	}
 }
 
 .dashboardButton.gwt-Button{
@@ -703,6 +791,7 @@ body {
 	background-color: #d6d1d1;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 }
 
 .detailsoben {

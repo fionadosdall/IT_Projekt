@@ -43,6 +43,8 @@ public class Header extends FlowPanel {
 	private FlowPanel headerLinks = new FlowPanel();
 	private FlowPanel headerRechts = new FlowPanel();
 	private FlowPanel headerLogo = new FlowPanel();
+	private FlowPanel headerRechtsEins = new FlowPanel();
+	private FlowPanel headerRechtsZwei = new FlowPanel();		
 	private FlowPanel headerRechtsElementSuchen = new FlowPanel();
 	private FlowPanel headerRechtsElementLupe = new FlowPanel();
 	private FlowPanel headerRechtsElementHome = new FlowPanel();
@@ -75,9 +77,12 @@ public class Header extends FlowPanel {
 		headerLinks.addStyleName("headerLinks");
 		headerLogo.addStyleName("headerLogo");
 		headerLogoInput.addStyleName("headerLogoInput");
+		
 
 		headerRechts.addStyleName("headerRechts");
-		headerRechtsElementSuchen.addStyleName("headerRechtsElement");
+		headerRechtsEins.addStyleName("headerRechtsEins");
+		headerRechtsZwei.addStyleName("headerRechtsZwei");
+		headerRechtsElementSuchen.addStyleName("headerRechtsElementSuchen");
 		headerRechtsElementLupe.addStyleName("headerRechtsElement");
 		headerRechtsElementHome.addStyleName("headerRechtsElement");
 		headerRechtsElementUser.addStyleName("headerRechtsElement");
@@ -97,22 +102,26 @@ public class Header extends FlowPanel {
 
 		this.add(headerLinks);
 		this.add(headerRechts);
+		
+		headerRechts.add(headerRechtsEins);
+		headerRechts.add(headerRechtsZwei);
 
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
+		
 
-		headerRechts.add(headerRechtsElementSuchen);
-		headerRechts.add(headerRechtsElementLupe);
-		headerRechts.add(headerRechtsElementHome);
-		headerRechts.add(headerRechtsElementUser);
-
-		headerRechtsElementSuchen.add(suchenTextBox);
-		headerRechtsElementLupe.add(headerImage);
-		headerImage.add(suchenImage);
-
+		headerRechtsEins.add(headerRechtsElementHome);
+		headerRechtsEins.add(headerRechtsElementUser);
+		headerRechtsEins.add(headerRechtsElementSuchen);
+		
 		headerRechtsElementHome.add(homeAnchor);
 		headerRechtsElementUser.add(userButton);
-		headerRechts.add(burgerMenue);
+		headerRechtsElementSuchen.add(suchenTextBox);
+		headerRechtsElementSuchen.add(headerImage);
+		headerImage.add(suchenImage);
+
+		
+		headerRechtsZwei.add(burgerMenue);
 
 		// Click-Handler
 

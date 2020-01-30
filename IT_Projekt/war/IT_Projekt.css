@@ -48,14 +48,14 @@
 }
 
 .detailsrechts {
-	width: 50%;
+	width: 30%;
 	margin-top: 5%;
 	margin-left: 30%;
 	margin-right: 5%;
 }
 
 .detailslinks {
-	width: 50%;
+	width: 40%;
 	margin-top: 5%;
 	margin-left: 5%;
 	margin-right: 30%;
@@ -127,14 +127,17 @@
 .headerLinks {
 	justify-content: flex-start;
 	align-items: stretch;
+	margin-right: auto;
 	display: flex;
 	box-sizing: inherit;
 }
 
 @media only screen and (max-width: 700px) {
 	.headerLinks {
+	margin-left: auto;
 	align-items: center;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 
 	}
 }
@@ -159,18 +162,22 @@
 	text-decoration: none;
 }
 
+
 .headerRechts {
 	justify-content: flex-end;
-	margin-left: auto;
 	align-items: stretch;
 	display: flex;
 	box-sizing: inherit;
 	flex-direction: row;
 }
 
-.headerRechtsElement {
-	cursor: pointer;
-	display: flex;
+@media only screen and (max-width: 700px) {
+	.headerRechts {
+	flex-direction: column;
+
+	}
+}
+.headerRechtsEins{
 	align-items: center;
 	display: flex;
 	flex-grow: 0;
@@ -182,25 +189,71 @@
 	box-sizing: inherit;
 	flex-direction: row;
 }
+@media only screen and (max-width: 700px) {
+	.headerRechtsEins {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+
+	}
+}
+.headerRechtsZwei {
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
+	flex-direction: row;
+	
+}
+@media only screen and (max-width: 700px) {
+	.headerRechtsZwei {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+
+	}
+}
+
+.headerRechtsElement {
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	color: #4a4a4a;
+	line-height: 1.5;
+	padding: .5rem .75rem;
+	position: relative;
+	box-sizing: inherit;
+	flex-direction: row;
+}
+.headerRechtsElementSuchen {
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	color: #4a4a4a;
+	line-height: 1.5;
+	flex-direction: row;
+	
+}
 
 .headerTextBox {
 	border-radius: 290486px;
-	padding-left: 1em;
-	padding-right: 1em;
 	background-color: #fff;
 	border-color: #dbdbdb;
-	max-width: 100%;
-	width: 100%;
-	-webkit-appearance: none;
 	align-items: center;
 	border: 1px solid transparent;
 	font-size: 1rem;
 	height: 2.50em;
+	width: 5rem;
 	line-height: 1.5;
 	padding-bottom: calc(.375em - 1px);
 	padding-top: calc(.375em - 1px);
-	position: relative;
-	vertical-align: top;
 }
 @media only screen and (max-width: 700px) {
 	.headerTextBox {
@@ -287,6 +340,7 @@
 	margin-left: 30%;
 	margin-right: 30%;
 	justify-content: center;
+	align-items: center;
 }
 
 .detailsboxInahlt {
@@ -627,14 +681,23 @@
 .center {
 	align-items: center;
 	text-align: center;
-	margin-left: 20%;
-	margin-right: 20%;
+	margin-left: 30%;
+	margin-right: 30%;
 }
 .detailsBox {
     margin-top: 5%;
     margin-left: 41%;
     margin-right: 30%;
    
+}
+@media only screen and (max-width: 700px) {
+	.detailsBox {
+		margin-top: 5%;
+	margin-left: 30%;
+	margin-right: 30%;
+	justify-content: center;
+	align-items: center;
+	}
 }
 .umfrageWidgets {
 	display: flex;
