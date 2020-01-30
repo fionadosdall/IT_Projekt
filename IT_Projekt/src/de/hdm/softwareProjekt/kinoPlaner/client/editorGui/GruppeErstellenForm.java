@@ -189,11 +189,14 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsMitteBox.add(detailsBoxMitteMitte);
 		detailsBoxMitteMitte.add(mitgliedTB);
 		detailsMitteBox.add(detailsBoxMitteUnten);
+		detailsBoxMitteUnten.add(new Label("Gib einen Buchstaben ein und die Box liefert dir Vorschläge"));
 		detailsBoxMitteUnten.add(hinzufuegenButton);
 
 		detailsUntenBox.add(mitglieder);
 		detailsUntenBox.add(detailsBoxUntenMitte);
 		detailsBoxUntenMitte.add(anwenderCellTable);
+		detailsBoxUntenMitte.add(new Label("Entferne Gruppenmitglieder mit Click auf -"));
+		
 		detailsUntenBox.add(detailsBoxUnten);
 
 		detailsunten.add(speichernBox);

@@ -25,7 +25,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * erstellt und gepflegt.
  */
 
-public interface KinoplanerAsync { 
+public interface KinoplanerAsync {
 
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -372,8 +372,8 @@ public interface KinoplanerAsync {
 
 	public void getSpielzeitByName(String name, AsyncCallback<Spielzeit> callback) throws IllegalArgumentException;
 
-	public void updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen,Anwender anwender, AsyncCallback<Umfrage> callback)
-			throws IllegalArgumentException;
+	public void updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, Anwender anwender,
+			AsyncCallback<Umfrage> callback) throws IllegalArgumentException;
 
 	public void isVotedEntfernen(Auswahl auswahl, AsyncCallback<Void> callback) throws IllegalArgumentException;
 
@@ -386,4 +386,6 @@ public interface KinoplanerAsync {
 	public void updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan,
 			Anwender anwender, AsyncCallback<ArrayList<Spielplan>> callback) throws IllegalArgumentException;
 
+	public void anzeigenVonZeitgueltigenVorstellungen(AsyncCallback<ArrayList<Vorstellung>> callback)
+			throws IllegalArgumentException;
 }

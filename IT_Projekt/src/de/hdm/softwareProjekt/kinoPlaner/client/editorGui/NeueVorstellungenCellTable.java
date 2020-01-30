@@ -32,8 +32,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
 /**
  * Klasse NeueCellTable dient in der UmfrageErstellenForm als Hilfmittel, um
- * alle möglichen Vorstellungen anzuzeigen. 
- * Um große Tabellen schnell, einfach zu rendern. 
+ * alle möglichen Vorstellungen anzuzeigen. Um große Tabellen schnell, einfach
+ * zu rendern.
  * 
  *
  */
@@ -66,8 +66,6 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 	}
 
 	CellTable.Resources tableRes = GWT.create(CellTableResources.class);
-
-
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
@@ -155,10 +153,9 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 	public void onLoad() {
 
 		this.add(vorstellungenCellTable);
-//		this.setSize("100%", "250px");
+		// this.setSize("100%", "250px");
 		this.setHeight("200px");
 		vorstellungenCellTable.setWidth("100%");
-	
 
 		ListHandler<VorstellungInfo> sortHandler = new ListHandler<VorstellungInfo>(list);
 		vorstellungenCellTable.addColumnSortHandler(sortHandler);
@@ -258,8 +255,8 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 				return o1.getStadt().compareTo(o2.getStadt());
 			}
 		});
-		
-		kinoplaner.getAllVorstellungen(new VorstellungCallback());
+
+		kinoplaner.anzeigenVonZeitgueltigenVorstellungen(new VorstellungCallback());
 
 		if (umfrage != null) {
 			kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
@@ -452,7 +449,7 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			
+
 			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
 			String pattern = "EEEE dd.MM.yyyy HH:mm";
 			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {

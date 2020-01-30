@@ -2619,6 +2619,33 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 
 	/**
 	 * <p>
+	 * Rueckgabe aller geschlosssenen Umfragen, die zeitlich noch gueltig sind.
+	 * </p>
+	 */
+	@Override
+	public ArrayList<Vorstellung> anzeigenVonZeitgueltigenVorstellungen() throws IllegalArgumentException {
+		// Alle geschlossenen Umfragen fuer den Anwender suchen
+		ArrayList<Vorstellung> vorstellungen = this.getAllVorstellungen();
+
+		// Leeres Ergebnissarray anlegen
+		ArrayList<Vorstellung> zeitgueltigeVorstellungen = new ArrayList<Vorstellung>();
+
+		// Aktuelle Zeit abrufen
+		Date date = new Date(System.currentTimeMillis());
+
+		// Für jede Umfrage sehen, ob der Gewinner der Umfrage noch nach der aktuellen
+		// Zeit liegt und wenn ja, dem Ergebnissarray hinzufügen
+		for (Vorstellung v : vorstellungen) {
+			if ((this.spielzeitMapper.findById(v.getSpielzeitId())).getZeit().after(date)) {
+				zeitgueltigeVorstellungen.add(v);
+			}
+		}
+
+		return zeitgueltigeVorstellungen;
+	}
+
+	/**
+	 * <p>
 	 * Volltextsuche nach Gruppen die den Text im Namen tragen.
 	 * </p>
 	 */
@@ -3061,7 +3088,5 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		// TODO Auto-generated method stub
 		return this.filmMapper.findByName(name);
 	}
-
-
 
 }

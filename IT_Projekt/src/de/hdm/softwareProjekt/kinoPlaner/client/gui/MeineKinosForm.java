@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
+import de.hdm.softwareProjekt.kinoPlaner.client.AdminEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.client.editorGui.BusinessObjektView;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -84,7 +85,7 @@ public class MeineKinosForm extends VerticalPanel {
 		this.add(hbPanel);
 		
 		bov.setTitel("Meine Kinos");
-		administration.getAllKinos(new SucheKinosByAnwenderCallback());
+		administration.getKinosByAnwenderOwner(AktuellerAnwender.getAnwender(), new SucheKinosByAnwenderCallback());
 		
 		inhaltPanel.add(bov);
 		

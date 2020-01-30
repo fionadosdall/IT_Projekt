@@ -92,7 +92,7 @@ public class RegistrierungsForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			if(nameTextbox.getText().equals("")) {
-				Window.alert("Bitte namen eingeben!");
+				Window.alert("Bitte Namen eingeben!");
 			}else {
 			String name = nameTextbox.getText();
 			anwender.setName(name);
@@ -136,7 +136,7 @@ public class RegistrierungsForm extends FlowPanel {
 			} else {
 				
 			AktuellerAnwender.setAnwender(result);
-			Window.alert(result.getName());
+		
 		
 			Window.open(destinationUrl.getHref(), "_self", "");
 		

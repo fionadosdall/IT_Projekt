@@ -534,7 +534,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 				VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(result);
 				RootPanel.get("details").add(anzeigen);
 			} else {
-				Window.alert("Ergebnis AnzeigenForm");
+				
 				RootPanel.get("details").clear();
 				ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(result);
 				RootPanel.get("details").add(anzeigen);

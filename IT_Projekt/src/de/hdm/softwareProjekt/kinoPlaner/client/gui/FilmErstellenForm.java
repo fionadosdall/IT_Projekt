@@ -289,7 +289,7 @@ public class FilmErstellenForm extends PopupPanel {
 				// SpielplaneintragForm sef = new SpielplaneintragForm();
 				parent.refresh();
 
-				Window.alert(result.getName());
+			
 			}
 		}
 

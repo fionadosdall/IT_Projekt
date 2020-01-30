@@ -1785,4 +1785,14 @@ public interface Kinoplaner extends RemoteService {
 	public ArrayList<Spielplan> updateSpielplanKinokette(ArrayList<Vorstellung> zuErstellendeVorstellungen,
 			Spielplan spielplan, Anwender anwender) throws IllegalArgumentException;
 
+	/**
+	 * <p>
+	 * Rueckgabe aller geschlosssenen Umfragen, die zeitlich noch gueltig sind.
+	 * </p>
+	 * 
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Vorstellung> anzeigenVonZeitgueltigenVorstellungen() throws IllegalArgumentException;
+
 }

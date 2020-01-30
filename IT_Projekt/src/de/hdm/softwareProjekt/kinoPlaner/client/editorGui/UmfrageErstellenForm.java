@@ -34,7 +34,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  *
  */
 public class UmfrageErstellenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -53,7 +53,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private FlowPanel filternBoxMitte = new FlowPanel();
 	private FlowPanel filternBoxRechts = new FlowPanel();
 	private FlowPanel detailsBoxFilternButton = new FlowPanel();
-	
+
 	private FlowPanel vorstellungPanel = new FlowPanel();
 	private FlowPanel umfragePanel = new FlowPanel();
 
@@ -61,6 +61,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 	private Label umfrageLabel = new Label("Umfrage");
 	private Label gruppenLabel = new Label("Gruppe");
 	private Label terminLabel = new Label("Mögliche Termine");
+	private Label umfrageoptionenLabel = new Label("Umfrageoptionen");
 	private Label filternLabel = new Label("Termine Filtern");
 	private Label kinoLabel = new Label("Kino");
 	private Label SpiezeitLabel = new Label("Spielzeit");
@@ -75,9 +76,9 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	private Button erstellenButton = new Button("Umfrage starten");
 	private Button filternButton = new Button("Filtern");
-	
+
 	private HashMap<String, Integer> spielzeitenHastable = new HashMap<String, Integer>();
-	
+
 	private ArrayList<Vorstellung> resultSet = new ArrayList<Vorstellung>();
 
 	private UmfrageInfo uI;
@@ -123,6 +124,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		umfrageLabel.addStyleName("detailsboxLabels");
 		gruppenLabel.addStyleName("detailsboxLabels");
 		terminLabel.addStyleName("detailsboxLabels");
+		umfrageoptionenLabel.addStyleName("detailsboxLabels");
 		filternLabel.addStyleName("detailsboxLabels");
 
 		detailsObenBox.addStyleName("detailsuntenBoxen");
@@ -131,14 +133,14 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsBoxFiltern.addStyleName("detailsuntenBoxen");
 		detailsBoxSpeichern.addStyleName("speichernBox");
 		detailsBoxFilternButton.addStyleName("detailsBoxMitte");
-		
+		detailsBoxFilternButton.add(new Label("Wähle Filteroptionen aus und drücke auf Filtern"));
 		detailsBoxFilternButton.add(filternButton);
 
 		detailsBoxObenMitte.addStyleName("detailsBoxMitte");
 		detailsBoxMitteMitte.addStyleName("detailsBoxMitte");
 
 		filternBox.addStyleName("filternBox");
-		
+
 		filternBoxLinks.addStyleName("filternBoxenGesamt");
 		filternBoxRechts.addStyleName("filternBoxenGesamt");
 		filternBoxMitte.addStyleName("filternBoxenGesamt");
@@ -166,21 +168,21 @@ public class UmfrageErstellenForm extends FlowPanel {
 		detailsMitteBox.add(gruppenLabel);
 		detailsMitteBox.add(detailsBoxMitteMitte);
 		detailsBoxMitteMitte.add(gruppenListBox);
-		
+
 		detailsunten.add(detailsBoxFiltern);
 		detailsBoxFiltern.add(filternLabel);
 		detailsBoxFiltern.add(filternBox);
-		
+
 		filternBox.add(filternBoxLinks);
 		filternBox.add(filternBoxMitte);
 		filternBox.add(filternBoxRechts);
-		
+
 		filternBoxLinks.add(kinoLabel);
 		filternBoxLinks.add(kinoListBox);
-		
+
 		filternBoxRechts.add(SpiezeitLabel);
 		filternBoxRechts.add(spielzeitListBox);
-		
+
 		filternBoxMitte.add(filmLabel);
 		filternBoxMitte.add(filmListBox);
 
@@ -197,10 +199,12 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 		uct = new UmfrageCellTable(n);
-		
+		detailsBoxUmfrage.add(new Label("Dücke auf + um Vorstellungen zur Umfrage hinzuzufügen"));
 		detailsBoxUmfrage.add(vorstellungPanel);
+		detailsBoxUmfrage.add(umfrageoptionenLabel);
+		detailsBoxUmfrage.add(new Label("Dücke auf - um Umfrageoptionen weder zu entfernen"));
 		detailsBoxUmfrage.add(umfragePanel);
-		
+
 		vorstellungPanel.add(n);
 		umfragePanel.add(uct);
 
@@ -243,7 +247,7 @@ public class UmfrageErstellenForm extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			ArrayList<Vorstellung> results = n.getVorFilterVorstellungen();
 			for (Vorstellung v : results) {
-				Window.alert(v.getName());
+
 			}
 
 			if (filmListBox.getSelectedValue().equals("Keine Auswahl")) {
@@ -319,8 +323,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	}
 	/*
-	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
-	 * des Films gefiltert wurden aus dem System zu bekommen
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund des Films
+	 * gefiltert wurden aus dem System zu bekommen
 	 */
 
 	private class FilterResultVorstellungenByFilm implements AsyncCallback<ArrayList<Vorstellung>> {
@@ -370,10 +374,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
-	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
-	 * des Kinos gefiltert wurden aus dem System zu bekommen
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund des Kinos
+	 * gefiltert wurden aus dem System zu bekommen
 	 *
 	 */
 
@@ -401,10 +405,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/***
-	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
-	 * der Kinokette  gefiltert wurden aus dem System zu bekommen
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund der
+	 * Kinokette gefiltert wurden aus dem System zu bekommen
 	 *
 	 */
 
@@ -424,7 +428,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 						new FilterResultVorstellungenBySpielzeitCallback());
 			} else {
 				resultSet = result;
-				kinoplaner.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()), new GetSpielzeitByIdCallback());
+				kinoplaner.getSpielzeitById(spielzeitenHastable.get(spielzeitListBox.getSelectedValue()),
+						new GetSpielzeitByIdCallback());
 			}
 		}
 
@@ -455,8 +460,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 	/**
 	 * 
-	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund
-	 * des Spielzeit gefiltert wurden aus dem System zu bekommen
+	 * Private Klasse um alle Vorstellungs-Instanzen, die davor aufgrund des
+	 * Spielzeit gefiltert wurden aus dem System zu bekommen
 	 *
 	 */
 	private class FilterResultVorstellungenBySpielzeitCallback implements AsyncCallback<ArrayList<Vorstellung>> {
@@ -596,9 +601,10 @@ public class UmfrageErstellenForm extends FlowPanel {
 		}
 
 	}
-	
+
 	/**
 	 * private Klasse um alle Kinoketten-Instanzen in das System zu bekommen
+	 * 
 	 * @author fiona
 	 *
 	 */
@@ -718,8 +724,8 @@ public class UmfrageErstellenForm extends FlowPanel {
 	}
 
 	/*
-	 * Private Klasse um alle Gruppen-Instanzen, aufgrund eines Namens 
-	 * aus dem System zu bekommen
+	 * Private Klasse um alle Gruppen-Instanzen, aufgrund eines Namens aus dem
+	 * System zu bekommen
 	 * 
 	 */
 
@@ -740,25 +746,29 @@ public class UmfrageErstellenForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Gruppe result) {
-			// TODO Auto-generated method stub
-			if (umfrage != null) {
-				umfrage.setName(umfrageTextBox.getValue());
-				umfrage.setGruppenId(result.getId());
-				kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), aktuellerAnwender, new updateUmfrageCallback());
-
+			if (umfrageTextBox.getValue().equals("")) {
+				Window.alert("Umfrage hat keinen Namen!");
 			} else {
+				if (umfrage != null) {
+					umfrage.setName(umfrageTextBox.getValue());
+					umfrage.setGruppenId(result.getId());
+					kinoplaner.updateUmfrage(umfrage, n.getUmfrageOptionen(), aktuellerAnwender,
+							new updateUmfrageCallback());
 
-				kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(), aktuellerAnwender,
-						new UmfrageErstellenCallback());
+				} else {
+
+					kinoplaner.erstellenUmfrage(umfrageTextBox.getValue(), n.getUmfrageOptionen(), result.getId(),
+							aktuellerAnwender, new UmfrageErstellenCallback());
+				}
+
 			}
-
 		}
 
 	}
-	
+
 	/**
-	 * private Klasse um alle Umfrage-Instanzen aus dem System zu 
-	 * updaten, ist dies erfolgreich so gelagnen wir in die UmfrageAnzeigenForm-Klasse
+	 * private Klasse um alle Umfrage-Instanzen aus dem System zu updaten, ist dies
+	 * erfolgreich so gelagnen wir in die UmfrageAnzeigenForm-Klasse
 	 * 
 	 * 
 	 *

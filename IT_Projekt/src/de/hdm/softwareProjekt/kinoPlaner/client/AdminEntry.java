@@ -48,7 +48,7 @@ public class AdminEntry implements EntryPoint {
 
 		loginService = ClientsideSettings.getLoginService();
 
-		loginService.login(GWT.getHostPageBaseURL() + "IT_Projekt.html", new loginServiceCallback());
+		loginService.login(GWT.getHostPageBaseURL() + "AdminClient.html", new loginServiceCallback());
 
 	}
 
@@ -64,7 +64,7 @@ public class AdminEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Anwender result) {
 			// TODO Auto-generated method stub
-			Window.alert("onSucess");
+	
 
 			AktuellerAnwender.setAnwender(result);
 
