@@ -387,7 +387,7 @@ public class AuswahlMapper {
 	 * @return Alle Auswahl-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der DB eingetragen haben.
 	 */
-	public ArrayList<Auswahl> findAllByAnwenderOwner(Anwender anwender) {
+	public ArrayList<Auswahl> findAllByAnwenderOwner(int anwenderId) {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Auswahl> resultarray = new ArrayList<Auswahl>();
@@ -397,12 +397,12 @@ public class AuswahlMapper {
 
 			ResultSet resultset = stmt.executeQuery(
 					"SELECT awId, awName, auswahl_anwender_Id, auswahl_umfrageoption_Id, voting, erstellDatum FROM auswahl"
-							+ " WHERE auswahl_anwender_Id=" + anwender.getId() + " ORDER BY awId");
+							+ " WHERE auswahl_anwender_Id=" + anwenderId);
 			while (resultset.next()) {
 				Auswahl a = new Auswahl();
 				a.setId(resultset.getInt("awId"));
 				a.setName(resultset.getString("awName"));
-				a.setBesitzerId(resultset.getInt("auswahl_anweder_Id"));
+				a.setBesitzerId(resultset.getInt("auswahl_anwender_Id"));
 				a.setUmfrageoptionId(resultset.getInt("auswahl_umfrageoption_Id"));
 				a.setVoting(resultset.getInt("voting"));
 				a.setErstellDatum(resultset.getTimestamp("erstellDatum"));
@@ -416,5 +416,7 @@ public class AuswahlMapper {
 		// Ergebnis zurückgeben in Form der ArrayList
 		return resultarray;
 	}
+	
+	
 
 }

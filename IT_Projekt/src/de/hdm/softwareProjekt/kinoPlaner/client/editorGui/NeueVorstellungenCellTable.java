@@ -151,6 +151,12 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 	}
 
 	public void onLoad() {
+		
+		kinoplaner.anzeigenVonZeitgueltigenVorstellungen(new VorstellungCallback());
+
+		if (umfrage != null) {
+			kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		}
 
 		this.add(vorstellungenCellTable);
 		// this.setSize("100%", "250px");
@@ -256,11 +262,7 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 			}
 		});
 
-		kinoplaner.anzeigenVonZeitgueltigenVorstellungen(new VorstellungCallback());
 
-		if (umfrage != null) {
-			kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
-		}
 
 		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
 		vorstellungenCellTable.addColumn(filmColumn, "Film");

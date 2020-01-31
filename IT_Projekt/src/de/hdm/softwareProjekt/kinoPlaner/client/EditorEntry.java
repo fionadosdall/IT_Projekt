@@ -29,7 +29,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
  */
 public class EditorEntry implements EntryPoint {
 
-	Header header = new Header();
+	Header header;
 	Footer footer = new Footer();
 
 	private LoginServiceAsync loginService = null;
@@ -75,7 +75,7 @@ public class EditorEntry implements EntryPoint {
 					RootPanel.get("details").add(new RegistrierungsForm(kinoplanerEditorLink, result));
 
 				} else {
-
+					header =  new Header();;
 					RootPanel.get("header").add(header);
 					RootPanel.get("footer").add(footer);
 

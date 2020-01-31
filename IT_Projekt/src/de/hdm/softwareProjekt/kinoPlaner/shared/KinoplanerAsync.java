@@ -25,7 +25,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * erstellt und gepflegt.
  */
 
-public interface KinoplanerAsync {
+public interface KinoplanerAsync { 
 
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 

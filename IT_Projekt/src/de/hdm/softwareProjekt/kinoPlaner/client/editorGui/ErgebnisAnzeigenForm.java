@@ -81,7 +81,7 @@ public class ErgebnisAnzeigenForm extends FlowPanel {
 
 		detailsboxInhalt.add(eat);
 
-		detailsunten.add(txt);
+		detailsunten.add(txt); 
 
 		
 

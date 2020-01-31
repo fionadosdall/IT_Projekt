@@ -820,12 +820,12 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void loeschen(Anwender anwender) throws IllegalArgumentException {
+
 		// Loeschen aller zugehoerigen Auswahlen
-		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner(anwender);
-		if (auswahlen.size() != 0) {
-			for (Auswahl a : auswahlen) {
-				this.loeschen(a, anwender);
-			}
+		ArrayList<Auswahl> auswahlen = auswahlMapper.findAllByAnwenderOwner(anwender.getId());
+
+		for (Auswahl a : auswahlen) {
+			this.loeschen(a, anwender);
 		}
 
 		// Weitergabe des Gruppenbesitz an anderes Gruppenmitglied
@@ -835,7 +835,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper.findAllByGruppe(g);
 				if (gruppenmitglieder.size() != 0) {
 					if (gruppenmitglieder.get(0).equals(anwender)) {
-						if (gruppenmitglieder.size()>1) {
+						if (gruppenmitglieder.size() > 1) {
 							g.setBesitzerId(gruppenmitglieder.get(1).getId());
 							speichern(g);
 						} else {
@@ -859,7 +859,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 						.findAllByGruppe(this.gruppeMapper.findById(u.getGruppenId()));
 				if (gruppenmitglieder.size() != 0) {
 					if (gruppenmitglieder.get(0).equals(anwender)) {
-						if (gruppenmitglieder.size()>1) {
+						if (gruppenmitglieder.size() > 1) {
 							u.setBesitzerId(gruppenmitglieder.get(1).getId());
 							speichern(u);
 						} else {
@@ -894,17 +894,17 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		ArrayList<Vorstellung> verwendeteFilme = this.getAllVorstellungen();
 		if (filme.size() != 0) {
 			for (Film f : filme) {
-				for(Vorstellung v : verwendeteFilme) {
-					if(f.getId()==v.getFilmId()) {
+				for (Vorstellung v : verwendeteFilme) {
+					if (f.getId() == v.getFilmId()) {
 						f.setBesitzerId(spielplanMapper.findById(v.getSpielplanId()).getBesitzerId());
 						speichern(f);
 						break;
 					}
-					if(verwendeteFilme.indexOf(v)+1==verwendeteFilme.size()) {
+					if (verwendeteFilme.indexOf(v) + 1 == verwendeteFilme.size()) {
 						this.loeschen(f, anwender);
 					}
 				}
-				
+
 			}
 		}
 
@@ -913,13 +913,13 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 		ArrayList<Vorstellung> verwendeteSpielzeiten = this.getAllVorstellungen();
 		if (spielzeiten.size() != 0) {
 			for (Spielzeit s : spielzeiten) {
-				for(Vorstellung v : verwendeteSpielzeiten) {
-					if(s.getId()==v.getSpielzeitId()) {
+				for (Vorstellung v : verwendeteSpielzeiten) {
+					if (s.getId() == v.getSpielzeitId()) {
 						s.setBesitzerId(spielplanMapper.findById(v.getSpielplanId()).getBesitzerId());
 						speichern(s);
 						break;
 					}
-					if(verwendeteSpielzeiten.indexOf(v)+1==verwendeteSpielzeiten.size()) {
+					if (verwendeteSpielzeiten.indexOf(v) + 1 == verwendeteSpielzeiten.size()) {
 						this.loeschen(s, anwender);
 					}
 				}
@@ -1866,7 +1866,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public ArrayList<Auswahl> getAuswahlenByAnwenderOwner(Anwender anwender) throws IllegalArgumentException {
-		return this.auswahlMapper.findAllByAnwenderOwner(anwender);
+		return this.auswahlMapper.findAllByAnwenderOwner(anwender.getId());
 	}
 
 	/*

@@ -49,6 +49,8 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		
 		//Vergeben der Stylenamen 
 		
+		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
+		
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
@@ -73,8 +75,7 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		p.setStyleName("");
 		bov.setTitel("Meine Ergebnisse");
 
-		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
-
+		
 	}
 	
 	/**

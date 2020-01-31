@@ -28,7 +28,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 
 public class AdminEntry implements EntryPoint {
 
-	Header header = new Header();
+	Header header;
 	Footer footer = new Footer();
 	AdminDashboardForm home = new AdminDashboardForm();
 
@@ -77,7 +77,7 @@ public class AdminEntry implements EntryPoint {
 					RootPanel.get("details").add(new RegistrierungsForm(kinoplanerEditorLink, result));
 
 				} else {
-
+					header  = new Header();
 					RootPanel.get("header").add(header);
 					RootPanel.get("details").add(home);
 					RootPanel.get("footer").add(footer);

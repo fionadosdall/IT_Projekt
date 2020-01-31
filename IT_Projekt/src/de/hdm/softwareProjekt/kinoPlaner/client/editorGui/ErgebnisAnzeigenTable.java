@@ -115,6 +115,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	@Override
 	public void onLoad() {
 		
+		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		
 		this.setHeight("200px");
 		
 
@@ -198,7 +200,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 		this.add(ergebnisCellTable);
 
-		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		
 
 	}
 	

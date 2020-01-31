@@ -145,6 +145,8 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 		
 		this.setHeight("380px");
 		
+		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
 
@@ -296,7 +298,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 			}
 		});
 
-		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+		
 
 	}
 

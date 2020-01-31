@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Auswahl;
-import de.hdm.softwareProjekt.kinoPlaner.shared.bo.BusinessObjekt;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Film;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
@@ -34,7 +33,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * </p>
  */
 @RemoteServiceRelativePath("administration")
-public interface Kinoplaner extends RemoteService {
+public interface Kinoplaner extends RemoteService {  
 
 	/**
 	 * <p>
