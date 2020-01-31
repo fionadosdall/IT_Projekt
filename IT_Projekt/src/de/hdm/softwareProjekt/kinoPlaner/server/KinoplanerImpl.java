@@ -306,7 +306,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kino erstellenKino(String name, int plz, String stadt, String strassse, String hausnummer, int kinokettenId,
 			Anwender besitzer) throws IllegalArgumentException {
-		if (kinoMapper.findByName(name) == null&&kinoketteMapper.findByName(name)==null) {
+		if (kinoMapper.findByName(name) == null && kinoketteMapper.findByName(name) == null) {
 			// Ein neues Kino Objekt wird erstellt.
 			Kino k = new Kino();
 
@@ -366,7 +366,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Kinokette erstellenKinokette(String name, String sitz, String website, Anwender besitzer)
 			throws IllegalArgumentException {
-		if (kinoMapper.findByName(name) == null&&kinoketteMapper.findByName(name)==null) {
+		if (kinoMapper.findByName(name) == null && kinoketteMapper.findByName(name) == null) {
 			// Ein neues Kinokette Objekt wird erstellt.
 			Kinokette k = new Kinokette();
 
@@ -820,6 +820,67 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public void loeschen(Anwender anwender) throws IllegalArgumentException {
+		// Loeschen aller zugehoerigen Auswahlen
+		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner(anwender);
+		if (auswahlen.size() != 0) {
+			for (Auswahl a : auswahlen) {
+				this.loeschen(a, anwender);
+			}
+		}
+
+		// Weitergabe des Gruppenbesitz an anderes Gruppenmitglied
+		ArrayList<Gruppe> gruppen = this.getGruppenByAnwenderOwner(anwender);
+		if (gruppen.size() != 0) {
+			for (Gruppe g : gruppen) {
+				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper.findAllByGruppe(g);
+				if (gruppenmitglieder.size() != 0) {
+					if (gruppenmitglieder.get(0).equals(anwender)) {
+						if (gruppenmitglieder.size()>1) {
+							g.setBesitzerId(gruppenmitglieder.get(1).getId());
+							speichern(g);
+						} else {
+							this.loeschen(g, anwender);
+						}
+					} else {
+						g.setBesitzerId(gruppenmitglieder.get(0).getId());
+						speichern(g);
+					}
+				} else {
+					this.loeschen(g, anwender);
+				}
+			}
+		}
+
+		// Weitergabe des Umfragebesitz an ein anderes Gruppenmitlgied
+		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
+		if (umfragen.size() != 0) {
+			for (Umfrage u : umfragen) {
+				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper
+						.findAllByGruppe(this.gruppeMapper.findById(u.getGruppenId()));
+				if (gruppenmitglieder.size() != 0) {
+					if (gruppenmitglieder.get(0).equals(anwender)) {
+						if (gruppenmitglieder.size()>1) {
+							u.setBesitzerId(gruppenmitglieder.get(1).getId());
+							speichern(u);
+						} else {
+							this.loeschen(u, anwender);
+						}
+					} else {
+						u.setBesitzerId(gruppenmitglieder.get(0).getId());
+						speichern(u);
+					}
+				} else {
+					this.loeschen(u, anwender);
+				}
+			}
+		}
+
+		// Loeschen des Anwenders aus allen Gruppen
+		ArrayList<Gruppe> gruppenAnwender = this.gruppeMapper.findAllByAnwender(anwender);
+		for (Gruppe g : gruppenAnwender) {
+			this.gruppeMapper.deleteGruppenmitgliedschaft(anwender, g);
+		}
+
 		// Loeschen aller zugehoerigen Spielplaene
 		ArrayList<Spielplan> spielplaene = this.getSpielplaeneByAnwenderOwner(anwender);
 		if (spielplaene.size() != 0) {
@@ -828,19 +889,40 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			}
 		}
 
-		// Loeschen aller zugehoerigen Filme
+		// Weitergeben des Filmbesitz, falls der Film verwendet wird
 		ArrayList<Film> filme = this.getFilmeByAnwenderOwner(anwender);
+		ArrayList<Vorstellung> verwendeteFilme = this.getAllVorstellungen();
 		if (filme.size() != 0) {
 			for (Film f : filme) {
-				this.loeschen(f, anwender);
+				for(Vorstellung v : verwendeteFilme) {
+					if(f.getId()==v.getFilmId()) {
+						f.setBesitzerId(spielplanMapper.findById(v.getSpielplanId()).getBesitzerId());
+						speichern(f);
+						break;
+					}
+					if(verwendeteFilme.indexOf(v)+1==verwendeteFilme.size()) {
+						this.loeschen(f, anwender);
+					}
+				}
+				
 			}
 		}
 
 		// Loeschen aller zugehoerigen Spielzeiten
 		ArrayList<Spielzeit> spielzeiten = this.getSpielzeitenByAnwenderOwner(anwender);
+		ArrayList<Vorstellung> verwendeteSpielzeiten = this.getAllVorstellungen();
 		if (spielzeiten.size() != 0) {
 			for (Spielzeit s : spielzeiten) {
-				this.loeschen(s, anwender);
+				for(Vorstellung v : verwendeteSpielzeiten) {
+					if(s.getId()==v.getSpielzeitId()) {
+						s.setBesitzerId(spielplanMapper.findById(v.getSpielplanId()).getBesitzerId());
+						speichern(s);
+						break;
+					}
+					if(verwendeteSpielzeiten.indexOf(v)+1==verwendeteSpielzeiten.size()) {
+						this.loeschen(s, anwender);
+					}
+				}
 			}
 		}
 
@@ -858,63 +940,6 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 			for (Kinokette k : kinoketten) {
 				this.loeschen(k, anwender);
 			}
-		}
-
-		// Loeschen aller zugehoerigen Auswahlen
-		ArrayList<Auswahl> auswahlen = this.getAuswahlenByAnwenderOwner(anwender);
-		if (auswahlen.size() != 0) {
-			for (Auswahl a : auswahlen) {
-				this.loeschen(a, anwender);
-			}
-		}
-
-		// Weitergabe des Gruppenbesitz an anderes Gruppenmitglied
-		ArrayList<Gruppe> gruppen = this.getGruppenByAnwenderOwner(anwender);
-		if (gruppen.size() != 0) {
-			for (Gruppe g : gruppen) {
-				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper.findAllByGruppe(g);
-				if (gruppenmitglieder.size() != 0) {
-					if (gruppenmitglieder.get(0).equals(anwender)) {
-						if (gruppenmitglieder.get(1) != null) {
-							g.setBesitzerId(gruppenmitglieder.get(1).getId());
-						} else {
-							this.loeschen(g, anwender);
-						}
-					} else {
-						g.setBesitzerId(gruppenmitglieder.get(0).getId());
-					}
-				} else {
-					this.loeschen(g, anwender);
-				}
-			}
-		}
-
-		// Weitergabe des Umfragebesitz an ein anderes Gruppenmitlgied
-		ArrayList<Umfrage> umfragen = this.getUmfragenByAnwenderOwner(anwender);
-		if (umfragen.size() != 0) {
-			for (Umfrage u : umfragen) {
-				ArrayList<Anwender> gruppenmitglieder = this.anwenderMapper
-						.findAllByGruppe(this.gruppeMapper.findById(u.getGruppenId()));
-				if (gruppenmitglieder.size() != 0) {
-					if (gruppenmitglieder.get(0).equals(anwender)) {
-						if (gruppenmitglieder.get(1) != null) {
-							u.setBesitzerId(gruppenmitglieder.get(1).getId());
-						} else {
-							this.loeschen(u, anwender);
-						}
-					} else {
-						u.setBesitzerId(gruppenmitglieder.get(0).getId());
-					}
-				} else {
-					this.loeschen(u, anwender);
-				}
-			}
-		}
-
-		// Loeschen des Anwenders aus allen Gruppen
-		ArrayList<Gruppe> gruppenAnwender = this.gruppeMapper.findAllByAnwender(anwender);
-		for (Gruppe g : gruppenAnwender) {
-			this.gruppeMapper.deleteGruppenmitgliedschaft(anwender, g);
 		}
 
 		// Loeschen des Anwenders

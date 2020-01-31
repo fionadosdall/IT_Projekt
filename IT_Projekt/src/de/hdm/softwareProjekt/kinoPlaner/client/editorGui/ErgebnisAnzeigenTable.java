@@ -51,6 +51,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 		private String spielzeit;
 		private String stadt;
 		private int ergebnis;
+		public boolean lastItem;
 
 		public int getErgebnis() {
 			return ergebnis;
@@ -225,6 +226,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 				ergebnisCellTable.setEmptyTableWidget(new Label("Keine Umfrageoptionen verfügbar!"));
 
 			} else {
+		
 				for (Umfrageoption u : result) {
 
 					ErgebnisInfo eI = new ErgebnisInfo();
@@ -232,10 +234,12 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 					eI.setU(u);
 
 					list.add(eI);
+					
+					if(result.indexOf(u)+1 == result.size()) {
+						eI.lastItem = true;
+					}
 
 					kinoplaner.berechneAuswahlenByUmfrageoption(u, new AuswahlCallback(eI, u));
-					
-			
 
 				}
 
@@ -354,7 +358,11 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 			dataProvider.refresh();
 			
-			eaf.suchGewinner();
+			if(info.lastItem==true) {
+				eaf.suchGewinner();
+			}
+			
+			
 
 		}
 
