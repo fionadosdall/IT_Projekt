@@ -67,7 +67,8 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
 		
-		erstellenButton.setStyleName("speichernButton");
+		erstellenButton.setStyleName("speichernButton.gwt-Button");
+
 		
 
 		// Zusammenbauen der Widgets
@@ -77,11 +78,11 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 		detailsoben.add(hb);
 		
 		detailsunten.add(detialsbox);
-		detialsbox.add(p);
+		detialsbox.add(bov);
 
-		p.setStyleName("");
+//		p.setStyleName("");
 		bov.setTitel("Meine Umfragen");
-		p.add(bov);
+//		p.add(bov);
 
 		kinoplaner.getOpenUmfragenByAnwender(aktuellerAnwender, new SucheUmfragenByAnwenderCallback());
 
@@ -114,6 +115,7 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 			}
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 			detailsunten.add(erstellenButton);
+	
 
 		}
 		

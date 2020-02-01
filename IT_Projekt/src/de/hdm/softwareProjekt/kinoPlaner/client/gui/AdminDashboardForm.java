@@ -3,6 +3,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client.gui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -15,9 +16,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class AdminDashboardForm extends VerticalPanel {
 	
 	
-	private VerticalPanel dashboardPanel = new VerticalPanel();
 	private HorizontalPanel obenPanel = new HorizontalPanel();
-	private HorizontalPanel untenPanel = new HorizontalPanel();
+	private FlowPanel dahboardPanel = new FlowPanel();
 	
 	private MeineKinokettenForm mkkf;
 	private MeineKinosForm mkf;
@@ -39,22 +39,21 @@ public class AdminDashboardForm extends VerticalPanel {
 		this.addStyleName("detailscontainer");
 		
 		dashboardFormLabel.addStyleName("formHeaderLabel");
-		untenPanel.addStyleName("untenPanel");
 		obenPanel.addStyleName("obenPanel");
 		meineKinokettenButton.addStyleName("dashboardButton");
 		meineKinosButton.addStyleName("dashboardButton");
 		meineSpielplaeneButton.addStyleName("dashboardButton");
-		dashboardPanel.addStyleName("dashboardKachelnPanel");
+		dahboardPanel.addStyleName("dashboardKachelnPanel");
 		
 		/* Widgets werden zusammengebaut */
 		
-		obenPanel.add(dashboardFormLabel);
 		this.add(obenPanel);
+		obenPanel.add(dashboardFormLabel);
 		
-		dashboardPanel.add(meineKinokettenButton);
-		dashboardPanel.add(meineKinosButton);
-		dashboardPanel.add(meineSpielplaeneButton);
-		this.add(dashboardPanel);
+		this.add(dahboardPanel);
+		dahboardPanel.add(meineKinokettenButton);
+		dahboardPanel.add(meineKinosButton);
+		dahboardPanel.add(meineSpielplaeneButton);
 	
 		meineKinokettenButton.addClickHandler(new MeineKinokettenClickHandler());
 		meineKinosButton.addClickHandler(new MeineKinosClickHandler());

@@ -2,6 +2,7 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -12,7 +13,6 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -51,7 +51,7 @@ public class Header extends FlowPanel {
 	private FlowPanel headerRechtsElementUser = new FlowPanel();
 	private FlowPanel headerImage = new FlowPanel();
 
-	private Label headerLogoInput = new Label("K I N O P L A N E R");
+	private Anchor headerLogoInput = new Anchor("K I N O P L A N E R");
 
 	private MultiWordSuggestOracle alleDaten = new MultiWordSuggestOracle();
 	private SuggestBox suchenTextBox = new SuggestBox(alleDaten);
@@ -133,6 +133,14 @@ public class Header extends FlowPanel {
 		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new GetGruppenByAnwenderCallback());
 		kinoplaner.getUmfragenByAnwender(aktuellerAnwender, new GetUmfragenByAnwenderCallback());
 		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
+		
+		headerLogoInput.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				headerLogoInput.setHref(GWT.getHostPageBaseURL() + "AdminClient.html");
+			}
+			
+		});
 
 	}
 

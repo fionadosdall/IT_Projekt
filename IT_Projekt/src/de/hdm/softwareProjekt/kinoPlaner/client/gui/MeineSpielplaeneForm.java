@@ -75,6 +75,9 @@ public class MeineSpielplaeneForm extends VerticalPanel {
 	
 		untenPanel.addStyleName("untenPanel");
 		
+		spielplanErstellenButton.addStyleName("speichernButton");
+		
+		
 		/* Zusammenbauen der Widgets*/
 		
 		
