@@ -93,7 +93,7 @@ public class MeineKinokettenForm extends VerticalPanel{
 		loeschenButton.addStyleName("loeschenButton");
 		bearbeitenButton.addStyleName("bearbeitenButton");	
 		
-		
+		kinoketteErstellenButton.addStyleName("speichernButton");
 		
 		
 		

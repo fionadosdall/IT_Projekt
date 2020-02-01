@@ -33,7 +33,7 @@ public class Header extends FlowPanel{
 	private FlowPanel headerRechtsElementEinstellungen = new FlowPanel();
 	private FlowPanel headerImage = new FlowPanel();
 	
-	private Label headerLogoInput = new Label("A D M I N C L I E N T");
+	private Anchor headerLogoInput = new Anchor("A D M I N C L I E N T");
 	
 	private MultiWordSuggestOracle alleDaten = new MultiWordSuggestOracle();
 	private SuggestBox suchenTextBox = new SuggestBox(alleDaten);
@@ -78,7 +78,6 @@ public class Header extends FlowPanel{
 
 		suchenImage.setUrl("/images/suchen.png");
 		
-
 		suchenTextBox.addStyleName("headerTextBox");
 
 		suchenTextBox.getElement().setPropertyString("placeholder", "Suchen...");
@@ -94,23 +93,18 @@ public class Header extends FlowPanel{
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
 		
+
 		headerRechtsEins.add(headerRechtsElementHome);
 		headerRechtsEins.add(headerRechtsElementUser);
 		headerRechtsEins.add(headerRechtsElementSuchen);
-
-
-		headerRechtsElementSuchen.add(suchenTextBox);
-		headerRechtsElementLupe.add(headerImage);
-		headerImage.add(suchenImage);
 		
 		headerRechtsElementHome.add(homeAnchor);
-		headerRechtsElementHome.add(clientAnchor);
 		headerRechtsElementUser.add(einstellungenButton);
 		headerRechtsElementSuchen.add(suchenTextBox);
 		headerRechtsElementSuchen.add(headerImage);
 		headerImage.add(suchenImage);
 
-		headerRechts.add(burgerMenueAdmin);
+		headerRechtsZwei.add(burgerMenueAdmin);
 		
 
 		// Click-Handler
@@ -119,7 +113,16 @@ public class Header extends FlowPanel{
 		einstellungenButton.addClickHandler(new EinstellungenButtonClickHandler());
 		suchenImage.addClickHandler(new SuchenClickHandler());
 		clientAnchor.addClickHandler(new ClientAnchorClickHandler());
-
+		
+		headerLogoInput.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				
+				headerLogoInput.setHref(GWT.getHostPageBaseURL() + "IT_Projekt.html");
+				
+			}
+			
+		});
 
 		
 		

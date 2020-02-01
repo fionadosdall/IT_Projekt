@@ -179,6 +179,16 @@ body {
 	flex-direction: row;
 }
 
+.headerRechtsElementSuchen {
+	cursor: pointer;
+	align-items: center;
+	display: flex;
+	color: #4a4a4a;
+	line-height: 1.5;
+	flex-direction: row;
+	
+}
+
 .headerImage {
 	height: 16px;
 	width: 16px;
@@ -374,7 +384,7 @@ body {
 	
 }
 
-.dashboardKachelnPanel{
+.dashboardKachelnPanel {
 	display: flex;
 	flex-direction: row;
 	width: 100%;

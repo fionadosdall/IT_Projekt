@@ -75,6 +75,10 @@ public class MeineKinosForm extends VerticalPanel {
 		untenPanel.addStyleName("untenPanel");
 		formHeaderLabel.addStyleName("formHeaderLabel");
 		
+		kinoErstellenButton.addStyleName("speichernButton");
+		
+
+		
 		/*Zusammen bauen der Widgets*/
 		
 		
