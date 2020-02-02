@@ -101,13 +101,13 @@ public class AnwenderMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param anwender
+	 *            enthält Namen den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Anwender anwender) {
+	public boolean nameVerfuegbar(Anwender anwender) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -184,7 +184,7 @@ public class AnwenderMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE anwender SET " + "aName= '" + anwender.getName() + "', " + "gMail= '"
-					+ anwender.getGmail()+ "' WHERE aId=" + anwender.getId());
+					+ anwender.getGmail() + "' WHERE aId=" + anwender.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

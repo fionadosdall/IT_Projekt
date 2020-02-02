@@ -29,7 +29,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
  *
  */
 public class SpielzeitErstellenForm extends PopupPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -140,7 +140,7 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 		untenPanel.add(abbrechenButton);
 		if (spielzeit != null) {
-			
+
 			untenPanel.add(aenderungSpeichernButton);
 
 		} else {
@@ -190,7 +190,8 @@ public class SpielzeitErstellenForm extends PopupPanel {
 
 			if (spielzeit == null) {
 
-				kinoplaner.erstellenSpielzeit(formatiert, formatiert, aktuellerAnwender, new SpielzeitErstellenCallback());
+				kinoplaner.erstellenSpielzeit(formatiert, formatiert, aktuellerAnwender,
+						new SpielzeitErstellenCallback());
 			} else {
 				spielzeit.setDatetoString(formatiert);
 				kinoplaner.speichern(spielzeit, new SpeichernCallback());
@@ -199,9 +200,9 @@ public class SpielzeitErstellenForm extends PopupPanel {
 		}
 
 	}
-	
-	private class AbbrechenClickHandler implements ClickHandler{
-		
+
+	private class AbbrechenClickHandler implements ClickHandler {
+
 		public void onClick(ClickEvent event) {
 			SpielzeitErstellenForm.this.hide();
 		}
@@ -210,8 +211,10 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	/* Callback */
 
 	/**
-	 * Callback wird durch SpeichernClickHandler aufgerufen. Neue Spielzeit wird gespeichert.
-	 * @author 
+	 * Callback wird durch SpeichernClickHandler aufgerufen. Neue Spielzeit wird
+	 * gespeichert.
+	 * 
+	 * @author
 	 *
 	 */
 	private class SpeichernCallback implements AsyncCallback<Spielzeit> {
@@ -238,8 +241,9 @@ public class SpielzeitErstellenForm extends PopupPanel {
 	}
 
 	/**
-	 * Callback wird durch SpeichernClickHandler aufgerufen. 
-	 * @author 
+	 * Callback wird durch SpeichernClickHandler aufgerufen.
+	 * 
+	 * @author
 	 *
 	 */
 	private class SpielzeitErstellenCallback implements AsyncCallback<Spielzeit> {

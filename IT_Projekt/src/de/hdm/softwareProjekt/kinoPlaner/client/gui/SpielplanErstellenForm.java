@@ -54,7 +54,7 @@ public class SpielplanErstellenForm extends VerticalPanel {
 	private Label vorstellung = new Label("Vorstellung hinzufügen");
 	private Label vorstellungen = new Label("Spielplan-Vorstellungen");
 	private Label kinoLabel = new Label("Kino:");
-	
+
 	private Label beschreibung = new Label("Drücke auf - um die Vorstellung wieder zu entfernen");
 
 	private TextBox spielplannameTextBox = new TextBox();
@@ -173,11 +173,11 @@ public class SpielplanErstellenForm extends VerticalPanel {
 		// inhaltUntenLinksPanel.add(vorstellungenCellTable);
 
 		administrationPanel.add(hinzufuegenButton);
-		
+
 		// administrationPanel.add(entfernenButton);
 		this.add(administrationPanel);
 		hinzufuegenButton.addClickHandler(new SpielplaneintragHinzufuegenClickHandler());
-		
+
 		inhaltUntenPanel.add(beschreibung);
 		inhaltUntenPanel.add(vorstellungenCellTable);
 		this.add(inhaltUntenPanel);

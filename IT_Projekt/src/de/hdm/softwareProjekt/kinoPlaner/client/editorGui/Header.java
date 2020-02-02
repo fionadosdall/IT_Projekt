@@ -30,12 +30,12 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  * angezeigt. Der Header stellt dem Benutzer folgende Funktionen zur Verfügung:
  * Volltextsuche, Home-Button im zurück zum Dashboard (Startseite) zu gelangen,
  * Wechsel zwischen den beiden Clients Editor und Admin, User-Button um zu
- * dessen Profil zu gelangen. Außerdem kann der Nutzer im Header ein Burger-Menü aufrufen, um schnell 
- * zu diversen Aktionen zu gelangen.
+ * dessen Profil zu gelangen. Außerdem kann der Nutzer im Header ein Burger-Menü
+ * aufrufen, um schnell zu diversen Aktionen zu gelangen.
  *
  */
 public class Header extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -44,7 +44,7 @@ public class Header extends FlowPanel {
 	private FlowPanel headerRechts = new FlowPanel();
 	private FlowPanel headerLogo = new FlowPanel();
 	private FlowPanel headerRechtsEins = new FlowPanel();
-	private FlowPanel headerRechtsZwei = new FlowPanel();		
+	private FlowPanel headerRechtsZwei = new FlowPanel();
 	private FlowPanel headerRechtsElementSuchen = new FlowPanel();
 	private FlowPanel headerRechtsElementLupe = new FlowPanel();
 	private FlowPanel headerRechtsElementHome = new FlowPanel();
@@ -77,7 +77,6 @@ public class Header extends FlowPanel {
 		headerLinks.addStyleName("headerLinks");
 		headerLogo.addStyleName("headerLogo");
 		headerLogoInput.addStyleName("headerLogoInput");
-		
 
 		headerRechts.addStyleName("headerRechts");
 		headerRechtsEins.addStyleName("headerRechtsEins");
@@ -102,25 +101,23 @@ public class Header extends FlowPanel {
 
 		this.add(headerLinks);
 		this.add(headerRechts);
-		
+
 		headerRechts.add(headerRechtsEins);
 		headerRechts.add(headerRechtsZwei);
 
 		headerLinks.add(headerLogo);
 		headerLogo.add(headerLogoInput);
-		
 
 		headerRechtsEins.add(headerRechtsElementHome);
 		headerRechtsEins.add(headerRechtsElementUser);
 		headerRechtsEins.add(headerRechtsElementSuchen);
-		
+
 		headerRechtsElementHome.add(homeAnchor);
 		headerRechtsElementUser.add(userButton);
 		headerRechtsElementSuchen.add(suchenTextBox);
 		headerRechtsElementSuchen.add(headerImage);
 		headerImage.add(suchenImage);
 
-		
 		headerRechtsZwei.add(burgerMenue);
 
 		// Click-Handler
@@ -133,13 +130,13 @@ public class Header extends FlowPanel {
 		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new GetGruppenByAnwenderCallback());
 		kinoplaner.getUmfragenByAnwender(aktuellerAnwender, new GetUmfragenByAnwenderCallback());
 		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
-		
+
 		headerLogoInput.addClickHandler(new ClickHandler() {
-			
+
 			public void onClick(ClickEvent event) {
 				headerLogoInput.setHref(GWT.getHostPageBaseURL() + "AdminClient.html");
 			}
-			
+
 		});
 
 	}

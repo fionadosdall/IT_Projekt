@@ -107,13 +107,14 @@ public class KinoMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param kino
+	 *            Objekt, das den Namen enthält das das zu erstellende Objekt tragen
+	 *            soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Kino kino) {
+	public boolean nameVerfuegbar(Kino kino) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -154,8 +155,7 @@ public class KinoMapper {
 
 			}
 			PreparedStatement stmt2 = con.prepareStatement("INSERT INTO kino (kId, kName, plz, stadt, strasse,"
-					+ " hausnummer, kino_kinokette_Id,"
-					+ " kino_anwender_Id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+					+ " hausnummer, kino_kinokette_Id," + " kino_anwender_Id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 
 			stmt2.setInt(1, kino.getId());
 			stmt2.setString(2, kino.getName());
@@ -308,7 +308,7 @@ public class KinoMapper {
 	 * besondere Rechte in Bezug auf welche Kinos hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
+	 * @param anwenderOwner
 	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Kino-Objekte
 	 *            übereinstimmen soll.
 	 * @return Alle Kino-Objekte, die die Id des vorgegebenen Anwenders als

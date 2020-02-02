@@ -43,7 +43,6 @@ public class AdminEntry implements EntryPoint {
 	private Label loginLabel = new Label(
 			"Bitte mit Deinem Google-Konto anmelden, um auf den Kinoplaner zuzugreifen zu können.");
 
-
 	public void onModuleLoad() {
 
 		loginService = ClientsideSettings.getLoginService();
@@ -64,7 +63,6 @@ public class AdminEntry implements EntryPoint {
 		@Override
 		public void onSuccess(Anwender result) {
 			// TODO Auto-generated method stub
-	
 
 			AktuellerAnwender.setAnwender(result);
 
@@ -77,7 +75,7 @@ public class AdminEntry implements EntryPoint {
 					RootPanel.get("details").add(new RegistrierungsForm(kinoplanerEditorLink, result));
 
 				} else {
-					header  = new Header();
+					header = new Header();
 					RootPanel.get("header").add(header);
 					RootPanel.get("details").add(home);
 					RootPanel.get("footer").add(footer);

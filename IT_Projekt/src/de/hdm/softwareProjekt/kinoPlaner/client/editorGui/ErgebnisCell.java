@@ -16,14 +16,13 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
 /**
- * Klasse zur Darstellung von Ergebnis-Objekten für den Navigator
- * Alle Klassen die auf Cell enden sind abgewandelte bzw. veränderte
- * Abstract Cells
+ * Klasse zur Darstellung von Ergebnis-Objekten für den Navigator Alle Klassen
+ * die auf Cell enden sind abgewandelte bzw. veränderte Abstract Cells
  *
  */
 
 public class ErgebnisCell extends AbstractCell<Umfrage> {
-	
+
 	SafeHtmlBuilder shb;
 
 	@Override
@@ -31,15 +30,15 @@ public class ErgebnisCell extends AbstractCell<Umfrage> {
 		if (value == null) {
 			return;
 		}
-		
+
 		shb = sb;
-		
+
 		KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 		shb.appendHtmlConstant("<div>");
 		shb.appendHtmlConstant("Umfrage: ");
 		shb.appendEscaped(value.getName());
-		
+
 		kinoplaner.getGruppeById(value.getGruppenId(), new AsyncCallback<Gruppe>() {
 
 			@Override
@@ -47,8 +46,7 @@ public class ErgebnisCell extends AbstractCell<Umfrage> {
 				shb.appendHtmlConstant(" Gruppe: ");
 				shb.appendEscaped(result.getName());
 				shb.appendHtmlConstant("</div>");
-				
-				
+
 			}
 
 			@Override
@@ -68,9 +66,9 @@ public class ErgebnisCell extends AbstractCell<Umfrage> {
 	@Override
 	public void onBrowserEvent(Context context, Element parent, Umfrage value, NativeEvent event,
 			ValueUpdater<Umfrage> valueUpdater) {
-		// Handle the click event.
+		
 		if ("click".equals(event.getType())) {
-			// Ignore clicks that occur outside of the outermost element.
+		
 			EventTarget eventTarget = event.getEventTarget();
 			if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
 				doAction(value, valueUpdater);

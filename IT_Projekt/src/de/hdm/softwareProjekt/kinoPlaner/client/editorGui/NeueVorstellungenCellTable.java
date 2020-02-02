@@ -151,7 +151,7 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 	}
 
 	public void onLoad() {
-		
+
 		kinoplaner.anzeigenVonZeitgueltigenVorstellungen(new VorstellungCallback());
 
 		if (umfrage != null) {
@@ -261,8 +261,6 @@ public class NeueVorstellungenCellTable extends ScrollPanel {
 				return o1.getStadt().compareTo(o2.getStadt());
 			}
 		});
-
-
 
 		vorstellungenCellTable.addColumn(buttonColumn, "Auswählen");
 		vorstellungenCellTable.addColumn(filmColumn, "Film");

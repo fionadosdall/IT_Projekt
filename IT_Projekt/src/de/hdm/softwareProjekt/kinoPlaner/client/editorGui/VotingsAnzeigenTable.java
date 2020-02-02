@@ -29,8 +29,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielzeit;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
-public class VotingsAnzeigenTable extends ScrollPanel{
-	
+public class VotingsAnzeigenTable extends ScrollPanel {
+
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 	private Umfrage umfrage;
@@ -129,16 +129,14 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 	private ListDataProvider<UmfrageoptionInfo> dataProvider;
 	private List<UmfrageoptionInfo> list;
 
-	/** 
-	 * onLoad():
-	 * Beschreibt was passiert wenn das Widget der Seite hinzugefügt wird
+	/**
+	 * onLoad(): Beschreibt was passiert wenn das Widget der Seite hinzugefügt wird
 	 */
 	@Override
 	public void onLoad() {
-		
+
 		this.setHeight("380px");
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
-		
 
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
@@ -174,14 +172,14 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 
 			@Override
 			public String getValue(UmfrageoptionInfo object) {
-				
-				return ""+object.getErgebnis();
+
+				return "" + object.getErgebnis();
 			}
 
 		};
 
 		umfrageoptionCellTable.addColumn(voteColumn, "Voting Stand");
-		
+
 		voteColumn.setSortable(true);
 
 		sortHandler.setComparator(voteColumn, new Comparator<UmfrageoptionInfo>() {
@@ -203,7 +201,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(filmColumn, "Film");
-		
+
 		filmColumn.setSortable(true);
 
 		sortHandler.setComparator(filmColumn, new Comparator<UmfrageoptionInfo>() {
@@ -221,9 +219,9 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 
 			}
 		};
-		
+
 		umfrageoptionCellTable.addColumn(kinoColumn, "Kino");
-		
+
 		kinoColumn.setSortable(true);
 
 		sortHandler.setComparator(kinoColumn, new Comparator<UmfrageoptionInfo>() {
@@ -243,7 +241,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(spielzeitColumn, "Spielzeit");
-		
+
 		spielzeitColumn.setSortable(true);
 
 		sortHandler.setComparator(spielzeitColumn, new Comparator<UmfrageoptionInfo>() {
@@ -263,7 +261,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		};
 
 		umfrageoptionCellTable.addColumn(stadtColumn, "Ort");
-		
+
 		stadtColumn.setSortable(true);
 
 		sortHandler.setComparator(stadtColumn, new Comparator<UmfrageoptionInfo>() {
@@ -272,13 +270,11 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 			}
 		});
 
-		
-
 	}
 
 	/*
-	 * Private Klasse um alle Umfrageoptionen-Instanzen, welche zu der Umfrage gehören
-	 * aus dem System bekommen
+	 * Private Klasse um alle Umfrageoptionen-Instanzen, welche zu der Umfrage
+	 * gehören aus dem System bekommen
 	 *
 	 */
 	private class GetUmfrageoptionenByUmfrageCallback implements AsyncCallback<ArrayList<Umfrageoption>> {
@@ -305,7 +301,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 
 					list.add(uI);
 					umfraoptionArray.add(uI);
-					
+
 					kinoplaner.berechneAuswahlenByUmfrageoption(u, new AuswahlCallback(uI));
 					kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(uI));
 					kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(uI));
@@ -317,10 +313,10 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
-	
+
 	/**
-	 * privarte Klasse um alle Film-Instanzen, welche zur Umfrageoption gehören, 
-	 * aus dem System zu bekommen
+	 * privarte Klasse um alle Film-Instanzen, welche zur Umfrageoption gehören, aus
+	 * dem System zu bekommen
 	 * 
 	 *
 	 */
@@ -350,7 +346,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
-	
+
 	/*
 	 * Private Klasse um alle Kino-instanzen aus dem System zu bekommen
 	 */
@@ -382,8 +378,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
-	
-	
+
 	/***
 	 * private Klasse um alle Spielzeit-Instanzen aus dem System zu bekommen
 	 * 
@@ -419,7 +414,7 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		}
 
 	}
-	
+
 	/**
 	 * private Klasse um alle Auswahl-Instanzen aus dem System zu bekommen
 	 * 
@@ -446,16 +441,11 @@ public class VotingsAnzeigenTable extends ScrollPanel{
 		public void onSuccess(Integer result) {
 
 			info.setErgebnis(result);
-			
-			dataProvider.refresh();
 
-			}
+			dataProvider.refresh();
 
 		}
 
 	}
 
-
-
-
-
+}

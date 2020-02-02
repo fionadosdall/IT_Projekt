@@ -64,9 +64,9 @@ public class Umfrage extends BesitzerBusinessObjekt {
 		else
 			return 0;
 	}
-	
+
 	public int isOpenToTinyint() {
-		if (isOpen== true)
+		if (isOpen == true)
 			return 1;
 		else
 			return 0;

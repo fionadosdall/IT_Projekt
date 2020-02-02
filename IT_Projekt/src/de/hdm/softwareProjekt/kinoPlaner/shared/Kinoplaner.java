@@ -33,7 +33,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * </p>
  */
 @RemoteServiceRelativePath("administration")
-public interface Kinoplaner extends RemoteService {  
+public interface Kinoplaner extends RemoteService {
 
 	/**
 	 * <p>
@@ -46,7 +46,7 @@ public interface Kinoplaner extends RemoteService {
 	 * kommunizieren kann.
 	 * </p>
 	 * 
-	 * @see #KinoplanerImpl()
+	 * @see KinoplanerImpl
 	 * @throws IllegalArgumentException
 	 */
 	public void init() throws IllegalArgumentException;
@@ -57,8 +57,6 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Nickname
 	 * @param gmail
@@ -73,12 +71,10 @@ public interface Kinoplaner extends RemoteService {
 	 * Eine neue Gruppe wird angelegt und anschließend in der Datenbank gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besiterId
-	 *            Kennung des Besitzer
+	 * @param besitzer
+	 *            Besitzer
 	 * @return erstelltes Gruppe Objekt
 	 * @throws IllegalArgumentException
 	 */
@@ -91,11 +87,9 @@ public interface Kinoplaner extends RemoteService {
 	 * Hierbei mit der Verknüpfung zur Kinokette.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besiterId
+	 * @param besitzer
 	 *            Kennung des Besitzer
 	 * @param plz
 	 *            Postleitzahl
@@ -105,7 +99,7 @@ public interface Kinoplaner extends RemoteService {
 	 *            Straße
 	 * @param hausnummer
 	 *            Hausnummer
-	 * @param kinoketteId
+	 * @param kinokettenId
 	 *            Kennung der Kinokette
 	 * @return erstelltes Kino Objekt
 	 * @throws IllegalArgumentException
@@ -119,11 +113,9 @@ public interface Kinoplaner extends RemoteService {
 	 * Hierbei ohne die Verknüpfung zur Kinokette.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besiterId
+	 * @param besitzer
 	 *            Kennung des Besitzer
 	 * @param plz
 	 *            Postleitzahl
@@ -145,11 +137,9 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besiterId
+	 * @param besitzer
 	 *            Kennung des Besitzer
 	 * @param sitz
 	 *            Sitz des Unternehmens
@@ -167,11 +157,9 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besiterId
+	 * @param besitzer
 	 *            Kennung des Besitzer
 	 * @param kinoId
 	 *            Kennung des Kinos
@@ -187,10 +175,6 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
-	 * @param name
-	 *            Objektname
 	 * @param spielplanId
 	 *            Kennung des Spielplans
 	 * @param spielzeitId
@@ -209,13 +193,11 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besitzerId
+	 * @param besitzer
 	 *            Kennung des Besitzers
-	 * @param gruppeId
+	 * @param gruppenId
 	 *            Kennung der Gruppe
 	 * @return erstelltes Umfrage Objekt
 	 * @throws IllegalArgumentException
@@ -229,8 +211,6 @@ public interface Kinoplaner extends RemoteService {
 	 * gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
 	 * @param umfrageId
@@ -248,11 +228,9 @@ public interface Kinoplaner extends RemoteService {
 	 * Ein neuer Film wird angelegt und anschließend in der Datenbank gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besitzerId
+	 * @param besitzer
 	 *            Kennung des besitzer
 	 * @param beschreibung
 	 *            Beschreibung des Films
@@ -269,11 +247,9 @@ public interface Kinoplaner extends RemoteService {
 	 * Ein Spielzeit wird angelegt und anschließend in der Datenbank gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besitzerId
+	 * @param besitzer
 	 *            Kennung des besitzer
 	 * @param zeit
 	 *            Startzeitpunkt
@@ -288,11 +264,9 @@ public interface Kinoplaner extends RemoteService {
 	 * und anschließend die Auswahl in der Datenbank gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Kennung
 	 * @param name
 	 *            Objektname
-	 * @param besitzerId
+	 * @param besitzer
 	 *            Kennung des besitzer
 	 * @param voting
 	 *            Voting
@@ -552,8 +526,8 @@ public interface Kinoplaner extends RemoteService {
 	 * Loeschen einer Auswahl.
 	 * </p>
 	 * 
-	 * @param spielzeit
-	 *            Spielzeitobjekt
+	 * @param auswahl
+	 *            Auswahlobjekt
 	 * @throws IllegalArgumentException
 	 */
 	public void loeschen(Auswahl auswahl, Anwender anwender) throws IllegalArgumentException;
@@ -696,7 +670,7 @@ public interface Kinoplaner extends RemoteService {
 	 * Rückgabe aller Kinos die zu einer Kinokette gehören.
 	 * </p>
 	 * 
-	 * @param akinoketteId
+	 * @param kinoketteId
 	 *            Kennung der Kinokette
 	 * @return ArrayList der gefundenen Kinos
 	 * @throws IllegalArgumentException
@@ -924,7 +898,7 @@ public interface Kinoplaner extends RemoteService {
 	 * @return ArrayList der gefilterten Vorstellungen
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet, Kinokette kino)
+	public ArrayList<Vorstellung> filterResultVorstellungenByKinokette(ArrayList<Vorstellung> resultSet, Kinokette kinokette)
 			throws IllegalArgumentException;
 
 	/**
@@ -1126,11 +1100,9 @@ public interface Kinoplaner extends RemoteService {
 	 * Datenbank gespeichert.
 	 * </p>
 	 * 
-	 * @param id
-	 *            Id des Spielplans
 	 * @param name
 	 *            Name
-	 * @param besitzerId
+	 * @param besitzer
 	 *            Kennung des Besitzers
 	 * @param kinoketteId
 	 *            Kennung der Kinokette für die der Spielplan erstellt wird

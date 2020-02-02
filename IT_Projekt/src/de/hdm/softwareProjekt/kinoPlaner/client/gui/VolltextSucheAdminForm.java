@@ -25,17 +25,15 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
 
-public class VolltextSucheAdminForm extends FlowPanel{
-	
+public class VolltextSucheAdminForm extends FlowPanel {
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
-	
+
 	private String suchText;
 	private ArrayList<Kinokette> kinoketten;
 	private ArrayList<Kino> kinos;
 	private ArrayList<Spielplan> spielplaene;
-	
-	
-	
+
 	KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 	private FlowPanel detailsoben = new FlowPanel();
@@ -58,20 +56,19 @@ public class VolltextSucheAdminForm extends FlowPanel{
 	private Grid kinokettenGrid = new Grid(3, 2);
 	private Grid kinosGrid = new Grid(3, 2);
 	private Grid spielplaeneGrid = new Grid(3, 2);
-	
+
 	private static Boolean edit;
 
 	public VolltextSucheAdminForm(String text) {
 		this.suchText = text;
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
+
 		/* Vergeben der Style */
-		
-		
+
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 
@@ -92,7 +89,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		spielplaeneLabel.addStyleName("detailsboxLabels");
 
 		/* Zusammensetzen der Widgets */
-		
+
 		this.add(detailsoben);
 		this.add(detailsunten);
 
@@ -113,26 +110,19 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		detailsUntenBox.add(spielplaeneLabel);
 		detailsUntenBox.add(detailsBoxUntenMitte);
 		detailsBoxUntenMitte.add(spielplaeneGrid);
-		
-		
+
 		kinoplaner.volltextSucheKinoketten(suchText, aktuellerAnwender, new VolltextSucheKinokettenCallback());
-		
 
 		kinoplaner.volltextSucheKinos(suchText, aktuellerAnwender, new VolltextSucheKinoCallback());
 
-
 		kinoplaner.volltextSucheSpielplaene(suchText, aktuellerAnwender, new VolltextSucheSpielplaeneCallback());
 
-
-		
 	}
-	
+
 	/*** CLickHandler ***/
-	
-	
+
 	private class KinoketteBearbeitenClickHandler implements DoubleClickHandler {
 
-		
 		private KinoketteErstellenForm bearbeiten;
 		private Kinokette kk;
 
@@ -140,22 +130,21 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		public void onDoubleClick(DoubleClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			
-			
+
 			bearbeiten = new KinoketteErstellenForm(kk);
 			RootPanel.get("details").add(bearbeiten);
-		
+
 		}
-		
+
 		public void setKinokette(Kinokette kk) {
 			this.kk = kk;
 
 		}
-		
+
 	}
-	
+
 	private class KinoketteErstellenClickHandler implements ClickHandler {
-		
+
 		private KinoketteErstellenForm erstellen;
 
 		@Override
@@ -165,11 +154,11 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			erstellen = new KinoketteErstellenForm();
 			RootPanel.get("details").add(erstellen);
 		}
-		
+
 	}
-	
+
 	private class KinoBearbeitenClickHandler implements DoubleClickHandler {
-		
+
 		private KinoErstellenForm bearbeiten;
 		private Kino k;
 
@@ -177,7 +166,7 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		public void onDoubleClick(DoubleClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			
+
 			bearbeiten = new KinoErstellenForm(k);
 			RootPanel.get("details").add(bearbeiten);
 		}
@@ -186,14 +175,13 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			this.k = k;
 
 		}
-		
+
 	}
-	
+
 	private class KinoErstellenClickHandler implements ClickHandler {
 
 		private KinoErstellenForm erstellen;
-		
-		
+
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
@@ -201,10 +189,9 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			erstellen = new KinoErstellenForm();
 			RootPanel.get("details").add(erstellen);
 		}
-		
+
 	}
-	
-	
+
 	private class SpielplanBearbeitenClickHandler implements DoubleClickHandler {
 
 		private SpielplanErstellenForm bearbeiten;
@@ -214,20 +201,20 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		public void onDoubleClick(DoubleClickEvent event) {
 			// TODO Auto-generated method stub
 			RootPanel.get("details").clear();
-			
+
 			bearbeiten = new SpielplanErstellenForm(sp);
 			RootPanel.get("details").add(bearbeiten);
 		}
-		
+
 		public void setSpielplan(Spielplan sp) {
 			this.sp = sp;
 
 		}
-		
+
 	}
-	
+
 	private class SpielplanErstellenClickHandler implements ClickHandler {
-		
+
 		private SpielplanErstellenForm erstellen;
 
 		@Override
@@ -236,15 +223,13 @@ public class VolltextSucheAdminForm extends FlowPanel{
 			RootPanel.get("details").clear();
 			erstellen = new SpielplanErstellenForm();
 			RootPanel.get("details").add(erstellen);
-			
+
 		}
-		
+
 	}
-	
-	
+
 	/*** Callbacks ***/
-	
-	
+
 	private class VolltextSucheKinokettenCallback implements AsyncCallback<ArrayList<Kinokette>> {
 
 		@Override
@@ -347,6 +332,5 @@ public class VolltextSucheAdminForm extends FlowPanel{
 		}
 
 	}
-	
 
 }

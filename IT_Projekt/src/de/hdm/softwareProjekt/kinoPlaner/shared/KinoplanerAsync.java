@@ -1,8 +1,6 @@
 package de.hdm.softwareProjekt.kinoPlaner.shared;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -25,7 +23,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
  * erstellt und gepflegt.
  */
 
-public interface KinoplanerAsync { 
+public interface KinoplanerAsync {
 
 	public void init(AsyncCallback<Void> callback) throws IllegalArgumentException;
 

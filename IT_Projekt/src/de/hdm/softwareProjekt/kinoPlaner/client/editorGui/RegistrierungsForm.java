@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
-
 import de.hdm.softwareProjekt.kinoPlaner.client.ClientsideSettings;
 import de.hdm.softwareProjekt.kinoPlaner.client.EditorEntry.AktuellerAnwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
@@ -54,7 +53,7 @@ public class RegistrierungsForm extends FlowPanel {
 		detailsbox.addStyleName("detailsbox");
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
 		detailsboxsButtons.addStyleName("detailsboxspeichern");
-		
+
 		title.addStyleName("title");
 		nameLabel.addStyleName("detailsboxLabels");
 		nameTextbox.addStyleName("nameTextBox");
@@ -91,13 +90,13 @@ public class RegistrierungsForm extends FlowPanel {
 		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
-			if(nameTextbox.getText().equals("")) {
+			if (nameTextbox.getText().equals("")) {
 				Window.alert("Bitte Namen eingeben!");
-			}else {
-			String name = nameTextbox.getText();
-			anwender.setName(name);
+			} else {
+				String name = nameTextbox.getText();
+				anwender.setName(name);
 
-			kinoplaner.speichern(anwender, new ErstelleAnwenderCallback());
+				kinoplaner.speichern(anwender, new ErstelleAnwenderCallback());
 			}
 		}
 
@@ -126,22 +125,19 @@ public class RegistrierungsForm extends FlowPanel {
 
 		@Override
 		public void onSuccess(Anwender result) {
-			
-			anwender = result;
-			
-			if(result==null) {
-				
-				Window.alert("Name bereits verwendet!");
-				
-			} else {
-				
-			AktuellerAnwender.setAnwender(result);
-		
-		
-			Window.open(destinationUrl.getHref(), "_self", "");
-		
 
-			
+			anwender = result;
+
+			if (result == null) {
+
+				Window.alert("Name bereits verwendet!");
+
+			} else {
+
+				AktuellerAnwender.setAnwender(result);
+
+				Window.open(destinationUrl.getHref(), "_self", "");
+
 			}
 
 		}

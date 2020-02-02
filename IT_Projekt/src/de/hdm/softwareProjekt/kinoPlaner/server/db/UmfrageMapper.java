@@ -108,13 +108,14 @@ public class UmfrageMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param umfrage
+	 *            Umfrage die den Namen enthält den das zu erstellende Objekt tragen
+	 *            soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Umfrage umfrage) {
+	public boolean nameVerfuegbar(Umfrage umfrage) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -310,7 +311,7 @@ public class UmfrageMapper {
 	 * besondere Rechte in Bezug auf welche Umfragen hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
+	 * @param anwenderOwner
 	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Umfrage-Objekte
 	 *            übereinstimmen soll.
 	 * @return Alle Umfrage-Objekte, die die Id des vorgegebenen Anwenders als
@@ -461,8 +462,8 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE umfrage SET " + "umfrage_anwender_Id=" + anwender.getId() + ""
-					+ " WHERE uId=" + umfrage.getId());
+			stmt.executeUpdate("UPDATE umfrage SET " + "umfrage_anwender_Id=" + anwender.getId() + "" + " WHERE uId="
+					+ umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
@@ -483,8 +484,7 @@ public class UmfrageMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate(
-					"UPDATE umfrage SET " + "umfrage_anwender_Id=" +0+" WHERE uId=" + umfrage.getId());
+			stmt.executeUpdate("UPDATE umfrage SET " + "umfrage_anwender_Id=" + 0 + " WHERE uId=" + umfrage.getId());
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}

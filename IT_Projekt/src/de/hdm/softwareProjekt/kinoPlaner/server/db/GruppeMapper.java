@@ -101,13 +101,13 @@ public class GruppeMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param gruppe
+	 *            Gruppe die den Namen des zu erstellende Objekt tragen soll enthält
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Gruppe gruppe) {
+	public boolean nameVerfuegbar(Gruppe gruppe) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -280,13 +280,13 @@ public class GruppeMapper {
 	}
 
 	/**
-	 * Suche nach einer Gruppe mit vorgegebener Gruppen-Id
+	 * Suche nach einer Gruppe mit vorgegebenem Gruppenname
 	 * 
-	 * @param id
+	 * @param name
 	 *            zugehörig zu einer Gruppe, nach welcher gesucht werden soll, also
 	 *            der Primärschlüssel in der Datenbank.
-	 * @return Das Gruppen-Objekt, das mit seiner Gruppen-Id der übergebenen Id
-	 *         entspricht. Falls keine Gruppe zur übergebenen Id gefunden wurde,
+	 * @return Das Gruppen-Objekt, das mit seinem Gruppennamen dem übergebenen namen
+	 *         entspricht. Falls keine Gruppe zum übergebenen namen gefunden wurde,
 	 *         wird null zurückgegeben.
 	 */
 	public Gruppe findByName(String name) {
@@ -421,7 +421,7 @@ public class GruppeMapper {
 	 * besondere Rechte in Bezug auf welche Filme hat. Besondere Rechte können zum
 	 * Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
+	 * @param anwenderOwner
 	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Gruppen-Objekte
 	 *            übereinstimmen soll.
 	 * @return Alle Gruppen-Objekte, die die Id des vorgegebenen Anwenders als

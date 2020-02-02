@@ -26,9 +26,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  *
  */
 public class UmfrageAnzeigenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
-	
+
 	private Umfrage umfrage = null;
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -41,8 +41,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 	private FlowPanel detailsBoxUmfrage = new FlowPanel();
-	private FlowPanel detailsboxlöschen = new FlowPanel();
-	private FlowPanel löschenImage = new FlowPanel();
+	private FlowPanel detailsboxloeschen = new FlowPanel();
+	private FlowPanel loeschenImage = new FlowPanel();
 
 	private Label filmLabel = new Label("Film");
 	private Label spielzeitLabel = new Label("Spielzeit");
@@ -83,7 +83,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
 		detailsBoxUmfrage.addStyleName("detailsuntenBoxen");
-		detailsboxlöschen.addStyleName("detailsboxlöschen");
+		detailsboxloeschen.addStyleName("detailsboxlöschen");
 		filmLabel.setStyleName("detailsboxLabels");
 		spielzeitLabel.setStyleName("detailsboxLabels");
 		kinoLabel.setStyleName("detailsboxLabels");
@@ -95,8 +95,8 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		speichern.setStyleName("");
 		votingsAnzeigen.setStyleName("");
 		bearbeiten.setStyleName("");
-		löschenImage.addStyleName("löschenImage");
-		löschenImage.add(papierkorb);
+		loeschenImage.addStyleName("löschenImage");
+		loeschenImage.add(papierkorb);
 		papierkorb.addClickHandler(new UmfrageLoeschenClickHandler());
 
 		title.addStyleName("title");
@@ -110,7 +110,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		detailsoben.add(title);
 		title.setText("Umfrage: " + umfrage.getName());
 		if (umfrage.getBesitzerId() == AktuellerAnwender.getAnwender().getId())
-			detailsunten.add(detailsboxlöschen);
+			detailsunten.add(detailsboxloeschen);
 
 		detailsunten.add(detailsBoxUmfrage);
 		detailsunten.add(detailsboxInhalt);
@@ -120,7 +120,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 		detailsboxInhalt.add(votingsAnzeigen);
 		if (umfrage.getBesitzerId() == AktuellerAnwender.getAnwender().getId())
 			detailsboxInhalt.add(bearbeiten);
-		detailsboxlöschen.add(löschenImage);
+		detailsboxloeschen.add(loeschenImage);
 
 		speichern.addClickHandler(new SpeichernClickHandler());
 		votingsAnzeigen.addClickHandler(new VotingsAnzeigenClickHandler());
@@ -222,7 +222,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	}
 
 	/***********************************************
-	 * CLICKHANDLER 
+	 * CLICKHANDLER
 	 * 
 	 *
 	 **********************************************/
@@ -233,7 +233,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	 * Dialogbox bittet den Nutzer darum, erneut zu bestätigen, dass er die Umfrage
 	 * löschen möchte.
 	 * 
-	 * @author 
+	 * @author
 	 *
 	 */
 
@@ -332,7 +332,7 @@ public class UmfrageAnzeigenForm extends FlowPanel {
 	 * 
 	 *
 	 */
-	
+
 	/*
 	 * private Klasse um eine Umfrage-Instanz zu löschen
 	 */

@@ -29,9 +29,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  *
  */
 public class VolltextSucheForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
-	
+
 	private String suchText;
 	private ArrayList<Gruppe> gruppen;
 	private ArrayList<Umfrage> umfragen;
@@ -257,11 +257,11 @@ public class VolltextSucheForm extends FlowPanel {
 	 *********************************/
 
 	/**
-	 * Callback für Umfragenergebnisse, die durch die Volltextsuche gefunden wurden. Result
-	 * der Suche = alle gefundenen Umfragenergebnisse in einer ArrayList. Ergebnisse werden in
-	 * einem Grid dargestellt. Die Einträge im Grid reagieren auf Doppelklicks. Per
-	 * Doppelklick gelangt der Nutzer in die Detailsansicht des jeweiligen Elements
-	 * (hier das Umfrageergebnis).
+	 * Callback für Umfragenergebnisse, die durch die Volltextsuche gefunden wurden.
+	 * Result der Suche = alle gefundenen Umfragenergebnisse in einer ArrayList.
+	 * Ergebnisse werden in einem Grid dargestellt. Die Einträge im Grid reagieren
+	 * auf Doppelklicks. Per Doppelklick gelangt der Nutzer in die Detailsansicht
+	 * des jeweiligen Elements (hier das Umfrageergebnis).
 	 */
 	private class VolltextSucheErgebnisseCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
@@ -303,7 +303,7 @@ public class VolltextSucheForm extends FlowPanel {
 	 * Doppelklick gelangt der Nutzer in die Detailsansicht des jeweiligen Elements
 	 * (hier die Umfrage).
 	 */
-	
+
 	private class VolltextSucheUmfrageCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
 		@Override
@@ -342,8 +342,8 @@ public class VolltextSucheForm extends FlowPanel {
 	}
 
 	/**
-	 * Callback für Gruppen, die durch die Volltextsuche gefunden wurden. Result
-	 * der Suche = alle gefundenen Gruppen in einer ArrayList. Ergebnisse werden in
+	 * Callback für Gruppen, die durch die Volltextsuche gefunden wurden. Result der
+	 * Suche = alle gefundenen Gruppen in einer ArrayList. Ergebnisse werden in
 	 * einem Grid dargestellt. Die Einträge im Grid reagieren auf Doppelklicks. Per
 	 * Doppelklick gelangt der Nutzer in die Detailsansicht des jeweiligen Elements
 	 * (hier die Gruppe).

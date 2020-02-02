@@ -102,18 +102,17 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		this.vorstellungList = vorstellungList;
 	}
 
-
 	/*
-	 * /**
-	 * Das zugrundeliegende Objekt der SpielplanVorstellungenTable sind Vorstellungen. Jedoch
-	 * speichert das gewöhnliche BusinessObject Vorstellung seine Attribute nicht in
-	 * Klarnamen. Aufgrund dessen erstellen wir hier für die CellTable das Objekt
-	 * VorstellungInfo. Dort werden die Attribute filmName und spielzeit und
-	 * stadt in Klarnamen gespeichert. Inklusive Getter und Setter.
+	 * /** Das zugrundeliegende Objekt der SpielplanVorstellungenTable sind
+	 * Vorstellungen. Jedoch speichert das gewöhnliche BusinessObject Vorstellung
+	 * seine Attribute nicht in Klarnamen. Aufgrund dessen erstellen wir hier für
+	 * die CellTable das Objekt VorstellungInfo. Dort werden die Attribute filmName
+	 * und spielzeit und stadt in Klarnamen gespeichert. Inklusive Getter und
+	 * Setter.
 	 * 
 	 *
 	 */
-	 
+
 	private class VorstellungInfo {
 
 		Vorstellung vorstellung;
@@ -155,9 +154,10 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 	public void setVorstellungArray(ArrayList<Vorstellung> vorstellungenInfo) {
 		this.neueVorstellungen = vorstellungenInfo;
 	}
-/*******************************************************
- * OnLoad()-Methode
- **********************************/
+
+	/*******************************************************
+	 * OnLoad()-Methode
+	 **********************************/
 	@Override
 	public void onLoad() {
 
@@ -185,7 +185,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 			}
 
 		};
-		
+
 		/**
 		 * Nun muss die neu erstellte Spalte der VorstellungTable hinzugefügt werden.
 		 * Unter Angabe der Bezeichnung der Spalte und ihrer Überschrift. Hinweis: In
@@ -205,8 +205,9 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 
 			/**
 			 * FieldUpdater (Interface) fordert, dass Methode update() überschrieben wird
-			 * (Annotation Override). Methode update() beschreibt was gemacht werden soll, wenn der Nutzer
-			 * auf den CellButton drückt. Hier: Es handelt sich um Entfernen-Button, also .remove(object)
+			 * (Annotation Override). Methode update() beschreibt was gemacht werden soll,
+			 * wenn der Nutzer auf den CellButton drückt. Hier: Es handelt sich um
+			 * Entfernen-Button, also .remove(object)
 			 * 
 			 */
 			@Override
@@ -275,7 +276,7 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 				return o1.getFilmName().compareTo(o2.getFilmName());
 			}
 		});
-		
+
 		/*
 		 * Erstellen der dritten Column
 		 */
@@ -407,10 +408,11 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		private VorstellungLoeschenDialogBox vorstellungLoeschenDB;
 		private int counter;
 
-		public VorstellungLoeschenBestaetigenClickHandler (VorstellungLoeschenDialogBox vorstellungLoeschenDBn,int counter) {
+		public VorstellungLoeschenBestaetigenClickHandler(VorstellungLoeschenDialogBox vorstellungLoeschenDBn,
+				int counter) {
 			this.vorstellungLoeschenDB = vorstellungLoeschenDBn;
-			this.counter=counter;
-			
+			this.counter = counter;
+
 		}
 
 		@Override
@@ -420,25 +422,22 @@ public class SpielplanVorstellungenCellTable extends VerticalPanel {
 		}
 
 	}
-	
+
 	private class VorstellungLoeschenAbbrechenClickHandler implements ClickHandler {
 		private VorstellungLoeschenDialogBox vorstellungLoeschenDB;
-		
 
-		public VorstellungLoeschenAbbrechenClickHandler (VorstellungLoeschenDialogBox vorstellungLoeschenDBn) {
+		public VorstellungLoeschenAbbrechenClickHandler(VorstellungLoeschenDialogBox vorstellungLoeschenDBn) {
 			this.vorstellungLoeschenDB = vorstellungLoeschenDBn;
-		
-			
+
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
-	
+
 			vorstellungLoeschenDB.hide();
 		}
 
 	}
-
 
 	private class GetVorstellungenBySpielplanCallback implements AsyncCallback<ArrayList<Vorstellung>> {
 

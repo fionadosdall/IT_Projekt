@@ -1227,7 +1227,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarAnwender(Anwender name) throws IllegalArgumentException {
-		return this.anwenderMapper.nameVerfügbar(name);
+		return this.anwenderMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1237,7 +1237,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarGruppe(Gruppe name) throws IllegalArgumentException {
-		return this.gruppeMapper.nameVerfügbar(name);
+		return this.gruppeMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1247,7 +1247,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarKino(Kino name) throws IllegalArgumentException {
-		return this.kinoMapper.nameVerfügbar(name);
+		return this.kinoMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1257,7 +1257,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarKinokette(Kinokette name) throws IllegalArgumentException {
-		return this.kinoketteMapper.nameVerfügbar(name);
+		return this.kinoketteMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1267,7 +1267,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarSpielplan(Spielplan name) throws IllegalArgumentException {
-		return this.spielplanMapper.nameVerfügbar(name);
+		return this.spielplanMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1277,7 +1277,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarVorstellung(String name) throws IllegalArgumentException {
-		return this.vorstellungMapper.nameVerfügbar(name);
+		return this.vorstellungMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1287,7 +1287,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarUmfrage(Umfrage umfrage) throws IllegalArgumentException {
-		return this.umfrageMapper.nameVerfügbar(umfrage);
+		return this.umfrageMapper.nameVerfuegbar(umfrage);
 	}
 
 	/**
@@ -1297,7 +1297,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarUmfrageoption(String name) throws IllegalArgumentException {
-		return this.umfrageoptionMapper.nameVerfügbar(name);
+		return this.umfrageoptionMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1307,7 +1307,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarFilm(Film name) throws IllegalArgumentException {
-		return this.filmMapper.nameVerfügbar(name);
+		return this.filmMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1317,7 +1317,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarSpielzeit(Spielzeit name) throws IllegalArgumentException {
-		return this.spielzeitMapper.nameVerfügbar(name);
+		return this.spielzeitMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1327,7 +1327,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	 */
 	@Override
 	public boolean nameVerfuegbarAuswahl(String name) throws IllegalArgumentException {
-		return this.auswahlMapper.nameVerfügbar(name);
+		return this.auswahlMapper.nameVerfuegbar(name);
 	}
 
 	/**
@@ -1922,7 +1922,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Gruppe updateGruppe(Gruppe gruppe, ArrayList<Anwender> gruppenmitglieder, Anwender anwender)
 			throws IllegalArgumentException {
-		if (gruppeMapper.nameVerfügbar(gruppe) == true) {
+		if (gruppeMapper.nameVerfuegbar(gruppe) == true) {
 			Gruppe fertigeGruppe = speichern(gruppe);
 			ArrayList<Anwender> alteGruppenmitglieder = getGruppenmitgliederByGruppe(gruppe);
 			alteGruppenmitglieder.remove(anwender);
@@ -1984,7 +1984,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	@Override
 	public Umfrage updateUmfrage(Umfrage umfrage, ArrayList<Vorstellung> umfrageoptionen, Anwender anwender)
 			throws IllegalArgumentException {
-		if (umfrageMapper.nameVerfügbar(umfrage) == true) {
+		if (umfrageMapper.nameVerfuegbar(umfrage) == true) {
 			Umfrage fertigeUmfrage = speichern(umfrage);
 			ArrayList<Umfrageoption> alteUmfrageoptionen = getUmfrageoptionenByUmfrage(umfrage);
 
@@ -3045,7 +3045,7 @@ public class KinoplanerImpl extends RemoteServiceServlet implements Kinoplaner {
 	public Spielplan updateSpielplanKino(ArrayList<Vorstellung> zuErstellendeVorstellungen, Spielplan spielplan,
 			Anwender anwender) throws IllegalArgumentException {
 
-		if (spielplanMapper.nameVerfügbar(spielplan) == true) {
+		if (spielplanMapper.nameVerfuegbar(spielplan) == true) {
 
 			Spielplan fertigSpielplan = speichern(spielplan, anwender);
 

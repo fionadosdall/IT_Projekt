@@ -107,13 +107,14 @@ public class SpielplanMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param spielplan
+	 *            Spielplan enthält den Namen den das zu erstellende Objekt tragen
+	 *            soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Spielplan spielplan) {
+	public boolean nameVerfuegbar(Spielplan spielplan) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -361,7 +362,7 @@ public class SpielplanMapper {
 	 * besondere Rechte in Bezug auf welche Spielpläne hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
+	 * @param anwenderOwner
 	 *            Objekt, dessen Id mit der BesitzerId der gesuchten
 	 *            Spielplan-Objekte übereinstimmen soll.
 	 * @return Alle Spielplan-Objekte, die die Id des vorgegebenen Anwenders als

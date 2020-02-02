@@ -104,13 +104,14 @@ public class KinoketteMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param kinokette
+	 *            Kinokette enthät den Namen den das zu erstellende Objekt tragen
+	 *            soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Kinokette kinokette) {
+	public boolean nameVerfuegbar(Kinokette kinokette) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -301,7 +302,7 @@ public class KinoketteMapper {
 	 * besondere Rechte in Bezug auf welche Kinoketten hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender
+	 * @param anwenderOwner
 	 *            Objekt, dessen Id mit der BesitzerId der gesuchten
 	 *            Kinokette-Objekte übereinstimmen soll
 	 * @return Alle Kinokette-Objekte, die die Id des vorgegebenen Anwenders als

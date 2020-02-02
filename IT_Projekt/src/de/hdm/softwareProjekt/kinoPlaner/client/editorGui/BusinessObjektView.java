@@ -21,8 +21,9 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Spielplan;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Vorstellung;
 
-/** Die Klasse BusinessObjektView, stellt die passenden BO's für die 
- * CellLists zur Verfügung
+/**
+ * Die Klasse BusinessObjektView, stellt die passenden BO's für die CellLists
+ * zur Verfügung
  *
  */
 public class BusinessObjektView extends VerticalPanel {
@@ -39,10 +40,7 @@ public class BusinessObjektView extends VerticalPanel {
 	private CellList<Spielplan> listSpielplan;
 	private CellList<Vorstellung> listVorstellung;
 
-	
-	
-	//onLoad()- Methode, fügt die Panels, nach Laden der Seite hinzu.
-	 
+	// onLoad()- Methode, fügt die Panels, nach Laden der Seite hinzu.
 
 	public void onLoad() {
 		head.setStyleName("");
@@ -60,12 +58,12 @@ public class BusinessObjektView extends VerticalPanel {
 		this.titel.setText(titel);
 	}
 
-	/*Erstellung der CellListen für die BusinessObjekte, durch Übergabe
-	 * der entsprechenden Klassen als Liste, wird für jedes BO eine eigene 
-	 * Liste angelegt.
+	/*
+	 * Erstellung der CellListen für die BusinessObjekte, durch Übergabe der
+	 * entsprechenden Klassen als Liste, wird für jedes BO eine eigene Liste
+	 * angelegt.
 	 */
-	
-	
+
 	public void setGruppen(ArrayList<Gruppe> gruppen) {
 		GruppeCell cell = new GruppeCell();
 		listGruppe = new CellList<Gruppe>(cell);
@@ -75,7 +73,7 @@ public class BusinessObjektView extends VerticalPanel {
 
 		cellList.add(listGruppe);
 	}
-	
+
 	public void setUmfragen(ArrayList<Umfrage> umfragen) {
 		UmfrageCell cell = new UmfrageCell();
 		listUmfrage = new CellList<Umfrage>(cell);
@@ -84,7 +82,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listUmfrage.setRowData(umfragen);
 		cellList.add(listUmfrage);
 	}
-	
+
 	public void setErgebnisse(ArrayList<Umfrage> ergebnisse) {
 		ErgebnisCell cell = new ErgebnisCell();
 		listErgebnis = new CellList<Umfrage>(cell);
@@ -93,7 +91,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listErgebnis.setRowData(ergebnisse);
 		cellList.add(listErgebnis);
 	}
-	
+
 	public void setKinos(ArrayList<Kino> kinos) {
 		KinoCell cell = new KinoCell();
 		listKino = new CellList<Kino>(cell);
@@ -102,7 +100,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listKino.setRowData(kinos);
 		cellList.add(listKino);
 	}
-	
+
 	public void setKinoketten(ArrayList<Kinokette> kinoketten) {
 		KinokettenCell cell = new KinokettenCell();
 		listKinokette = new CellList<Kinokette>(cell);
@@ -111,7 +109,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listKinokette.setRowData(kinoketten);
 		cellList.add(listKinokette);
 	}
-	
+
 	public void setSpielplaene(ArrayList<Spielplan> spielplaene) {
 		SpielplanCell cell = new SpielplanCell();
 		listSpielplan = new CellList<Spielplan>(cell);
@@ -120,7 +118,7 @@ public class BusinessObjektView extends VerticalPanel {
 		listSpielplan.setRowData(spielplaene);
 		cellList.add(listSpielplan);
 	}
-	
+
 	public void setVorstellungen(ArrayList<Vorstellung> vorstellungen) {
 		SpielplanEintragCell cell = new SpielplanEintragCell();
 		listVorstellung = new CellList<Vorstellung>(cell);
@@ -130,14 +128,12 @@ public class BusinessObjektView extends VerticalPanel {
 		cellList.add(listVorstellung);
 	}
 
-	//Methodendeklaration 
-	
+	// Methodendeklaration
+
 	public void addAction(Image image, ClickHandler clickHandler) {
 		image.setStyleName("");
 		image.addClickHandler(clickHandler);
 		actions.add(image);
 	}
-	
-	
-	
+
 }

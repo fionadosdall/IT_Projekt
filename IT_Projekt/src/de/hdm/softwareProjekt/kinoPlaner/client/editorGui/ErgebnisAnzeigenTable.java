@@ -23,8 +23,8 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
 
 /**
- * Die Klasse ErgebnisAnzeigenTable dient als Vorlage um Ergebnisse 
- * in einer ErgebnisAnzeigenForm darzustellen. 
+ * Die Klasse ErgebnisAnzeigenTable dient als Vorlage um Ergebnisse in einer
+ * ErgebnisAnzeigenForm darzustellen.
  *
  */
 
@@ -33,15 +33,14 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
 
 	private Umfrage umfrage;
-	
-	//Konstruktor 
+
+	// Konstruktor
 
 	public ErgebnisAnzeigenTable(Umfrage umfrage) {
 		this.umfrage = umfrage;
 
 	}
 
-	
 	class ErgebnisInfo {
 
 		Umfrageoption u;;
@@ -110,31 +109,27 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private ListDataProvider<ErgebnisInfo> dataProvider;
 	private List<ErgebnisInfo> list;
 
-	//onLoad()-Methode
-	
+	// onLoad()-Methode
+
 	@Override
 	public void onLoad() {
-		
-		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
-		
-		this.setHeight("200px");
-		
 
-		
+		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
+
+		this.setHeight("200px");
+
 		dataProvider = new ListDataProvider<ErgebnisInfo>();
 
 		list = dataProvider.getList();
 
 		// CellTable
-		
+
 		ergebnisCellTable = new CellTable<ErgebnisInfo>();
 		ergebnisCellTable.setWidth("100%");
 
 		ergebnisCellTable.setAutoHeaderRefreshDisabled(true);
 
 		ergebnisCellTable.setEmptyTableWidget(new Label("Keine Ergebnisse verfügbar!"));
-
-		
 
 		Column<ErgebnisInfo, String> filmColumn = new Column<ErgebnisInfo, String>(new TextCell()) {
 
@@ -200,14 +195,14 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 		this.add(ergebnisCellTable);
 
-		
-
 	}
-	
-	/** Callback: Alle Umfrageoptionen einer vorgegebenen Umfrage sollen ausgegeben
+
+	/**
+	 * Callback: Alle Umfrageoptionen einer vorgegebenen Umfrage sollen ausgegeben
 	 * werden. Hat die gewünschte keine Umfrageoptionen, wird eine leere CellTable
-	 * zurückgegeben mit einem Hinweis für den Nutzer, dass keine Umfrageoption verfügbar ist. 
-	 * Die Umfrageoptionen sollen in einer Liste wiedergegeben werden. (ErgebnisInfo)
+	 * zurückgegeben mit einem Hinweis für den Nutzer, dass keine Umfrageoption
+	 * verfügbar ist. Die Umfrageoptionen sollen in einer Liste wiedergegeben
+	 * werden. (ErgebnisInfo)
 	 * 
 	 */
 
@@ -223,12 +218,12 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 		@Override
 		public void onSuccess(ArrayList<Umfrageoption> result) {
 
-			if (result.size()==0) {
+			if (result.size() == 0) {
 
 				ergebnisCellTable.setEmptyTableWidget(new Label("Keine Umfrageoptionen verfügbar!"));
 
 			} else {
-		
+
 				for (Umfrageoption u : result) {
 
 					ErgebnisInfo eI = new ErgebnisInfo();
@@ -236,8 +231,8 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 					eI.setU(u);
 
 					list.add(eI);
-					
-					if(result.indexOf(u)+1 == result.size()) {
+
+					if (result.indexOf(u) + 1 == result.size()) {
 						eI.lastItem = true;
 					}
 
@@ -253,7 +248,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	public void gewinnerErmitteln() {
 		kinoplaner.umfrageGewinnerErmitteln(umfrage, new UmfrageGewinnerErmittelnCallback());
 	}
-	
+
 	/**
 	 * Callback Rückgabe eines Filmes, welcher zu einer vorgegebenen ErgebnisInfo
 	 * gehört. Das Filmname soll der ErgebnisInfo hinzugefügt werden.
@@ -267,7 +262,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 		FilmByUmfrageoptionCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
-			this.u=u;
+			this.u = u;
 		}
 
 		@Override
@@ -283,13 +278,13 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.filmName = result.getName();
 
 			dataProvider.refresh();
-			
+
 			kinoplaner.getKinoByUmfrageoption(u, new KinoCallback(info, u));
 
 		}
 
 	}
-	
+
 	/**
 	 * Callback: Zur ErgebnisInfo wird der Kinoname und die jeweilige Stadt
 	 * hinzugefügt.
@@ -300,11 +295,11 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 	private class KinoCallback implements AsyncCallback<Kino> {
 
 		ErgebnisInfo info = null;
-		Umfrageoption u=null;
+		Umfrageoption u = null;
 
 		KinoCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
-			this.u=u;
+			this.u = u;
 		}
 
 		@Override
@@ -322,13 +317,13 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.stadt = result.getStadt();
 
 			dataProvider.refresh();
-			
+
 			kinoplaner.getSpielzeitByUmfrageoption(u, new SpielzeitCallback(info));
 
 		}
 
 	}
-	
+
 	/**
 	 * Callback: Zur ErgebnisInfo wird die Spielzeit hinzugefügt.
 	 */
@@ -350,7 +345,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 		@Override
 		public void onSuccess(Spielzeit result) {
-			
+
 			DefaultDateTimeFormatInfo infoDDTFI = new DefaultDateTimeFormatInfo();
 			String pattern = "EEEE dd.MM.yyyy HH:mm";
 			DateTimeFormat dft = new DateTimeFormat(pattern, infoDDTFI) {
@@ -359,21 +354,19 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.spielzeit = dft.format(result.getZeit());
 
 			dataProvider.refresh();
-			
-			if(info.lastItem==true) {
+
+			if (info.lastItem == true) {
 				eaf.suchGewinner();
 			}
-			
-			
 
 		}
 
 	}
-	
+
 	/**
-	 * Callback: Zur ErgebnisInfo soll die Auswahl hinzugefügt werden, die zu
-	 * der ErgebnisInfo gehört. Dazu wird das entsprechende Ergebnis abgerufen
-	 * und hinzugefügt. 
+	 * Callback: Zur ErgebnisInfo soll die Auswahl hinzugefügt werden, die zu der
+	 * ErgebnisInfo gehört. Dazu wird das entsprechende Ergebnis abgerufen und
+	 * hinzugefügt.
 	 */
 
 	private class AuswahlCallback implements AsyncCallback<Integer> {
@@ -383,7 +376,7 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 
 		AuswahlCallback(ErgebnisInfo info, Umfrageoption u) {
 			this.info = info;
-			this.u=u;
+			this.u = u;
 		}
 
 		@Override
@@ -399,17 +392,18 @@ public class ErgebnisAnzeigenTable extends ScrollPanel {
 			info.setErgebnis(result);
 
 			dataProvider.refresh();
-			
+
 			kinoplaner.getFilmByUmfrageoption(u, new FilmByUmfrageoptionCallback(info, u));
 
 		}
 
 	}
-	
-	/** 
-	 * Callback: die Klasse UmfrageGewinnerErmitteln liefert mit der onSuccess() Methode 
-	 * das Ergebnis einer Umfrage und liefert hierfür das entsprechnde Ergebnis bzw. Gewinner, 
-	 * indem die Umfrageoptionen miteinander verglichen werden. 
+
+	/**
+	 * Callback: die Klasse UmfrageGewinnerErmitteln liefert mit der onSuccess()
+	 * Methode das Ergebnis einer Umfrage und liefert hierfür das entsprechnde
+	 * Ergebnis bzw. Gewinner, indem die Umfrageoptionen miteinander verglichen
+	 * werden.
 	 * 
 	 *
 	 */

@@ -57,7 +57,8 @@ public class AuswahlMapper {
 	/**
 	 * Suche nach allen Auswahl-Objekten über vorgegebenen Namen.
 	 * 
-	 * @param name den die gesuchten Auswahl-Objekte tragen
+	 * @param name
+	 *            den die gesuchten Auswahl-Objekte tragen
 	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enthält. Falls
 	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
 	 *         leer oder nur teilweise befüllt zurück gegeben wird.
@@ -105,12 +106,13 @@ public class AuswahlMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name den das zu erstellende Objekt tragen soll
+	 * @param name
+	 *            den das zu erstellende Objekt tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfuegbar(String name) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -131,7 +133,8 @@ public class AuswahlMapper {
 	/**
 	 * Die insert-Methode fügt ein neues Auswahl-Objekt zur Datenbank hinzu.
 	 * 
-	 * @param auswahl bzw. das zu speichernde Objekt
+	 * @param auswahl
+	 *            bzw. das zu speichernde Objekt
 	 * @return Das übergeben Objekt, ggf. mit abgeänderter Id
 	 */
 	public Auswahl insert(Auswahl auswahl) {
@@ -169,7 +172,8 @@ public class AuswahlMapper {
 	 * Das Objekt wieder wiederholt, in upgedateter Form in die Datenbank
 	 * eingetragen.
 	 * 
-	 * @param auswahl bzw. das Objekt das verändert werden soll.
+	 * @param auswahl
+	 *            bzw. das Objekt das verändert werden soll.
 	 * @return Das Objekt, welches im Parameter übergeben wurde.
 	 */
 	public Auswahl update(Auswahl auswahl) {
@@ -197,7 +201,8 @@ public class AuswahlMapper {
 	/**
 	 * Mit dieser Methode kann ein Auswahl-Objekt aus der Datenbank gelöscht werden.
 	 * 
-	 * @param auswahl Objekt, welches gelöscht werden soll
+	 * @param auswahl
+	 *            Objekt, welches gelöscht werden soll
 	 */
 	public void delete(Auswahl auswahl) {
 		Connection con = DBConnection.connection();
@@ -215,7 +220,8 @@ public class AuswahlMapper {
 	/**
 	 * Suche nach einer bestimmten Auswahl mithilfe einer vorgegebenen Auswahl-Id
 	 * 
-	 * @param id der Auswahl, nach welcher gesucht werden soll
+	 * @param id
+	 *            der Auswahl, nach welcher gesucht werden soll
 	 * @return Das Auswahl-Objekt, das mit seiner Auswahl-Id der �bergebenen Id
 	 *         entspricht. Falls kein Auswahl-Objekt zur �bergebenen Id gefunden
 	 *         wird, wird null zur�ckgegeben.
@@ -249,8 +255,9 @@ public class AuswahlMapper {
 	 * Suche nach allen getroffenen Auswahlen, die zu einer bestimmten, im Parameter
 	 * vorgegebenen Umfrageoption geh�ren.
 	 * 
-	 * @param umfrageoption zu welcher man alle getroffenen Auswahlen ausgegebenen
-	 *                      haben m�chte.
+	 * @param umfrageoption
+	 *            zu welcher man alle getroffenen Auswahlen ausgegebenen haben
+	 *            m�chte.
 	 * @return Eine ArrayList, die alle gefundenen Auswahl-Objekte enth�lt. Falls
 	 *         eine Exception geworfen wird, kann es passieren, dass die ArrayList
 	 *         leer oder nur teilweise bef�llt zur�ckgegeben wird.
@@ -299,9 +306,11 @@ public class AuswahlMapper {
 	 * Auswahl-)Objektes ist, fallen ihm besondere Rechte zu. Er kann z.B. als
 	 * einziger Ver�nderungen vornehmen.
 	 * 
-	 * @param anwender welcher als Besitzer der Auswahl in der Datenbank eingetragen
-	 *                 werden soll.
-	 * @param auswahl  Objekt, welches einem Anwender zugeordnet werden soll.
+	 * @param anwender
+	 *            welcher als Besitzer der Auswahl in der Datenbank eingetragen
+	 *            werden soll.
+	 * @param auswahl
+	 *            Objekt, welches einem Anwender zugeordnet werden soll.
 	 */
 	public void addEigentumsstruktur(Anwender anwender, Auswahl auswahl) {
 		Connection con = DBConnection.connection();
@@ -322,8 +331,9 @@ public class AuswahlMapper {
 	 * zugewiesen und soll nun gel�scht werden. Die Eigentumsbeziehung wird demnach
 	 * aufgehoben und in der DB gel�scht.
 	 * 
-	 * @param auswahl Objekt bei welchem die BesitzerId in der Datenbank
-	 *                zur�ckgesetzt werden soll.
+	 * @param auswahl
+	 *            Objekt bei welchem die BesitzerId in der Datenbank zur�ckgesetzt
+	 *            werden soll.
 	 */
 	public void deleteEigentumsstruktur(Auswahl auswahl) {
 		Connection con = DBConnection.connection();
@@ -343,9 +353,10 @@ public class AuswahlMapper {
 	 * die Auswahl gehört, gesucht. Außerdem wird der Anwender angegeben, welcher
 	 * die Umfrageoption entsprechend der Auswahl beantwortet hat.
 	 * 
-	 * @param anwender      Objekt nach welchem die Suche nach der Auswahl gefiltert
-	 *                      wird.
-	 * @param umfrageoption zu der das gesuchte Auswahl-Objekt gehört.
+	 * @param anwender
+	 *            Objekt nach welchem die Suche nach der Auswahl gefiltert wird.
+	 * @param umfrageoption
+	 *            zu der das gesuchte Auswahl-Objekt gehört.
 	 * @return Das gesuchte Auswahl-Objekt. Befindet sich kein Auswahl-Objekt in der
 	 *         Datenbank, welches sowohl zum Anwender, als auch zur Umfrageoption
 	 *         zugehörig ist, wird null zurückgegeben.
@@ -382,8 +393,9 @@ public class AuswahlMapper {
 	 * besondere Rechte in Bezug auf welche Auswahlen hat. Besondere Rechte können
 	 * zum Beispiel sein, dass der Anwender das jeweilige Objekt verändern darf.
 	 * 
-	 * @param anwender Objekt, dessen Id mit der BesitzerId der gesuchten
-	 *                 Auswahl-Objekte übereinstimmen soll
+	 * @param anwenderId
+	 *            Objekt, dessen Id mit der BesitzerId der gesuchten Auswahl-Objekte
+	 *            übereinstimmen soll
 	 * @return Alle Auswahl-Objekte, die die Id des vorgegebenen Anwenders als
 	 *         BesitzerId in der DB eingetragen haben.
 	 */
@@ -416,7 +428,5 @@ public class AuswahlMapper {
 		// Ergebnis zurückgeben in Form der ArrayList
 		return resultarray;
 	}
-	
-	
 
 }

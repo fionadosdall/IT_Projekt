@@ -39,7 +39,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrageoption;
  *
  */
 public class UmfrageAnzeigenTable extends ScrollPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -142,11 +142,11 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 	 */
 	@Override
 	public void onLoad() {
-		
+
 		this.setHeight("380px");
-		
+
 		kinoplaner.getUmfrageoptionenByUmfrage(umfrage, new GetUmfrageoptionenByUmfrageCallback());
-		
+
 		dataProvider = new ListDataProvider<UmfrageoptionInfo>();
 		list = dataProvider.getList();
 
@@ -298,8 +298,6 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 			}
 		});
 
-		
-
 	}
 
 	public void speichern() {
@@ -351,7 +349,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 
 		@Override
 		public void onSuccess(ArrayList<Umfrageoption> result) {
-			if (result.size()==0){
+			if (result.size() == 0) {
 
 				umfrageoptionCellTable.setEmptyTableWidget(new Label("Keine Umfrageoptionen verfügbar!"));
 
@@ -536,7 +534,7 @@ public class UmfrageAnzeigenTable extends ScrollPanel {
 				VotingsAnzeigenForm anzeigen = new VotingsAnzeigenForm(result);
 				RootPanel.get("details").add(anzeigen);
 			} else {
-				
+
 				RootPanel.get("details").clear();
 				ErgebnisAnzeigenForm anzeigen = new ErgebnisAnzeigenForm(result);
 				RootPanel.get("details").add(anzeigen);

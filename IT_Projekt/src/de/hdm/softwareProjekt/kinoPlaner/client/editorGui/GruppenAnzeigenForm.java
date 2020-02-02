@@ -24,7 +24,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
  */
 
 public class GruppenAnzeigenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	/*
@@ -38,7 +38,7 @@ public class GruppenAnzeigenForm extends FlowPanel {
 	/*
 	 * Erstellen der Widgets
 	 */
-	//VerticalPanel p = new VerticalPanel();
+	// VerticalPanel p = new VerticalPanel();
 	private HomeBar hb = new HomeBar();
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
@@ -63,25 +63,24 @@ public class GruppenAnzeigenForm extends FlowPanel {
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
 		gruppeErstellen.addStyleName("speichernButton");
-		
+
 		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
-		
+
 		/*
 		 * Zusammenbauen der Widgets
 		 */
 		this.add(detailsoben);
 		this.add(detailsunten);
-		
+
 		detailsoben.add(hb);
-		
+
 		detailsunten.add(detialsbox);
 		detialsbox.add(bov);
 
-
-//		p.setStyleName("");
+		// p.setStyleName("");
 		bov.setTitel("Meine Gruppen");
-//		p.add(bov);
+		// p.add(bov);
 
 		kinoplaner.getGruppenByAnwender(aktuellerAnwender, new SucheGruppenByAnwenderCallback());
 

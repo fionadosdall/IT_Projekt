@@ -34,8 +34,8 @@ public class UserForm extends FlowPanel {
 
 	private FlowPanel detailsoben = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
-	private FlowPanel detailsboxlöschen = new FlowPanel();
-	private FlowPanel löschenImage = new FlowPanel();
+	private FlowPanel detailsboxloeschen = new FlowPanel();
+	private FlowPanel loeschenImage = new FlowPanel();
 	private FlowPanel detailsbox = new FlowPanel();
 	private FlowPanel detailsboxInhalt = new FlowPanel();
 	private FlowPanel detailsboxspeichern = new FlowPanel();
@@ -55,7 +55,7 @@ public class UserForm extends FlowPanel {
 	private TextBox nameTextBox = new TextBox();
 
 	private Image papierkorb = new Image();
-	
+
 	private String alterName;
 
 	String logoutUrl;
@@ -78,9 +78,9 @@ public class UserForm extends FlowPanel {
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
-		detailsboxlöschen.addStyleName("detailsboxlöschen");
+		detailsboxloeschen.addStyleName("detailsboxlöschen");
 		detailsboxspeichern.addStyleName("detailsboxspeichern");
-		löschenImage.addStyleName("löschenImage");
+		loeschenImage.addStyleName("löschenImage");
 		papierkorb.addStyleName("papierkorb");
 		detailsbox.addStyleName("detailsbox");
 		detailsboxInhalt.addStyleName("detailsboxInhalt");
@@ -107,12 +107,12 @@ public class UserForm extends FlowPanel {
 
 		detailsoben.add(title);
 
-		detailsunten.add(detailsboxlöschen);
+		detailsunten.add(detailsboxloeschen);
 		detailsunten.add(detailsbox);
 
-		detailsboxlöschen.add(löschenImage);
+		detailsboxloeschen.add(loeschenImage);
 
-		löschenImage.add(papierkorb);
+		loeschenImage.add(papierkorb);
 
 		detailsbox.add(detailsboxInhalt);
 		detailsbox.add(detailsboxInhalt);
@@ -429,7 +429,6 @@ public class UserForm extends FlowPanel {
 	 * CALLBACKS
 	 ***********************************************************************/
 
-	
 	private class LoeschenAnwenderCallback implements AsyncCallback<Void> {
 
 		@Override

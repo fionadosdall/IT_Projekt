@@ -41,9 +41,9 @@ public SpielplanCell() {
   @Override
   public void onBrowserEvent(Context context, Element parent, Spielplan value, NativeEvent event,
       ValueUpdater<Spielplan> valueUpdater) {
-    // Handle the click event.
+
     if ("click".equals(event.getType())) {
-      // Ignore clicks that occur outside of the outermost element.
+     
       EventTarget eventTarget = event.getEventTarget();
       if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
         doAction(value, valueUpdater);

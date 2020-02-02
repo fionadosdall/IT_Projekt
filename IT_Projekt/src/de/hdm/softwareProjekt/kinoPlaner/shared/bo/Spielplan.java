@@ -5,11 +5,11 @@ public class Spielplan extends BesitzerBusinessObjekt {
 	private static final long serialVersionUID = 1L;
 
 	private int kinoId;
-	
+
 	private int kinokettenId;
 
 	private boolean kinokettenSpielplan;
-	
+
 	public int iskinokettenSpielplanToTinyint() {
 		if (kinokettenSpielplan == true)
 			return 1;
@@ -81,9 +81,9 @@ public class Spielplan extends BesitzerBusinessObjekt {
 	 */
 	@Override
 	public String toString() {
-		if(kinokettenSpielplan==false) {
-		return super.toString() + "Spielplan [KinoId=" + kinoId + "]";
-		}else {
+		if (kinokettenSpielplan == false) {
+			return super.toString() + "Spielplan [KinoId=" + kinoId + "]";
+		} else {
 			return super.toString() + "Spielplan [KinokettenId=" + kinokettenId + "]";
 		}
 	}

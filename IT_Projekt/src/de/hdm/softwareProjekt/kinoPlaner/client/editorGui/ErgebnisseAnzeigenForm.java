@@ -2,7 +2,6 @@ package de.hdm.softwareProjekt.kinoPlaner.client.editorGui;
 
 import java.util.ArrayList;
 
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -24,10 +23,10 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  */
 
 public class ErgebnisseAnzeigenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
-	
-	/* 
+
+	/*
 	 * Erstellen der Widgets
 	 */
 
@@ -39,28 +38,28 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detialsbox = new FlowPanel();
 	private FlowPanel detailsboxinhalt = new FlowPanel();
-	
+
 	private Button erstellenButton = new Button("Umfrage erstellen!");
-	/** 
+
+	/**
 	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt und formatiert
 	 */
 
 	public void onLoad() {
-		
-		//Vergeben der Stylenamen 
-		
+
+		// Vergeben der Stylenamen
+
 		kinoplaner.anzeigenVonClosedUmfragen(aktuellerAnwender, new AnzeigenVonClosedUmfragenCallback());
-		
+
 		this.addStyleName("detailscontainer");
 
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
-		
+
 		erstellenButton.setStyleName("speichernButton");
-		
+
 		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
-		
 
 		// Zusammenbauen der Widgets
 		this.add(detailsoben);
@@ -69,21 +68,19 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 		detailsoben.add(hb);
 		detailsunten.add(detialsbox);
 		detialsbox.add(p);
-		
+
 		p.add(bov);
-		
+
 		p.setStyleName("");
 		bov.setTitel("Meine Ergebnisse");
 
-		
 	}
-	
+
 	/**
 	 * Callback ruft Methode onFailure() auf, wenn das Anzeigen der Umfragen
 	 * misslungen ist und onSuccess () wenn der Aufruf erfolgreich war.
 	 *
 	 */
-	
 
 	private class AnzeigenVonClosedUmfragenCallback implements AsyncCallback<ArrayList<Umfrage>> {
 
@@ -94,21 +91,20 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 
 		}
 
-		
 		/**
-		 * onSuceess() - Methode: Umfrage Ergebnisse werden auf Verfügbarkeit
-		 * geprüft. Es werden Buttons zur verfügung gestellt, mit denen man eine Umfrage 
-		 * erstellt od. gespeichert werden kann.
+		 * onSuceess() - Methode: Umfrage Ergebnisse werden auf Verfügbarkeit geprüft.
+		 * Es werden Buttons zur verfügung gestellt, mit denen man eine Umfrage erstellt
+		 * od. gespeichert werden kann.
 		 * 
 		 */
-		
+
 		@Override
 		public void onSuccess(ArrayList<Umfrage> result) {
-			
-//			for (Umfrage u : result) {
-//				Window.alert(u.getName());
-//			}
-			
+
+			// for (Umfrage u : result) {
+			// Window.alert(u.getName());
+			// }
+
 			if (result.size() != 0) {
 				bov.setErgebnisse(result);
 			} else {
@@ -116,13 +112,13 @@ public class ErgebnisseAnzeigenForm extends FlowPanel {
 				labelT.setText("Keine Ergebnisse verfügbar!");
 				detailsunten.add(labelT);
 			}
-	
+
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 			detailsunten.add(erstellenButton);
 
 		}
-		
-		//Erstellung der ClickHandler
+
+		// Erstellung der ClickHandler
 
 		private class UmfrageErstellenClickHandler implements ClickHandler {
 

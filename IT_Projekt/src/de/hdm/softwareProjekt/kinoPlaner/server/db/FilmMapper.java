@@ -103,13 +103,13 @@ public class FilmMapper {
 	 * der Datenbank vorhanden ist. Damit soll verhindert werden, dass mehrere
 	 * Objekte den selben Namen tragen.
 	 * 
-	 * @param name
-	 *            den das zu erstellende Objekt tragen soll
+	 * @param film
+	 *            Film der den Namen des zu erstellenden Objekts tragen soll
 	 * @return false, wenn der Name bereits einem anderen, existierenden Objekt
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(Film film) {
+	public boolean nameVerfuegbar(Film film) {
 		Connection con = DBConnection.connection();
 
 		try {

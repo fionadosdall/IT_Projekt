@@ -8,20 +8,17 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-
-
-public class BurgerMenueAdmin extends FlowPanel{
+public class BurgerMenueAdmin extends FlowPanel {
 
 	Image menue = new Image();
 	VerticalPanel menueDropdown = new VerticalPanel();
 	VerticalPanel fl = new VerticalPanel();
 	FlowPanel detailsOben = new FlowPanel();
-	VerticalPanel dropdown = new  VerticalPanel();
-
+	VerticalPanel dropdown = new VerticalPanel();
 
 	@Override
 	protected void onLoad() {
-		
+
 		super.onLoad();
 		this.setStyleName("headerRechtsElement");
 		detailsOben.setStyleName("");
@@ -35,9 +32,10 @@ public class BurgerMenueAdmin extends FlowPanel{
 		RootPanel.get("dropdown").add(dropdown);
 
 	}
-	
-	/**Erstellung der ClickHandler, welche für 
-	 * die Interaktion mit dem BurgerMenü benötigt werden.
+
+	/**
+	 * Erstellung der ClickHandler, welche für die Interaktion mit dem BurgerMenü
+	 * benötigt werden.
 	 * 
 	 */
 
@@ -62,14 +60,11 @@ public class BurgerMenueAdmin extends FlowPanel{
 				menueDropdown.add(buttonErstellenSpielplan);
 				dropdown.add(menueDropdown);
 				clickCounter++;
-			}	else if (clickCounter % 2 == 0) {
-				
+			} else if (clickCounter % 2 == 0) {
+
 				dropdown.add(menueDropdown);
 				clickCounter++;
-					
-				
-				
-				
+
 			} else {
 				dropdown.clear();
 				clickCounter++;
@@ -89,13 +84,13 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoErstellenForm erstellen = new KinoErstellenForm();
-			
+
 			RootPanel.get("details").add(erstellen);
 
 		}
 
 	}
-	
+
 	/*
 	 * ClickHandler um eine Kinokette zu erstellen
 	 */
@@ -107,17 +102,17 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			KinoketteErstellenForm erstellen = new KinoketteErstellenForm();
-			
+
 			RootPanel.get("details").add(erstellen);
 
 		}
 
 	}
-	
+
 	/*
 	 * ClickHandler um einen Spielplan zu erstellen
 	 */
-	
+
 	private class SpielplanErstellenClickHandler implements ClickHandler {
 
 		@Override
@@ -126,12 +121,10 @@ public class BurgerMenueAdmin extends FlowPanel{
 			dropdown.clear();
 			RootPanel.get("details").clear();
 			SpielplanErstellenForm erstellen = new SpielplanErstellenForm();
-		
+
 			RootPanel.get("details").add(erstellen);
 		}
-		
+
 	}
-	
-	
-	
+
 }

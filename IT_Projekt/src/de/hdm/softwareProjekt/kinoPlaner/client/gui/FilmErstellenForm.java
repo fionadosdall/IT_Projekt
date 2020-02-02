@@ -43,7 +43,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Kino;
  *
  */
 public class FilmErstellenForm extends PopupPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -145,7 +145,7 @@ public class FilmErstellenForm extends PopupPanel {
 
 		popupPanel.add(filmGrid);
 		untenPanel.add(abbrechenButton);
-		
+
 		if (film == null) {
 			nameTextBox.getElement().setPropertyString("placeholder", "Name eingeben");
 			beschreibungTextBox.getElement().setPropertyString("placeholder", "Beschreibung eingeben");
@@ -160,7 +160,6 @@ public class FilmErstellenForm extends PopupPanel {
 		}
 
 		popupPanel.add(untenPanel);
-		
 
 		/**
 		 * ClickHandler für Speichern und Löschen der Filme
@@ -197,18 +196,16 @@ public class FilmErstellenForm extends PopupPanel {
 			// TODO Auto-generated method stub
 
 			if (film == null) {
-			
+
 				if (nameTextBox.getValue().equals("")) {
 					Window.alert("Bitte Namen eintragen");
-				}else {
-				kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
-						bewertungTextBox.getValue(), aktuellerAnwender, new FilmErstellenCallback());
+				} else {
+					kinoplaner.erstellenFilm(nameTextBox.getValue(), beschreibungTextBox.getValue(),
+							bewertungTextBox.getValue(), aktuellerAnwender, new FilmErstellenCallback());
 				}
-
 
 			} else {
 
-			
 				film.setName(nameTextBox.getValue());
 				film.setBewertung(bewertungTextBox.getValue());
 				film.setBeschreibung(beschreibungTextBox.getValue());
@@ -228,10 +225,10 @@ public class FilmErstellenForm extends PopupPanel {
 							Systemmeldung.anzeigen("Film wurde geupdatet");
 							parent.refresh();
 							removeFromParent();
-						
+
 						} else {
 							Window.alert("Film existiert bereits!");
-						
+
 						}
 
 					}
@@ -241,9 +238,10 @@ public class FilmErstellenForm extends PopupPanel {
 		}
 
 	}
-/*
- * ClickHandler um eine Film Instanz zu löschen
- */
+
+	/*
+	 * ClickHandler um eine Film Instanz zu löschen
+	 */
 	private class FilmLoeschenClickHandler implements ClickHandler {
 
 		@Override
@@ -255,9 +253,9 @@ public class FilmErstellenForm extends PopupPanel {
 		}
 
 	}
-	
-	private class AbbrechenClickHandler implements ClickHandler{
-		
+
+	private class AbbrechenClickHandler implements ClickHandler {
+
 		public void onClick(ClickEvent event) {
 			FilmErstellenForm.this.hide();
 		}
@@ -292,13 +290,11 @@ public class FilmErstellenForm extends PopupPanel {
 				// SpielplaneintragForm sef = new SpielplaneintragForm();
 				parent.refresh();
 
-			
 			}
 		}
 
 	}
 
-	
 	/*
 	 * Callback um eine Film-Instanz aus dem System zu löschen
 	 */

@@ -50,9 +50,9 @@ public class UmfrageCell extends AbstractCell<Umfrage> {
 	@Override
 	public void onBrowserEvent(Context context, Element parent, Umfrage value, NativeEvent event,
 			ValueUpdater<Umfrage> valueUpdater) {
-		// Handle the click event.
+	
 		if ("click".equals(event.getType())) {
-			// Ignore clicks that occur outside of the outermost element.
+		
 			EventTarget eventTarget = event.getEventTarget();
 			if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
 				doAction(value, valueUpdater);

@@ -9,14 +9,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-
 /*
  * Die Klasse stellt as Formular um die Voting anzuzeigen
  * 
  */
 public class VotingsAnzeigenForm extends FlowPanel {
 	private Umfrage umfrage;
-	
+
 	/*
 	 * Erstellen der Widgets
 	 */
@@ -36,18 +35,18 @@ public class VotingsAnzeigenForm extends FlowPanel {
 
 	private Label title = new Label("Umfrage: ");
 
-	/* 
+	/*
 	 * Button erstellen
 	 */
 	private Button voten = new Button("Voten");
-	
+
 	/*
 	 * onLoad()-Methode: Die Widgets werden der Form hinzugefügt und formatiert
 	 * 
 	 */
 
 	public void onLoad() {
-		
+
 		/*
 		 * Style-Namen vergeben
 		 */
@@ -68,7 +67,7 @@ public class VotingsAnzeigenForm extends FlowPanel {
 		voten.setStyleName("");
 
 		title.addStyleName("title");
-		
+
 		/*
 		 * Zusammenbauen der Widgets
 		 */
@@ -92,7 +91,7 @@ public class VotingsAnzeigenForm extends FlowPanel {
 		voten.addClickHandler(new VotingsAnzeigenClickHandler());
 
 	}
-	
+
 	/*
 	 * Konstruktor
 	 */
@@ -101,18 +100,18 @@ public class VotingsAnzeigenForm extends FlowPanel {
 		this.umfrage = umfrage;
 
 	}
-	
+
 	/******************************************************
 	 * 
-	 *CLICKHANDLER 
+	 * CLICKHANDLER
 	 * 
 	 *****************************************************
 	 */
-	
+
 	/*
-	 * Click-Handler: Wenn das Voting beendet ist, kann sich der Nutzer, das 
-	 * Ergebnis der Umfrage anzeigen lassen. Mit Klick auf den Button
-	 * gelangt er zur Anzeigen-Form einer Umfrage
+	 * Click-Handler: Wenn das Voting beendet ist, kann sich der Nutzer, das
+	 * Ergebnis der Umfrage anzeigen lassen. Mit Klick auf den Button gelangt er zur
+	 * Anzeigen-Form einer Umfrage
 	 */
 
 	private class VotingsAnzeigenClickHandler implements ClickHandler {

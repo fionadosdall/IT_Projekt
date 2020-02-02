@@ -13,7 +13,7 @@ public class BurgerMenue extends FlowPanel {
 	VerticalPanel menueDropdown = new VerticalPanel();
 	VerticalPanel fl = new VerticalPanel();
 	FlowPanel detailsOben = new FlowPanel();
-	VerticalPanel dropdown = new  VerticalPanel();
+	VerticalPanel dropdown = new VerticalPanel();
 
 	@Override
 	protected void onLoad() {
@@ -48,14 +48,11 @@ public class BurgerMenue extends FlowPanel {
 				menueDropdown.add(buttonErstellenUmfrage);
 				dropdown.add(menueDropdown);
 				clickCounter++;
-			}	else if (clickCounter % 2 == 0) {
-				
+			} else if (clickCounter % 2 == 0) {
+
 				dropdown.add(menueDropdown);
 				clickCounter++;
-					
-				
-				
-				
+
 			} else {
 				dropdown.clear();
 				clickCounter++;
@@ -64,7 +61,6 @@ public class BurgerMenue extends FlowPanel {
 		}
 
 	}
-	
 
 	private class GruppeErstellenHandler implements ClickHandler {
 

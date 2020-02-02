@@ -200,8 +200,9 @@ public class UmfrageCellTable extends ScrollPanel {
 
 			/**
 			 * FieldUpdater (Interface) fordert, dass Methode update() überschrieben wird
-			 * (Annotation Override). Methode update() beschreibt was gemacht werden soll, wenn der Nutzer
-			 * auf den CellButton drückt. Hier: Es handelt sich um Entfernen-Button, also .remove(object)
+			 * (Annotation Override). Methode update() beschreibt was gemacht werden soll,
+			 * wenn der Nutzer auf den CellButton drückt. Hier: Es handelt sich um
+			 * Entfernen-Button, also .remove(object)
 			 * 
 			 */
 			@Override
@@ -470,32 +471,32 @@ public class UmfrageCellTable extends ScrollPanel {
 
 	}
 
-//	private class UmfrageByIdCallback implements AsyncCallback<Umfrageoption> {
-//		
-//		UmfrageInfo info = null;
-//
-//		UmfrageByIdCallback(UmfrageInfo info) {
-//			this.info = info;
-//		}
-//
-//	
-//
-//		@Override
-//		public void onFailure(Throwable caught) {
-//			// TODO Auto-generated method stub
-//			Window.alert(caught.getMessage());
-//			
-//		}
-//
-//		@Override
-//		public void onSuccess(Umfrageoption result) {
-//			// TODO Auto-generated method stub
-//			
-//			info.u = result;
-//			
-//			
-//		}
-//		
-//	}
+	// private class UmfrageByIdCallback implements AsyncCallback<Umfrageoption> {
+	//
+	// UmfrageInfo info = null;
+	//
+	// UmfrageByIdCallback(UmfrageInfo info) {
+	// this.info = info;
+	// }
+	//
+	//
+	//
+	// @Override
+	// public void onFailure(Throwable caught) {
+	// // TODO Auto-generated method stub
+	// Window.alert(caught.getMessage());
+	//
+	// }
+	//
+	// @Override
+	// public void onSuccess(Umfrageoption result) {
+	// // TODO Auto-generated method stub
+	//
+	// info.u = result;
+	//
+	//
+	// }
+	//
+	// }
 
 }

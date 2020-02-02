@@ -18,23 +18,22 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.KinoplanerAsync;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Anwender;
 import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
 
-
 /***
  * Die Klasse stellt das Formular für das Anzeigen einer Umfrage
  * 
  */
 public class UmfragenAnzeigenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
-	
+
 	/*
-	 * BusinessObjectView = Vorlage um die Ansicht von Business Object
-	 * zu erstellen. Bo's werden in CellLists angezeigt
+	 * BusinessObjectView = Vorlage um die Ansicht von Business Object zu erstellen.
+	 * Bo's werden in CellLists angezeigt
 	 */
 
 	private BusinessObjektView bov = new BusinessObjektView();
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
-	
+
 	/**
 	 * Erstellen der Widgets
 	 */
@@ -44,54 +43,49 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel detialsbox = new FlowPanel();
 	private FlowPanel detailsboxinhalt = new FlowPanel();
-	
+
 	private Button erstellenButton = new Button("Umfrage erstellen!");
-	
+
 	/*
-	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt
-	 * und formatiert
+	 * onLoad()- Methode: Die Widgets werden der Form hinzugefügt und formatiert
 	 */
 
 	public void onLoad() {
-		
-		
+
 		/*
 		 * Style-Namen vergeben
 		 */
 		this.addStyleName("detailscontainer");
 
-
 		detailsoben.addStyleName("detailsoben");
 		detailsunten.addStyleName("detailsunten");
-		
+
 		detialsbox.addStyleName("detailsBox");
 		detailsboxinhalt.addStyleName("detailsboxInahlt");
-		
-		erstellenButton.setStyleName("speichernButton.gwt-Button");
 
-		
+		erstellenButton.setStyleName("speichernButton.gwt-Button");
 
 		// Zusammenbauen der Widgets
 		this.add(detailsoben);
 		this.add(detailsunten);
 
 		detailsoben.add(hb);
-		
+
 		detailsunten.add(detialsbox);
 		detialsbox.add(bov);
 
-//		p.setStyleName("");
+		// p.setStyleName("");
 		bov.setTitel("Meine Umfragen");
-//		p.add(bov);
+		// p.add(bov);
 
 		kinoplaner.getOpenUmfragenByAnwender(aktuellerAnwender, new SucheUmfragenByAnwenderCallback());
 
 	}
-	
+
 	/***
 	 * 
-	 * Private Klasse
-	 * alle Umfrage-Instanzen, zu denen der Anwender gehört, aus dem System bekommen
+	 * Private Klasse alle Umfrage-Instanzen, zu denen der Anwender gehört, aus dem
+	 * System bekommen
 	 *
 	 */
 
@@ -115,15 +109,13 @@ public class UmfragenAnzeigenForm extends FlowPanel {
 			}
 			erstellenButton.addClickHandler(new UmfrageErstellenClickHandler());
 			detailsunten.add(erstellenButton);
-	
 
 		}
-		
-		
+
 		/**
 		 * Click-Handler: Wenn Anwender, die passende Umfrage noch nicht vorfindent,
-		 * kann er eine neue Umfrage erstellen.
-		 * Mit dem Klick auf den Button gelangt er zur Erstellen-Form einer Gruppe
+		 * kann er eine neue Umfrage erstellen. Mit dem Klick auf den Button gelangt er
+		 * zur Erstellen-Form einer Gruppe
 		 * 
 		 *
 		 */

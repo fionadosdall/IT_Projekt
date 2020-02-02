@@ -117,7 +117,7 @@ public class VorstellungMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfuegbar(String name) {
 		Connection con = DBConnection.connection();
 
 		try {

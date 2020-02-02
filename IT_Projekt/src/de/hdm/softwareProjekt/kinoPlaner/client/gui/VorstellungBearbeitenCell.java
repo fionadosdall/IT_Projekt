@@ -19,29 +19,32 @@ public class VorstellungBearbeitenCell extends AbstractCell<Vorstellung> {
 		@Template("<img src=\"{0}\"/>")
 		SafeHtml img(String url);
 	}
-	
+
 	private SpielplanVorstellungenCellTable vct;
 
 	private static Template template;
 
 	/**
-	 * Construct a new ImageCell.
+	 * Konstruieren einer neuen VorstellungBearbeitenCell
+	 * 
+	 * @param vct
+	 *            SpielplanVorstellungenCellTable
 	 */
 	public VorstellungBearbeitenCell(Vorstellung vorstellung, SpielplanVorstellungenCellTable vct) {
 		super("click");
-		
-		this.vct=vct;
-		
+
+		this.vct = vct;
+
 		if (template == null) {
 			template = GWT.create(Template.class);
 		}
-		
+
 	}
 
 	@Override
 	public void render(Context context, Vorstellung value, SafeHtmlBuilder sb) {
 		if (value != null) {
-			// The template will sanitize the URI.
+
 			sb.append(template.img("/images/bearbeiten.png"));
 		}
 	}
@@ -49,9 +52,9 @@ public class VorstellungBearbeitenCell extends AbstractCell<Vorstellung> {
 	@Override
 	public void onBrowserEvent(Context context, Element parent, Vorstellung value, NativeEvent event,
 			ValueUpdater<Vorstellung> valueUpdater) {
-		// Handle the click event.
+
 		if ("click".equals(event.getType())) {
-			// Ignore clicks that occur outside of the outermost element.
+
 			EventTarget eventTarget = event.getEventTarget();
 			if (parent.getFirstChildElement().isOrHasChild(Element.as(eventTarget))) {
 				doAction(value, valueUpdater);
@@ -62,7 +65,7 @@ public class VorstellungBearbeitenCell extends AbstractCell<Vorstellung> {
 	private void doAction(Vorstellung value, ValueUpdater<Vorstellung> valueUpdater) {
 		SpielplaneintragForm neuerSpielplaneintrag = new SpielplaneintragForm(vct, value);
 		neuerSpielplaneintrag.show();
-	
+
 	}
 
 }

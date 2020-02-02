@@ -36,7 +36,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Umfrage;
  * Die Klasse stellt das Formular für das Anzeigen einer Gruppe
  */
 public class GruppeAnzeigenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -56,8 +56,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 	private FlowPanel detailslinks = new FlowPanel();
 	private FlowPanel detailsunten = new FlowPanel();
 	private FlowPanel umfrageWidgets = new FlowPanel();
-	private FlowPanel detailsboxlöschen = new FlowPanel();
-	private FlowPanel löschenImage = new FlowPanel();
+	private FlowPanel detailsboxloeschen = new FlowPanel();
+	private FlowPanel loeschenImage = new FlowPanel();
 
 	private Label title = new Label("Gruppenname");
 	private Label mitgliederLabel = new Label("Gruppenmitglieder");
@@ -122,7 +122,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		 */
 
 		this.addStyleName("detailscontainer");
-		detailsboxlöschen.addStyleName("detailsboxlöschen");
+		detailsboxloeschen.addStyleName("detailsboxlöschen");
 		umfrageWidgets.addStyleName("umfrageWidgets");
 		detailsoben.addStyleName("detailsoben");
 		detailslinks.addStyleName("detailslinks");
@@ -133,10 +133,10 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		title.addStyleName("title");
 		mitgliederLabel.addStyleName("detailsboxLabels");
 		umfrageLabel.addStyleName("detailsboxLabels");
-		löschenImage.addStyleName("löschenImage");
-		
+		loeschenImage.addStyleName("löschenImage");
+
 		umfrageErstellen.addStyleName("speichernButton");
-		
+
 		/*
 		 * Widgets zusammensetzen
 		 */
@@ -145,7 +145,7 @@ public class GruppeAnzeigenForm extends FlowPanel {
 		// this.add(detailslinks);
 		// this.add(detailsrechts);
 		this.add(detailsunten);
-		detailsunten.add(detailsboxlöschen);
+		detailsunten.add(detailsboxloeschen);
 
 		detailsoben.add(title);
 		title.setText(gruppe.getName());
@@ -174,8 +174,8 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			detailsunten.add(bearbeiten);
 			bearbeiten.addClickHandler(new UmfrageBearbeitenClickHandler());
 			papierkorb.addClickHandler(new GruppeLoeschenClickHandler());
-			detailsboxlöschen.add(papierkorb);
-//			löschenImage.add(papierkorb);
+			detailsboxloeschen.add(papierkorb);
+			// löschenImage.add(papierkorb);
 
 			papierkorb.setUrl("/images/papierkorb.png");
 		}
@@ -379,10 +379,9 @@ public class GruppeAnzeigenForm extends FlowPanel {
 			if (result.size() == 0) {
 				umfrageWidgets.add(new Label("Noch keine Umfrage verfügbar!"));
 				umfrageErstellen.addClickHandler(new UmfrageErstellenClickHandler());
-		
+
 				umfrageWidgets.add(umfrageErstellen);
 				umfragenCellList.setEmptyListWidget(umfrageWidgets);
-				
 
 			} else {
 				for (Umfrage u : result) {

@@ -38,7 +38,7 @@ import de.hdm.softwareProjekt.kinoPlaner.shared.bo.Gruppe;
  *
  */
 public class GruppeErstellenForm extends FlowPanel {
-	
+
 	Anwender aktuellerAnwender = AktuellerAnwender.getAnwender();
 
 	private KinoplanerAsync kinoplaner = ClientsideSettings.getKinoplaner();
@@ -117,7 +117,7 @@ public class GruppeErstellenForm extends FlowPanel {
 	private Gruppe gruppe = null;
 
 	public Gruppe getGruppe() {
-		return gruppe; 
+		return gruppe;
 	}
 
 	public void setGruppe(Gruppe gruppe) {
@@ -196,7 +196,7 @@ public class GruppeErstellenForm extends FlowPanel {
 		detailsUntenBox.add(detailsBoxUntenMitte);
 		detailsBoxUntenMitte.add(anwenderCellTable);
 		detailsBoxUntenMitte.add(new Label("Entferne Gruppenmitglieder mit Click auf -"));
-		
+
 		detailsUntenBox.add(detailsBoxUnten);
 
 		detailsunten.add(speichernBox);
@@ -350,7 +350,8 @@ public class GruppeErstellenForm extends FlowPanel {
 			}
 
 			if (gruppe == null) {
-				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, aktuellerAnwender, new GruppeErstellenCallback());
+				kinoplaner.erstellenGruppe(gruppenameTB.getValue(), anwenderListe, aktuellerAnwender,
+						new GruppeErstellenCallback());
 			} else {
 				gruppe.setName(gruppenameTB.getValue());
 				kinoplaner.updateGruppe(gruppe, anwenderListe, aktuellerAnwender, new UpdateGruppeCallback());
@@ -446,19 +447,18 @@ public class GruppeErstellenForm extends FlowPanel {
 			if (result == null) {
 				Window.alert("Kein gültiger Anwender ausgewählt!");
 				return;
-			}else {
-				if(result.getId()!=AktuellerAnwender.getAnwender().getId()) {
-					
-				
-			// Updaten des DataProviders
+			} else {
+				if (result.getId() != AktuellerAnwender.getAnwender().getId()) {
 
-			dataProvider.getList().add(result);
-			dataProvider.refresh();
+					// Updaten des DataProviders
 
-			// Update der AnwenderListe
+					dataProvider.getList().add(result);
+					dataProvider.refresh();
 
-			anwenderListe.add(result);
-				}else {
+					// Update der AnwenderListe
+
+					anwenderListe.add(result);
+				} else {
 					Window.alert("Du bist bereits in der Gruppe!");
 				}
 			}

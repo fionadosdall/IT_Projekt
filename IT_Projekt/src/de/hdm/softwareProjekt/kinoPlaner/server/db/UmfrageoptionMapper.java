@@ -111,7 +111,7 @@ public class UmfrageoptionMapper {
 	 *         zugeordnet ist. True, wenn der Name in der Datenbanktabelle noch
 	 *         nicht vergeben ist.
 	 */
-	public boolean nameVerfügbar(String name) {
+	public boolean nameVerfuegbar(String name) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -184,9 +184,8 @@ public class UmfrageoptionMapper {
 			 * Update wird in die Datenbank eingetragen.
 			 */
 			stmt.executeUpdate("UPDATE umfrageoption SET " + "uoName= '" + umfrageoption.getName() + "', "
-					+ "umfrageoption_vorstellung_Id='" + umfrageoption.getVorstellungsId() + "',"
-					+ "voteErgebnis='" + umfrageoption.getVoteErgebnis() + "' WHERE uoId="
-					+ umfrageoption.getId());
+					+ "umfrageoption_vorstellung_Id='" + umfrageoption.getVorstellungsId() + "'," + "voteErgebnis='"
+					+ umfrageoption.getVoteErgebnis() + "' WHERE uoId=" + umfrageoption.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
